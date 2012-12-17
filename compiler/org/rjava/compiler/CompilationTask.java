@@ -4,21 +4,21 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.rjava.compiler.exception.Warning;
+import org.rjava.compiler.exception.RJavaWarning;
 
 public class CompilationTask {
     String path;
     List<String> sources;
     
-    public static CompilationTask newTaskFromFile(String file) throws Warning {
+    public static CompilationTask newTaskFromFile(String file) throws RJavaWarning {
 	File f = new File(file);
 	if (f.exists() && f.isFile())
 	    return new CompilationTask(f.getParent(), file);
 	
-	throw new Warning("File doesn't exist: " + file);
+	throw new RJavaWarning("File doesn't exist: " + file);
     }
     
-    public static CompilationTask newTaskFromDir(String dir) throws Warning {
+    public static CompilationTask newTaskFromDir(String dir) throws RJavaWarning {
 	File d = new File(dir);
 	if (d.exists() && d.isDirectory()) {
 	    List<String> sources = new ArrayList<String>();
@@ -26,7 +26,7 @@ public class CompilationTask {
 	    return new CompilationTask(dir, sources);
 	}
 	
-	throw new Warning("Directory doesn't exist: " + dir);
+	throw new RJavaWarning("Directory doesn't exist: " + dir);
     }
     
     private static void addFileToListRecursively(File dir, List<String> list) {

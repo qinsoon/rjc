@@ -4,17 +4,63 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.rjava.compiler.exception.Warning;
+import org.rjava.compiler.exception.RJavaError;
+import org.rjava.compiler.exception.RJavaWarning;
+import org.rjava.compiler.semantics.SemanticMap;
+import org.rjava.compiler.semantics.representation.RClass;
+import org.rjava.compiler.targets.CodeGenerator;
+import org.rjava.compiler.targets.c.CLanguageGenerator;
+import org.rjava.restriction.StaticRestrictionChecker;
 
 public class Compiler {
     public static final boolean DEBUG = true;
 
+    private CompilationTask task;
+    private SemanticMap semantics;
+    private CodeGenerator codeGenerator;
+    private StaticRestrictionChecker checker;
+    
+    public Compiler(CompilationTask task) {
+	this.task = task;
+    }
+    
+    /**
+     * main logic for compile a {@link CompilationTask}
+     * @throws RJavaWarning
+     * @throws Error
+     */
+    public void compile() throws RJavaWarning, Error{
+	// collect semantic information (now with soot)
+	semantics = new SemanticMap(task);
+	
+	// initialize Restriction Checker and Code Generator
+	checker = new StaticRestrictionChecker();
+	codeGenerator = new CLanguageGenerator();
+	
+	for (RClass klass : semantics.getAllClasses().values()) {
+	    try {
+		checker.comply(klass, semantics);
+		codeGenerator.translate(klass);
+	    } catch (RJavaError e) {
+		error(e);
+	    } catch (RJavaWarning e) {
+		warning(e);
+	    }
+	    
+	}
+    }
+    
+    /**
+     * main method for RJava compile
+     * @param args @see usage()
+     */
     public static void main(String[] args) {
 	if (args.length <= 0)
 	    usage();
 	
 	List<CompilationTask> tasks = new ArrayList<CompilationTask>();
-	// input as source dir
+	
+	// input as source dir, i.e. -dir source_dir
 	if (args.length >= 2 && args[0].equals("-dir")) {
 	    File sourceDir = new File(args[1]);
 	    if (!sourceDir.isDirectory())
@@ -22,21 +68,32 @@ public class Compiler {
 	    
 	    try {
 		tasks.add(CompilationTask.newTaskFromDir(args[1]));
-	    } catch (Warning e) {
+	    } catch (RJavaWarning e) {
 		warning(e);
 	    }
-	} else {
+	}
+	// input as a list of files
+	else {
 	    for (String arg : args)
 		try {
 		    tasks.add(CompilationTask.newTaskFromFile(arg));
-		} catch (Warning e) {
+		} catch (RJavaWarning e) {
 		    warning(e);
 		}
 	}
 
-	if (DEBUG)
-	    for (CompilationTask t : tasks)
-		debug(t);
+	// compile all tasks
+	for (CompilationTask t : tasks) {
+	    if (DEBUG) debug(t);
+	    Compiler compiler = new Compiler(t);
+	    try {
+		compiler.compile();
+	    } catch (RJavaWarning e) {
+		warning(e);
+	    } catch (Error e) {
+		error(e);
+	    }
+	}
     }
     
     public static void debug(Object o) {
