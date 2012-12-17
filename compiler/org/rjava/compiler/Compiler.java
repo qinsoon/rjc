@@ -38,15 +38,23 @@ public class Compiler {
 	codeGenerator = new CLanguageGenerator();
 	
 	for (RClass klass : semantics.getAllClasses().values()) {
+	    // for each class, check restriction compliance first
 	    try {
 		checker.comply(klass, semantics);
-		codeGenerator.translate(klass);
 	    } catch (RJavaError e) {
 		error(e);
 	    } catch (RJavaWarning e) {
 		warning(e);
 	    }
 	    
+	    // then compiles the class	    
+	    try {
+		codeGenerator.translate(klass);
+	    } catch (RJavaError e) {
+		error(e);
+	    } catch (RJavaWarning e) {
+		warning(e);
+	    }
 	}
     }
     
