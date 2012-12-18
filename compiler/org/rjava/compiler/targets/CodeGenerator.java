@@ -7,9 +7,6 @@ import org.rjava.compiler.semantics.SemanticMap;
 
 public abstract class CodeGenerator {
 
-    public void translate(RClass klass, SemanticMap semantics) throws RJavaWarning, RJavaError{
-	// TODO Auto-generated method stub
-	
-    }
+    public abstract void translate(RClass klass, String source, SemanticMap semantics) throws RJavaWarning, RJavaError;
 
 }

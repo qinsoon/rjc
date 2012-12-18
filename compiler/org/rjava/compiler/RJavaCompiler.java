@@ -37,9 +37,12 @@ public class RJavaCompiler {
 	checker = new StaticRestrictionChecker();
 	codeGenerator = new CLanguageGenerator();
 	
-	for (RClass klass : semantics.getAllClasses().values()) {
-	    if (DEBUG)
-		System.out.println("Compiling " + klass.getName() + "...");
+	for (int i = 0; i < task.getSources().size(); i ++) {
+	    System.out.println("Compiling [" + task.getClasses().get(i) + "]: " + task.getSources().get(i));
+	    String source = task.getSources().get(i);
+	    String className = task.getClasses().get(i);
+	    RClass klass = semantics.getAllClasses().get(className);
+	    
 	    // for each class, check restriction compliance first
 	    try {
 		checker.comply(klass, semantics);
@@ -51,7 +54,7 @@ public class RJavaCompiler {
 	    
 	    // then compiles the class	    
 	    try {
-		codeGenerator.translate(klass, semantics);
+		codeGenerator.translate(klass, source, semantics);
 	    } catch (RJavaError e) {
 		error(e);
 	    } catch (RJavaWarning e) {

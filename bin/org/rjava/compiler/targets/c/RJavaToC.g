@@ -281,12 +281,18 @@
                 java -cp ver.jar Main 2 false false false false false Java.g 
 */
   
-grammar Java;
-
+grammar RJavaToC;
 
 options {
     backtrack=true;
     memoize=true;
+}
+
+@header {
+package org.rjava.compiler.targets.c;
+}
+@lexer::header {
+package org.rjava.compiler.targets.c;
 }
 
 /********************************************************************************************
