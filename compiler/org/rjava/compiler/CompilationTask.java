@@ -1,5 +1,7 @@
 package org.rjava.compiler;
 
+import static org.rjava.compiler.Constants.RJAVA_EXT;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,17 +11,22 @@ import org.rjava.compiler.exception.RJavaWarning;
 public class CompilationTask {
     String path;
     List<String> sources;
+    List<String> classes;
     
     public static CompilationTask newTaskFromFile(String file) throws RJavaWarning {
 	File f = new File(file);
+	if (f.exists())
+	    f = f.getAbsoluteFile();
 	if (f.exists() && f.isFile())
-	    return new CompilationTask(f.getParent(), file);
+	    return new CompilationTask(f.getParent(), f.getAbsolutePath());
 	
 	throw new RJavaWarning("File doesn't exist: " + file);
     }
     
     public static CompilationTask newTaskFromDir(String dir) throws RJavaWarning {
 	File d = new File(dir);
+	if (d.exists())
+	    d = d.getAbsoluteFile();
 	if (d.exists() && d.isDirectory()) {
 	    List<String> sources = new ArrayList<String>();
 	    addFileToListRecursively(d, sources);
@@ -33,7 +40,7 @@ public class CompilationTask {
 	File[] all = dir.listFiles();
 	for (File f : all) {
 	    if (f.isFile())
-		list.add(f.getPath());
+		list.add(f.getAbsolutePath());
 	    else if (f.isDirectory())
 	    	addFileToListRecursively(f, list);
 	}
@@ -41,15 +48,38 @@ public class CompilationTask {
 
     protected CompilationTask(String path, String file) {
 	super();
+	if (!path.endsWith("/"))
+	    path += "/";
 	this.path = path;
 	this.sources = new ArrayList<String>();
 	this.sources.add(file);
+	
+	buildClassList();
     }
     
     protected CompilationTask(String path, List<String> sources) {
 	super();
+	if (!path.endsWith("/"))
+	    path += "/";
 	this.path = path;
 	this.sources = sources;
+	
+	buildClassList();
+    }
+    
+    /**
+     * change source files into class names
+     */	    
+    private void buildClassList() {
+	classes = new ArrayList<String>();
+	for (String source : sources) {
+	    // change test/org/rjava/HelloWorld.java -> org.rjava.HelloWorld
+	    source = source.replaceAll(path, "");
+	    String className = source.substring(0, source.length() - RJAVA_EXT.length());
+	    className = className.replaceAll("/", ".");
+	    
+	    classes.add(className);
+	}
     }
     
     public String toString() {
@@ -75,5 +105,13 @@ public class CompilationTask {
 
     public void setSources(List<String> sources) {
         this.sources = sources;
+    }
+
+    public List<String> getClasses() {
+        return classes;
+    }
+
+    public void setClasses(List<String> classes) {
+        this.classes = classes;
     }
 }

@@ -1,0 +1,1 @@
+1. [NEED FIX] Do not support anonymous class at the moment. 

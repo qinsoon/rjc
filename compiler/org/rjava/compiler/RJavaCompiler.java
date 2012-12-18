@@ -12,7 +12,7 @@ import org.rjava.compiler.targets.CodeGenerator;
 import org.rjava.compiler.targets.c.CLanguageGenerator;
 import org.rjava.restriction.StaticRestrictionChecker;
 
-public class Compiler {
+public class RJavaCompiler {
     public static final boolean DEBUG = true;
 
     private CompilationTask task;
@@ -20,7 +20,7 @@ public class Compiler {
     private CodeGenerator codeGenerator;
     private StaticRestrictionChecker checker;
     
-    public Compiler(CompilationTask task) {
+    public RJavaCompiler(CompilationTask task) {
 	this.task = task;
     }
     
@@ -29,7 +29,7 @@ public class Compiler {
      * @throws RJavaWarning
      * @throws Error
      */
-    public void compile() throws RJavaWarning, Error{
+    public void compile() throws RJavaWarning, RJavaError{
 	// collect semantic information (now with soot)
 	semantics = new SemanticMap(task);
 	
@@ -38,6 +38,8 @@ public class Compiler {
 	codeGenerator = new CLanguageGenerator();
 	
 	for (RClass klass : semantics.getAllClasses().values()) {
+	    if (DEBUG)
+		System.out.println("Compiling " + klass.getName() + "...");
 	    // for each class, check restriction compliance first
 	    try {
 		checker.comply(klass, semantics);
@@ -49,7 +51,7 @@ public class Compiler {
 	    
 	    // then compiles the class	    
 	    try {
-		codeGenerator.translate(klass);
+		codeGenerator.translate(klass, semantics);
 	    } catch (RJavaError e) {
 		error(e);
 	    } catch (RJavaWarning e) {
@@ -93,12 +95,12 @@ public class Compiler {
 	// compile all tasks
 	for (CompilationTask t : tasks) {
 	    if (DEBUG) debug(t);
-	    Compiler compiler = new Compiler(t);
+	    RJavaCompiler compiler = new RJavaCompiler(t);
 	    try {
 		compiler.compile();
 	    } catch (RJavaWarning e) {
 		warning(e);
-	    } catch (Error e) {
+	    } catch (RJavaError e) {
 		error(e);
 	    }
 	}
