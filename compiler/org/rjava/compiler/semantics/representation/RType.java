@@ -5,8 +5,18 @@ public class RType {
     private String className;
     private String packageName;
     
-    public RType(String type) {
-	this.type = type;
+    private RType() {}
+    
+    public static RType initWithTypeName(String type) {
+	RType r = new RType();
+	r.type = type;
+	return r;
+    }
+    
+    public static RType initWithClassName(String className) {
+	RType r = new RType();
+	r.className = className;
+	return r;
     }
 
     /**
