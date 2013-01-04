@@ -1,4 +1,4 @@
-// $ANTLR 3.4 /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g 2013-01-03 18:35:29
+// $ANTLR 3.4 /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g 2013-01-04 11:46:40
 
 package org.rjava.compiler.semantics.symtab;
 import org.rjava.compiler.semantics.representation.*;
@@ -170,6 +170,9 @@ public class RJavaSymbolTableParser extends Parser {
     public final void compilationUnit() throws RecognitionException {
         int compilationUnit_StartIndex = input.index();
 
+        RJavaSymbolTableParser.importDeclaration_return importDeclaration1 =null;
+
+
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 1) ) { return ; }
 
@@ -245,10 +248,12 @@ public class RJavaSymbolTableParser extends Parser {
             	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:32:10: importDeclaration
             	    {
             	    pushFollow(FOLLOW_importDeclaration_in_compilationUnit126);
-            	    importDeclaration();
+            	    importDeclaration1=importDeclaration();
 
             	    state._fsp--;
             	    if (state.failed) return ;
+
+            	    if ( state.backtracking==0 ) {klass.addNewImport((importDeclaration1!=null?input.toString(importDeclaration1.start,importDeclaration1.stop):null));}
 
             	    }
             	    break;
@@ -274,7 +279,7 @@ public class RJavaSymbolTableParser extends Parser {
             	case 1 :
             	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:34:10: typeDeclaration
             	    {
-            	    pushFollow(FOLLOW_typeDeclaration_in_compilationUnit148);
+            	    pushFollow(FOLLOW_typeDeclaration_in_compilationUnit150);
             	    typeDeclaration();
 
             	    state._fsp--;
@@ -319,15 +324,15 @@ public class RJavaSymbolTableParser extends Parser {
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:39:5: ( 'package' qualifiedName ';' )
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:39:9: 'package' qualifiedName ';'
             {
-            match(input,PACKAGE,FOLLOW_PACKAGE_in_packageDeclaration179); if (state.failed) return ;
+            match(input,PACKAGE,FOLLOW_PACKAGE_in_packageDeclaration181); if (state.failed) return ;
 
-            pushFollow(FOLLOW_qualifiedName_in_packageDeclaration181);
+            pushFollow(FOLLOW_qualifiedName_in_packageDeclaration183);
             qualifiedName();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,SEMI,FOLLOW_SEMI_in_packageDeclaration191); if (state.failed) return ;
+            match(input,SEMI,FOLLOW_SEMI_in_packageDeclaration193); if (state.failed) return ;
 
             }
 
@@ -347,14 +352,20 @@ public class RJavaSymbolTableParser extends Parser {
     // $ANTLR end "packageDeclaration"
 
 
+    public static class importDeclaration_return extends ParserRuleReturnScope {
+    };
+
 
     // $ANTLR start "importDeclaration"
     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:43:1: importDeclaration : ( 'import' ( 'static' )? IDENTIFIER '.' '*' ';' | 'import' ( 'static' )? IDENTIFIER ( '.' IDENTIFIER )+ ( '.' '*' )? ';' );
-    public final void importDeclaration() throws RecognitionException {
+    public final RJavaSymbolTableParser.importDeclaration_return importDeclaration() throws RecognitionException {
+        RJavaSymbolTableParser.importDeclaration_return retval = new RJavaSymbolTableParser.importDeclaration_return();
+        retval.start = input.LT(1);
+
         int importDeclaration_StartIndex = input.index();
 
         try {
-            if ( state.backtracking>0 && alreadyParsedRule(input, 3) ) { return ; }
+            if ( state.backtracking>0 && alreadyParsedRule(input, 3) ) { return retval; }
 
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:44:5: ( 'import' ( 'static' )? IDENTIFIER '.' '*' ';' | 'import' ( 'static' )? IDENTIFIER ( '.' IDENTIFIER )+ ( '.' '*' )? ';' )
             int alt9=2;
@@ -379,7 +390,7 @@ public class RJavaSymbolTableParser extends Parser {
                                 alt9=2;
                             }
                             else {
-                                if (state.backtracking>0) {state.failed=true; return ;}
+                                if (state.backtracking>0) {state.failed=true; return retval;}
                                 NoViableAltException nvae =
                                     new NoViableAltException("", 9, 4, input);
 
@@ -388,7 +399,7 @@ public class RJavaSymbolTableParser extends Parser {
                             }
                         }
                         else {
-                            if (state.backtracking>0) {state.failed=true; return ;}
+                            if (state.backtracking>0) {state.failed=true; return retval;}
                             NoViableAltException nvae =
                                 new NoViableAltException("", 9, 3, input);
 
@@ -397,7 +408,7 @@ public class RJavaSymbolTableParser extends Parser {
                         }
                     }
                     else {
-                        if (state.backtracking>0) {state.failed=true; return ;}
+                        if (state.backtracking>0) {state.failed=true; return retval;}
                         NoViableAltException nvae =
                             new NoViableAltException("", 9, 2, input);
 
@@ -418,7 +429,7 @@ public class RJavaSymbolTableParser extends Parser {
                             alt9=2;
                         }
                         else {
-                            if (state.backtracking>0) {state.failed=true; return ;}
+                            if (state.backtracking>0) {state.failed=true; return retval;}
                             NoViableAltException nvae =
                                 new NoViableAltException("", 9, 4, input);
 
@@ -427,7 +438,7 @@ public class RJavaSymbolTableParser extends Parser {
                         }
                     }
                     else {
-                        if (state.backtracking>0) {state.failed=true; return ;}
+                        if (state.backtracking>0) {state.failed=true; return retval;}
                         NoViableAltException nvae =
                             new NoViableAltException("", 9, 3, input);
 
@@ -436,7 +447,7 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                 }
                 else {
-                    if (state.backtracking>0) {state.failed=true; return ;}
+                    if (state.backtracking>0) {state.failed=true; return retval;}
                     NoViableAltException nvae =
                         new NoViableAltException("", 9, 1, input);
 
@@ -445,7 +456,7 @@ public class RJavaSymbolTableParser extends Parser {
                 }
             }
             else {
-                if (state.backtracking>0) {state.failed=true; return ;}
+                if (state.backtracking>0) {state.failed=true; return retval;}
                 NoViableAltException nvae =
                     new NoViableAltException("", 9, 0, input);
 
@@ -456,7 +467,7 @@ public class RJavaSymbolTableParser extends Parser {
                 case 1 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:44:9: 'import' ( 'static' )? IDENTIFIER '.' '*' ';'
                     {
-                    match(input,IMPORT,FOLLOW_IMPORT_in_importDeclaration212); if (state.failed) return ;
+                    match(input,IMPORT,FOLLOW_IMPORT_in_importDeclaration215); if (state.failed) return retval;
 
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:45:9: ( 'static' )?
                     int alt5=2;
@@ -469,7 +480,7 @@ public class RJavaSymbolTableParser extends Parser {
                         case 1 :
                             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:45:10: 'static'
                             {
-                            match(input,STATIC,FOLLOW_STATIC_in_importDeclaration224); if (state.failed) return ;
+                            match(input,STATIC,FOLLOW_STATIC_in_importDeclaration227); if (state.failed) return retval;
 
                             }
                             break;
@@ -477,20 +488,20 @@ public class RJavaSymbolTableParser extends Parser {
                     }
 
 
-                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_importDeclaration245); if (state.failed) return ;
+                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_importDeclaration248); if (state.failed) return retval;
 
-                    match(input,DOT,FOLLOW_DOT_in_importDeclaration247); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_importDeclaration250); if (state.failed) return retval;
 
-                    match(input,STAR,FOLLOW_STAR_in_importDeclaration249); if (state.failed) return ;
+                    match(input,STAR,FOLLOW_STAR_in_importDeclaration252); if (state.failed) return retval;
 
-                    match(input,SEMI,FOLLOW_SEMI_in_importDeclaration259); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_importDeclaration262); if (state.failed) return retval;
 
                     }
                     break;
                 case 2 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:49:9: 'import' ( 'static' )? IDENTIFIER ( '.' IDENTIFIER )+ ( '.' '*' )? ';'
                     {
-                    match(input,IMPORT,FOLLOW_IMPORT_in_importDeclaration276); if (state.failed) return ;
+                    match(input,IMPORT,FOLLOW_IMPORT_in_importDeclaration279); if (state.failed) return retval;
 
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:50:9: ( 'static' )?
                     int alt6=2;
@@ -503,7 +514,7 @@ public class RJavaSymbolTableParser extends Parser {
                         case 1 :
                             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:50:10: 'static'
                             {
-                            match(input,STATIC,FOLLOW_STATIC_in_importDeclaration288); if (state.failed) return ;
+                            match(input,STATIC,FOLLOW_STATIC_in_importDeclaration291); if (state.failed) return retval;
 
                             }
                             break;
@@ -511,7 +522,7 @@ public class RJavaSymbolTableParser extends Parser {
                     }
 
 
-                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_importDeclaration309); if (state.failed) return ;
+                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_importDeclaration312); if (state.failed) return retval;
 
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:53:9: ( '.' IDENTIFIER )+
                     int cnt7=0;
@@ -535,16 +546,16 @@ public class RJavaSymbolTableParser extends Parser {
                     	case 1 :
                     	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:53:10: '.' IDENTIFIER
                     	    {
-                    	    match(input,DOT,FOLLOW_DOT_in_importDeclaration320); if (state.failed) return ;
+                    	    match(input,DOT,FOLLOW_DOT_in_importDeclaration323); if (state.failed) return retval;
 
-                    	    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_importDeclaration322); if (state.failed) return ;
+                    	    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_importDeclaration325); if (state.failed) return retval;
 
                     	    }
                     	    break;
 
                     	default :
                     	    if ( cnt7 >= 1 ) break loop7;
-                    	    if (state.backtracking>0) {state.failed=true; return ;}
+                    	    if (state.backtracking>0) {state.failed=true; return retval;}
                                 EarlyExitException eee =
                                     new EarlyExitException(7, input);
                                 throw eee;
@@ -564,9 +575,9 @@ public class RJavaSymbolTableParser extends Parser {
                         case 1 :
                             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:55:10: '.' '*'
                             {
-                            match(input,DOT,FOLLOW_DOT_in_importDeclaration344); if (state.failed) return ;
+                            match(input,DOT,FOLLOW_DOT_in_importDeclaration347); if (state.failed) return retval;
 
-                            match(input,STAR,FOLLOW_STAR_in_importDeclaration346); if (state.failed) return ;
+                            match(input,STAR,FOLLOW_STAR_in_importDeclaration349); if (state.failed) return retval;
 
                             }
                             break;
@@ -574,12 +585,15 @@ public class RJavaSymbolTableParser extends Parser {
                     }
 
 
-                    match(input,SEMI,FOLLOW_SEMI_in_importDeclaration367); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_importDeclaration370); if (state.failed) return retval;
 
                     }
                     break;
 
             }
+            retval.stop = input.LT(-1);
+
+
         }
         catch (RecognitionException re) {
             reportError(re);
@@ -591,7 +605,7 @@ public class RJavaSymbolTableParser extends Parser {
             if ( state.backtracking>0 ) { memoize(input, 3, importDeclaration_StartIndex); }
 
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "importDeclaration"
 
@@ -608,7 +622,7 @@ public class RJavaSymbolTableParser extends Parser {
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:61:5: ( IDENTIFIER ( '.' IDENTIFIER )* )
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:61:9: IDENTIFIER ( '.' IDENTIFIER )*
             {
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_qualifiedImportName387); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_qualifiedImportName390); if (state.failed) return ;
 
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:62:9: ( '.' IDENTIFIER )*
             loop10:
@@ -625,9 +639,9 @@ public class RJavaSymbolTableParser extends Parser {
             	case 1 :
             	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:62:10: '.' IDENTIFIER
             	    {
-            	    match(input,DOT,FOLLOW_DOT_in_qualifiedImportName398); if (state.failed) return ;
+            	    match(input,DOT,FOLLOW_DOT_in_qualifiedImportName401); if (state.failed) return ;
 
-            	    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_qualifiedImportName400); if (state.failed) return ;
+            	    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_qualifiedImportName403); if (state.failed) return ;
 
             	    }
             	    break;
@@ -687,7 +701,7 @@ public class RJavaSymbolTableParser extends Parser {
                 case 1 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:67:9: classOrInterfaceDeclaration
                     {
-                    pushFollow(FOLLOW_classOrInterfaceDeclaration_in_typeDeclaration431);
+                    pushFollow(FOLLOW_classOrInterfaceDeclaration_in_typeDeclaration434);
                     classOrInterfaceDeclaration();
 
                     state._fsp--;
@@ -698,7 +712,7 @@ public class RJavaSymbolTableParser extends Parser {
                 case 2 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:68:9: ';'
                     {
-                    match(input,SEMI,FOLLOW_SEMI_in_typeDeclaration441); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_typeDeclaration444); if (state.failed) return ;
 
                     }
                     break;
@@ -996,7 +1010,7 @@ public class RJavaSymbolTableParser extends Parser {
                 case 1 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:72:10: classDeclaration
                     {
-                    pushFollow(FOLLOW_classDeclaration_in_classOrInterfaceDeclaration462);
+                    pushFollow(FOLLOW_classDeclaration_in_classOrInterfaceDeclaration465);
                     classDeclaration();
 
                     state._fsp--;
@@ -1007,7 +1021,7 @@ public class RJavaSymbolTableParser extends Parser {
                 case 2 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:73:9: interfaceDeclaration
                     {
-                    pushFollow(FOLLOW_interfaceDeclaration_in_classOrInterfaceDeclaration472);
+                    pushFollow(FOLLOW_interfaceDeclaration_in_classOrInterfaceDeclaration475);
                     interfaceDeclaration();
 
                     state._fsp--;
@@ -1123,7 +1137,7 @@ public class RJavaSymbolTableParser extends Parser {
             	case 1 :
             	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:79:10: annotation
             	    {
-            	    pushFollow(FOLLOW_annotation_in_modifiers507);
+            	    pushFollow(FOLLOW_annotation_in_modifiers510);
             	    annotation();
 
             	    state._fsp--;
@@ -1134,77 +1148,77 @@ public class RJavaSymbolTableParser extends Parser {
             	case 2 :
             	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:80:9: 'public'
             	    {
-            	    match(input,PUBLIC,FOLLOW_PUBLIC_in_modifiers517); if (state.failed) return ;
+            	    match(input,PUBLIC,FOLLOW_PUBLIC_in_modifiers520); if (state.failed) return ;
 
             	    }
             	    break;
             	case 3 :
             	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:81:9: 'protected'
             	    {
-            	    match(input,PROTECTED,FOLLOW_PROTECTED_in_modifiers527); if (state.failed) return ;
+            	    match(input,PROTECTED,FOLLOW_PROTECTED_in_modifiers530); if (state.failed) return ;
 
             	    }
             	    break;
             	case 4 :
             	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:82:9: 'private'
             	    {
-            	    match(input,PRIVATE,FOLLOW_PRIVATE_in_modifiers537); if (state.failed) return ;
+            	    match(input,PRIVATE,FOLLOW_PRIVATE_in_modifiers540); if (state.failed) return ;
 
             	    }
             	    break;
             	case 5 :
             	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:83:9: 'static'
             	    {
-            	    match(input,STATIC,FOLLOW_STATIC_in_modifiers547); if (state.failed) return ;
+            	    match(input,STATIC,FOLLOW_STATIC_in_modifiers550); if (state.failed) return ;
 
             	    }
             	    break;
             	case 6 :
             	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:84:9: 'abstract'
             	    {
-            	    match(input,ABSTRACT,FOLLOW_ABSTRACT_in_modifiers557); if (state.failed) return ;
+            	    match(input,ABSTRACT,FOLLOW_ABSTRACT_in_modifiers560); if (state.failed) return ;
 
             	    }
             	    break;
             	case 7 :
             	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:85:9: 'final'
             	    {
-            	    match(input,FINAL,FOLLOW_FINAL_in_modifiers567); if (state.failed) return ;
+            	    match(input,FINAL,FOLLOW_FINAL_in_modifiers570); if (state.failed) return ;
 
             	    }
             	    break;
             	case 8 :
             	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:86:9: 'native'
             	    {
-            	    match(input,NATIVE,FOLLOW_NATIVE_in_modifiers577); if (state.failed) return ;
+            	    match(input,NATIVE,FOLLOW_NATIVE_in_modifiers580); if (state.failed) return ;
 
             	    }
             	    break;
             	case 9 :
             	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:87:9: 'synchronized'
             	    {
-            	    match(input,SYNCHRONIZED,FOLLOW_SYNCHRONIZED_in_modifiers587); if (state.failed) return ;
+            	    match(input,SYNCHRONIZED,FOLLOW_SYNCHRONIZED_in_modifiers590); if (state.failed) return ;
 
             	    }
             	    break;
             	case 10 :
             	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:88:9: 'transient'
             	    {
-            	    match(input,TRANSIENT,FOLLOW_TRANSIENT_in_modifiers597); if (state.failed) return ;
+            	    match(input,TRANSIENT,FOLLOW_TRANSIENT_in_modifiers600); if (state.failed) return ;
 
             	    }
             	    break;
             	case 11 :
             	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:89:9: 'volatile'
             	    {
-            	    match(input,VOLATILE,FOLLOW_VOLATILE_in_modifiers607); if (state.failed) return ;
+            	    match(input,VOLATILE,FOLLOW_VOLATILE_in_modifiers610); if (state.failed) return ;
 
             	    }
             	    break;
             	case 12 :
             	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:90:9: 'strictfp'
             	    {
-            	    match(input,STRICTFP,FOLLOW_STRICTFP_in_modifiers617); if (state.failed) return ;
+            	    match(input,STRICTFP,FOLLOW_STRICTFP_in_modifiers620); if (state.failed) return ;
 
             	    }
             	    break;
@@ -1263,14 +1277,14 @@ public class RJavaSymbolTableParser extends Parser {
             	case 1 :
             	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:96:13: 'final'
             	    {
-            	    match(input,FINAL,FOLLOW_FINAL_in_variableModifiers649); if (state.failed) return ;
+            	    match(input,FINAL,FOLLOW_FINAL_in_variableModifiers652); if (state.failed) return ;
 
             	    }
             	    break;
             	case 2 :
             	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:97:13: annotation
             	    {
-            	    pushFollow(FOLLOW_annotation_in_variableModifiers663);
+            	    pushFollow(FOLLOW_annotation_in_variableModifiers666);
             	    annotation();
 
             	    state._fsp--;
@@ -1578,7 +1592,7 @@ public class RJavaSymbolTableParser extends Parser {
                 case 1 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:103:9: normalClassDeclaration
                     {
-                    pushFollow(FOLLOW_normalClassDeclaration_in_classDeclaration699);
+                    pushFollow(FOLLOW_normalClassDeclaration_in_classDeclaration702);
                     normalClassDeclaration();
 
                     state._fsp--;
@@ -1589,7 +1603,7 @@ public class RJavaSymbolTableParser extends Parser {
                 case 2 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:104:9: enumDeclaration
                     {
-                    pushFollow(FOLLOW_enumDeclaration_in_classDeclaration709);
+                    pushFollow(FOLLOW_enumDeclaration_in_classDeclaration712);
                     enumDeclaration();
 
                     state._fsp--;
@@ -1627,15 +1641,15 @@ public class RJavaSymbolTableParser extends Parser {
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:108:5: ( modifiers 'class' IDENTIFIER ( typeParameters )? ( 'extends' type )? ( 'implements' typeList )? classBody )
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:108:9: modifiers 'class' IDENTIFIER ( typeParameters )? ( 'extends' type )? ( 'implements' typeList )? classBody
             {
-            pushFollow(FOLLOW_modifiers_in_normalClassDeclaration729);
+            pushFollow(FOLLOW_modifiers_in_normalClassDeclaration732);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,CLASS,FOLLOW_CLASS_in_normalClassDeclaration732); if (state.failed) return ;
+            match(input,CLASS,FOLLOW_CLASS_in_normalClassDeclaration735); if (state.failed) return ;
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_normalClassDeclaration734); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_normalClassDeclaration737); if (state.failed) return ;
 
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:109:9: ( typeParameters )?
             int alt16=2;
@@ -1648,7 +1662,7 @@ public class RJavaSymbolTableParser extends Parser {
                 case 1 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:109:10: typeParameters
                     {
-                    pushFollow(FOLLOW_typeParameters_in_normalClassDeclaration745);
+                    pushFollow(FOLLOW_typeParameters_in_normalClassDeclaration748);
                     typeParameters();
 
                     state._fsp--;
@@ -1671,9 +1685,9 @@ public class RJavaSymbolTableParser extends Parser {
                 case 1 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:111:10: 'extends' type
                     {
-                    match(input,EXTENDS,FOLLOW_EXTENDS_in_normalClassDeclaration767); if (state.failed) return ;
+                    match(input,EXTENDS,FOLLOW_EXTENDS_in_normalClassDeclaration770); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_type_in_normalClassDeclaration769);
+                    pushFollow(FOLLOW_type_in_normalClassDeclaration772);
                     type();
 
                     state._fsp--;
@@ -1696,9 +1710,9 @@ public class RJavaSymbolTableParser extends Parser {
                 case 1 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:113:10: 'implements' typeList
                     {
-                    match(input,IMPLEMENTS,FOLLOW_IMPLEMENTS_in_normalClassDeclaration791); if (state.failed) return ;
+                    match(input,IMPLEMENTS,FOLLOW_IMPLEMENTS_in_normalClassDeclaration794); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_typeList_in_normalClassDeclaration793);
+                    pushFollow(FOLLOW_typeList_in_normalClassDeclaration796);
                     typeList();
 
                     state._fsp--;
@@ -1710,7 +1724,7 @@ public class RJavaSymbolTableParser extends Parser {
             }
 
 
-            pushFollow(FOLLOW_classBody_in_normalClassDeclaration826);
+            pushFollow(FOLLOW_classBody_in_normalClassDeclaration829);
             classBody();
 
             state._fsp--;
@@ -1746,9 +1760,9 @@ public class RJavaSymbolTableParser extends Parser {
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:120:5: ( '<' typeParameter ( ',' typeParameter )* '>' )
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:120:9: '<' typeParameter ( ',' typeParameter )* '>'
             {
-            match(input,LT,FOLLOW_LT_in_typeParameters847); if (state.failed) return ;
+            match(input,LT,FOLLOW_LT_in_typeParameters850); if (state.failed) return ;
 
-            pushFollow(FOLLOW_typeParameter_in_typeParameters861);
+            pushFollow(FOLLOW_typeParameter_in_typeParameters864);
             typeParameter();
 
             state._fsp--;
@@ -1769,9 +1783,9 @@ public class RJavaSymbolTableParser extends Parser {
             	case 1 :
             	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:122:14: ',' typeParameter
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_typeParameters876); if (state.failed) return ;
+            	    match(input,COMMA,FOLLOW_COMMA_in_typeParameters879); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_typeParameter_in_typeParameters878);
+            	    pushFollow(FOLLOW_typeParameter_in_typeParameters881);
             	    typeParameter();
 
             	    state._fsp--;
@@ -1786,7 +1800,7 @@ public class RJavaSymbolTableParser extends Parser {
             } while (true);
 
 
-            match(input,GT,FOLLOW_GT_in_typeParameters903); if (state.failed) return ;
+            match(input,GT,FOLLOW_GT_in_typeParameters906); if (state.failed) return ;
 
             }
 
@@ -1818,7 +1832,7 @@ public class RJavaSymbolTableParser extends Parser {
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:128:5: ( IDENTIFIER ( 'extends' typeBound )? )
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:128:9: IDENTIFIER ( 'extends' typeBound )?
             {
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_typeParameter923); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_typeParameter926); if (state.failed) return ;
 
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:129:9: ( 'extends' typeBound )?
             int alt20=2;
@@ -1831,9 +1845,9 @@ public class RJavaSymbolTableParser extends Parser {
                 case 1 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:129:10: 'extends' typeBound
                     {
-                    match(input,EXTENDS,FOLLOW_EXTENDS_in_typeParameter934); if (state.failed) return ;
+                    match(input,EXTENDS,FOLLOW_EXTENDS_in_typeParameter937); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_typeBound_in_typeParameter936);
+                    pushFollow(FOLLOW_typeBound_in_typeParameter939);
                     typeBound();
 
                     state._fsp--;
@@ -1875,7 +1889,7 @@ public class RJavaSymbolTableParser extends Parser {
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:135:5: ( type ( '&' type )* )
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:135:9: type ( '&' type )*
             {
-            pushFollow(FOLLOW_type_in_typeBound968);
+            pushFollow(FOLLOW_type_in_typeBound971);
             type();
 
             state._fsp--;
@@ -1896,9 +1910,9 @@ public class RJavaSymbolTableParser extends Parser {
             	case 1 :
             	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:136:10: '&' type
             	    {
-            	    match(input,AMP,FOLLOW_AMP_in_typeBound979); if (state.failed) return ;
+            	    match(input,AMP,FOLLOW_AMP_in_typeBound982); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_type_in_typeBound981);
+            	    pushFollow(FOLLOW_type_in_typeBound984);
             	    type();
 
             	    state._fsp--;
@@ -1943,7 +1957,7 @@ public class RJavaSymbolTableParser extends Parser {
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:142:5: ( modifiers ( 'enum' ) IDENTIFIER ( 'implements' typeList )? enumBody )
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:142:9: modifiers ( 'enum' ) IDENTIFIER ( 'implements' typeList )? enumBody
             {
-            pushFollow(FOLLOW_modifiers_in_enumDeclaration1013);
+            pushFollow(FOLLOW_modifiers_in_enumDeclaration1016);
             modifiers();
 
             state._fsp--;
@@ -1952,12 +1966,12 @@ public class RJavaSymbolTableParser extends Parser {
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:143:9: ( 'enum' )
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:143:10: 'enum'
             {
-            match(input,ENUM,FOLLOW_ENUM_in_enumDeclaration1025); if (state.failed) return ;
+            match(input,ENUM,FOLLOW_ENUM_in_enumDeclaration1028); if (state.failed) return ;
 
             }
 
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_enumDeclaration1046); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_enumDeclaration1049); if (state.failed) return ;
 
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:146:9: ( 'implements' typeList )?
             int alt22=2;
@@ -1970,9 +1984,9 @@ public class RJavaSymbolTableParser extends Parser {
                 case 1 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:146:10: 'implements' typeList
                     {
-                    match(input,IMPLEMENTS,FOLLOW_IMPLEMENTS_in_enumDeclaration1057); if (state.failed) return ;
+                    match(input,IMPLEMENTS,FOLLOW_IMPLEMENTS_in_enumDeclaration1060); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_typeList_in_enumDeclaration1059);
+                    pushFollow(FOLLOW_typeList_in_enumDeclaration1062);
                     typeList();
 
                     state._fsp--;
@@ -1984,7 +1998,7 @@ public class RJavaSymbolTableParser extends Parser {
             }
 
 
-            pushFollow(FOLLOW_enumBody_in_enumDeclaration1080);
+            pushFollow(FOLLOW_enumBody_in_enumDeclaration1083);
             enumBody();
 
             state._fsp--;
@@ -2020,7 +2034,7 @@ public class RJavaSymbolTableParser extends Parser {
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:153:5: ( '{' ( enumConstants )? ( ',' )? ( enumBodyDeclarations )? '}' )
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:153:9: '{' ( enumConstants )? ( ',' )? ( enumBodyDeclarations )? '}'
             {
-            match(input,LBRACE,FOLLOW_LBRACE_in_enumBody1105); if (state.failed) return ;
+            match(input,LBRACE,FOLLOW_LBRACE_in_enumBody1108); if (state.failed) return ;
 
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:154:9: ( enumConstants )?
             int alt23=2;
@@ -2033,7 +2047,7 @@ public class RJavaSymbolTableParser extends Parser {
                 case 1 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:154:10: enumConstants
                     {
-                    pushFollow(FOLLOW_enumConstants_in_enumBody1116);
+                    pushFollow(FOLLOW_enumConstants_in_enumBody1119);
                     enumConstants();
 
                     state._fsp--;
@@ -2056,7 +2070,7 @@ public class RJavaSymbolTableParser extends Parser {
                 case 1 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:156:9: ','
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_enumBody1138); if (state.failed) return ;
+                    match(input,COMMA,FOLLOW_COMMA_in_enumBody1141); if (state.failed) return ;
 
                     }
                     break;
@@ -2075,7 +2089,7 @@ public class RJavaSymbolTableParser extends Parser {
                 case 1 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:157:10: enumBodyDeclarations
                     {
-                    pushFollow(FOLLOW_enumBodyDeclarations_in_enumBody1151);
+                    pushFollow(FOLLOW_enumBodyDeclarations_in_enumBody1154);
                     enumBodyDeclarations();
 
                     state._fsp--;
@@ -2087,7 +2101,7 @@ public class RJavaSymbolTableParser extends Parser {
             }
 
 
-            match(input,RBRACE,FOLLOW_RBRACE_in_enumBody1173); if (state.failed) return ;
+            match(input,RBRACE,FOLLOW_RBRACE_in_enumBody1176); if (state.failed) return ;
 
             }
 
@@ -2119,7 +2133,7 @@ public class RJavaSymbolTableParser extends Parser {
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:163:5: ( enumConstant ( ',' enumConstant )* )
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:163:9: enumConstant ( ',' enumConstant )*
             {
-            pushFollow(FOLLOW_enumConstant_in_enumConstants1193);
+            pushFollow(FOLLOW_enumConstant_in_enumConstants1196);
             enumConstant();
 
             state._fsp--;
@@ -2146,9 +2160,9 @@ public class RJavaSymbolTableParser extends Parser {
             	case 1 :
             	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:164:10: ',' enumConstant
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_enumConstants1204); if (state.failed) return ;
+            	    match(input,COMMA,FOLLOW_COMMA_in_enumConstants1207); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_enumConstant_in_enumConstants1206);
+            	    pushFollow(FOLLOW_enumConstant_in_enumConstants1209);
             	    enumConstant();
 
             	    state._fsp--;
@@ -2204,7 +2218,7 @@ public class RJavaSymbolTableParser extends Parser {
                 case 1 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:173:10: annotations
                     {
-                    pushFollow(FOLLOW_annotations_in_enumConstant1240);
+                    pushFollow(FOLLOW_annotations_in_enumConstant1243);
                     annotations();
 
                     state._fsp--;
@@ -2216,7 +2230,7 @@ public class RJavaSymbolTableParser extends Parser {
             }
 
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_enumConstant1261); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_enumConstant1264); if (state.failed) return ;
 
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:176:9: ( arguments )?
             int alt28=2;
@@ -2229,7 +2243,7 @@ public class RJavaSymbolTableParser extends Parser {
                 case 1 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:176:10: arguments
                     {
-                    pushFollow(FOLLOW_arguments_in_enumConstant1272);
+                    pushFollow(FOLLOW_arguments_in_enumConstant1275);
                     arguments();
 
                     state._fsp--;
@@ -2252,7 +2266,7 @@ public class RJavaSymbolTableParser extends Parser {
                 case 1 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:178:10: classBody
                     {
-                    pushFollow(FOLLOW_classBody_in_enumConstant1294);
+                    pushFollow(FOLLOW_classBody_in_enumConstant1297);
                     classBody();
 
                     state._fsp--;
@@ -2294,7 +2308,7 @@ public class RJavaSymbolTableParser extends Parser {
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:185:5: ( ';' ( classBodyDeclaration )* )
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:185:9: ';' ( classBodyDeclaration )*
             {
-            match(input,SEMI,FOLLOW_SEMI_in_enumBodyDeclarations1335); if (state.failed) return ;
+            match(input,SEMI,FOLLOW_SEMI_in_enumBodyDeclarations1338); if (state.failed) return ;
 
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:186:9: ( classBodyDeclaration )*
             loop30:
@@ -2311,7 +2325,7 @@ public class RJavaSymbolTableParser extends Parser {
             	case 1 :
             	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:186:10: classBodyDeclaration
             	    {
-            	    pushFollow(FOLLOW_classBodyDeclaration_in_enumBodyDeclarations1347);
+            	    pushFollow(FOLLOW_classBodyDeclaration_in_enumBodyDeclarations1350);
             	    classBodyDeclaration();
 
             	    state._fsp--;
@@ -2614,7 +2628,7 @@ public class RJavaSymbolTableParser extends Parser {
                 case 1 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:191:9: normalInterfaceDeclaration
                     {
-                    pushFollow(FOLLOW_normalInterfaceDeclaration_in_interfaceDeclaration1378);
+                    pushFollow(FOLLOW_normalInterfaceDeclaration_in_interfaceDeclaration1381);
                     normalInterfaceDeclaration();
 
                     state._fsp--;
@@ -2625,7 +2639,7 @@ public class RJavaSymbolTableParser extends Parser {
                 case 2 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:192:9: annotationTypeDeclaration
                     {
-                    pushFollow(FOLLOW_annotationTypeDeclaration_in_interfaceDeclaration1388);
+                    pushFollow(FOLLOW_annotationTypeDeclaration_in_interfaceDeclaration1391);
                     annotationTypeDeclaration();
 
                     state._fsp--;
@@ -2663,15 +2677,15 @@ public class RJavaSymbolTableParser extends Parser {
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:196:5: ( modifiers 'interface' IDENTIFIER ( typeParameters )? ( 'extends' typeList )? interfaceBody )
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:196:9: modifiers 'interface' IDENTIFIER ( typeParameters )? ( 'extends' typeList )? interfaceBody
             {
-            pushFollow(FOLLOW_modifiers_in_normalInterfaceDeclaration1412);
+            pushFollow(FOLLOW_modifiers_in_normalInterfaceDeclaration1415);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,INTERFACE,FOLLOW_INTERFACE_in_normalInterfaceDeclaration1414); if (state.failed) return ;
+            match(input,INTERFACE,FOLLOW_INTERFACE_in_normalInterfaceDeclaration1417); if (state.failed) return ;
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_normalInterfaceDeclaration1416); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_normalInterfaceDeclaration1419); if (state.failed) return ;
 
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:197:9: ( typeParameters )?
             int alt32=2;
@@ -2684,7 +2698,7 @@ public class RJavaSymbolTableParser extends Parser {
                 case 1 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:197:10: typeParameters
                     {
-                    pushFollow(FOLLOW_typeParameters_in_normalInterfaceDeclaration1427);
+                    pushFollow(FOLLOW_typeParameters_in_normalInterfaceDeclaration1430);
                     typeParameters();
 
                     state._fsp--;
@@ -2707,9 +2721,9 @@ public class RJavaSymbolTableParser extends Parser {
                 case 1 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:199:10: 'extends' typeList
                     {
-                    match(input,EXTENDS,FOLLOW_EXTENDS_in_normalInterfaceDeclaration1449); if (state.failed) return ;
+                    match(input,EXTENDS,FOLLOW_EXTENDS_in_normalInterfaceDeclaration1452); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_typeList_in_normalInterfaceDeclaration1451);
+                    pushFollow(FOLLOW_typeList_in_normalInterfaceDeclaration1454);
                     typeList();
 
                     state._fsp--;
@@ -2721,7 +2735,7 @@ public class RJavaSymbolTableParser extends Parser {
             }
 
 
-            pushFollow(FOLLOW_interfaceBody_in_normalInterfaceDeclaration1472);
+            pushFollow(FOLLOW_interfaceBody_in_normalInterfaceDeclaration1475);
             interfaceBody();
 
             state._fsp--;
@@ -2757,7 +2771,7 @@ public class RJavaSymbolTableParser extends Parser {
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:205:5: ( type ( ',' type )* )
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:205:9: type ( ',' type )*
             {
-            pushFollow(FOLLOW_type_in_typeList1492);
+            pushFollow(FOLLOW_type_in_typeList1495);
             type();
 
             state._fsp--;
@@ -2778,9 +2792,9 @@ public class RJavaSymbolTableParser extends Parser {
             	case 1 :
             	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:206:10: ',' type
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_typeList1503); if (state.failed) return ;
+            	    match(input,COMMA,FOLLOW_COMMA_in_typeList1506); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_type_in_typeList1505);
+            	    pushFollow(FOLLOW_type_in_typeList1508);
             	    type();
 
             	    state._fsp--;
@@ -2825,7 +2839,7 @@ public class RJavaSymbolTableParser extends Parser {
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:211:5: ( '{' ( classBodyDeclaration )* '}' )
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:211:9: '{' ( classBodyDeclaration )* '}'
             {
-            match(input,LBRACE,FOLLOW_LBRACE_in_classBody1536); if (state.failed) return ;
+            match(input,LBRACE,FOLLOW_LBRACE_in_classBody1539); if (state.failed) return ;
 
             if ( state.backtracking==0 ) {klass.setCurrentBlock(klass.getTopBlock());}
 
@@ -2844,7 +2858,7 @@ public class RJavaSymbolTableParser extends Parser {
             	case 1 :
             	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:212:10: classBodyDeclaration
             	    {
-            	    pushFollow(FOLLOW_classBodyDeclaration_in_classBody1549);
+            	    pushFollow(FOLLOW_classBodyDeclaration_in_classBody1552);
             	    classBodyDeclaration();
 
             	    state._fsp--;
@@ -2859,7 +2873,7 @@ public class RJavaSymbolTableParser extends Parser {
             } while (true);
 
 
-            match(input,RBRACE,FOLLOW_RBRACE_in_classBody1571); if (state.failed) return ;
+            match(input,RBRACE,FOLLOW_RBRACE_in_classBody1574); if (state.failed) return ;
 
             if ( state.backtracking==0 ) {klass.backToUpperBlock();}
 
@@ -2893,7 +2907,7 @@ public class RJavaSymbolTableParser extends Parser {
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:218:5: ( '{' ( interfaceBodyDeclaration )* '}' )
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:218:9: '{' ( interfaceBodyDeclaration )* '}'
             {
-            match(input,LBRACE,FOLLOW_LBRACE_in_interfaceBody1593); if (state.failed) return ;
+            match(input,LBRACE,FOLLOW_LBRACE_in_interfaceBody1596); if (state.failed) return ;
 
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:219:9: ( interfaceBodyDeclaration )*
             loop36:
@@ -2910,7 +2924,7 @@ public class RJavaSymbolTableParser extends Parser {
             	case 1 :
             	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:219:10: interfaceBodyDeclaration
             	    {
-            	    pushFollow(FOLLOW_interfaceBodyDeclaration_in_interfaceBody1605);
+            	    pushFollow(FOLLOW_interfaceBodyDeclaration_in_interfaceBody1608);
             	    interfaceBodyDeclaration();
 
             	    state._fsp--;
@@ -2925,7 +2939,7 @@ public class RJavaSymbolTableParser extends Parser {
             } while (true);
 
 
-            match(input,RBRACE,FOLLOW_RBRACE_in_interfaceBody1627); if (state.failed) return ;
+            match(input,RBRACE,FOLLOW_RBRACE_in_interfaceBody1630); if (state.failed) return ;
 
             }
 
@@ -3029,18 +3043,18 @@ public class RJavaSymbolTableParser extends Parser {
                 case 1 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:225:9: ';'
                     {
-                    match(input,SEMI,FOLLOW_SEMI_in_classBodyDeclaration1647); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_classBodyDeclaration1650); if (state.failed) return ;
 
                     }
                     break;
                 case 2 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:226:9: 'static' block
                     {
-                    match(input,STATIC,FOLLOW_STATIC_in_classBodyDeclaration1657); if (state.failed) return ;
+                    match(input,STATIC,FOLLOW_STATIC_in_classBodyDeclaration1660); if (state.failed) return ;
 
                     if ( state.backtracking==0 ) {klass.newBlock(RBlock.STATIC_INITIALIZER);}
 
-                    pushFollow(FOLLOW_block_in_classBodyDeclaration1670);
+                    pushFollow(FOLLOW_block_in_classBodyDeclaration1673);
                     block();
 
                     state._fsp--;
@@ -3055,7 +3069,7 @@ public class RJavaSymbolTableParser extends Parser {
                     {
                     if ( state.backtracking==0 ) {klass.newBlock(RBlock.IN_METHOD);}
 
-                    pushFollow(FOLLOW_block_in_classBodyDeclaration1700);
+                    pushFollow(FOLLOW_block_in_classBodyDeclaration1703);
                     block();
 
                     state._fsp--;
@@ -3068,7 +3082,7 @@ public class RJavaSymbolTableParser extends Parser {
                 case 4 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:232:9: memberDecl
                     {
-                    pushFollow(FOLLOW_memberDecl_in_classBodyDeclaration1720);
+                    pushFollow(FOLLOW_memberDecl_in_classBodyDeclaration1723);
                     memberDecl();
 
                     state._fsp--;
@@ -3495,7 +3509,7 @@ public class RJavaSymbolTableParser extends Parser {
                 case 1 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:236:10: fieldDeclaration
                     {
-                    pushFollow(FOLLOW_fieldDeclaration_in_memberDecl1741);
+                    pushFollow(FOLLOW_fieldDeclaration_in_memberDecl1744);
                     fieldDeclaration();
 
                     state._fsp--;
@@ -3506,7 +3520,7 @@ public class RJavaSymbolTableParser extends Parser {
                 case 2 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:237:10: methodDeclaration
                     {
-                    pushFollow(FOLLOW_methodDeclaration_in_memberDecl1752);
+                    pushFollow(FOLLOW_methodDeclaration_in_memberDecl1755);
                     methodDeclaration();
 
                     state._fsp--;
@@ -3517,7 +3531,7 @@ public class RJavaSymbolTableParser extends Parser {
                 case 3 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:238:10: classDeclaration
                     {
-                    pushFollow(FOLLOW_classDeclaration_in_memberDecl1763);
+                    pushFollow(FOLLOW_classDeclaration_in_memberDecl1766);
                     classDeclaration();
 
                     state._fsp--;
@@ -3528,7 +3542,7 @@ public class RJavaSymbolTableParser extends Parser {
                 case 4 :
                     // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:239:10: interfaceDeclaration
                     {
-                    pushFollow(FOLLOW_interfaceDeclaration_in_memberDecl1774);
+                    pushFollow(FOLLOW_interfaceDeclaration_in_memberDecl1777);
                     interfaceDeclaration();
 
                     state._fsp--;
@@ -3870,15 +3884,17 @@ public class RJavaSymbolTableParser extends Parser {
 
             switch (alt48) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:246:10: modifiers ( typeParameters )? IDENTIFIER formalParameters ( 'throws' qualifiedNameList )? '{' ( explicitConstructorInvocation )? ( blockStatement )* '}'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:246:9: modifiers ( typeParameters )? IDENTIFIER formalParameters ( 'throws' qualifiedNameList )? '{' ( explicitConstructorInvocation )? ( blockStatement )* '}'
                     {
-                    pushFollow(FOLLOW_modifiers_in_methodDeclaration1812);
+                    if ( state.backtracking==0 ) {klass.newBlock(RBlock.METHOD_WIDE);}
+
+                    pushFollow(FOLLOW_modifiers_in_methodDeclaration1825);
                     modifiers();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:247:9: ( typeParameters )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:248:9: ( typeParameters )?
                     int alt39=2;
                     int LA39_0 = input.LA(1);
 
@@ -3887,9 +3903,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     switch (alt39) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:247:10: typeParameters
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:248:10: typeParameters
                             {
-                            pushFollow(FOLLOW_typeParameters_in_methodDeclaration1823);
+                            pushFollow(FOLLOW_typeParameters_in_methodDeclaration1836);
                             typeParameters();
 
                             state._fsp--;
@@ -3901,15 +3917,15 @@ public class RJavaSymbolTableParser extends Parser {
                     }
 
 
-                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_methodDeclaration1844); if (state.failed) return ;
+                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_methodDeclaration1857); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_formalParameters_in_methodDeclaration1854);
+                    pushFollow(FOLLOW_formalParameters_in_methodDeclaration1868);
                     formalParameters();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:251:9: ( 'throws' qualifiedNameList )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:252:9: ( 'throws' qualifiedNameList )?
                     int alt40=2;
                     int LA40_0 = input.LA(1);
 
@@ -3918,11 +3934,11 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     switch (alt40) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:251:10: 'throws' qualifiedNameList
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:252:10: 'throws' qualifiedNameList
                             {
-                            match(input,THROWS,FOLLOW_THROWS_in_methodDeclaration1865); if (state.failed) return ;
+                            match(input,THROWS,FOLLOW_THROWS_in_methodDeclaration1879); if (state.failed) return ;
 
-                            pushFollow(FOLLOW_qualifiedNameList_in_methodDeclaration1867);
+                            pushFollow(FOLLOW_qualifiedNameList_in_methodDeclaration1881);
                             qualifiedNameList();
 
                             state._fsp--;
@@ -3934,9 +3950,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
 
 
-                    match(input,LBRACE,FOLLOW_LBRACE_in_methodDeclaration1888); if (state.failed) return ;
+                    match(input,LBRACE,FOLLOW_LBRACE_in_methodDeclaration1902); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:254:9: ( explicitConstructorInvocation )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:255:9: ( explicitConstructorInvocation )?
                     int alt41=2;
                     switch ( input.LA(1) ) {
                         case LT:
@@ -4035,9 +4051,9 @@ public class RJavaSymbolTableParser extends Parser {
 
                     switch (alt41) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:254:10: explicitConstructorInvocation
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:255:10: explicitConstructorInvocation
                             {
-                            pushFollow(FOLLOW_explicitConstructorInvocation_in_methodDeclaration1900);
+                            pushFollow(FOLLOW_explicitConstructorInvocation_in_methodDeclaration1914);
                             explicitConstructorInvocation();
 
                             state._fsp--;
@@ -4049,7 +4065,7 @@ public class RJavaSymbolTableParser extends Parser {
                     }
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:256:9: ( blockStatement )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:257:9: ( blockStatement )*
                     loop42:
                     do {
                         int alt42=2;
@@ -4062,9 +4078,9 @@ public class RJavaSymbolTableParser extends Parser {
 
                         switch (alt42) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:256:10: blockStatement
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:257:10: blockStatement
                     	    {
-                    	    pushFollow(FOLLOW_blockStatement_in_methodDeclaration1922);
+                    	    pushFollow(FOLLOW_blockStatement_in_methodDeclaration1936);
                     	    blockStatement();
 
                     	    state._fsp--;
@@ -4079,20 +4095,24 @@ public class RJavaSymbolTableParser extends Parser {
                     } while (true);
 
 
-                    match(input,RBRACE,FOLLOW_RBRACE_in_methodDeclaration1943); if (state.failed) return ;
+                    match(input,RBRACE,FOLLOW_RBRACE_in_methodDeclaration1957); if (state.failed) return ;
+
+                    if ( state.backtracking==0 ) {klass.backToUpperBlock();}
 
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:259:9: modifiers ( typeParameters )? ( type | 'void' ) IDENTIFIER formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ( block | ';' )
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:261:9: modifiers ( typeParameters )? ( type | 'void' ) IDENTIFIER formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ( block | ';' )
                     {
-                    pushFollow(FOLLOW_modifiers_in_methodDeclaration1953);
+                    if ( state.backtracking==0 ) {klass.newBlock(RBlock.METHOD_WIDE);}
+
+                    pushFollow(FOLLOW_modifiers_in_methodDeclaration1988);
                     modifiers();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:260:9: ( typeParameters )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:263:9: ( typeParameters )?
                     int alt43=2;
                     int LA43_0 = input.LA(1);
 
@@ -4101,9 +4121,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     switch (alt43) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:260:10: typeParameters
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:263:10: typeParameters
                             {
-                            pushFollow(FOLLOW_typeParameters_in_methodDeclaration1964);
+                            pushFollow(FOLLOW_typeParameters_in_methodDeclaration1999);
                             typeParameters();
 
                             state._fsp--;
@@ -4115,7 +4135,7 @@ public class RJavaSymbolTableParser extends Parser {
                     }
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:262:9: ( type | 'void' )
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:265:9: ( type | 'void' )
                     int alt44=2;
                     int LA44_0 = input.LA(1);
 
@@ -4135,9 +4155,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     switch (alt44) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:262:10: type
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:265:10: type
                             {
-                            pushFollow(FOLLOW_type_in_methodDeclaration1986);
+                            pushFollow(FOLLOW_type_in_methodDeclaration2021);
                             type();
 
                             state._fsp--;
@@ -4146,9 +4166,9 @@ public class RJavaSymbolTableParser extends Parser {
                             }
                             break;
                         case 2 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:263:13: 'void'
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:266:13: 'void'
                             {
-                            match(input,VOID,FOLLOW_VOID_in_methodDeclaration2000); if (state.failed) return ;
+                            match(input,VOID,FOLLOW_VOID_in_methodDeclaration2035); if (state.failed) return ;
 
                             }
                             break;
@@ -4156,15 +4176,15 @@ public class RJavaSymbolTableParser extends Parser {
                     }
 
 
-                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_methodDeclaration2020); if (state.failed) return ;
+                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_methodDeclaration2055); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_formalParameters_in_methodDeclaration2030);
+                    pushFollow(FOLLOW_formalParameters_in_methodDeclaration2066);
                     formalParameters();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:267:9: ( '[' ']' )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:270:9: ( '[' ']' )*
                     loop45:
                     do {
                         int alt45=2;
@@ -4177,11 +4197,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                         switch (alt45) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:267:10: '[' ']'
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:270:10: '[' ']'
                     	    {
-                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_methodDeclaration2041); if (state.failed) return ;
+                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_methodDeclaration2077); if (state.failed) return ;
 
-                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_methodDeclaration2043); if (state.failed) return ;
+                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_methodDeclaration2079); if (state.failed) return ;
 
                     	    }
                     	    break;
@@ -4192,7 +4212,7 @@ public class RJavaSymbolTableParser extends Parser {
                     } while (true);
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:269:9: ( 'throws' qualifiedNameList )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:272:9: ( 'throws' qualifiedNameList )?
                     int alt46=2;
                     int LA46_0 = input.LA(1);
 
@@ -4201,11 +4221,11 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     switch (alt46) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:269:10: 'throws' qualifiedNameList
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:272:10: 'throws' qualifiedNameList
                             {
-                            match(input,THROWS,FOLLOW_THROWS_in_methodDeclaration2065); if (state.failed) return ;
+                            match(input,THROWS,FOLLOW_THROWS_in_methodDeclaration2101); if (state.failed) return ;
 
-                            pushFollow(FOLLOW_qualifiedNameList_in_methodDeclaration2067);
+                            pushFollow(FOLLOW_qualifiedNameList_in_methodDeclaration2103);
                             qualifiedNameList();
 
                             state._fsp--;
@@ -4217,7 +4237,7 @@ public class RJavaSymbolTableParser extends Parser {
                     }
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:271:9: ( block | ';' )
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:274:9: ( block | ';' )
                     int alt47=2;
                     int LA47_0 = input.LA(1);
 
@@ -4237,9 +4257,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     switch (alt47) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:272:13: block
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:275:13: block
                             {
-                            pushFollow(FOLLOW_block_in_methodDeclaration2122);
+                            pushFollow(FOLLOW_block_in_methodDeclaration2158);
                             block();
 
                             state._fsp--;
@@ -4248,9 +4268,9 @@ public class RJavaSymbolTableParser extends Parser {
                             }
                             break;
                         case 2 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:273:13: ';'
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:276:13: ';'
                             {
-                            match(input,SEMI,FOLLOW_SEMI_in_methodDeclaration2136); if (state.failed) return ;
+                            match(input,SEMI,FOLLOW_SEMI_in_methodDeclaration2172); if (state.failed) return ;
 
                             }
                             break;
@@ -4280,40 +4300,40 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "fieldDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:278:1: fieldDeclaration : modifiers type variableDeclarator ( ',' variableDeclarator )* ';' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:281:1: fieldDeclaration : modifiers type variableDeclarator ( ',' variableDeclarator )* ';' ;
     public final void fieldDeclaration() throws RecognitionException {
         int fieldDeclaration_StartIndex = input.index();
 
-        RJavaSymbolTableParser.type_return type1 =null;
+        RJavaSymbolTableParser.type_return type2 =null;
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 27) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:279:5: ( modifiers type variableDeclarator ( ',' variableDeclarator )* ';' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:279:9: modifiers type variableDeclarator ( ',' variableDeclarator )* ';'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:282:5: ( modifiers type variableDeclarator ( ',' variableDeclarator )* ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:282:9: modifiers type variableDeclarator ( ',' variableDeclarator )* ';'
             {
-            pushFollow(FOLLOW_modifiers_in_fieldDeclaration2168);
+            pushFollow(FOLLOW_modifiers_in_fieldDeclaration2204);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            pushFollow(FOLLOW_type_in_fieldDeclaration2179);
-            type1=type();
+            pushFollow(FOLLOW_type_in_fieldDeclaration2215);
+            type2=type();
 
             state._fsp--;
             if (state.failed) return ;
 
-            if ( state.backtracking==0 ) {type = (type1!=null?input.toString(type1.start,type1.stop):null);}
+            if ( state.backtracking==0 ) {type = (type2!=null?input.toString(type2.start,type2.stop):null);}
 
-            pushFollow(FOLLOW_variableDeclarator_in_fieldDeclaration2191);
+            pushFollow(FOLLOW_variableDeclarator_in_fieldDeclaration2227);
             variableDeclarator();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:282:9: ( ',' variableDeclarator )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:285:9: ( ',' variableDeclarator )*
             loop49:
             do {
                 int alt49=2;
@@ -4326,11 +4346,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt49) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:282:10: ',' variableDeclarator
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:285:10: ',' variableDeclarator
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_fieldDeclaration2203); if (state.failed) return ;
+            	    match(input,COMMA,FOLLOW_COMMA_in_fieldDeclaration2239); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_variableDeclarator_in_fieldDeclaration2205);
+            	    pushFollow(FOLLOW_variableDeclarator_in_fieldDeclaration2241);
             	    variableDeclarator();
 
             	    state._fsp--;
@@ -4345,7 +4365,7 @@ public class RJavaSymbolTableParser extends Parser {
             } while (true);
 
 
-            match(input,SEMI,FOLLOW_SEMI_in_fieldDeclaration2227); if (state.failed) return ;
+            match(input,SEMI,FOLLOW_SEMI_in_fieldDeclaration2263); if (state.failed) return ;
 
             if ( state.backtracking==0 ) {type = null;}
 
@@ -4369,29 +4389,29 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "variableDeclarator"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:287:1: variableDeclarator returns [RIdentifier id] : IDENTIFIER ( '[' ']' )* ( '=' variableInitializer )? ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:290:1: variableDeclarator returns [RIdentifier id] : IDENTIFIER ( '[' ']' )* ( '=' variableInitializer )? ;
     public final RIdentifier variableDeclarator() throws RecognitionException {
         RIdentifier id = null;
 
         int variableDeclarator_StartIndex = input.index();
 
-        Token IDENTIFIER2=null;
+        Token IDENTIFIER3=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 28) ) { return id; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:288:5: ( IDENTIFIER ( '[' ']' )* ( '=' variableInitializer )? )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:288:9: IDENTIFIER ( '[' ']' )* ( '=' variableInitializer )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:291:5: ( IDENTIFIER ( '[' ']' )* ( '=' variableInitializer )? )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:291:9: IDENTIFIER ( '[' ']' )* ( '=' variableInitializer )?
             {
-            IDENTIFIER2=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_variableDeclarator2252); if (state.failed) return id;
+            IDENTIFIER3=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_variableDeclarator2288); if (state.failed) return id;
 
             if ( state.backtracking==0 ) {
                       id = new RIdentifier(); 
-                      id.setId((IDENTIFIER2!=null?IDENTIFIER2.getText():null)); 
-                      id.setType(RType.initWithClassName(type));
+                      id.setId((IDENTIFIER3!=null?IDENTIFIER3.getText():null)); 
+                      id.setType(RType.initWithClassName(klass, type));
                       }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:293:9: ( '[' ']' )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:296:9: ( '[' ']' )*
             loop50:
             do {
                 int alt50=2;
@@ -4404,11 +4424,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt50) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:293:10: '[' ']'
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:296:10: '[' ']'
             	    {
-            	    match(input,LBRACKET,FOLLOW_LBRACKET_in_variableDeclarator2265); if (state.failed) return id;
+            	    match(input,LBRACKET,FOLLOW_LBRACKET_in_variableDeclarator2301); if (state.failed) return id;
 
-            	    match(input,RBRACKET,FOLLOW_RBRACKET_in_variableDeclarator2267); if (state.failed) return id;
+            	    match(input,RBRACKET,FOLLOW_RBRACKET_in_variableDeclarator2303); if (state.failed) return id;
 
             	    if ( state.backtracking==0 ) {id.setArray(true);}
 
@@ -4421,7 +4441,7 @@ public class RJavaSymbolTableParser extends Parser {
             } while (true);
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:295:9: ( '=' variableInitializer )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:298:9: ( '=' variableInitializer )?
             int alt51=2;
             int LA51_0 = input.LA(1);
 
@@ -4430,11 +4450,11 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt51) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:295:10: '=' variableInitializer
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:298:10: '=' variableInitializer
                     {
-                    match(input,EQ,FOLLOW_EQ_in_variableDeclarator2291); if (state.failed) return id;
+                    match(input,EQ,FOLLOW_EQ_in_variableDeclarator2327); if (state.failed) return id;
 
-                    pushFollow(FOLLOW_variableInitializer_in_variableDeclarator2293);
+                    pushFollow(FOLLOW_variableInitializer_in_variableDeclarator2329);
                     variableInitializer();
 
                     state._fsp--;
@@ -4468,14 +4488,14 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "interfaceBodyDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:303:1: interfaceBodyDeclaration : ( interfaceFieldDeclaration | interfaceMethodDeclaration | interfaceDeclaration | classDeclaration | ';' );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:306:1: interfaceBodyDeclaration : ( interfaceFieldDeclaration | interfaceMethodDeclaration | interfaceDeclaration | classDeclaration | ';' );
     public final void interfaceBodyDeclaration() throws RecognitionException {
         int interfaceBodyDeclaration_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 29) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:304:5: ( interfaceFieldDeclaration | interfaceMethodDeclaration | interfaceDeclaration | classDeclaration | ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:307:5: ( interfaceFieldDeclaration | interfaceMethodDeclaration | interfaceDeclaration | classDeclaration | ';' )
             int alt52=5;
             switch ( input.LA(1) ) {
             case MONKEYS_AT:
@@ -4870,9 +4890,9 @@ public class RJavaSymbolTableParser extends Parser {
 
             switch (alt52) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:305:9: interfaceFieldDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:308:9: interfaceFieldDeclaration
                     {
-                    pushFollow(FOLLOW_interfaceFieldDeclaration_in_interfaceBodyDeclaration2342);
+                    pushFollow(FOLLOW_interfaceFieldDeclaration_in_interfaceBodyDeclaration2378);
                     interfaceFieldDeclaration();
 
                     state._fsp--;
@@ -4881,9 +4901,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:306:9: interfaceMethodDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:309:9: interfaceMethodDeclaration
                     {
-                    pushFollow(FOLLOW_interfaceMethodDeclaration_in_interfaceBodyDeclaration2352);
+                    pushFollow(FOLLOW_interfaceMethodDeclaration_in_interfaceBodyDeclaration2388);
                     interfaceMethodDeclaration();
 
                     state._fsp--;
@@ -4892,9 +4912,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:307:9: interfaceDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:310:9: interfaceDeclaration
                     {
-                    pushFollow(FOLLOW_interfaceDeclaration_in_interfaceBodyDeclaration2362);
+                    pushFollow(FOLLOW_interfaceDeclaration_in_interfaceBodyDeclaration2398);
                     interfaceDeclaration();
 
                     state._fsp--;
@@ -4903,9 +4923,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:308:9: classDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:311:9: classDeclaration
                     {
-                    pushFollow(FOLLOW_classDeclaration_in_interfaceBodyDeclaration2372);
+                    pushFollow(FOLLOW_classDeclaration_in_interfaceBodyDeclaration2408);
                     classDeclaration();
 
                     state._fsp--;
@@ -4914,9 +4934,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 5 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:309:9: ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:312:9: ';'
                     {
-                    match(input,SEMI,FOLLOW_SEMI_in_interfaceBodyDeclaration2382); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_interfaceBodyDeclaration2418); if (state.failed) return ;
 
                     }
                     break;
@@ -4940,23 +4960,23 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "interfaceMethodDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:312:1: interfaceMethodDeclaration : modifiers ( typeParameters )? ( type | 'void' ) IDENTIFIER formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ';' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:315:1: interfaceMethodDeclaration : modifiers ( typeParameters )? ( type | 'void' ) IDENTIFIER formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ';' ;
     public final void interfaceMethodDeclaration() throws RecognitionException {
         int interfaceMethodDeclaration_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 30) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:313:5: ( modifiers ( typeParameters )? ( type | 'void' ) IDENTIFIER formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ';' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:313:9: modifiers ( typeParameters )? ( type | 'void' ) IDENTIFIER formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ';'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:316:5: ( modifiers ( typeParameters )? ( type | 'void' ) IDENTIFIER formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:316:9: modifiers ( typeParameters )? ( type | 'void' ) IDENTIFIER formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ';'
             {
-            pushFollow(FOLLOW_modifiers_in_interfaceMethodDeclaration2402);
+            pushFollow(FOLLOW_modifiers_in_interfaceMethodDeclaration2438);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:314:9: ( typeParameters )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:317:9: ( typeParameters )?
             int alt53=2;
             int LA53_0 = input.LA(1);
 
@@ -4965,9 +4985,9 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt53) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:314:10: typeParameters
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:317:10: typeParameters
                     {
-                    pushFollow(FOLLOW_typeParameters_in_interfaceMethodDeclaration2413);
+                    pushFollow(FOLLOW_typeParameters_in_interfaceMethodDeclaration2449);
                     typeParameters();
 
                     state._fsp--;
@@ -4979,7 +4999,7 @@ public class RJavaSymbolTableParser extends Parser {
             }
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:316:9: ( type | 'void' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:319:9: ( type | 'void' )
             int alt54=2;
             int LA54_0 = input.LA(1);
 
@@ -4999,9 +5019,9 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt54) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:316:10: type
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:319:10: type
                     {
-                    pushFollow(FOLLOW_type_in_interfaceMethodDeclaration2435);
+                    pushFollow(FOLLOW_type_in_interfaceMethodDeclaration2471);
                     type();
 
                     state._fsp--;
@@ -5010,9 +5030,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:317:10: 'void'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:320:10: 'void'
                     {
-                    match(input,VOID,FOLLOW_VOID_in_interfaceMethodDeclaration2446); if (state.failed) return ;
+                    match(input,VOID,FOLLOW_VOID_in_interfaceMethodDeclaration2482); if (state.failed) return ;
 
                     }
                     break;
@@ -5020,15 +5040,15 @@ public class RJavaSymbolTableParser extends Parser {
             }
 
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_interfaceMethodDeclaration2466); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_interfaceMethodDeclaration2502); if (state.failed) return ;
 
-            pushFollow(FOLLOW_formalParameters_in_interfaceMethodDeclaration2476);
+            pushFollow(FOLLOW_formalParameters_in_interfaceMethodDeclaration2512);
             formalParameters();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:321:9: ( '[' ']' )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:324:9: ( '[' ']' )*
             loop55:
             do {
                 int alt55=2;
@@ -5041,11 +5061,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt55) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:321:10: '[' ']'
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:324:10: '[' ']'
             	    {
-            	    match(input,LBRACKET,FOLLOW_LBRACKET_in_interfaceMethodDeclaration2487); if (state.failed) return ;
+            	    match(input,LBRACKET,FOLLOW_LBRACKET_in_interfaceMethodDeclaration2523); if (state.failed) return ;
 
-            	    match(input,RBRACKET,FOLLOW_RBRACKET_in_interfaceMethodDeclaration2489); if (state.failed) return ;
+            	    match(input,RBRACKET,FOLLOW_RBRACKET_in_interfaceMethodDeclaration2525); if (state.failed) return ;
 
             	    }
             	    break;
@@ -5056,7 +5076,7 @@ public class RJavaSymbolTableParser extends Parser {
             } while (true);
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:323:9: ( 'throws' qualifiedNameList )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:326:9: ( 'throws' qualifiedNameList )?
             int alt56=2;
             int LA56_0 = input.LA(1);
 
@@ -5065,11 +5085,11 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt56) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:323:10: 'throws' qualifiedNameList
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:326:10: 'throws' qualifiedNameList
                     {
-                    match(input,THROWS,FOLLOW_THROWS_in_interfaceMethodDeclaration2511); if (state.failed) return ;
+                    match(input,THROWS,FOLLOW_THROWS_in_interfaceMethodDeclaration2547); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_qualifiedNameList_in_interfaceMethodDeclaration2513);
+                    pushFollow(FOLLOW_qualifiedNameList_in_interfaceMethodDeclaration2549);
                     qualifiedNameList();
 
                     state._fsp--;
@@ -5081,7 +5101,7 @@ public class RJavaSymbolTableParser extends Parser {
             }
 
 
-            match(input,SEMI,FOLLOW_SEMI_in_interfaceMethodDeclaration2526); if (state.failed) return ;
+            match(input,SEMI,FOLLOW_SEMI_in_interfaceMethodDeclaration2562); if (state.failed) return ;
 
             }
 
@@ -5103,35 +5123,35 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "interfaceFieldDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:332:1: interfaceFieldDeclaration : modifiers type variableDeclarator ( ',' variableDeclarator )* ';' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:335:1: interfaceFieldDeclaration : modifiers type variableDeclarator ( ',' variableDeclarator )* ';' ;
     public final void interfaceFieldDeclaration() throws RecognitionException {
         int interfaceFieldDeclaration_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 31) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:333:5: ( modifiers type variableDeclarator ( ',' variableDeclarator )* ';' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:333:9: modifiers type variableDeclarator ( ',' variableDeclarator )* ';'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:336:5: ( modifiers type variableDeclarator ( ',' variableDeclarator )* ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:336:9: modifiers type variableDeclarator ( ',' variableDeclarator )* ';'
             {
-            pushFollow(FOLLOW_modifiers_in_interfaceFieldDeclaration2548);
+            pushFollow(FOLLOW_modifiers_in_interfaceFieldDeclaration2584);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            pushFollow(FOLLOW_type_in_interfaceFieldDeclaration2550);
+            pushFollow(FOLLOW_type_in_interfaceFieldDeclaration2586);
             type();
 
             state._fsp--;
             if (state.failed) return ;
 
-            pushFollow(FOLLOW_variableDeclarator_in_interfaceFieldDeclaration2552);
+            pushFollow(FOLLOW_variableDeclarator_in_interfaceFieldDeclaration2588);
             variableDeclarator();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:334:9: ( ',' variableDeclarator )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:337:9: ( ',' variableDeclarator )*
             loop57:
             do {
                 int alt57=2;
@@ -5144,11 +5164,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt57) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:334:10: ',' variableDeclarator
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:337:10: ',' variableDeclarator
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_interfaceFieldDeclaration2563); if (state.failed) return ;
+            	    match(input,COMMA,FOLLOW_COMMA_in_interfaceFieldDeclaration2599); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_variableDeclarator_in_interfaceFieldDeclaration2565);
+            	    pushFollow(FOLLOW_variableDeclarator_in_interfaceFieldDeclaration2601);
             	    variableDeclarator();
 
             	    state._fsp--;
@@ -5163,7 +5183,7 @@ public class RJavaSymbolTableParser extends Parser {
             } while (true);
 
 
-            match(input,SEMI,FOLLOW_SEMI_in_interfaceFieldDeclaration2586); if (state.failed) return ;
+            match(input,SEMI,FOLLOW_SEMI_in_interfaceFieldDeclaration2622); if (state.failed) return ;
 
             }
 
@@ -5188,7 +5208,7 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "type"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:340:1: type : ( classOrInterfaceType ( '[' ']' )* | primitiveType ( '[' ']' )* );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:343:1: type : ( classOrInterfaceType ( '[' ']' )* | primitiveType ( '[' ']' )* );
     public final RJavaSymbolTableParser.type_return type() throws RecognitionException {
         RJavaSymbolTableParser.type_return retval = new RJavaSymbolTableParser.type_return();
         retval.start = input.LT(1);
@@ -5198,7 +5218,7 @@ public class RJavaSymbolTableParser extends Parser {
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 32) ) { return retval; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:341:5: ( classOrInterfaceType ( '[' ']' )* | primitiveType ( '[' ']' )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:344:5: ( classOrInterfaceType ( '[' ']' )* | primitiveType ( '[' ']' )* )
             int alt60=2;
             int LA60_0 = input.LA(1);
 
@@ -5218,15 +5238,15 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt60) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:341:9: classOrInterfaceType ( '[' ']' )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:344:9: classOrInterfaceType ( '[' ']' )*
                     {
-                    pushFollow(FOLLOW_classOrInterfaceType_in_type2607);
+                    pushFollow(FOLLOW_classOrInterfaceType_in_type2643);
                     classOrInterfaceType();
 
                     state._fsp--;
                     if (state.failed) return retval;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:342:9: ( '[' ']' )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:345:9: ( '[' ']' )*
                     loop58:
                     do {
                         int alt58=2;
@@ -5239,11 +5259,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                         switch (alt58) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:342:10: '[' ']'
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:345:10: '[' ']'
                     	    {
-                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_type2618); if (state.failed) return retval;
+                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_type2654); if (state.failed) return retval;
 
-                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_type2620); if (state.failed) return retval;
+                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_type2656); if (state.failed) return retval;
 
                     	    }
                     	    break;
@@ -5257,15 +5277,15 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:344:9: primitiveType ( '[' ']' )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:347:9: primitiveType ( '[' ']' )*
                     {
-                    pushFollow(FOLLOW_primitiveType_in_type2641);
+                    pushFollow(FOLLOW_primitiveType_in_type2677);
                     primitiveType();
 
                     state._fsp--;
                     if (state.failed) return retval;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:345:9: ( '[' ']' )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:348:9: ( '[' ']' )*
                     loop59:
                     do {
                         int alt59=2;
@@ -5278,11 +5298,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                         switch (alt59) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:345:10: '[' ']'
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:348:10: '[' ']'
                     	    {
-                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_type2652); if (state.failed) return retval;
+                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_type2688); if (state.failed) return retval;
 
-                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_type2654); if (state.failed) return retval;
+                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_type2690); if (state.failed) return retval;
 
                     	    }
                     	    break;
@@ -5318,19 +5338,19 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "classOrInterfaceType"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:350:1: classOrInterfaceType : IDENTIFIER ( typeArguments )? ( '.' IDENTIFIER ( typeArguments )? )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:353:1: classOrInterfaceType : IDENTIFIER ( typeArguments )? ( '.' IDENTIFIER ( typeArguments )? )* ;
     public final void classOrInterfaceType() throws RecognitionException {
         int classOrInterfaceType_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 33) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:351:5: ( IDENTIFIER ( typeArguments )? ( '.' IDENTIFIER ( typeArguments )? )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:351:9: IDENTIFIER ( typeArguments )? ( '.' IDENTIFIER ( typeArguments )? )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:354:5: ( IDENTIFIER ( typeArguments )? ( '.' IDENTIFIER ( typeArguments )? )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:354:9: IDENTIFIER ( typeArguments )? ( '.' IDENTIFIER ( typeArguments )? )*
             {
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_classOrInterfaceType2686); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_classOrInterfaceType2722); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:352:9: ( typeArguments )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:355:9: ( typeArguments )?
             int alt61=2;
             int LA61_0 = input.LA(1);
 
@@ -5343,9 +5363,9 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt61) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:352:10: typeArguments
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:355:10: typeArguments
                     {
-                    pushFollow(FOLLOW_typeArguments_in_classOrInterfaceType2697);
+                    pushFollow(FOLLOW_typeArguments_in_classOrInterfaceType2733);
                     typeArguments();
 
                     state._fsp--;
@@ -5357,7 +5377,7 @@ public class RJavaSymbolTableParser extends Parser {
             }
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:354:9: ( '.' IDENTIFIER ( typeArguments )? )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:357:9: ( '.' IDENTIFIER ( typeArguments )? )*
             loop63:
             do {
                 int alt63=2;
@@ -5370,13 +5390,13 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt63) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:354:10: '.' IDENTIFIER ( typeArguments )?
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:357:10: '.' IDENTIFIER ( typeArguments )?
             	    {
-            	    match(input,DOT,FOLLOW_DOT_in_classOrInterfaceType2719); if (state.failed) return ;
+            	    match(input,DOT,FOLLOW_DOT_in_classOrInterfaceType2755); if (state.failed) return ;
 
-            	    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_classOrInterfaceType2721); if (state.failed) return ;
+            	    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_classOrInterfaceType2757); if (state.failed) return ;
 
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:355:13: ( typeArguments )?
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:358:13: ( typeArguments )?
             	    int alt62=2;
             	    int LA62_0 = input.LA(1);
 
@@ -5389,9 +5409,9 @@ public class RJavaSymbolTableParser extends Parser {
             	    }
             	    switch (alt62) {
             	        case 1 :
-            	            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:355:14: typeArguments
+            	            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:358:14: typeArguments
             	            {
-            	            pushFollow(FOLLOW_typeArguments_in_classOrInterfaceType2736);
+            	            pushFollow(FOLLOW_typeArguments_in_classOrInterfaceType2772);
             	            typeArguments();
 
             	            state._fsp--;
@@ -5432,14 +5452,14 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "primitiveType"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:360:1: primitiveType : ( 'boolean' | 'char' | 'byte' | 'short' | 'int' | 'long' | 'float' | 'double' );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:363:1: primitiveType : ( 'boolean' | 'char' | 'byte' | 'short' | 'int' | 'long' | 'float' | 'double' );
     public final void primitiveType() throws RecognitionException {
         int primitiveType_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 34) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:361:5: ( 'boolean' | 'char' | 'byte' | 'short' | 'int' | 'long' | 'float' | 'double' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:364:5: ( 'boolean' | 'char' | 'byte' | 'short' | 'int' | 'long' | 'float' | 'double' )
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:
             {
             if ( input.LA(1)==BOOLEAN||input.LA(1)==BYTE||input.LA(1)==CHAR||input.LA(1)==DOUBLE||input.LA(1)==FLOAT||input.LA(1)==INT||input.LA(1)==LONG||input.LA(1)==SHORT ) {
@@ -5474,25 +5494,25 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "typeArguments"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:371:1: typeArguments : '<' typeArgument ( ',' typeArgument )* '>' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:374:1: typeArguments : '<' typeArgument ( ',' typeArgument )* '>' ;
     public final void typeArguments() throws RecognitionException {
         int typeArguments_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 35) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:372:5: ( '<' typeArgument ( ',' typeArgument )* '>' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:372:9: '<' typeArgument ( ',' typeArgument )* '>'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:375:5: ( '<' typeArgument ( ',' typeArgument )* '>' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:375:9: '<' typeArgument ( ',' typeArgument )* '>'
             {
-            match(input,LT,FOLLOW_LT_in_typeArguments2873); if (state.failed) return ;
+            match(input,LT,FOLLOW_LT_in_typeArguments2909); if (state.failed) return ;
 
-            pushFollow(FOLLOW_typeArgument_in_typeArguments2875);
+            pushFollow(FOLLOW_typeArgument_in_typeArguments2911);
             typeArgument();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:373:9: ( ',' typeArgument )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:376:9: ( ',' typeArgument )*
             loop64:
             do {
                 int alt64=2;
@@ -5505,11 +5525,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt64) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:373:10: ',' typeArgument
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:376:10: ',' typeArgument
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_typeArguments2886); if (state.failed) return ;
+            	    match(input,COMMA,FOLLOW_COMMA_in_typeArguments2922); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_typeArgument_in_typeArguments2888);
+            	    pushFollow(FOLLOW_typeArgument_in_typeArguments2924);
             	    typeArgument();
 
             	    state._fsp--;
@@ -5524,7 +5544,7 @@ public class RJavaSymbolTableParser extends Parser {
             } while (true);
 
 
-            match(input,GT,FOLLOW_GT_in_typeArguments2910); if (state.failed) return ;
+            match(input,GT,FOLLOW_GT_in_typeArguments2946); if (state.failed) return ;
 
             }
 
@@ -5546,14 +5566,14 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "typeArgument"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:378:1: typeArgument : ( type | '?' ( ( 'extends' | 'super' ) type )? );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:381:1: typeArgument : ( type | '?' ( ( 'extends' | 'super' ) type )? );
     public final void typeArgument() throws RecognitionException {
         int typeArgument_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 36) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:379:5: ( type | '?' ( ( 'extends' | 'super' ) type )? )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:382:5: ( type | '?' ( ( 'extends' | 'super' ) type )? )
             int alt66=2;
             int LA66_0 = input.LA(1);
 
@@ -5573,9 +5593,9 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt66) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:379:9: type
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:382:9: type
                     {
-                    pushFollow(FOLLOW_type_in_typeArgument2930);
+                    pushFollow(FOLLOW_type_in_typeArgument2966);
                     type();
 
                     state._fsp--;
@@ -5584,11 +5604,11 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:380:9: '?' ( ( 'extends' | 'super' ) type )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:383:9: '?' ( ( 'extends' | 'super' ) type )?
                     {
-                    match(input,QUES,FOLLOW_QUES_in_typeArgument2940); if (state.failed) return ;
+                    match(input,QUES,FOLLOW_QUES_in_typeArgument2976); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:381:9: ( ( 'extends' | 'super' ) type )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:384:9: ( ( 'extends' | 'super' ) type )?
                     int alt65=2;
                     int LA65_0 = input.LA(1);
 
@@ -5597,7 +5617,7 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     switch (alt65) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:382:13: ( 'extends' | 'super' ) type
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:385:13: ( 'extends' | 'super' ) type
                             {
                             if ( input.LA(1)==EXTENDS||input.LA(1)==SUPER ) {
                                 input.consume();
@@ -5611,7 +5631,7 @@ public class RJavaSymbolTableParser extends Parser {
                             }
 
 
-                            pushFollow(FOLLOW_type_in_typeArgument3008);
+                            pushFollow(FOLLOW_type_in_typeArgument3044);
                             type();
 
                             state._fsp--;
@@ -5645,23 +5665,23 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "qualifiedNameList"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:389:1: qualifiedNameList : qualifiedName ( ',' qualifiedName )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:392:1: qualifiedNameList : qualifiedName ( ',' qualifiedName )* ;
     public final void qualifiedNameList() throws RecognitionException {
         int qualifiedNameList_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 37) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:390:5: ( qualifiedName ( ',' qualifiedName )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:390:9: qualifiedName ( ',' qualifiedName )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:393:5: ( qualifiedName ( ',' qualifiedName )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:393:9: qualifiedName ( ',' qualifiedName )*
             {
-            pushFollow(FOLLOW_qualifiedName_in_qualifiedNameList3039);
+            pushFollow(FOLLOW_qualifiedName_in_qualifiedNameList3075);
             qualifiedName();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:391:9: ( ',' qualifiedName )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:394:9: ( ',' qualifiedName )*
             loop67:
             do {
                 int alt67=2;
@@ -5674,11 +5694,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt67) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:391:10: ',' qualifiedName
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:394:10: ',' qualifiedName
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_qualifiedNameList3050); if (state.failed) return ;
+            	    match(input,COMMA,FOLLOW_COMMA_in_qualifiedNameList3086); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_qualifiedName_in_qualifiedNameList3052);
+            	    pushFollow(FOLLOW_qualifiedName_in_qualifiedNameList3088);
             	    qualifiedName();
 
             	    state._fsp--;
@@ -5713,19 +5733,19 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "formalParameters"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:395:1: formalParameters : '(' ( formalParameterDecls )? ')' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:398:1: formalParameters : '(' ( formalParameterDecls )? ')' ;
     public final void formalParameters() throws RecognitionException {
         int formalParameters_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 38) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:396:5: ( '(' ( formalParameterDecls )? ')' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:396:9: '(' ( formalParameterDecls )? ')'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:399:5: ( '(' ( formalParameterDecls )? ')' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:399:9: '(' ( formalParameterDecls )? ')'
             {
-            match(input,LPAREN,FOLLOW_LPAREN_in_formalParameters3083); if (state.failed) return ;
+            match(input,LPAREN,FOLLOW_LPAREN_in_formalParameters3119); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:397:9: ( formalParameterDecls )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:400:9: ( formalParameterDecls )?
             int alt68=2;
             int LA68_0 = input.LA(1);
 
@@ -5734,9 +5754,9 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt68) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:397:10: formalParameterDecls
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:400:10: formalParameterDecls
                     {
-                    pushFollow(FOLLOW_formalParameterDecls_in_formalParameters3094);
+                    pushFollow(FOLLOW_formalParameterDecls_in_formalParameters3130);
                     formalParameterDecls();
 
                     state._fsp--;
@@ -5748,7 +5768,7 @@ public class RJavaSymbolTableParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_formalParameters3116); if (state.failed) return ;
+            match(input,RPAREN,FOLLOW_RPAREN_in_formalParameters3152); if (state.failed) return ;
 
             }
 
@@ -5770,14 +5790,14 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "formalParameterDecls"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:402:1: formalParameterDecls : ( ellipsisParameterDecl | normalParameterDecl ( ',' normalParameterDecl )* | ( normalParameterDecl ',' )+ ellipsisParameterDecl );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:405:1: formalParameterDecls : ( ellipsisParameterDecl | normalParameterDecl ( ',' normalParameterDecl )* | ( normalParameterDecl ',' )+ ellipsisParameterDecl );
     public final void formalParameterDecls() throws RecognitionException {
         int formalParameterDecls_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 39) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:403:5: ( ellipsisParameterDecl | normalParameterDecl ( ',' normalParameterDecl )* | ( normalParameterDecl ',' )+ ellipsisParameterDecl )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:406:5: ( ellipsisParameterDecl | normalParameterDecl ( ',' normalParameterDecl )* | ( normalParameterDecl ',' )+ ellipsisParameterDecl )
             int alt71=3;
             switch ( input.LA(1) ) {
             case FINAL:
@@ -5890,9 +5910,9 @@ public class RJavaSymbolTableParser extends Parser {
 
             switch (alt71) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:403:9: ellipsisParameterDecl
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:406:9: ellipsisParameterDecl
                     {
-                    pushFollow(FOLLOW_ellipsisParameterDecl_in_formalParameterDecls3136);
+                    pushFollow(FOLLOW_ellipsisParameterDecl_in_formalParameterDecls3172);
                     ellipsisParameterDecl();
 
                     state._fsp--;
@@ -5901,15 +5921,15 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:404:9: normalParameterDecl ( ',' normalParameterDecl )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:407:9: normalParameterDecl ( ',' normalParameterDecl )*
                     {
-                    pushFollow(FOLLOW_normalParameterDecl_in_formalParameterDecls3146);
+                    pushFollow(FOLLOW_normalParameterDecl_in_formalParameterDecls3182);
                     normalParameterDecl();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:405:9: ( ',' normalParameterDecl )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:408:9: ( ',' normalParameterDecl )*
                     loop69:
                     do {
                         int alt69=2;
@@ -5922,11 +5942,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                         switch (alt69) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:405:10: ',' normalParameterDecl
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:408:10: ',' normalParameterDecl
                     	    {
-                    	    match(input,COMMA,FOLLOW_COMMA_in_formalParameterDecls3157); if (state.failed) return ;
+                    	    match(input,COMMA,FOLLOW_COMMA_in_formalParameterDecls3193); if (state.failed) return ;
 
-                    	    pushFollow(FOLLOW_normalParameterDecl_in_formalParameterDecls3159);
+                    	    pushFollow(FOLLOW_normalParameterDecl_in_formalParameterDecls3195);
                     	    normalParameterDecl();
 
                     	    state._fsp--;
@@ -5944,9 +5964,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:407:9: ( normalParameterDecl ',' )+ ellipsisParameterDecl
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:410:9: ( normalParameterDecl ',' )+ ellipsisParameterDecl
                     {
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:407:9: ( normalParameterDecl ',' )+
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:410:9: ( normalParameterDecl ',' )+
                     int cnt70=0;
                     loop70:
                     do {
@@ -6008,15 +6028,15 @@ public class RJavaSymbolTableParser extends Parser {
 
                         switch (alt70) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:407:10: normalParameterDecl ','
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:410:10: normalParameterDecl ','
                     	    {
-                    	    pushFollow(FOLLOW_normalParameterDecl_in_formalParameterDecls3181);
+                    	    pushFollow(FOLLOW_normalParameterDecl_in_formalParameterDecls3217);
                     	    normalParameterDecl();
 
                     	    state._fsp--;
                     	    if (state.failed) return ;
 
-                    	    match(input,COMMA,FOLLOW_COMMA_in_formalParameterDecls3191); if (state.failed) return ;
+                    	    match(input,COMMA,FOLLOW_COMMA_in_formalParameterDecls3227); if (state.failed) return ;
 
                     	    }
                     	    break;
@@ -6032,7 +6052,7 @@ public class RJavaSymbolTableParser extends Parser {
                     } while (true);
 
 
-                    pushFollow(FOLLOW_ellipsisParameterDecl_in_formalParameterDecls3213);
+                    pushFollow(FOLLOW_ellipsisParameterDecl_in_formalParameterDecls3249);
                     ellipsisParameterDecl();
 
                     state._fsp--;
@@ -6060,31 +6080,42 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "normalParameterDecl"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:413:1: normalParameterDecl : variableModifiers type IDENTIFIER ( '[' ']' )* ;
-    public final void normalParameterDecl() throws RecognitionException {
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:416:1: normalParameterDecl returns [RIdentifier id] : variableModifiers type IDENTIFIER ( '[' ']' )* ;
+    public final RIdentifier normalParameterDecl() throws RecognitionException {
+        RIdentifier id = null;
+
         int normalParameterDecl_StartIndex = input.index();
 
-        try {
-            if ( state.backtracking>0 && alreadyParsedRule(input, 40) ) { return ; }
+        Token IDENTIFIER4=null;
+        RJavaSymbolTableParser.type_return type5 =null;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:414:5: ( variableModifiers type IDENTIFIER ( '[' ']' )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:414:9: variableModifiers type IDENTIFIER ( '[' ']' )*
+
+        try {
+            if ( state.backtracking>0 && alreadyParsedRule(input, 40) ) { return id; }
+
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:417:5: ( variableModifiers type IDENTIFIER ( '[' ']' )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:418:9: variableModifiers type IDENTIFIER ( '[' ']' )*
             {
-            pushFollow(FOLLOW_variableModifiers_in_normalParameterDecl3233);
+            pushFollow(FOLLOW_variableModifiers_in_normalParameterDecl3281);
             variableModifiers();
 
             state._fsp--;
-            if (state.failed) return ;
+            if (state.failed) return id;
 
-            pushFollow(FOLLOW_type_in_normalParameterDecl3235);
-            type();
+            pushFollow(FOLLOW_type_in_normalParameterDecl3283);
+            type5=type();
 
             state._fsp--;
-            if (state.failed) return ;
+            if (state.failed) return id;
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_normalParameterDecl3237); if (state.failed) return ;
+            IDENTIFIER4=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_normalParameterDecl3285); if (state.failed) return id;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:415:9: ( '[' ']' )*
+            if ( state.backtracking==0 ) {id = new RIdentifier();
+                    id.setId((IDENTIFIER4!=null?IDENTIFIER4.getText():null));
+                    id.setType(RType.initWithClassName(klass, (type5!=null?input.toString(type5.start,type5.stop):null)));
+                    }
+
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:423:9: ( '[' ']' )*
             loop72:
             do {
                 int alt72=2;
@@ -6097,11 +6128,13 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt72) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:415:10: '[' ']'
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:423:10: '[' ']'
             	    {
-            	    match(input,LBRACKET,FOLLOW_LBRACKET_in_normalParameterDecl3248); if (state.failed) return ;
+            	    match(input,LBRACKET,FOLLOW_LBRACKET_in_normalParameterDecl3306); if (state.failed) return id;
 
-            	    match(input,RBRACKET,FOLLOW_RBRACKET_in_normalParameterDecl3250); if (state.failed) return ;
+            	    match(input,RBRACKET,FOLLOW_RBRACKET_in_normalParameterDecl3308); if (state.failed) return id;
+
+            	    if ( state.backtracking==0 ) {id.setArray(true);}
 
             	    }
             	    break;
@@ -6111,6 +6144,8 @@ public class RJavaSymbolTableParser extends Parser {
                 }
             } while (true);
 
+
+            if ( state.backtracking==0 ) {klass.newIdToCurrentBlock(id);}
 
             }
 
@@ -6125,38 +6160,50 @@ public class RJavaSymbolTableParser extends Parser {
             if ( state.backtracking>0 ) { memoize(input, 40, normalParameterDecl_StartIndex); }
 
         }
-        return ;
+        return id;
     }
     // $ANTLR end "normalParameterDecl"
 
 
 
     // $ANTLR start "ellipsisParameterDecl"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:419:1: ellipsisParameterDecl : variableModifiers type '...' IDENTIFIER ;
-    public final void ellipsisParameterDecl() throws RecognitionException {
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:428:1: ellipsisParameterDecl returns [RIdentifier id] : variableModifiers type '...' IDENTIFIER ;
+    public final RIdentifier ellipsisParameterDecl() throws RecognitionException {
+        RIdentifier id = null;
+
         int ellipsisParameterDecl_StartIndex = input.index();
 
-        try {
-            if ( state.backtracking>0 && alreadyParsedRule(input, 41) ) { return ; }
+        Token IDENTIFIER6=null;
+        RJavaSymbolTableParser.type_return type7 =null;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:420:5: ( variableModifiers type '...' IDENTIFIER )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:420:9: variableModifiers type '...' IDENTIFIER
+
+        try {
+            if ( state.backtracking>0 && alreadyParsedRule(input, 41) ) { return id; }
+
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:429:5: ( variableModifiers type '...' IDENTIFIER )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:429:9: variableModifiers type '...' IDENTIFIER
             {
-            pushFollow(FOLLOW_variableModifiers_in_ellipsisParameterDecl3281);
+            pushFollow(FOLLOW_variableModifiers_in_ellipsisParameterDecl3355);
             variableModifiers();
 
             state._fsp--;
-            if (state.failed) return ;
+            if (state.failed) return id;
 
-            pushFollow(FOLLOW_type_in_ellipsisParameterDecl3291);
-            type();
+            pushFollow(FOLLOW_type_in_ellipsisParameterDecl3365);
+            type7=type();
 
             state._fsp--;
-            if (state.failed) return ;
+            if (state.failed) return id;
 
-            match(input,ELLIPSIS,FOLLOW_ELLIPSIS_in_ellipsisParameterDecl3294); if (state.failed) return ;
+            match(input,ELLIPSIS,FOLLOW_ELLIPSIS_in_ellipsisParameterDecl3368); if (state.failed) return id;
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_ellipsisParameterDecl3304); if (state.failed) return ;
+            IDENTIFIER6=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_ellipsisParameterDecl3378); if (state.failed) return id;
+
+            if ( state.backtracking==0 ) {id = new RIdentifier();
+                    id.setId((IDENTIFIER6!=null?IDENTIFIER6.getText():null));
+                    id.setType(RType.initWithClassName(klass, (type7!=null?input.toString(type7.start,type7.stop):null)));
+                    id.setArray(true);
+                    klass.newIdToCurrentBlock(id);}
 
             }
 
@@ -6171,21 +6218,21 @@ public class RJavaSymbolTableParser extends Parser {
             if ( state.backtracking>0 ) { memoize(input, 41, ellipsisParameterDecl_StartIndex); }
 
         }
-        return ;
+        return id;
     }
     // $ANTLR end "ellipsisParameterDecl"
 
 
 
     // $ANTLR start "explicitConstructorInvocation"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:426:1: explicitConstructorInvocation : ( ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';' | primary '.' ( nonWildcardTypeArguments )? 'super' arguments ';' );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:440:1: explicitConstructorInvocation : ( ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';' | primary '.' ( nonWildcardTypeArguments )? 'super' arguments ';' );
     public final void explicitConstructorInvocation() throws RecognitionException {
         int explicitConstructorInvocation_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 42) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:427:5: ( ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';' | primary '.' ( nonWildcardTypeArguments )? 'super' arguments ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:441:5: ( ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';' | primary '.' ( nonWildcardTypeArguments )? 'super' arguments ';' )
             int alt75=2;
             switch ( input.LA(1) ) {
             case LT:
@@ -6269,9 +6316,9 @@ public class RJavaSymbolTableParser extends Parser {
 
             switch (alt75) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:427:9: ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:441:9: ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';'
                     {
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:427:9: ( nonWildcardTypeArguments )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:441:9: ( nonWildcardTypeArguments )?
                     int alt73=2;
                     int LA73_0 = input.LA(1);
 
@@ -6280,9 +6327,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     switch (alt73) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:427:10: nonWildcardTypeArguments
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:441:10: nonWildcardTypeArguments
                             {
-                            pushFollow(FOLLOW_nonWildcardTypeArguments_in_explicitConstructorInvocation3326);
+                            pushFollow(FOLLOW_nonWildcardTypeArguments_in_explicitConstructorInvocation3410);
                             nonWildcardTypeArguments();
 
                             state._fsp--;
@@ -6306,28 +6353,28 @@ public class RJavaSymbolTableParser extends Parser {
                     }
 
 
-                    pushFollow(FOLLOW_arguments_in_explicitConstructorInvocation3384);
+                    pushFollow(FOLLOW_arguments_in_explicitConstructorInvocation3468);
                     arguments();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,SEMI,FOLLOW_SEMI_in_explicitConstructorInvocation3386); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_explicitConstructorInvocation3470); if (state.failed) return ;
 
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:434:9: primary '.' ( nonWildcardTypeArguments )? 'super' arguments ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:448:9: primary '.' ( nonWildcardTypeArguments )? 'super' arguments ';'
                     {
-                    pushFollow(FOLLOW_primary_in_explicitConstructorInvocation3397);
+                    pushFollow(FOLLOW_primary_in_explicitConstructorInvocation3481);
                     primary();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,DOT,FOLLOW_DOT_in_explicitConstructorInvocation3407); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_explicitConstructorInvocation3491); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:436:9: ( nonWildcardTypeArguments )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:450:9: ( nonWildcardTypeArguments )?
                     int alt74=2;
                     int LA74_0 = input.LA(1);
 
@@ -6336,9 +6383,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     switch (alt74) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:436:10: nonWildcardTypeArguments
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:450:10: nonWildcardTypeArguments
                             {
-                            pushFollow(FOLLOW_nonWildcardTypeArguments_in_explicitConstructorInvocation3418);
+                            pushFollow(FOLLOW_nonWildcardTypeArguments_in_explicitConstructorInvocation3502);
                             nonWildcardTypeArguments();
 
                             state._fsp--;
@@ -6350,15 +6397,15 @@ public class RJavaSymbolTableParser extends Parser {
                     }
 
 
-                    match(input,SUPER,FOLLOW_SUPER_in_explicitConstructorInvocation3439); if (state.failed) return ;
+                    match(input,SUPER,FOLLOW_SUPER_in_explicitConstructorInvocation3523); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_arguments_in_explicitConstructorInvocation3449);
+                    pushFollow(FOLLOW_arguments_in_explicitConstructorInvocation3533);
                     arguments();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,SEMI,FOLLOW_SEMI_in_explicitConstructorInvocation3451); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_explicitConstructorInvocation3535); if (state.failed) return ;
 
                     }
                     break;
@@ -6382,19 +6429,19 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "qualifiedName"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:442:1: qualifiedName : IDENTIFIER ( '.' IDENTIFIER )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:456:1: qualifiedName : IDENTIFIER ( '.' IDENTIFIER )* ;
     public final void qualifiedName() throws RecognitionException {
         int qualifiedName_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 43) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:443:5: ( IDENTIFIER ( '.' IDENTIFIER )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:443:9: IDENTIFIER ( '.' IDENTIFIER )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:457:5: ( IDENTIFIER ( '.' IDENTIFIER )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:457:9: IDENTIFIER ( '.' IDENTIFIER )*
             {
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_qualifiedName3471); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_qualifiedName3555); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:444:9: ( '.' IDENTIFIER )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:458:9: ( '.' IDENTIFIER )*
             loop76:
             do {
                 int alt76=2;
@@ -6407,11 +6454,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt76) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:444:10: '.' IDENTIFIER
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:458:10: '.' IDENTIFIER
             	    {
-            	    match(input,DOT,FOLLOW_DOT_in_qualifiedName3482); if (state.failed) return ;
+            	    match(input,DOT,FOLLOW_DOT_in_qualifiedName3566); if (state.failed) return ;
 
-            	    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_qualifiedName3484); if (state.failed) return ;
+            	    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_qualifiedName3568); if (state.failed) return ;
 
             	    }
             	    break;
@@ -6442,17 +6489,17 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "annotations"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:448:1: annotations : ( annotation )+ ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:462:1: annotations : ( annotation )+ ;
     public final void annotations() throws RecognitionException {
         int annotations_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 44) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:449:5: ( ( annotation )+ )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:449:9: ( annotation )+
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:463:5: ( ( annotation )+ )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:463:9: ( annotation )+
             {
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:449:9: ( annotation )+
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:463:9: ( annotation )+
             int cnt77=0;
             loop77:
             do {
@@ -6466,9 +6513,9 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt77) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:449:10: annotation
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:463:10: annotation
             	    {
-            	    pushFollow(FOLLOW_annotation_in_annotations3516);
+            	    pushFollow(FOLLOW_annotation_in_annotations3600);
             	    annotation();
 
             	    state._fsp--;
@@ -6508,25 +6555,25 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "annotation"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:457:1: annotation : '@' qualifiedName ( '(' ( elementValuePairs | elementValue )? ')' )? ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:471:1: annotation : '@' qualifiedName ( '(' ( elementValuePairs | elementValue )? ')' )? ;
     public final void annotation() throws RecognitionException {
         int annotation_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 45) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:458:5: ( '@' qualifiedName ( '(' ( elementValuePairs | elementValue )? ')' )? )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:458:9: '@' qualifiedName ( '(' ( elementValuePairs | elementValue )? ')' )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:472:5: ( '@' qualifiedName ( '(' ( elementValuePairs | elementValue )? ')' )? )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:472:9: '@' qualifiedName ( '(' ( elementValuePairs | elementValue )? ')' )?
             {
-            match(input,MONKEYS_AT,FOLLOW_MONKEYS_AT_in_annotation3549); if (state.failed) return ;
+            match(input,MONKEYS_AT,FOLLOW_MONKEYS_AT_in_annotation3633); if (state.failed) return ;
 
-            pushFollow(FOLLOW_qualifiedName_in_annotation3551);
+            pushFollow(FOLLOW_qualifiedName_in_annotation3635);
             qualifiedName();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:459:9: ( '(' ( elementValuePairs | elementValue )? ')' )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:473:9: ( '(' ( elementValuePairs | elementValue )? ')' )?
             int alt79=2;
             int LA79_0 = input.LA(1);
 
@@ -6535,11 +6582,11 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt79) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:459:13: '(' ( elementValuePairs | elementValue )? ')'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:473:13: '(' ( elementValuePairs | elementValue )? ')'
                     {
-                    match(input,LPAREN,FOLLOW_LPAREN_in_annotation3565); if (state.failed) return ;
+                    match(input,LPAREN,FOLLOW_LPAREN_in_annotation3649); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:460:19: ( elementValuePairs | elementValue )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:474:19: ( elementValuePairs | elementValue )?
                     int alt78=3;
                     int LA78_0 = input.LA(1);
 
@@ -6558,9 +6605,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     switch (alt78) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:460:23: elementValuePairs
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:474:23: elementValuePairs
                             {
-                            pushFollow(FOLLOW_elementValuePairs_in_annotation3592);
+                            pushFollow(FOLLOW_elementValuePairs_in_annotation3676);
                             elementValuePairs();
 
                             state._fsp--;
@@ -6569,9 +6616,9 @@ public class RJavaSymbolTableParser extends Parser {
                             }
                             break;
                         case 2 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:461:23: elementValue
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:475:23: elementValue
                             {
-                            pushFollow(FOLLOW_elementValue_in_annotation3616);
+                            pushFollow(FOLLOW_elementValue_in_annotation3700);
                             elementValue();
 
                             state._fsp--;
@@ -6583,7 +6630,7 @@ public class RJavaSymbolTableParser extends Parser {
                     }
 
 
-                    match(input,RPAREN,FOLLOW_RPAREN_in_annotation3652); if (state.failed) return ;
+                    match(input,RPAREN,FOLLOW_RPAREN_in_annotation3736); if (state.failed) return ;
 
                     }
                     break;
@@ -6611,23 +6658,23 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "elementValuePairs"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:467:1: elementValuePairs : elementValuePair ( ',' elementValuePair )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:481:1: elementValuePairs : elementValuePair ( ',' elementValuePair )* ;
     public final void elementValuePairs() throws RecognitionException {
         int elementValuePairs_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 46) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:468:5: ( elementValuePair ( ',' elementValuePair )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:468:9: elementValuePair ( ',' elementValuePair )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:482:5: ( elementValuePair ( ',' elementValuePair )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:482:9: elementValuePair ( ',' elementValuePair )*
             {
-            pushFollow(FOLLOW_elementValuePair_in_elementValuePairs3684);
+            pushFollow(FOLLOW_elementValuePair_in_elementValuePairs3768);
             elementValuePair();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:469:9: ( ',' elementValuePair )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:483:9: ( ',' elementValuePair )*
             loop80:
             do {
                 int alt80=2;
@@ -6640,11 +6687,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt80) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:469:10: ',' elementValuePair
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:483:10: ',' elementValuePair
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_elementValuePairs3695); if (state.failed) return ;
+            	    match(input,COMMA,FOLLOW_COMMA_in_elementValuePairs3779); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_elementValuePair_in_elementValuePairs3697);
+            	    pushFollow(FOLLOW_elementValuePair_in_elementValuePairs3781);
             	    elementValuePair();
 
             	    state._fsp--;
@@ -6679,21 +6726,21 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "elementValuePair"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:473:1: elementValuePair : IDENTIFIER '=' elementValue ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:487:1: elementValuePair : IDENTIFIER '=' elementValue ;
     public final void elementValuePair() throws RecognitionException {
         int elementValuePair_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 47) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:474:5: ( IDENTIFIER '=' elementValue )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:474:9: IDENTIFIER '=' elementValue
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:488:5: ( IDENTIFIER '=' elementValue )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:488:9: IDENTIFIER '=' elementValue
             {
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_elementValuePair3728); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_elementValuePair3812); if (state.failed) return ;
 
-            match(input,EQ,FOLLOW_EQ_in_elementValuePair3730); if (state.failed) return ;
+            match(input,EQ,FOLLOW_EQ_in_elementValuePair3814); if (state.failed) return ;
 
-            pushFollow(FOLLOW_elementValue_in_elementValuePair3732);
+            pushFollow(FOLLOW_elementValue_in_elementValuePair3816);
             elementValue();
 
             state._fsp--;
@@ -6719,14 +6766,14 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "elementValue"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:477:1: elementValue : ( conditionalExpression | annotation | elementValueArrayInitializer );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:491:1: elementValue : ( conditionalExpression | annotation | elementValueArrayInitializer );
     public final void elementValue() throws RecognitionException {
         int elementValue_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 48) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:478:5: ( conditionalExpression | annotation | elementValueArrayInitializer )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:492:5: ( conditionalExpression | annotation | elementValueArrayInitializer )
             int alt81=3;
             switch ( input.LA(1) ) {
             case BANG:
@@ -6783,9 +6830,9 @@ public class RJavaSymbolTableParser extends Parser {
 
             switch (alt81) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:478:9: conditionalExpression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:492:9: conditionalExpression
                     {
-                    pushFollow(FOLLOW_conditionalExpression_in_elementValue3752);
+                    pushFollow(FOLLOW_conditionalExpression_in_elementValue3836);
                     conditionalExpression();
 
                     state._fsp--;
@@ -6794,9 +6841,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:479:9: annotation
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:493:9: annotation
                     {
-                    pushFollow(FOLLOW_annotation_in_elementValue3762);
+                    pushFollow(FOLLOW_annotation_in_elementValue3846);
                     annotation();
 
                     state._fsp--;
@@ -6805,9 +6852,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:480:9: elementValueArrayInitializer
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:494:9: elementValueArrayInitializer
                     {
-                    pushFollow(FOLLOW_elementValueArrayInitializer_in_elementValue3772);
+                    pushFollow(FOLLOW_elementValueArrayInitializer_in_elementValue3856);
                     elementValueArrayInitializer();
 
                     state._fsp--;
@@ -6835,19 +6882,19 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "elementValueArrayInitializer"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:483:1: elementValueArrayInitializer : '{' ( elementValue ( ',' elementValue )* )? ( ',' )? '}' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:497:1: elementValueArrayInitializer : '{' ( elementValue ( ',' elementValue )* )? ( ',' )? '}' ;
     public final void elementValueArrayInitializer() throws RecognitionException {
         int elementValueArrayInitializer_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 49) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:484:5: ( '{' ( elementValue ( ',' elementValue )* )? ( ',' )? '}' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:484:9: '{' ( elementValue ( ',' elementValue )* )? ( ',' )? '}'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:498:5: ( '{' ( elementValue ( ',' elementValue )* )? ( ',' )? '}' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:498:9: '{' ( elementValue ( ',' elementValue )* )? ( ',' )? '}'
             {
-            match(input,LBRACE,FOLLOW_LBRACE_in_elementValueArrayInitializer3792); if (state.failed) return ;
+            match(input,LBRACE,FOLLOW_LBRACE_in_elementValueArrayInitializer3876); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:485:9: ( elementValue ( ',' elementValue )* )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:499:9: ( elementValue ( ',' elementValue )* )?
             int alt83=2;
             int LA83_0 = input.LA(1);
 
@@ -6856,15 +6903,15 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt83) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:485:10: elementValue ( ',' elementValue )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:499:10: elementValue ( ',' elementValue )*
                     {
-                    pushFollow(FOLLOW_elementValue_in_elementValueArrayInitializer3803);
+                    pushFollow(FOLLOW_elementValue_in_elementValueArrayInitializer3887);
                     elementValue();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:486:13: ( ',' elementValue )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:500:13: ( ',' elementValue )*
                     loop82:
                     do {
                         int alt82=2;
@@ -6883,11 +6930,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                         switch (alt82) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:486:14: ',' elementValue
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:500:14: ',' elementValue
                     	    {
-                    	    match(input,COMMA,FOLLOW_COMMA_in_elementValueArrayInitializer3818); if (state.failed) return ;
+                    	    match(input,COMMA,FOLLOW_COMMA_in_elementValueArrayInitializer3902); if (state.failed) return ;
 
-                    	    pushFollow(FOLLOW_elementValue_in_elementValueArrayInitializer3820);
+                    	    pushFollow(FOLLOW_elementValue_in_elementValueArrayInitializer3904);
                     	    elementValue();
 
                     	    state._fsp--;
@@ -6908,7 +6955,7 @@ public class RJavaSymbolTableParser extends Parser {
             }
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:488:12: ( ',' )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:502:12: ( ',' )?
             int alt84=2;
             int LA84_0 = input.LA(1);
 
@@ -6917,9 +6964,9 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt84) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:488:13: ','
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:502:13: ','
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_elementValueArrayInitializer3849); if (state.failed) return ;
+                    match(input,COMMA,FOLLOW_COMMA_in_elementValueArrayInitializer3933); if (state.failed) return ;
 
                     }
                     break;
@@ -6927,7 +6974,7 @@ public class RJavaSymbolTableParser extends Parser {
             }
 
 
-            match(input,RBRACE,FOLLOW_RBRACE_in_elementValueArrayInitializer3853); if (state.failed) return ;
+            match(input,RBRACE,FOLLOW_RBRACE_in_elementValueArrayInitializer3937); if (state.failed) return ;
 
             }
 
@@ -6949,29 +6996,29 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "annotationTypeDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:495:1: annotationTypeDeclaration : modifiers '@' 'interface' IDENTIFIER annotationTypeBody ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:509:1: annotationTypeDeclaration : modifiers '@' 'interface' IDENTIFIER annotationTypeBody ;
     public final void annotationTypeDeclaration() throws RecognitionException {
         int annotationTypeDeclaration_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 50) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:496:5: ( modifiers '@' 'interface' IDENTIFIER annotationTypeBody )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:496:9: modifiers '@' 'interface' IDENTIFIER annotationTypeBody
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:510:5: ( modifiers '@' 'interface' IDENTIFIER annotationTypeBody )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:510:9: modifiers '@' 'interface' IDENTIFIER annotationTypeBody
             {
-            pushFollow(FOLLOW_modifiers_in_annotationTypeDeclaration3876);
+            pushFollow(FOLLOW_modifiers_in_annotationTypeDeclaration3960);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,MONKEYS_AT,FOLLOW_MONKEYS_AT_in_annotationTypeDeclaration3878); if (state.failed) return ;
+            match(input,MONKEYS_AT,FOLLOW_MONKEYS_AT_in_annotationTypeDeclaration3962); if (state.failed) return ;
 
-            match(input,INTERFACE,FOLLOW_INTERFACE_in_annotationTypeDeclaration3888); if (state.failed) return ;
+            match(input,INTERFACE,FOLLOW_INTERFACE_in_annotationTypeDeclaration3972); if (state.failed) return ;
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_annotationTypeDeclaration3898); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_annotationTypeDeclaration3982); if (state.failed) return ;
 
-            pushFollow(FOLLOW_annotationTypeBody_in_annotationTypeDeclaration3908);
+            pushFollow(FOLLOW_annotationTypeBody_in_annotationTypeDeclaration3992);
             annotationTypeBody();
 
             state._fsp--;
@@ -6997,19 +7044,19 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "annotationTypeBody"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:503:1: annotationTypeBody : '{' ( annotationTypeElementDeclaration )* '}' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:517:1: annotationTypeBody : '{' ( annotationTypeElementDeclaration )* '}' ;
     public final void annotationTypeBody() throws RecognitionException {
         int annotationTypeBody_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 51) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:504:5: ( '{' ( annotationTypeElementDeclaration )* '}' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:504:9: '{' ( annotationTypeElementDeclaration )* '}'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:518:5: ( '{' ( annotationTypeElementDeclaration )* '}' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:518:9: '{' ( annotationTypeElementDeclaration )* '}'
             {
-            match(input,LBRACE,FOLLOW_LBRACE_in_annotationTypeBody3929); if (state.failed) return ;
+            match(input,LBRACE,FOLLOW_LBRACE_in_annotationTypeBody4013); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:505:9: ( annotationTypeElementDeclaration )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:519:9: ( annotationTypeElementDeclaration )*
             loop85:
             do {
                 int alt85=2;
@@ -7022,9 +7069,9 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt85) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:505:10: annotationTypeElementDeclaration
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:519:10: annotationTypeElementDeclaration
             	    {
-            	    pushFollow(FOLLOW_annotationTypeElementDeclaration_in_annotationTypeBody3941);
+            	    pushFollow(FOLLOW_annotationTypeElementDeclaration_in_annotationTypeBody4025);
             	    annotationTypeElementDeclaration();
 
             	    state._fsp--;
@@ -7039,7 +7086,7 @@ public class RJavaSymbolTableParser extends Parser {
             } while (true);
 
 
-            match(input,RBRACE,FOLLOW_RBRACE_in_annotationTypeBody3963); if (state.failed) return ;
+            match(input,RBRACE,FOLLOW_RBRACE_in_annotationTypeBody4047); if (state.failed) return ;
 
             }
 
@@ -7061,14 +7108,14 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "annotationTypeElementDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:513:1: annotationTypeElementDeclaration : ( annotationMethodDeclaration | interfaceFieldDeclaration | normalClassDeclaration | normalInterfaceDeclaration | enumDeclaration | annotationTypeDeclaration | ';' );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:527:1: annotationTypeElementDeclaration : ( annotationMethodDeclaration | interfaceFieldDeclaration | normalClassDeclaration | normalInterfaceDeclaration | enumDeclaration | annotationTypeDeclaration | ';' );
     public final void annotationTypeElementDeclaration() throws RecognitionException {
         int annotationTypeElementDeclaration_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 52) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:514:5: ( annotationMethodDeclaration | interfaceFieldDeclaration | normalClassDeclaration | normalInterfaceDeclaration | enumDeclaration | annotationTypeDeclaration | ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:528:5: ( annotationMethodDeclaration | interfaceFieldDeclaration | normalClassDeclaration | normalInterfaceDeclaration | enumDeclaration | annotationTypeDeclaration | ';' )
             int alt86=7;
             switch ( input.LA(1) ) {
             case MONKEYS_AT:
@@ -7533,9 +7580,9 @@ public class RJavaSymbolTableParser extends Parser {
 
             switch (alt86) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:514:9: annotationMethodDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:528:9: annotationMethodDeclaration
                     {
-                    pushFollow(FOLLOW_annotationMethodDeclaration_in_annotationTypeElementDeclaration3985);
+                    pushFollow(FOLLOW_annotationMethodDeclaration_in_annotationTypeElementDeclaration4069);
                     annotationMethodDeclaration();
 
                     state._fsp--;
@@ -7544,9 +7591,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:515:9: interfaceFieldDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:529:9: interfaceFieldDeclaration
                     {
-                    pushFollow(FOLLOW_interfaceFieldDeclaration_in_annotationTypeElementDeclaration3995);
+                    pushFollow(FOLLOW_interfaceFieldDeclaration_in_annotationTypeElementDeclaration4079);
                     interfaceFieldDeclaration();
 
                     state._fsp--;
@@ -7555,9 +7602,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:516:9: normalClassDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:530:9: normalClassDeclaration
                     {
-                    pushFollow(FOLLOW_normalClassDeclaration_in_annotationTypeElementDeclaration4005);
+                    pushFollow(FOLLOW_normalClassDeclaration_in_annotationTypeElementDeclaration4089);
                     normalClassDeclaration();
 
                     state._fsp--;
@@ -7566,9 +7613,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:517:9: normalInterfaceDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:531:9: normalInterfaceDeclaration
                     {
-                    pushFollow(FOLLOW_normalInterfaceDeclaration_in_annotationTypeElementDeclaration4015);
+                    pushFollow(FOLLOW_normalInterfaceDeclaration_in_annotationTypeElementDeclaration4099);
                     normalInterfaceDeclaration();
 
                     state._fsp--;
@@ -7577,9 +7624,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 5 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:518:9: enumDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:532:9: enumDeclaration
                     {
-                    pushFollow(FOLLOW_enumDeclaration_in_annotationTypeElementDeclaration4025);
+                    pushFollow(FOLLOW_enumDeclaration_in_annotationTypeElementDeclaration4109);
                     enumDeclaration();
 
                     state._fsp--;
@@ -7588,9 +7635,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 6 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:519:9: annotationTypeDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:533:9: annotationTypeDeclaration
                     {
-                    pushFollow(FOLLOW_annotationTypeDeclaration_in_annotationTypeElementDeclaration4035);
+                    pushFollow(FOLLOW_annotationTypeDeclaration_in_annotationTypeElementDeclaration4119);
                     annotationTypeDeclaration();
 
                     state._fsp--;
@@ -7599,9 +7646,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 7 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:520:9: ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:534:9: ';'
                     {
-                    match(input,SEMI,FOLLOW_SEMI_in_annotationTypeElementDeclaration4045); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_annotationTypeElementDeclaration4129); if (state.failed) return ;
 
                     }
                     break;
@@ -7625,35 +7672,35 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "annotationMethodDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:523:1: annotationMethodDeclaration : modifiers type IDENTIFIER '(' ')' ( 'default' elementValue )? ';' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:537:1: annotationMethodDeclaration : modifiers type IDENTIFIER '(' ')' ( 'default' elementValue )? ';' ;
     public final void annotationMethodDeclaration() throws RecognitionException {
         int annotationMethodDeclaration_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 53) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:524:5: ( modifiers type IDENTIFIER '(' ')' ( 'default' elementValue )? ';' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:524:9: modifiers type IDENTIFIER '(' ')' ( 'default' elementValue )? ';'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:538:5: ( modifiers type IDENTIFIER '(' ')' ( 'default' elementValue )? ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:538:9: modifiers type IDENTIFIER '(' ')' ( 'default' elementValue )? ';'
             {
-            pushFollow(FOLLOW_modifiers_in_annotationMethodDeclaration4065);
+            pushFollow(FOLLOW_modifiers_in_annotationMethodDeclaration4149);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            pushFollow(FOLLOW_type_in_annotationMethodDeclaration4067);
+            pushFollow(FOLLOW_type_in_annotationMethodDeclaration4151);
             type();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_annotationMethodDeclaration4069); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_annotationMethodDeclaration4153); if (state.failed) return ;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_annotationMethodDeclaration4079); if (state.failed) return ;
+            match(input,LPAREN,FOLLOW_LPAREN_in_annotationMethodDeclaration4163); if (state.failed) return ;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_annotationMethodDeclaration4081); if (state.failed) return ;
+            match(input,RPAREN,FOLLOW_RPAREN_in_annotationMethodDeclaration4165); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:525:17: ( 'default' elementValue )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:539:17: ( 'default' elementValue )?
             int alt87=2;
             int LA87_0 = input.LA(1);
 
@@ -7662,11 +7709,11 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt87) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:525:18: 'default' elementValue
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:539:18: 'default' elementValue
                     {
-                    match(input,DEFAULT,FOLLOW_DEFAULT_in_annotationMethodDeclaration4084); if (state.failed) return ;
+                    match(input,DEFAULT,FOLLOW_DEFAULT_in_annotationMethodDeclaration4168); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_elementValue_in_annotationMethodDeclaration4086);
+                    pushFollow(FOLLOW_elementValue_in_annotationMethodDeclaration4170);
                     elementValue();
 
                     state._fsp--;
@@ -7678,7 +7725,7 @@ public class RJavaSymbolTableParser extends Parser {
             }
 
 
-            match(input,SEMI,FOLLOW_SEMI_in_annotationMethodDeclaration4115); if (state.failed) return ;
+            match(input,SEMI,FOLLOW_SEMI_in_annotationMethodDeclaration4199); if (state.failed) return ;
 
             }
 
@@ -7700,19 +7747,21 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "block"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:530:1: block : '{' ( blockStatement )* '}' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:544:1: block : '{' ( blockStatement )* '}' ;
     public final void block() throws RecognitionException {
         int block_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 54) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:531:5: ( '{' ( blockStatement )* '}' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:531:9: '{' ( blockStatement )* '}'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:545:5: ( '{' ( blockStatement )* '}' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:545:9: '{' ( blockStatement )* '}'
             {
-            match(input,LBRACE,FOLLOW_LBRACE_in_block4139); if (state.failed) return ;
+            if ( state.backtracking==0 ) {klass.newBlock(RBlock.IN_METHOD);}
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:532:9: ( blockStatement )*
+            match(input,LBRACE,FOLLOW_LBRACE_in_block4233); if (state.failed) return ;
+
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:547:9: ( blockStatement )*
             loop88:
             do {
                 int alt88=2;
@@ -7725,9 +7774,9 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt88) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:532:10: blockStatement
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:547:10: blockStatement
             	    {
-            	    pushFollow(FOLLOW_blockStatement_in_block4150);
+            	    pushFollow(FOLLOW_blockStatement_in_block4244);
             	    blockStatement();
 
             	    state._fsp--;
@@ -7742,7 +7791,9 @@ public class RJavaSymbolTableParser extends Parser {
             } while (true);
 
 
-            match(input,RBRACE,FOLLOW_RBRACE_in_block4171); if (state.failed) return ;
+            match(input,RBRACE,FOLLOW_RBRACE_in_block4265); if (state.failed) return ;
+
+            if ( state.backtracking==0 ) {klass.backToUpperBlock();}
 
             }
 
@@ -7764,14 +7815,14 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "blockStatement"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:561:1: blockStatement : ( localVariableDeclarationStatement | classOrInterfaceDeclaration | statement );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:577:1: blockStatement : ( localVariableDeclarationStatement | classOrInterfaceDeclaration | statement );
     public final void blockStatement() throws RecognitionException {
         int blockStatement_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 55) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:562:5: ( localVariableDeclarationStatement | classOrInterfaceDeclaration | statement )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:578:5: ( localVariableDeclarationStatement | classOrInterfaceDeclaration | statement )
             int alt89=3;
             switch ( input.LA(1) ) {
             case FINAL:
@@ -7945,9 +7996,9 @@ public class RJavaSymbolTableParser extends Parser {
 
             switch (alt89) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:562:9: localVariableDeclarationStatement
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:578:9: localVariableDeclarationStatement
                     {
-                    pushFollow(FOLLOW_localVariableDeclarationStatement_in_blockStatement4193);
+                    pushFollow(FOLLOW_localVariableDeclarationStatement_in_blockStatement4297);
                     localVariableDeclarationStatement();
 
                     state._fsp--;
@@ -7956,9 +8007,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:563:9: classOrInterfaceDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:579:9: classOrInterfaceDeclaration
                     {
-                    pushFollow(FOLLOW_classOrInterfaceDeclaration_in_blockStatement4203);
+                    pushFollow(FOLLOW_classOrInterfaceDeclaration_in_blockStatement4307);
                     classOrInterfaceDeclaration();
 
                     state._fsp--;
@@ -7967,9 +8018,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:564:9: statement
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:580:9: statement
                     {
-                    pushFollow(FOLLOW_statement_in_blockStatement4213);
+                    pushFollow(FOLLOW_statement_in_blockStatement4317);
                     statement();
 
                     state._fsp--;
@@ -7997,23 +8048,23 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "localVariableDeclarationStatement"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:568:1: localVariableDeclarationStatement : localVariableDeclaration ';' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:584:1: localVariableDeclarationStatement : localVariableDeclaration ';' ;
     public final void localVariableDeclarationStatement() throws RecognitionException {
         int localVariableDeclarationStatement_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 56) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:569:5: ( localVariableDeclaration ';' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:569:9: localVariableDeclaration ';'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:585:5: ( localVariableDeclaration ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:585:9: localVariableDeclaration ';'
             {
-            pushFollow(FOLLOW_localVariableDeclaration_in_localVariableDeclarationStatement4234);
+            pushFollow(FOLLOW_localVariableDeclaration_in_localVariableDeclarationStatement4338);
             localVariableDeclaration();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,SEMI,FOLLOW_SEMI_in_localVariableDeclarationStatement4244); if (state.failed) return ;
+            match(input,SEMI,FOLLOW_SEMI_in_localVariableDeclarationStatement4348); if (state.failed) return ;
 
             }
 
@@ -8035,40 +8086,40 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "localVariableDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:573:1: localVariableDeclaration : variableModifiers type variableDeclarator ( ',' variableDeclarator )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:589:1: localVariableDeclaration : variableModifiers type variableDeclarator ( ',' variableDeclarator )* ;
     public final void localVariableDeclaration() throws RecognitionException {
         int localVariableDeclaration_StartIndex = input.index();
 
-        RJavaSymbolTableParser.type_return type3 =null;
+        RJavaSymbolTableParser.type_return type8 =null;
 
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 57) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:574:5: ( variableModifiers type variableDeclarator ( ',' variableDeclarator )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:574:9: variableModifiers type variableDeclarator ( ',' variableDeclarator )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:590:5: ( variableModifiers type variableDeclarator ( ',' variableDeclarator )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:590:9: variableModifiers type variableDeclarator ( ',' variableDeclarator )*
             {
-            pushFollow(FOLLOW_variableModifiers_in_localVariableDeclaration4264);
+            pushFollow(FOLLOW_variableModifiers_in_localVariableDeclaration4368);
             variableModifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            pushFollow(FOLLOW_type_in_localVariableDeclaration4266);
-            type3=type();
+            pushFollow(FOLLOW_type_in_localVariableDeclaration4370);
+            type8=type();
 
             state._fsp--;
             if (state.failed) return ;
 
-            if ( state.backtracking==0 ) {type = (type3!=null?input.toString(type3.start,type3.stop):null);}
+            if ( state.backtracking==0 ) {type = (type8!=null?input.toString(type8.start,type8.stop):null);}
 
-            pushFollow(FOLLOW_variableDeclarator_in_localVariableDeclaration4278);
+            pushFollow(FOLLOW_variableDeclarator_in_localVariableDeclaration4382);
             variableDeclarator();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:576:9: ( ',' variableDeclarator )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:592:9: ( ',' variableDeclarator )*
             loop90:
             do {
                 int alt90=2;
@@ -8081,11 +8132,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt90) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:576:10: ',' variableDeclarator
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:592:10: ',' variableDeclarator
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_localVariableDeclaration4289); if (state.failed) return ;
+            	    match(input,COMMA,FOLLOW_COMMA_in_localVariableDeclaration4393); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_variableDeclarator_in_localVariableDeclaration4291);
+            	    pushFollow(FOLLOW_variableDeclarator_in_localVariableDeclaration4395);
             	    variableDeclarator();
 
             	    state._fsp--;
@@ -8120,14 +8171,14 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "statement"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:580:1: statement : ( block | ( 'assert' ) expression ( ':' expression )? ';' | 'assert' expression ( ':' expression )? ';' | 'if' parExpression statement ( 'else' statement )? | forstatement | 'while' parExpression statement | 'do' statement 'while' parExpression ';' | trystatement | 'switch' parExpression '{' switchBlockStatementGroups '}' | 'synchronized' parExpression block | 'return' ( expression )? ';' | 'throw' expression ';' | 'break' ( IDENTIFIER )? ';' | 'continue' ( IDENTIFIER )? ';' | expression ';' | IDENTIFIER ':' statement | ';' );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:596:1: statement : ( block | ( 'assert' ) expression ( ':' expression )? ';' | 'assert' expression ( ':' expression )? ';' | 'if' parExpression statement ( 'else' statement )? | forstatement | 'while' parExpression statement | 'do' statement 'while' parExpression ';' | trystatement | 'switch' parExpression '{' switchBlockStatementGroups '}' | 'synchronized' parExpression block | 'return' ( expression )? ';' | 'throw' expression ';' | 'break' ( IDENTIFIER )? ';' | 'continue' ( IDENTIFIER )? ';' | expression ';' | IDENTIFIER ':' statement | ';' );
     public final void statement() throws RecognitionException {
         int statement_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 58) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:581:5: ( block | ( 'assert' ) expression ( ':' expression )? ';' | 'assert' expression ( ':' expression )? ';' | 'if' parExpression statement ( 'else' statement )? | forstatement | 'while' parExpression statement | 'do' statement 'while' parExpression ';' | trystatement | 'switch' parExpression '{' switchBlockStatementGroups '}' | 'synchronized' parExpression block | 'return' ( expression )? ';' | 'throw' expression ';' | 'break' ( IDENTIFIER )? ';' | 'continue' ( IDENTIFIER )? ';' | expression ';' | IDENTIFIER ':' statement | ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:597:5: ( block | ( 'assert' ) expression ( ':' expression )? ';' | 'assert' expression ( ':' expression )? ';' | 'if' parExpression statement ( 'else' statement )? | forstatement | 'while' parExpression statement | 'do' statement 'while' parExpression ';' | trystatement | 'switch' parExpression '{' switchBlockStatementGroups '}' | 'synchronized' parExpression block | 'return' ( expression )? ';' | 'throw' expression ';' | 'break' ( IDENTIFIER )? ';' | 'continue' ( IDENTIFIER )? ';' | expression ';' | IDENTIFIER ':' statement | ';' )
             int alt97=17;
             switch ( input.LA(1) ) {
             case LBRACE:
@@ -8278,9 +8329,9 @@ public class RJavaSymbolTableParser extends Parser {
 
             switch (alt97) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:581:9: block
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:597:9: block
                     {
-                    pushFollow(FOLLOW_block_in_statement4322);
+                    pushFollow(FOLLOW_block_in_statement4426);
                     block();
 
                     state._fsp--;
@@ -8289,23 +8340,23 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:583:9: ( 'assert' ) expression ( ':' expression )? ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:599:9: ( 'assert' ) expression ( ':' expression )? ';'
                     {
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:583:9: ( 'assert' )
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:583:10: 'assert'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:599:9: ( 'assert' )
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:599:10: 'assert'
                     {
-                    match(input,ASSERT,FOLLOW_ASSERT_in_statement4346); if (state.failed) return ;
+                    match(input,ASSERT,FOLLOW_ASSERT_in_statement4450); if (state.failed) return ;
 
                     }
 
 
-                    pushFollow(FOLLOW_expression_in_statement4366);
+                    pushFollow(FOLLOW_expression_in_statement4470);
                     expression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:585:20: ( ':' expression )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:601:20: ( ':' expression )?
                     int alt91=2;
                     int LA91_0 = input.LA(1);
 
@@ -8314,11 +8365,11 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     switch (alt91) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:585:21: ':' expression
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:601:21: ':' expression
                             {
-                            match(input,COLON,FOLLOW_COLON_in_statement4369); if (state.failed) return ;
+                            match(input,COLON,FOLLOW_COLON_in_statement4473); if (state.failed) return ;
 
-                            pushFollow(FOLLOW_expression_in_statement4371);
+                            pushFollow(FOLLOW_expression_in_statement4475);
                             expression();
 
                             state._fsp--;
@@ -8330,22 +8381,22 @@ public class RJavaSymbolTableParser extends Parser {
                     }
 
 
-                    match(input,SEMI,FOLLOW_SEMI_in_statement4375); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_statement4479); if (state.failed) return ;
 
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:586:9: 'assert' expression ( ':' expression )? ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:602:9: 'assert' expression ( ':' expression )? ';'
                     {
-                    match(input,ASSERT,FOLLOW_ASSERT_in_statement4385); if (state.failed) return ;
+                    match(input,ASSERT,FOLLOW_ASSERT_in_statement4489); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_expression_in_statement4388);
+                    pushFollow(FOLLOW_expression_in_statement4492);
                     expression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:586:30: ( ':' expression )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:602:30: ( ':' expression )?
                     int alt92=2;
                     int LA92_0 = input.LA(1);
 
@@ -8354,11 +8405,11 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     switch (alt92) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:586:31: ':' expression
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:602:31: ':' expression
                             {
-                            match(input,COLON,FOLLOW_COLON_in_statement4391); if (state.failed) return ;
+                            match(input,COLON,FOLLOW_COLON_in_statement4495); if (state.failed) return ;
 
-                            pushFollow(FOLLOW_expression_in_statement4393);
+                            pushFollow(FOLLOW_expression_in_statement4497);
                             expression();
 
                             state._fsp--;
@@ -8370,28 +8421,28 @@ public class RJavaSymbolTableParser extends Parser {
                     }
 
 
-                    match(input,SEMI,FOLLOW_SEMI_in_statement4397); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_statement4501); if (state.failed) return ;
 
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:587:9: 'if' parExpression statement ( 'else' statement )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:603:9: 'if' parExpression statement ( 'else' statement )?
                     {
-                    match(input,IF,FOLLOW_IF_in_statement4419); if (state.failed) return ;
+                    match(input,IF,FOLLOW_IF_in_statement4523); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_parExpression_in_statement4421);
+                    pushFollow(FOLLOW_parExpression_in_statement4525);
                     parExpression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    pushFollow(FOLLOW_statement_in_statement4423);
+                    pushFollow(FOLLOW_statement_in_statement4527);
                     statement();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:587:38: ( 'else' statement )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:603:38: ( 'else' statement )?
                     int alt93=2;
                     int LA93_0 = input.LA(1);
 
@@ -8404,11 +8455,11 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     switch (alt93) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:587:39: 'else' statement
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:603:39: 'else' statement
                             {
-                            match(input,ELSE,FOLLOW_ELSE_in_statement4426); if (state.failed) return ;
+                            match(input,ELSE,FOLLOW_ELSE_in_statement4530); if (state.failed) return ;
 
-                            pushFollow(FOLLOW_statement_in_statement4428);
+                            pushFollow(FOLLOW_statement_in_statement4532);
                             statement();
 
                             state._fsp--;
@@ -8423,9 +8474,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 5 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:588:9: forstatement
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:604:9: forstatement
                     {
-                    pushFollow(FOLLOW_forstatement_in_statement4450);
+                    pushFollow(FOLLOW_forstatement_in_statement4554);
                     forstatement();
 
                     state._fsp--;
@@ -8434,17 +8485,17 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 6 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:589:9: 'while' parExpression statement
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:605:9: 'while' parExpression statement
                     {
-                    match(input,WHILE,FOLLOW_WHILE_in_statement4460); if (state.failed) return ;
+                    match(input,WHILE,FOLLOW_WHILE_in_statement4564); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_parExpression_in_statement4462);
+                    pushFollow(FOLLOW_parExpression_in_statement4566);
                     parExpression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    pushFollow(FOLLOW_statement_in_statement4464);
+                    pushFollow(FOLLOW_statement_in_statement4568);
                     statement();
 
                     state._fsp--;
@@ -8453,32 +8504,32 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 7 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:590:9: 'do' statement 'while' parExpression ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:606:9: 'do' statement 'while' parExpression ';'
                     {
-                    match(input,DO,FOLLOW_DO_in_statement4474); if (state.failed) return ;
+                    match(input,DO,FOLLOW_DO_in_statement4578); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_statement_in_statement4476);
+                    pushFollow(FOLLOW_statement_in_statement4580);
                     statement();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,WHILE,FOLLOW_WHILE_in_statement4478); if (state.failed) return ;
+                    match(input,WHILE,FOLLOW_WHILE_in_statement4582); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_parExpression_in_statement4480);
+                    pushFollow(FOLLOW_parExpression_in_statement4584);
                     parExpression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,SEMI,FOLLOW_SEMI_in_statement4482); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_statement4586); if (state.failed) return ;
 
                     }
                     break;
                 case 8 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:591:9: trystatement
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:607:9: trystatement
                     {
-                    pushFollow(FOLLOW_trystatement_in_statement4492);
+                    pushFollow(FOLLOW_trystatement_in_statement4596);
                     trystatement();
 
                     state._fsp--;
@@ -8487,40 +8538,40 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 9 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:592:9: 'switch' parExpression '{' switchBlockStatementGroups '}'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:608:9: 'switch' parExpression '{' switchBlockStatementGroups '}'
                     {
-                    match(input,SWITCH,FOLLOW_SWITCH_in_statement4502); if (state.failed) return ;
+                    match(input,SWITCH,FOLLOW_SWITCH_in_statement4606); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_parExpression_in_statement4504);
+                    pushFollow(FOLLOW_parExpression_in_statement4608);
                     parExpression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,LBRACE,FOLLOW_LBRACE_in_statement4506); if (state.failed) return ;
+                    match(input,LBRACE,FOLLOW_LBRACE_in_statement4610); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_switchBlockStatementGroups_in_statement4508);
+                    pushFollow(FOLLOW_switchBlockStatementGroups_in_statement4612);
                     switchBlockStatementGroups();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,RBRACE,FOLLOW_RBRACE_in_statement4510); if (state.failed) return ;
+                    match(input,RBRACE,FOLLOW_RBRACE_in_statement4614); if (state.failed) return ;
 
                     }
                     break;
                 case 10 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:593:9: 'synchronized' parExpression block
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:609:9: 'synchronized' parExpression block
                     {
-                    match(input,SYNCHRONIZED,FOLLOW_SYNCHRONIZED_in_statement4520); if (state.failed) return ;
+                    match(input,SYNCHRONIZED,FOLLOW_SYNCHRONIZED_in_statement4624); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_parExpression_in_statement4522);
+                    pushFollow(FOLLOW_parExpression_in_statement4626);
                     parExpression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    pushFollow(FOLLOW_block_in_statement4524);
+                    pushFollow(FOLLOW_block_in_statement4628);
                     block();
 
                     state._fsp--;
@@ -8529,11 +8580,11 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 11 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:594:9: 'return' ( expression )? ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:610:9: 'return' ( expression )? ';'
                     {
-                    match(input,RETURN,FOLLOW_RETURN_in_statement4534); if (state.failed) return ;
+                    match(input,RETURN,FOLLOW_RETURN_in_statement4638); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:594:18: ( expression )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:610:18: ( expression )?
                     int alt94=2;
                     int LA94_0 = input.LA(1);
 
@@ -8542,9 +8593,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     switch (alt94) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:594:19: expression
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:610:19: expression
                             {
-                            pushFollow(FOLLOW_expression_in_statement4537);
+                            pushFollow(FOLLOW_expression_in_statement4641);
                             expression();
 
                             state._fsp--;
@@ -8556,31 +8607,31 @@ public class RJavaSymbolTableParser extends Parser {
                     }
 
 
-                    match(input,SEMI,FOLLOW_SEMI_in_statement4542); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_statement4646); if (state.failed) return ;
 
                     }
                     break;
                 case 12 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:595:9: 'throw' expression ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:611:9: 'throw' expression ';'
                     {
-                    match(input,THROW,FOLLOW_THROW_in_statement4552); if (state.failed) return ;
+                    match(input,THROW,FOLLOW_THROW_in_statement4656); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_expression_in_statement4554);
+                    pushFollow(FOLLOW_expression_in_statement4658);
                     expression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,SEMI,FOLLOW_SEMI_in_statement4556); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_statement4660); if (state.failed) return ;
 
                     }
                     break;
                 case 13 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:596:9: 'break' ( IDENTIFIER )? ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:612:9: 'break' ( IDENTIFIER )? ';'
                     {
-                    match(input,BREAK,FOLLOW_BREAK_in_statement4566); if (state.failed) return ;
+                    match(input,BREAK,FOLLOW_BREAK_in_statement4670); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:597:13: ( IDENTIFIER )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:613:13: ( IDENTIFIER )?
                     int alt95=2;
                     int LA95_0 = input.LA(1);
 
@@ -8589,9 +8640,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     switch (alt95) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:597:14: IDENTIFIER
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:613:14: IDENTIFIER
                             {
-                            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_statement4581); if (state.failed) return ;
+                            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_statement4685); if (state.failed) return ;
 
                             }
                             break;
@@ -8599,16 +8650,16 @@ public class RJavaSymbolTableParser extends Parser {
                     }
 
 
-                    match(input,SEMI,FOLLOW_SEMI_in_statement4598); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_statement4702); if (state.failed) return ;
 
                     }
                     break;
                 case 14 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:599:9: 'continue' ( IDENTIFIER )? ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:615:9: 'continue' ( IDENTIFIER )? ';'
                     {
-                    match(input,CONTINUE,FOLLOW_CONTINUE_in_statement4608); if (state.failed) return ;
+                    match(input,CONTINUE,FOLLOW_CONTINUE_in_statement4712); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:600:13: ( IDENTIFIER )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:616:13: ( IDENTIFIER )?
                     int alt96=2;
                     int LA96_0 = input.LA(1);
 
@@ -8617,9 +8668,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     switch (alt96) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:600:14: IDENTIFIER
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:616:14: IDENTIFIER
                             {
-                            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_statement4623); if (state.failed) return ;
+                            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_statement4727); if (state.failed) return ;
 
                             }
                             break;
@@ -8627,31 +8678,31 @@ public class RJavaSymbolTableParser extends Parser {
                     }
 
 
-                    match(input,SEMI,FOLLOW_SEMI_in_statement4640); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_statement4744); if (state.failed) return ;
 
                     }
                     break;
                 case 15 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:602:9: expression ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:618:9: expression ';'
                     {
-                    pushFollow(FOLLOW_expression_in_statement4650);
+                    pushFollow(FOLLOW_expression_in_statement4754);
                     expression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,SEMI,FOLLOW_SEMI_in_statement4653); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_statement4757); if (state.failed) return ;
 
                     }
                     break;
                 case 16 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:603:9: IDENTIFIER ':' statement
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:619:9: IDENTIFIER ':' statement
                     {
-                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_statement4668); if (state.failed) return ;
+                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_statement4772); if (state.failed) return ;
 
-                    match(input,COLON,FOLLOW_COLON_in_statement4670); if (state.failed) return ;
+                    match(input,COLON,FOLLOW_COLON_in_statement4774); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_statement_in_statement4672);
+                    pushFollow(FOLLOW_statement_in_statement4776);
                     statement();
 
                     state._fsp--;
@@ -8660,9 +8711,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 17 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:604:9: ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:620:9: ';'
                     {
-                    match(input,SEMI,FOLLOW_SEMI_in_statement4682); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_statement4786); if (state.failed) return ;
 
                     }
                     break;
@@ -8686,17 +8737,17 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "switchBlockStatementGroups"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:608:1: switchBlockStatementGroups : ( switchBlockStatementGroup )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:624:1: switchBlockStatementGroups : ( switchBlockStatementGroup )* ;
     public final void switchBlockStatementGroups() throws RecognitionException {
         int switchBlockStatementGroups_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 59) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:609:5: ( ( switchBlockStatementGroup )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:609:9: ( switchBlockStatementGroup )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:625:5: ( ( switchBlockStatementGroup )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:625:9: ( switchBlockStatementGroup )*
             {
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:609:9: ( switchBlockStatementGroup )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:625:9: ( switchBlockStatementGroup )*
             loop98:
             do {
                 int alt98=2;
@@ -8709,9 +8760,9 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt98) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:609:10: switchBlockStatementGroup
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:625:10: switchBlockStatementGroup
             	    {
-            	    pushFollow(FOLLOW_switchBlockStatementGroup_in_switchBlockStatementGroups4704);
+            	    pushFollow(FOLLOW_switchBlockStatementGroup_in_switchBlockStatementGroups4808);
             	    switchBlockStatementGroup();
 
             	    state._fsp--;
@@ -8746,23 +8797,23 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "switchBlockStatementGroup"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:612:1: switchBlockStatementGroup : switchLabel ( blockStatement )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:628:1: switchBlockStatementGroup : switchLabel ( blockStatement )* ;
     public final void switchBlockStatementGroup() throws RecognitionException {
         int switchBlockStatementGroup_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 60) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:613:5: ( switchLabel ( blockStatement )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:614:9: switchLabel ( blockStatement )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:629:5: ( switchLabel ( blockStatement )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:630:9: switchLabel ( blockStatement )*
             {
-            pushFollow(FOLLOW_switchLabel_in_switchBlockStatementGroup4733);
+            pushFollow(FOLLOW_switchLabel_in_switchBlockStatementGroup4837);
             switchLabel();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:615:9: ( blockStatement )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:631:9: ( blockStatement )*
             loop99:
             do {
                 int alt99=2;
@@ -8775,9 +8826,9 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt99) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:615:10: blockStatement
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:631:10: blockStatement
             	    {
-            	    pushFollow(FOLLOW_blockStatement_in_switchBlockStatementGroup4744);
+            	    pushFollow(FOLLOW_blockStatement_in_switchBlockStatementGroup4848);
             	    blockStatement();
 
             	    state._fsp--;
@@ -8812,14 +8863,14 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "switchLabel"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:619:1: switchLabel : ( 'case' expression ':' | 'default' ':' );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:635:1: switchLabel : ( 'case' expression ':' | 'default' ':' );
     public final void switchLabel() throws RecognitionException {
         int switchLabel_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 61) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:620:5: ( 'case' expression ':' | 'default' ':' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:636:5: ( 'case' expression ':' | 'default' ':' )
             int alt100=2;
             int LA100_0 = input.LA(1);
 
@@ -8839,26 +8890,26 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt100) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:620:9: 'case' expression ':'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:636:9: 'case' expression ':'
                     {
-                    match(input,CASE,FOLLOW_CASE_in_switchLabel4775); if (state.failed) return ;
+                    match(input,CASE,FOLLOW_CASE_in_switchLabel4879); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_expression_in_switchLabel4777);
+                    pushFollow(FOLLOW_expression_in_switchLabel4881);
                     expression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,COLON,FOLLOW_COLON_in_switchLabel4779); if (state.failed) return ;
+                    match(input,COLON,FOLLOW_COLON_in_switchLabel4883); if (state.failed) return ;
 
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:621:9: 'default' ':'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:637:9: 'default' ':'
                     {
-                    match(input,DEFAULT,FOLLOW_DEFAULT_in_switchLabel4789); if (state.failed) return ;
+                    match(input,DEFAULT,FOLLOW_DEFAULT_in_switchLabel4893); if (state.failed) return ;
 
-                    match(input,COLON,FOLLOW_COLON_in_switchLabel4791); if (state.failed) return ;
+                    match(input,COLON,FOLLOW_COLON_in_switchLabel4895); if (state.failed) return ;
 
                     }
                     break;
@@ -8882,25 +8933,25 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "trystatement"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:625:1: trystatement : 'try' block ( catches 'finally' block | catches | 'finally' block ) ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:641:1: trystatement : 'try' block ( catches 'finally' block | catches | 'finally' block ) ;
     public final void trystatement() throws RecognitionException {
         int trystatement_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 62) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:626:5: ( 'try' block ( catches 'finally' block | catches | 'finally' block ) )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:626:9: 'try' block ( catches 'finally' block | catches | 'finally' block )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:642:5: ( 'try' block ( catches 'finally' block | catches | 'finally' block ) )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:642:9: 'try' block ( catches 'finally' block | catches | 'finally' block )
             {
-            match(input,TRY,FOLLOW_TRY_in_trystatement4812); if (state.failed) return ;
+            match(input,TRY,FOLLOW_TRY_in_trystatement4916); if (state.failed) return ;
 
-            pushFollow(FOLLOW_block_in_trystatement4814);
+            pushFollow(FOLLOW_block_in_trystatement4918);
             block();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:627:9: ( catches 'finally' block | catches | 'finally' block )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:643:9: ( catches 'finally' block | catches | 'finally' block )
             int alt101=3;
             int LA101_0 = input.LA(1);
 
@@ -8935,17 +8986,17 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt101) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:627:13: catches 'finally' block
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:643:13: catches 'finally' block
                     {
-                    pushFollow(FOLLOW_catches_in_trystatement4828);
+                    pushFollow(FOLLOW_catches_in_trystatement4932);
                     catches();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,FINALLY,FOLLOW_FINALLY_in_trystatement4830); if (state.failed) return ;
+                    match(input,FINALLY,FOLLOW_FINALLY_in_trystatement4934); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_block_in_trystatement4832);
+                    pushFollow(FOLLOW_block_in_trystatement4936);
                     block();
 
                     state._fsp--;
@@ -8954,9 +9005,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:628:13: catches
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:644:13: catches
                     {
-                    pushFollow(FOLLOW_catches_in_trystatement4846);
+                    pushFollow(FOLLOW_catches_in_trystatement4950);
                     catches();
 
                     state._fsp--;
@@ -8965,11 +9016,11 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:629:13: 'finally' block
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:645:13: 'finally' block
                     {
-                    match(input,FINALLY,FOLLOW_FINALLY_in_trystatement4860); if (state.failed) return ;
+                    match(input,FINALLY,FOLLOW_FINALLY_in_trystatement4964); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_block_in_trystatement4862);
+                    pushFollow(FOLLOW_block_in_trystatement4966);
                     block();
 
                     state._fsp--;
@@ -9001,23 +9052,23 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "catches"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:633:1: catches : catchClause ( catchClause )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:649:1: catches : catchClause ( catchClause )* ;
     public final void catches() throws RecognitionException {
         int catches_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 63) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:634:5: ( catchClause ( catchClause )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:634:9: catchClause ( catchClause )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:650:5: ( catchClause ( catchClause )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:650:9: catchClause ( catchClause )*
             {
-            pushFollow(FOLLOW_catchClause_in_catches4893);
+            pushFollow(FOLLOW_catchClause_in_catches4997);
             catchClause();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:635:9: ( catchClause )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:651:9: ( catchClause )*
             loop102:
             do {
                 int alt102=2;
@@ -9030,9 +9081,9 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt102) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:635:10: catchClause
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:651:10: catchClause
             	    {
-            	    pushFollow(FOLLOW_catchClause_in_catches4904);
+            	    pushFollow(FOLLOW_catchClause_in_catches5008);
             	    catchClause();
 
             	    state._fsp--;
@@ -9067,29 +9118,29 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "catchClause"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:639:1: catchClause : 'catch' '(' formalParameter ')' block ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:655:1: catchClause : 'catch' '(' formalParameter ')' block ;
     public final void catchClause() throws RecognitionException {
         int catchClause_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 64) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:640:5: ( 'catch' '(' formalParameter ')' block )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:640:9: 'catch' '(' formalParameter ')' block
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:656:5: ( 'catch' '(' formalParameter ')' block )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:656:9: 'catch' '(' formalParameter ')' block
             {
-            match(input,CATCH,FOLLOW_CATCH_in_catchClause4935); if (state.failed) return ;
+            match(input,CATCH,FOLLOW_CATCH_in_catchClause5039); if (state.failed) return ;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_catchClause4937); if (state.failed) return ;
+            match(input,LPAREN,FOLLOW_LPAREN_in_catchClause5041); if (state.failed) return ;
 
-            pushFollow(FOLLOW_formalParameter_in_catchClause4939);
+            pushFollow(FOLLOW_formalParameter_in_catchClause5043);
             formalParameter();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_catchClause4949); if (state.failed) return ;
+            match(input,RPAREN,FOLLOW_RPAREN_in_catchClause5053); if (state.failed) return ;
 
-            pushFollow(FOLLOW_block_in_catchClause4951);
+            pushFollow(FOLLOW_block_in_catchClause5055);
             block();
 
             state._fsp--;
@@ -9115,31 +9166,31 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "formalParameter"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:644:1: formalParameter : variableModifiers type IDENTIFIER ( '[' ']' )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:660:1: formalParameter : variableModifiers type IDENTIFIER ( '[' ']' )* ;
     public final void formalParameter() throws RecognitionException {
         int formalParameter_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 65) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:645:5: ( variableModifiers type IDENTIFIER ( '[' ']' )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:645:9: variableModifiers type IDENTIFIER ( '[' ']' )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:661:5: ( variableModifiers type IDENTIFIER ( '[' ']' )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:661:9: variableModifiers type IDENTIFIER ( '[' ']' )*
             {
-            pushFollow(FOLLOW_variableModifiers_in_formalParameter4972);
+            pushFollow(FOLLOW_variableModifiers_in_formalParameter5076);
             variableModifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            pushFollow(FOLLOW_type_in_formalParameter4974);
+            pushFollow(FOLLOW_type_in_formalParameter5078);
             type();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_formalParameter4976); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_formalParameter5080); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:646:9: ( '[' ']' )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:662:9: ( '[' ']' )*
             loop103:
             do {
                 int alt103=2;
@@ -9152,11 +9203,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt103) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:646:10: '[' ']'
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:662:10: '[' ']'
             	    {
-            	    match(input,LBRACKET,FOLLOW_LBRACKET_in_formalParameter4987); if (state.failed) return ;
+            	    match(input,LBRACKET,FOLLOW_LBRACKET_in_formalParameter5091); if (state.failed) return ;
 
-            	    match(input,RBRACKET,FOLLOW_RBRACKET_in_formalParameter4989); if (state.failed) return ;
+            	    match(input,RBRACKET,FOLLOW_RBRACKET_in_formalParameter5093); if (state.failed) return ;
 
             	    }
             	    break;
@@ -9187,14 +9238,18 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "forstatement"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:650:1: forstatement : ( 'for' '(' variableModifiers type IDENTIFIER ':' expression ')' statement | 'for' '(' ( forInit )? ';' ( expression )? ';' ( expressionList )? ')' statement );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:666:1: forstatement : ( 'for' '(' variableModifiers type IDENTIFIER ':' expression ')' statement | 'for' '(' ( forInit )? ';' ( expression )? ';' ( expressionList )? ')' statement );
     public final void forstatement() throws RecognitionException {
         int forstatement_StartIndex = input.index();
+
+        Token IDENTIFIER10=null;
+        RJavaSymbolTableParser.type_return type9 =null;
+
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 66) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:651:5: ( 'for' '(' variableModifiers type IDENTIFIER ':' expression ')' statement | 'for' '(' ( forInit )? ';' ( expression )? ';' ( expressionList )? ')' statement )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:667:5: ( 'for' '(' variableModifiers type IDENTIFIER ':' expression ')' statement | 'for' '(' ( forInit )? ';' ( expression )? ';' ( expressionList )? ')' statement )
             int alt107=2;
             int LA107_0 = input.LA(1);
 
@@ -9226,52 +9281,63 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt107) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:653:9: 'for' '(' variableModifiers type IDENTIFIER ':' expression ')' statement
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:669:9: 'for' '(' variableModifiers type IDENTIFIER ':' expression ')' statement
                     {
-                    match(input,FOR,FOLLOW_FOR_in_forstatement5038); if (state.failed) return ;
+                    if ( state.backtracking==0 ) {klass.newBlock(RBlock.IN_METHOD);}
 
-                    match(input,LPAREN,FOLLOW_LPAREN_in_forstatement5040); if (state.failed) return ;
+                    match(input,FOR,FOLLOW_FOR_in_forstatement5152); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_variableModifiers_in_forstatement5042);
+                    match(input,LPAREN,FOLLOW_LPAREN_in_forstatement5154); if (state.failed) return ;
+
+                    pushFollow(FOLLOW_variableModifiers_in_forstatement5156);
                     variableModifiers();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    pushFollow(FOLLOW_type_in_forstatement5044);
-                    type();
+                    pushFollow(FOLLOW_type_in_forstatement5158);
+                    type9=type();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_forstatement5046); if (state.failed) return ;
+                    IDENTIFIER10=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_forstatement5160); if (state.failed) return ;
 
-                    match(input,COLON,FOLLOW_COLON_in_forstatement5048); if (state.failed) return ;
+                    match(input,COLON,FOLLOW_COLON_in_forstatement5162); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_expression_in_forstatement5059);
+                    if ( state.backtracking==0 ) {RIdentifier id = new RIdentifier();
+                            id.setType(RType.initWithClassName(klass, (type9!=null?input.toString(type9.start,type9.stop):null)));
+                            id.setId((IDENTIFIER10!=null?IDENTIFIER10.getText():null));
+                            klass.newIdToCurrentBlock(id);}
+
+                    pushFollow(FOLLOW_expression_in_forstatement5183);
                     expression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,RPAREN,FOLLOW_RPAREN_in_forstatement5061); if (state.failed) return ;
+                    match(input,RPAREN,FOLLOW_RPAREN_in_forstatement5185); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_statement_in_forstatement5063);
+                    pushFollow(FOLLOW_statement_in_forstatement5187);
                     statement();
 
                     state._fsp--;
                     if (state.failed) return ;
 
+                    if ( state.backtracking==0 ) {klass.backToUpperBlock();}
+
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:657:9: 'for' '(' ( forInit )? ';' ( expression )? ';' ( expressionList )? ')' statement
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:680:9: 'for' '(' ( forInit )? ';' ( expression )? ';' ( expressionList )? ')' statement
                     {
-                    match(input,FOR,FOLLOW_FOR_in_forstatement5095); if (state.failed) return ;
+                    if ( state.backtracking==0 ) {klass.newBlock(RBlock.IN_METHOD);}
 
-                    match(input,LPAREN,FOLLOW_LPAREN_in_forstatement5097); if (state.failed) return ;
+                    match(input,FOR,FOLLOW_FOR_in_forstatement5248); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:658:17: ( forInit )?
+                    match(input,LPAREN,FOLLOW_LPAREN_in_forstatement5250); if (state.failed) return ;
+
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:682:17: ( forInit )?
                     int alt104=2;
                     int LA104_0 = input.LA(1);
 
@@ -9280,9 +9346,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     switch (alt104) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:658:18: forInit
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:682:18: forInit
                             {
-                            pushFollow(FOLLOW_forInit_in_forstatement5117);
+                            pushFollow(FOLLOW_forInit_in_forstatement5270);
                             forInit();
 
                             state._fsp--;
@@ -9294,9 +9360,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
 
 
-                    match(input,SEMI,FOLLOW_SEMI_in_forstatement5138); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_forstatement5291); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:660:17: ( expression )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:684:17: ( expression )?
                     int alt105=2;
                     int LA105_0 = input.LA(1);
 
@@ -9305,9 +9371,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     switch (alt105) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:660:18: expression
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:684:18: expression
                             {
-                            pushFollow(FOLLOW_expression_in_forstatement5158);
+                            pushFollow(FOLLOW_expression_in_forstatement5311);
                             expression();
 
                             state._fsp--;
@@ -9319,9 +9385,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
 
 
-                    match(input,SEMI,FOLLOW_SEMI_in_forstatement5179); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_forstatement5332); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:662:17: ( expressionList )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:686:17: ( expressionList )?
                     int alt106=2;
                     int LA106_0 = input.LA(1);
 
@@ -9330,9 +9396,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     switch (alt106) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:662:18: expressionList
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:686:18: expressionList
                             {
-                            pushFollow(FOLLOW_expressionList_in_forstatement5199);
+                            pushFollow(FOLLOW_expressionList_in_forstatement5352);
                             expressionList();
 
                             state._fsp--;
@@ -9344,13 +9410,15 @@ public class RJavaSymbolTableParser extends Parser {
                     }
 
 
-                    match(input,RPAREN,FOLLOW_RPAREN_in_forstatement5220); if (state.failed) return ;
+                    match(input,RPAREN,FOLLOW_RPAREN_in_forstatement5373); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_statement_in_forstatement5222);
+                    pushFollow(FOLLOW_statement_in_forstatement5375);
                     statement();
 
                     state._fsp--;
                     if (state.failed) return ;
+
+                    if ( state.backtracking==0 ) {klass.backToUpperBlock();}
 
                     }
                     break;
@@ -9374,14 +9442,14 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "forInit"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:666:1: forInit : ( localVariableDeclaration | expressionList );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:691:1: forInit : ( localVariableDeclaration | expressionList );
     public final void forInit() throws RecognitionException {
         int forInit_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 67) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:667:5: ( localVariableDeclaration | expressionList )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:692:5: ( localVariableDeclaration | expressionList )
             int alt108=2;
             switch ( input.LA(1) ) {
             case FINAL:
@@ -9472,9 +9540,9 @@ public class RJavaSymbolTableParser extends Parser {
 
             switch (alt108) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:667:9: localVariableDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:692:9: localVariableDeclaration
                     {
-                    pushFollow(FOLLOW_localVariableDeclaration_in_forInit5242);
+                    pushFollow(FOLLOW_localVariableDeclaration_in_forInit5405);
                     localVariableDeclaration();
 
                     state._fsp--;
@@ -9483,9 +9551,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:668:9: expressionList
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:693:9: expressionList
                     {
-                    pushFollow(FOLLOW_expressionList_in_forInit5252);
+                    pushFollow(FOLLOW_expressionList_in_forInit5415);
                     expressionList();
 
                     state._fsp--;
@@ -9513,25 +9581,25 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "parExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:671:1: parExpression : '(' expression ')' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:696:1: parExpression : '(' expression ')' ;
     public final void parExpression() throws RecognitionException {
         int parExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 68) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:672:5: ( '(' expression ')' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:672:9: '(' expression ')'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:697:5: ( '(' expression ')' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:697:9: '(' expression ')'
             {
-            match(input,LPAREN,FOLLOW_LPAREN_in_parExpression5272); if (state.failed) return ;
+            match(input,LPAREN,FOLLOW_LPAREN_in_parExpression5435); if (state.failed) return ;
 
-            pushFollow(FOLLOW_expression_in_parExpression5274);
+            pushFollow(FOLLOW_expression_in_parExpression5437);
             expression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_parExpression5276); if (state.failed) return ;
+            match(input,RPAREN,FOLLOW_RPAREN_in_parExpression5439); if (state.failed) return ;
 
             }
 
@@ -9553,23 +9621,23 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "expressionList"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:675:1: expressionList : expression ( ',' expression )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:700:1: expressionList : expression ( ',' expression )* ;
     public final void expressionList() throws RecognitionException {
         int expressionList_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 69) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:676:5: ( expression ( ',' expression )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:676:9: expression ( ',' expression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:701:5: ( expression ( ',' expression )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:701:9: expression ( ',' expression )*
             {
-            pushFollow(FOLLOW_expression_in_expressionList5296);
+            pushFollow(FOLLOW_expression_in_expressionList5459);
             expression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:677:9: ( ',' expression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:702:9: ( ',' expression )*
             loop109:
             do {
                 int alt109=2;
@@ -9582,11 +9650,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt109) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:677:10: ',' expression
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:702:10: ',' expression
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_expressionList5307); if (state.failed) return ;
+            	    match(input,COMMA,FOLLOW_COMMA_in_expressionList5470); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_expression_in_expressionList5309);
+            	    pushFollow(FOLLOW_expression_in_expressionList5472);
             	    expression();
 
             	    state._fsp--;
@@ -9621,23 +9689,23 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "expression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:682:1: expression : conditionalExpression ( assignmentOperator expression )? ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:707:1: expression : conditionalExpression ( assignmentOperator expression )? ;
     public final void expression() throws RecognitionException {
         int expression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 70) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:683:5: ( conditionalExpression ( assignmentOperator expression )? )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:683:9: conditionalExpression ( assignmentOperator expression )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:708:5: ( conditionalExpression ( assignmentOperator expression )? )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:708:9: conditionalExpression ( assignmentOperator expression )?
             {
-            pushFollow(FOLLOW_conditionalExpression_in_expression5341);
+            pushFollow(FOLLOW_conditionalExpression_in_expression5504);
             conditionalExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:684:9: ( assignmentOperator expression )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:709:9: ( assignmentOperator expression )?
             int alt110=2;
             int LA110_0 = input.LA(1);
 
@@ -9646,15 +9714,15 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt110) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:684:10: assignmentOperator expression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:709:10: assignmentOperator expression
                     {
-                    pushFollow(FOLLOW_assignmentOperator_in_expression5352);
+                    pushFollow(FOLLOW_assignmentOperator_in_expression5515);
                     assignmentOperator();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    pushFollow(FOLLOW_expression_in_expression5354);
+                    pushFollow(FOLLOW_expression_in_expression5517);
                     expression();
 
                     state._fsp--;
@@ -9686,14 +9754,14 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "assignmentOperator"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:689:1: assignmentOperator : ( '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '%=' | '<' '<' '=' | '>' '>' '>' '=' | '>' '>' '=' );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:714:1: assignmentOperator : ( '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '%=' | '<' '<' '=' | '>' '>' '>' '=' | '>' '>' '=' );
     public final void assignmentOperator() throws RecognitionException {
         int assignmentOperator_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 71) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:690:5: ( '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '%=' | '<' '<' '=' | '>' '>' '>' '=' | '>' '>' '=' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:715:5: ( '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '%=' | '<' '<' '=' | '>' '>' '>' '=' | '>' '>' '=' )
             int alt111=12;
             switch ( input.LA(1) ) {
             case EQ:
@@ -9789,100 +9857,100 @@ public class RJavaSymbolTableParser extends Parser {
 
             switch (alt111) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:690:9: '='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:715:9: '='
                     {
-                    match(input,EQ,FOLLOW_EQ_in_assignmentOperator5386); if (state.failed) return ;
+                    match(input,EQ,FOLLOW_EQ_in_assignmentOperator5549); if (state.failed) return ;
 
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:691:9: '+='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:716:9: '+='
                     {
-                    match(input,PLUSEQ,FOLLOW_PLUSEQ_in_assignmentOperator5396); if (state.failed) return ;
+                    match(input,PLUSEQ,FOLLOW_PLUSEQ_in_assignmentOperator5559); if (state.failed) return ;
 
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:692:9: '-='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:717:9: '-='
                     {
-                    match(input,SUBEQ,FOLLOW_SUBEQ_in_assignmentOperator5406); if (state.failed) return ;
+                    match(input,SUBEQ,FOLLOW_SUBEQ_in_assignmentOperator5569); if (state.failed) return ;
 
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:693:9: '*='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:718:9: '*='
                     {
-                    match(input,STAREQ,FOLLOW_STAREQ_in_assignmentOperator5416); if (state.failed) return ;
+                    match(input,STAREQ,FOLLOW_STAREQ_in_assignmentOperator5579); if (state.failed) return ;
 
                     }
                     break;
                 case 5 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:694:9: '/='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:719:9: '/='
                     {
-                    match(input,SLASHEQ,FOLLOW_SLASHEQ_in_assignmentOperator5426); if (state.failed) return ;
+                    match(input,SLASHEQ,FOLLOW_SLASHEQ_in_assignmentOperator5589); if (state.failed) return ;
 
                     }
                     break;
                 case 6 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:695:9: '&='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:720:9: '&='
                     {
-                    match(input,AMPEQ,FOLLOW_AMPEQ_in_assignmentOperator5436); if (state.failed) return ;
+                    match(input,AMPEQ,FOLLOW_AMPEQ_in_assignmentOperator5599); if (state.failed) return ;
 
                     }
                     break;
                 case 7 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:696:9: '|='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:721:9: '|='
                     {
-                    match(input,BAREQ,FOLLOW_BAREQ_in_assignmentOperator5446); if (state.failed) return ;
+                    match(input,BAREQ,FOLLOW_BAREQ_in_assignmentOperator5609); if (state.failed) return ;
 
                     }
                     break;
                 case 8 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:697:9: '^='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:722:9: '^='
                     {
-                    match(input,CARETEQ,FOLLOW_CARETEQ_in_assignmentOperator5456); if (state.failed) return ;
+                    match(input,CARETEQ,FOLLOW_CARETEQ_in_assignmentOperator5619); if (state.failed) return ;
 
                     }
                     break;
                 case 9 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:698:9: '%='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:723:9: '%='
                     {
-                    match(input,PERCENTEQ,FOLLOW_PERCENTEQ_in_assignmentOperator5466); if (state.failed) return ;
+                    match(input,PERCENTEQ,FOLLOW_PERCENTEQ_in_assignmentOperator5629); if (state.failed) return ;
 
                     }
                     break;
                 case 10 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:699:10: '<' '<' '='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:724:10: '<' '<' '='
                     {
-                    match(input,LT,FOLLOW_LT_in_assignmentOperator5477); if (state.failed) return ;
+                    match(input,LT,FOLLOW_LT_in_assignmentOperator5640); if (state.failed) return ;
 
-                    match(input,LT,FOLLOW_LT_in_assignmentOperator5479); if (state.failed) return ;
+                    match(input,LT,FOLLOW_LT_in_assignmentOperator5642); if (state.failed) return ;
 
-                    match(input,EQ,FOLLOW_EQ_in_assignmentOperator5481); if (state.failed) return ;
+                    match(input,EQ,FOLLOW_EQ_in_assignmentOperator5644); if (state.failed) return ;
 
                     }
                     break;
                 case 11 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:700:10: '>' '>' '>' '='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:725:10: '>' '>' '>' '='
                     {
-                    match(input,GT,FOLLOW_GT_in_assignmentOperator5492); if (state.failed) return ;
+                    match(input,GT,FOLLOW_GT_in_assignmentOperator5655); if (state.failed) return ;
 
-                    match(input,GT,FOLLOW_GT_in_assignmentOperator5494); if (state.failed) return ;
+                    match(input,GT,FOLLOW_GT_in_assignmentOperator5657); if (state.failed) return ;
 
-                    match(input,GT,FOLLOW_GT_in_assignmentOperator5496); if (state.failed) return ;
+                    match(input,GT,FOLLOW_GT_in_assignmentOperator5659); if (state.failed) return ;
 
-                    match(input,EQ,FOLLOW_EQ_in_assignmentOperator5498); if (state.failed) return ;
+                    match(input,EQ,FOLLOW_EQ_in_assignmentOperator5661); if (state.failed) return ;
 
                     }
                     break;
                 case 12 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:701:10: '>' '>' '='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:726:10: '>' '>' '='
                     {
-                    match(input,GT,FOLLOW_GT_in_assignmentOperator5509); if (state.failed) return ;
+                    match(input,GT,FOLLOW_GT_in_assignmentOperator5672); if (state.failed) return ;
 
-                    match(input,GT,FOLLOW_GT_in_assignmentOperator5511); if (state.failed) return ;
+                    match(input,GT,FOLLOW_GT_in_assignmentOperator5674); if (state.failed) return ;
 
-                    match(input,EQ,FOLLOW_EQ_in_assignmentOperator5513); if (state.failed) return ;
+                    match(input,EQ,FOLLOW_EQ_in_assignmentOperator5676); if (state.failed) return ;
 
                     }
                     break;
@@ -9906,23 +9974,23 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "conditionalExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:705:1: conditionalExpression : conditionalOrExpression ( '?' expression ':' conditionalExpression )? ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:730:1: conditionalExpression : conditionalOrExpression ( '?' expression ':' conditionalExpression )? ;
     public final void conditionalExpression() throws RecognitionException {
         int conditionalExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 72) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:706:5: ( conditionalOrExpression ( '?' expression ':' conditionalExpression )? )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:706:9: conditionalOrExpression ( '?' expression ':' conditionalExpression )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:731:5: ( conditionalOrExpression ( '?' expression ':' conditionalExpression )? )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:731:9: conditionalOrExpression ( '?' expression ':' conditionalExpression )?
             {
-            pushFollow(FOLLOW_conditionalOrExpression_in_conditionalExpression5534);
+            pushFollow(FOLLOW_conditionalOrExpression_in_conditionalExpression5697);
             conditionalOrExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:707:9: ( '?' expression ':' conditionalExpression )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:732:9: ( '?' expression ':' conditionalExpression )?
             int alt112=2;
             int LA112_0 = input.LA(1);
 
@@ -9931,19 +9999,19 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt112) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:707:10: '?' expression ':' conditionalExpression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:732:10: '?' expression ':' conditionalExpression
                     {
-                    match(input,QUES,FOLLOW_QUES_in_conditionalExpression5545); if (state.failed) return ;
+                    match(input,QUES,FOLLOW_QUES_in_conditionalExpression5708); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_expression_in_conditionalExpression5547);
+                    pushFollow(FOLLOW_expression_in_conditionalExpression5710);
                     expression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,COLON,FOLLOW_COLON_in_conditionalExpression5549); if (state.failed) return ;
+                    match(input,COLON,FOLLOW_COLON_in_conditionalExpression5712); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_conditionalExpression_in_conditionalExpression5551);
+                    pushFollow(FOLLOW_conditionalExpression_in_conditionalExpression5714);
                     conditionalExpression();
 
                     state._fsp--;
@@ -9975,23 +10043,23 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "conditionalOrExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:711:1: conditionalOrExpression : conditionalAndExpression ( '||' conditionalAndExpression )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:736:1: conditionalOrExpression : conditionalAndExpression ( '||' conditionalAndExpression )* ;
     public final void conditionalOrExpression() throws RecognitionException {
         int conditionalOrExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 73) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:712:5: ( conditionalAndExpression ( '||' conditionalAndExpression )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:712:9: conditionalAndExpression ( '||' conditionalAndExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:737:5: ( conditionalAndExpression ( '||' conditionalAndExpression )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:737:9: conditionalAndExpression ( '||' conditionalAndExpression )*
             {
-            pushFollow(FOLLOW_conditionalAndExpression_in_conditionalOrExpression5582);
+            pushFollow(FOLLOW_conditionalAndExpression_in_conditionalOrExpression5745);
             conditionalAndExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:713:9: ( '||' conditionalAndExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:738:9: ( '||' conditionalAndExpression )*
             loop113:
             do {
                 int alt113=2;
@@ -10004,11 +10072,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt113) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:713:10: '||' conditionalAndExpression
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:738:10: '||' conditionalAndExpression
             	    {
-            	    match(input,BARBAR,FOLLOW_BARBAR_in_conditionalOrExpression5593); if (state.failed) return ;
+            	    match(input,BARBAR,FOLLOW_BARBAR_in_conditionalOrExpression5756); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_conditionalAndExpression_in_conditionalOrExpression5595);
+            	    pushFollow(FOLLOW_conditionalAndExpression_in_conditionalOrExpression5758);
             	    conditionalAndExpression();
 
             	    state._fsp--;
@@ -10043,23 +10111,23 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "conditionalAndExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:717:1: conditionalAndExpression : inclusiveOrExpression ( '&&' inclusiveOrExpression )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:742:1: conditionalAndExpression : inclusiveOrExpression ( '&&' inclusiveOrExpression )* ;
     public final void conditionalAndExpression() throws RecognitionException {
         int conditionalAndExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 74) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:718:5: ( inclusiveOrExpression ( '&&' inclusiveOrExpression )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:718:9: inclusiveOrExpression ( '&&' inclusiveOrExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:743:5: ( inclusiveOrExpression ( '&&' inclusiveOrExpression )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:743:9: inclusiveOrExpression ( '&&' inclusiveOrExpression )*
             {
-            pushFollow(FOLLOW_inclusiveOrExpression_in_conditionalAndExpression5626);
+            pushFollow(FOLLOW_inclusiveOrExpression_in_conditionalAndExpression5789);
             inclusiveOrExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:719:9: ( '&&' inclusiveOrExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:744:9: ( '&&' inclusiveOrExpression )*
             loop114:
             do {
                 int alt114=2;
@@ -10072,11 +10140,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt114) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:719:10: '&&' inclusiveOrExpression
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:744:10: '&&' inclusiveOrExpression
             	    {
-            	    match(input,AMPAMP,FOLLOW_AMPAMP_in_conditionalAndExpression5637); if (state.failed) return ;
+            	    match(input,AMPAMP,FOLLOW_AMPAMP_in_conditionalAndExpression5800); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_inclusiveOrExpression_in_conditionalAndExpression5639);
+            	    pushFollow(FOLLOW_inclusiveOrExpression_in_conditionalAndExpression5802);
             	    inclusiveOrExpression();
 
             	    state._fsp--;
@@ -10111,23 +10179,23 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "inclusiveOrExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:723:1: inclusiveOrExpression : exclusiveOrExpression ( '|' exclusiveOrExpression )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:748:1: inclusiveOrExpression : exclusiveOrExpression ( '|' exclusiveOrExpression )* ;
     public final void inclusiveOrExpression() throws RecognitionException {
         int inclusiveOrExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 75) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:724:5: ( exclusiveOrExpression ( '|' exclusiveOrExpression )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:724:9: exclusiveOrExpression ( '|' exclusiveOrExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:749:5: ( exclusiveOrExpression ( '|' exclusiveOrExpression )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:749:9: exclusiveOrExpression ( '|' exclusiveOrExpression )*
             {
-            pushFollow(FOLLOW_exclusiveOrExpression_in_inclusiveOrExpression5670);
+            pushFollow(FOLLOW_exclusiveOrExpression_in_inclusiveOrExpression5833);
             exclusiveOrExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:725:9: ( '|' exclusiveOrExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:750:9: ( '|' exclusiveOrExpression )*
             loop115:
             do {
                 int alt115=2;
@@ -10140,11 +10208,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt115) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:725:10: '|' exclusiveOrExpression
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:750:10: '|' exclusiveOrExpression
             	    {
-            	    match(input,BAR,FOLLOW_BAR_in_inclusiveOrExpression5681); if (state.failed) return ;
+            	    match(input,BAR,FOLLOW_BAR_in_inclusiveOrExpression5844); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_exclusiveOrExpression_in_inclusiveOrExpression5683);
+            	    pushFollow(FOLLOW_exclusiveOrExpression_in_inclusiveOrExpression5846);
             	    exclusiveOrExpression();
 
             	    state._fsp--;
@@ -10179,23 +10247,23 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "exclusiveOrExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:729:1: exclusiveOrExpression : andExpression ( '^' andExpression )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:754:1: exclusiveOrExpression : andExpression ( '^' andExpression )* ;
     public final void exclusiveOrExpression() throws RecognitionException {
         int exclusiveOrExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 76) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:730:5: ( andExpression ( '^' andExpression )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:730:9: andExpression ( '^' andExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:755:5: ( andExpression ( '^' andExpression )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:755:9: andExpression ( '^' andExpression )*
             {
-            pushFollow(FOLLOW_andExpression_in_exclusiveOrExpression5714);
+            pushFollow(FOLLOW_andExpression_in_exclusiveOrExpression5877);
             andExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:731:9: ( '^' andExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:756:9: ( '^' andExpression )*
             loop116:
             do {
                 int alt116=2;
@@ -10208,11 +10276,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt116) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:731:10: '^' andExpression
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:756:10: '^' andExpression
             	    {
-            	    match(input,CARET,FOLLOW_CARET_in_exclusiveOrExpression5725); if (state.failed) return ;
+            	    match(input,CARET,FOLLOW_CARET_in_exclusiveOrExpression5888); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_andExpression_in_exclusiveOrExpression5727);
+            	    pushFollow(FOLLOW_andExpression_in_exclusiveOrExpression5890);
             	    andExpression();
 
             	    state._fsp--;
@@ -10247,23 +10315,23 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "andExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:735:1: andExpression : equalityExpression ( '&' equalityExpression )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:760:1: andExpression : equalityExpression ( '&' equalityExpression )* ;
     public final void andExpression() throws RecognitionException {
         int andExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 77) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:736:5: ( equalityExpression ( '&' equalityExpression )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:736:9: equalityExpression ( '&' equalityExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:761:5: ( equalityExpression ( '&' equalityExpression )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:761:9: equalityExpression ( '&' equalityExpression )*
             {
-            pushFollow(FOLLOW_equalityExpression_in_andExpression5758);
+            pushFollow(FOLLOW_equalityExpression_in_andExpression5921);
             equalityExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:737:9: ( '&' equalityExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:762:9: ( '&' equalityExpression )*
             loop117:
             do {
                 int alt117=2;
@@ -10276,11 +10344,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt117) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:737:10: '&' equalityExpression
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:762:10: '&' equalityExpression
             	    {
-            	    match(input,AMP,FOLLOW_AMP_in_andExpression5769); if (state.failed) return ;
+            	    match(input,AMP,FOLLOW_AMP_in_andExpression5932); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_equalityExpression_in_andExpression5771);
+            	    pushFollow(FOLLOW_equalityExpression_in_andExpression5934);
             	    equalityExpression();
 
             	    state._fsp--;
@@ -10315,23 +10383,23 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "equalityExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:741:1: equalityExpression : instanceOfExpression ( ( '==' | '!=' ) instanceOfExpression )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:766:1: equalityExpression : instanceOfExpression ( ( '==' | '!=' ) instanceOfExpression )* ;
     public final void equalityExpression() throws RecognitionException {
         int equalityExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 78) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:742:5: ( instanceOfExpression ( ( '==' | '!=' ) instanceOfExpression )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:742:9: instanceOfExpression ( ( '==' | '!=' ) instanceOfExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:767:5: ( instanceOfExpression ( ( '==' | '!=' ) instanceOfExpression )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:767:9: instanceOfExpression ( ( '==' | '!=' ) instanceOfExpression )*
             {
-            pushFollow(FOLLOW_instanceOfExpression_in_equalityExpression5802);
+            pushFollow(FOLLOW_instanceOfExpression_in_equalityExpression5965);
             instanceOfExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:743:9: ( ( '==' | '!=' ) instanceOfExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:768:9: ( ( '==' | '!=' ) instanceOfExpression )*
             loop118:
             do {
                 int alt118=2;
@@ -10344,7 +10412,7 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt118) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:744:13: ( '==' | '!=' ) instanceOfExpression
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:769:13: ( '==' | '!=' ) instanceOfExpression
             	    {
             	    if ( input.LA(1)==BANGEQ||input.LA(1)==EQEQ ) {
             	        input.consume();
@@ -10358,7 +10426,7 @@ public class RJavaSymbolTableParser extends Parser {
             	    }
 
 
-            	    pushFollow(FOLLOW_instanceOfExpression_in_equalityExpression5879);
+            	    pushFollow(FOLLOW_instanceOfExpression_in_equalityExpression6042);
             	    instanceOfExpression();
 
             	    state._fsp--;
@@ -10393,23 +10461,23 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "instanceOfExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:751:1: instanceOfExpression : relationalExpression ( 'instanceof' type )? ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:776:1: instanceOfExpression : relationalExpression ( 'instanceof' type )? ;
     public final void instanceOfExpression() throws RecognitionException {
         int instanceOfExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 79) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:752:5: ( relationalExpression ( 'instanceof' type )? )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:752:9: relationalExpression ( 'instanceof' type )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:777:5: ( relationalExpression ( 'instanceof' type )? )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:777:9: relationalExpression ( 'instanceof' type )?
             {
-            pushFollow(FOLLOW_relationalExpression_in_instanceOfExpression5910);
+            pushFollow(FOLLOW_relationalExpression_in_instanceOfExpression6073);
             relationalExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:753:9: ( 'instanceof' type )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:778:9: ( 'instanceof' type )?
             int alt119=2;
             int LA119_0 = input.LA(1);
 
@@ -10418,11 +10486,11 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt119) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:753:10: 'instanceof' type
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:778:10: 'instanceof' type
                     {
-                    match(input,INSTANCEOF,FOLLOW_INSTANCEOF_in_instanceOfExpression5921); if (state.failed) return ;
+                    match(input,INSTANCEOF,FOLLOW_INSTANCEOF_in_instanceOfExpression6084); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_type_in_instanceOfExpression5923);
+                    pushFollow(FOLLOW_type_in_instanceOfExpression6086);
                     type();
 
                     state._fsp--;
@@ -10454,23 +10522,23 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "relationalExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:757:1: relationalExpression : shiftExpression ( relationalOp shiftExpression )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:782:1: relationalExpression : shiftExpression ( relationalOp shiftExpression )* ;
     public final void relationalExpression() throws RecognitionException {
         int relationalExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 80) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:758:5: ( shiftExpression ( relationalOp shiftExpression )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:758:9: shiftExpression ( relationalOp shiftExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:783:5: ( shiftExpression ( relationalOp shiftExpression )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:783:9: shiftExpression ( relationalOp shiftExpression )*
             {
-            pushFollow(FOLLOW_shiftExpression_in_relationalExpression5954);
+            pushFollow(FOLLOW_shiftExpression_in_relationalExpression6117);
             shiftExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:759:9: ( relationalOp shiftExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:784:9: ( relationalOp shiftExpression )*
             loop120:
             do {
                 int alt120=2;
@@ -10498,15 +10566,15 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt120) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:759:10: relationalOp shiftExpression
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:784:10: relationalOp shiftExpression
             	    {
-            	    pushFollow(FOLLOW_relationalOp_in_relationalExpression5965);
+            	    pushFollow(FOLLOW_relationalOp_in_relationalExpression6128);
             	    relationalOp();
 
             	    state._fsp--;
             	    if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_shiftExpression_in_relationalExpression5967);
+            	    pushFollow(FOLLOW_shiftExpression_in_relationalExpression6130);
             	    shiftExpression();
 
             	    state._fsp--;
@@ -10541,14 +10609,14 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "relationalOp"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:763:1: relationalOp : ( '<' '=' | '>' '=' | '<' | '>' );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:788:1: relationalOp : ( '<' '=' | '>' '=' | '<' | '>' );
     public final void relationalOp() throws RecognitionException {
         int relationalOp_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 81) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:764:5: ( '<' '=' | '>' '=' | '<' | '>' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:789:5: ( '<' '=' | '>' '=' | '<' | '>' )
             int alt121=4;
             int LA121_0 = input.LA(1);
 
@@ -10598,34 +10666,34 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt121) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:764:10: '<' '='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:789:10: '<' '='
                     {
-                    match(input,LT,FOLLOW_LT_in_relationalOp5999); if (state.failed) return ;
+                    match(input,LT,FOLLOW_LT_in_relationalOp6162); if (state.failed) return ;
 
-                    match(input,EQ,FOLLOW_EQ_in_relationalOp6001); if (state.failed) return ;
+                    match(input,EQ,FOLLOW_EQ_in_relationalOp6164); if (state.failed) return ;
 
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:765:10: '>' '='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:790:10: '>' '='
                     {
-                    match(input,GT,FOLLOW_GT_in_relationalOp6012); if (state.failed) return ;
+                    match(input,GT,FOLLOW_GT_in_relationalOp6175); if (state.failed) return ;
 
-                    match(input,EQ,FOLLOW_EQ_in_relationalOp6014); if (state.failed) return ;
+                    match(input,EQ,FOLLOW_EQ_in_relationalOp6177); if (state.failed) return ;
 
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:766:9: '<'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:791:9: '<'
                     {
-                    match(input,LT,FOLLOW_LT_in_relationalOp6024); if (state.failed) return ;
+                    match(input,LT,FOLLOW_LT_in_relationalOp6187); if (state.failed) return ;
 
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:767:9: '>'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:792:9: '>'
                     {
-                    match(input,GT,FOLLOW_GT_in_relationalOp6034); if (state.failed) return ;
+                    match(input,GT,FOLLOW_GT_in_relationalOp6197); if (state.failed) return ;
 
                     }
                     break;
@@ -10649,23 +10717,23 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "shiftExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:770:1: shiftExpression : additiveExpression ( shiftOp additiveExpression )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:795:1: shiftExpression : additiveExpression ( shiftOp additiveExpression )* ;
     public final void shiftExpression() throws RecognitionException {
         int shiftExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 82) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:771:5: ( additiveExpression ( shiftOp additiveExpression )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:771:9: additiveExpression ( shiftOp additiveExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:796:5: ( additiveExpression ( shiftOp additiveExpression )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:796:9: additiveExpression ( shiftOp additiveExpression )*
             {
-            pushFollow(FOLLOW_additiveExpression_in_shiftExpression6054);
+            pushFollow(FOLLOW_additiveExpression_in_shiftExpression6217);
             additiveExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:772:9: ( shiftOp additiveExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:797:9: ( shiftOp additiveExpression )*
             loop122:
             do {
                 int alt122=2;
@@ -10714,15 +10782,15 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt122) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:772:10: shiftOp additiveExpression
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:797:10: shiftOp additiveExpression
             	    {
-            	    pushFollow(FOLLOW_shiftOp_in_shiftExpression6065);
+            	    pushFollow(FOLLOW_shiftOp_in_shiftExpression6228);
             	    shiftOp();
 
             	    state._fsp--;
             	    if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_additiveExpression_in_shiftExpression6067);
+            	    pushFollow(FOLLOW_additiveExpression_in_shiftExpression6230);
             	    additiveExpression();
 
             	    state._fsp--;
@@ -10757,14 +10825,14 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "shiftOp"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:777:1: shiftOp : ( '<' '<' | '>' '>' '>' | '>' '>' );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:802:1: shiftOp : ( '<' '<' | '>' '>' '>' | '>' '>' );
     public final void shiftOp() throws RecognitionException {
         int shiftOp_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 83) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:778:5: ( '<' '<' | '>' '>' '>' | '>' '>' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:803:5: ( '<' '<' | '>' '>' '>' | '>' '>' )
             int alt123=3;
             int LA123_0 = input.LA(1);
 
@@ -10811,31 +10879,31 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt123) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:778:10: '<' '<'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:803:10: '<' '<'
                     {
-                    match(input,LT,FOLLOW_LT_in_shiftOp6100); if (state.failed) return ;
+                    match(input,LT,FOLLOW_LT_in_shiftOp6263); if (state.failed) return ;
 
-                    match(input,LT,FOLLOW_LT_in_shiftOp6102); if (state.failed) return ;
+                    match(input,LT,FOLLOW_LT_in_shiftOp6265); if (state.failed) return ;
 
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:779:10: '>' '>' '>'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:804:10: '>' '>' '>'
                     {
-                    match(input,GT,FOLLOW_GT_in_shiftOp6113); if (state.failed) return ;
+                    match(input,GT,FOLLOW_GT_in_shiftOp6276); if (state.failed) return ;
 
-                    match(input,GT,FOLLOW_GT_in_shiftOp6115); if (state.failed) return ;
+                    match(input,GT,FOLLOW_GT_in_shiftOp6278); if (state.failed) return ;
 
-                    match(input,GT,FOLLOW_GT_in_shiftOp6117); if (state.failed) return ;
+                    match(input,GT,FOLLOW_GT_in_shiftOp6280); if (state.failed) return ;
 
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:780:10: '>' '>'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:805:10: '>' '>'
                     {
-                    match(input,GT,FOLLOW_GT_in_shiftOp6128); if (state.failed) return ;
+                    match(input,GT,FOLLOW_GT_in_shiftOp6291); if (state.failed) return ;
 
-                    match(input,GT,FOLLOW_GT_in_shiftOp6130); if (state.failed) return ;
+                    match(input,GT,FOLLOW_GT_in_shiftOp6293); if (state.failed) return ;
 
                     }
                     break;
@@ -10859,23 +10927,23 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "additiveExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:784:1: additiveExpression : multiplicativeExpression ( ( '+' | '-' ) multiplicativeExpression )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:809:1: additiveExpression : multiplicativeExpression ( ( '+' | '-' ) multiplicativeExpression )* ;
     public final void additiveExpression() throws RecognitionException {
         int additiveExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 84) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:785:5: ( multiplicativeExpression ( ( '+' | '-' ) multiplicativeExpression )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:785:9: multiplicativeExpression ( ( '+' | '-' ) multiplicativeExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:810:5: ( multiplicativeExpression ( ( '+' | '-' ) multiplicativeExpression )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:810:9: multiplicativeExpression ( ( '+' | '-' ) multiplicativeExpression )*
             {
-            pushFollow(FOLLOW_multiplicativeExpression_in_additiveExpression6151);
+            pushFollow(FOLLOW_multiplicativeExpression_in_additiveExpression6314);
             multiplicativeExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:786:9: ( ( '+' | '-' ) multiplicativeExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:811:9: ( ( '+' | '-' ) multiplicativeExpression )*
             loop124:
             do {
                 int alt124=2;
@@ -10888,7 +10956,7 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt124) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:787:13: ( '+' | '-' ) multiplicativeExpression
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:812:13: ( '+' | '-' ) multiplicativeExpression
             	    {
             	    if ( input.LA(1)==PLUS||input.LA(1)==SUB ) {
             	        input.consume();
@@ -10902,7 +10970,7 @@ public class RJavaSymbolTableParser extends Parser {
             	    }
 
 
-            	    pushFollow(FOLLOW_multiplicativeExpression_in_additiveExpression6228);
+            	    pushFollow(FOLLOW_multiplicativeExpression_in_additiveExpression6391);
             	    multiplicativeExpression();
 
             	    state._fsp--;
@@ -10937,23 +11005,23 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "multiplicativeExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:794:1: multiplicativeExpression : unaryExpression ( ( '*' | '/' | '%' ) unaryExpression )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:819:1: multiplicativeExpression : unaryExpression ( ( '*' | '/' | '%' ) unaryExpression )* ;
     public final void multiplicativeExpression() throws RecognitionException {
         int multiplicativeExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 85) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:795:5: ( unaryExpression ( ( '*' | '/' | '%' ) unaryExpression )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:796:9: unaryExpression ( ( '*' | '/' | '%' ) unaryExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:820:5: ( unaryExpression ( ( '*' | '/' | '%' ) unaryExpression )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:821:9: unaryExpression ( ( '*' | '/' | '%' ) unaryExpression )*
             {
-            pushFollow(FOLLOW_unaryExpression_in_multiplicativeExpression6266);
+            pushFollow(FOLLOW_unaryExpression_in_multiplicativeExpression6429);
             unaryExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:797:9: ( ( '*' | '/' | '%' ) unaryExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:822:9: ( ( '*' | '/' | '%' ) unaryExpression )*
             loop125:
             do {
                 int alt125=2;
@@ -10966,7 +11034,7 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt125) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:798:13: ( '*' | '/' | '%' ) unaryExpression
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:823:13: ( '*' | '/' | '%' ) unaryExpression
             	    {
             	    if ( input.LA(1)==PERCENT||input.LA(1)==SLASH||input.LA(1)==STAR ) {
             	        input.consume();
@@ -10980,7 +11048,7 @@ public class RJavaSymbolTableParser extends Parser {
             	    }
 
 
-            	    pushFollow(FOLLOW_unaryExpression_in_multiplicativeExpression6361);
+            	    pushFollow(FOLLOW_unaryExpression_in_multiplicativeExpression6524);
             	    unaryExpression();
 
             	    state._fsp--;
@@ -11015,14 +11083,14 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "unaryExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:810:1: unaryExpression : ( '+' unaryExpression | '-' unaryExpression | '++' unaryExpression | '--' unaryExpression | unaryExpressionNotPlusMinus );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:835:1: unaryExpression : ( '+' unaryExpression | '-' unaryExpression | '++' unaryExpression | '--' unaryExpression | unaryExpressionNotPlusMinus );
     public final void unaryExpression() throws RecognitionException {
         int unaryExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 86) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:811:5: ( '+' unaryExpression | '-' unaryExpression | '++' unaryExpression | '--' unaryExpression | unaryExpressionNotPlusMinus )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:836:5: ( '+' unaryExpression | '-' unaryExpression | '++' unaryExpression | '--' unaryExpression | unaryExpressionNotPlusMinus )
             int alt126=5;
             switch ( input.LA(1) ) {
             case PLUS:
@@ -11085,11 +11153,11 @@ public class RJavaSymbolTableParser extends Parser {
 
             switch (alt126) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:811:9: '+' unaryExpression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:836:9: '+' unaryExpression
                     {
-                    match(input,PLUS,FOLLOW_PLUS_in_unaryExpression6394); if (state.failed) return ;
+                    match(input,PLUS,FOLLOW_PLUS_in_unaryExpression6557); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_unaryExpression_in_unaryExpression6397);
+                    pushFollow(FOLLOW_unaryExpression_in_unaryExpression6560);
                     unaryExpression();
 
                     state._fsp--;
@@ -11098,11 +11166,11 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:812:9: '-' unaryExpression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:837:9: '-' unaryExpression
                     {
-                    match(input,SUB,FOLLOW_SUB_in_unaryExpression6407); if (state.failed) return ;
+                    match(input,SUB,FOLLOW_SUB_in_unaryExpression6570); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_unaryExpression_in_unaryExpression6409);
+                    pushFollow(FOLLOW_unaryExpression_in_unaryExpression6572);
                     unaryExpression();
 
                     state._fsp--;
@@ -11111,11 +11179,11 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:813:9: '++' unaryExpression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:838:9: '++' unaryExpression
                     {
-                    match(input,PLUSPLUS,FOLLOW_PLUSPLUS_in_unaryExpression6419); if (state.failed) return ;
+                    match(input,PLUSPLUS,FOLLOW_PLUSPLUS_in_unaryExpression6582); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_unaryExpression_in_unaryExpression6421);
+                    pushFollow(FOLLOW_unaryExpression_in_unaryExpression6584);
                     unaryExpression();
 
                     state._fsp--;
@@ -11124,11 +11192,11 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:814:9: '--' unaryExpression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:839:9: '--' unaryExpression
                     {
-                    match(input,SUBSUB,FOLLOW_SUBSUB_in_unaryExpression6431); if (state.failed) return ;
+                    match(input,SUBSUB,FOLLOW_SUBSUB_in_unaryExpression6594); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_unaryExpression_in_unaryExpression6433);
+                    pushFollow(FOLLOW_unaryExpression_in_unaryExpression6596);
                     unaryExpression();
 
                     state._fsp--;
@@ -11137,9 +11205,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 5 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:815:9: unaryExpressionNotPlusMinus
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:840:9: unaryExpressionNotPlusMinus
                     {
-                    pushFollow(FOLLOW_unaryExpressionNotPlusMinus_in_unaryExpression6443);
+                    pushFollow(FOLLOW_unaryExpressionNotPlusMinus_in_unaryExpression6606);
                     unaryExpressionNotPlusMinus();
 
                     state._fsp--;
@@ -11167,14 +11235,14 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "unaryExpressionNotPlusMinus"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:818:1: unaryExpressionNotPlusMinus : ( '~' unaryExpression | '!' unaryExpression | castExpression | primary ( selector )* ( '++' | '--' )? );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:843:1: unaryExpressionNotPlusMinus : ( '~' unaryExpression | '!' unaryExpression | castExpression | primary ( selector )* ( '++' | '--' )? );
     public final void unaryExpressionNotPlusMinus() throws RecognitionException {
         int unaryExpressionNotPlusMinus_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 87) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:819:5: ( '~' unaryExpression | '!' unaryExpression | castExpression | primary ( selector )* ( '++' | '--' )? )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:844:5: ( '~' unaryExpression | '!' unaryExpression | castExpression | primary ( selector )* ( '++' | '--' )? )
             int alt129=4;
             switch ( input.LA(1) ) {
             case TILDE:
@@ -11244,11 +11312,11 @@ public class RJavaSymbolTableParser extends Parser {
 
             switch (alt129) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:819:9: '~' unaryExpression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:844:9: '~' unaryExpression
                     {
-                    match(input,TILDE,FOLLOW_TILDE_in_unaryExpressionNotPlusMinus6463); if (state.failed) return ;
+                    match(input,TILDE,FOLLOW_TILDE_in_unaryExpressionNotPlusMinus6626); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_unaryExpression_in_unaryExpressionNotPlusMinus6465);
+                    pushFollow(FOLLOW_unaryExpression_in_unaryExpressionNotPlusMinus6628);
                     unaryExpression();
 
                     state._fsp--;
@@ -11257,11 +11325,11 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:820:9: '!' unaryExpression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:845:9: '!' unaryExpression
                     {
-                    match(input,BANG,FOLLOW_BANG_in_unaryExpressionNotPlusMinus6475); if (state.failed) return ;
+                    match(input,BANG,FOLLOW_BANG_in_unaryExpressionNotPlusMinus6638); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_unaryExpression_in_unaryExpressionNotPlusMinus6477);
+                    pushFollow(FOLLOW_unaryExpression_in_unaryExpressionNotPlusMinus6640);
                     unaryExpression();
 
                     state._fsp--;
@@ -11270,9 +11338,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:821:9: castExpression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:846:9: castExpression
                     {
-                    pushFollow(FOLLOW_castExpression_in_unaryExpressionNotPlusMinus6487);
+                    pushFollow(FOLLOW_castExpression_in_unaryExpressionNotPlusMinus6650);
                     castExpression();
 
                     state._fsp--;
@@ -11281,15 +11349,15 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:822:9: primary ( selector )* ( '++' | '--' )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:847:9: primary ( selector )* ( '++' | '--' )?
                     {
-                    pushFollow(FOLLOW_primary_in_unaryExpressionNotPlusMinus6497);
+                    pushFollow(FOLLOW_primary_in_unaryExpressionNotPlusMinus6660);
                     primary();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:823:9: ( selector )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:848:9: ( selector )*
                     loop127:
                     do {
                         int alt127=2;
@@ -11302,9 +11370,9 @@ public class RJavaSymbolTableParser extends Parser {
 
                         switch (alt127) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:823:10: selector
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:848:10: selector
                     	    {
-                    	    pushFollow(FOLLOW_selector_in_unaryExpressionNotPlusMinus6508);
+                    	    pushFollow(FOLLOW_selector_in_unaryExpressionNotPlusMinus6671);
                     	    selector();
 
                     	    state._fsp--;
@@ -11319,7 +11387,7 @@ public class RJavaSymbolTableParser extends Parser {
                     } while (true);
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:825:9: ( '++' | '--' )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:850:9: ( '++' | '--' )?
                     int alt128=2;
                     int LA128_0 = input.LA(1);
 
@@ -11370,14 +11438,14 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "castExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:830:1: castExpression : ( '(' primitiveType ')' unaryExpression | '(' type ')' unaryExpressionNotPlusMinus );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:855:1: castExpression : ( '(' primitiveType ')' unaryExpression | '(' type ')' unaryExpressionNotPlusMinus );
     public final void castExpression() throws RecognitionException {
         int castExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 88) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:831:5: ( '(' primitiveType ')' unaryExpression | '(' type ')' unaryExpressionNotPlusMinus )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:856:5: ( '(' primitiveType ')' unaryExpression | '(' type ')' unaryExpressionNotPlusMinus )
             int alt130=2;
             int LA130_0 = input.LA(1);
 
@@ -11409,19 +11477,19 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt130) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:831:9: '(' primitiveType ')' unaryExpression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:856:9: '(' primitiveType ')' unaryExpression
                     {
-                    match(input,LPAREN,FOLLOW_LPAREN_in_castExpression6578); if (state.failed) return ;
+                    match(input,LPAREN,FOLLOW_LPAREN_in_castExpression6741); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_primitiveType_in_castExpression6580);
+                    pushFollow(FOLLOW_primitiveType_in_castExpression6743);
                     primitiveType();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,RPAREN,FOLLOW_RPAREN_in_castExpression6582); if (state.failed) return ;
+                    match(input,RPAREN,FOLLOW_RPAREN_in_castExpression6745); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_unaryExpression_in_castExpression6584);
+                    pushFollow(FOLLOW_unaryExpression_in_castExpression6747);
                     unaryExpression();
 
                     state._fsp--;
@@ -11430,19 +11498,19 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:832:9: '(' type ')' unaryExpressionNotPlusMinus
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:857:9: '(' type ')' unaryExpressionNotPlusMinus
                     {
-                    match(input,LPAREN,FOLLOW_LPAREN_in_castExpression6594); if (state.failed) return ;
+                    match(input,LPAREN,FOLLOW_LPAREN_in_castExpression6757); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_type_in_castExpression6596);
+                    pushFollow(FOLLOW_type_in_castExpression6759);
                     type();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,RPAREN,FOLLOW_RPAREN_in_castExpression6598); if (state.failed) return ;
+                    match(input,RPAREN,FOLLOW_RPAREN_in_castExpression6761); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_unaryExpressionNotPlusMinus_in_castExpression6600);
+                    pushFollow(FOLLOW_unaryExpressionNotPlusMinus_in_castExpression6763);
                     unaryExpressionNotPlusMinus();
 
                     state._fsp--;
@@ -11470,14 +11538,14 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "primary"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:838:1: primary : ( parExpression | 'this' ( '.' IDENTIFIER )* ( identifierSuffix )? | IDENTIFIER ( '.' IDENTIFIER )* ( identifierSuffix )? | 'super' superSuffix | literal | creator | primitiveType ( '[' ']' )* '.' 'class' | 'void' '.' 'class' );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:863:1: primary : ( parExpression | 'this' ( '.' IDENTIFIER )* ( identifierSuffix )? | IDENTIFIER ( '.' IDENTIFIER )* ( identifierSuffix )? | 'super' superSuffix | literal | creator | primitiveType ( '[' ']' )* '.' 'class' | 'void' '.' 'class' );
     public final void primary() throws RecognitionException {
         int primary_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 89) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:839:5: ( parExpression | 'this' ( '.' IDENTIFIER )* ( identifierSuffix )? | IDENTIFIER ( '.' IDENTIFIER )* ( identifierSuffix )? | 'super' superSuffix | literal | creator | primitiveType ( '[' ']' )* '.' 'class' | 'void' '.' 'class' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:864:5: ( parExpression | 'this' ( '.' IDENTIFIER )* ( identifierSuffix )? | IDENTIFIER ( '.' IDENTIFIER )* ( identifierSuffix )? | 'super' superSuffix | literal | creator | primitiveType ( '[' ']' )* '.' 'class' | 'void' '.' 'class' )
             int alt136=8;
             switch ( input.LA(1) ) {
             case LPAREN:
@@ -11546,9 +11614,9 @@ public class RJavaSymbolTableParser extends Parser {
 
             switch (alt136) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:839:9: parExpression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:864:9: parExpression
                     {
-                    pushFollow(FOLLOW_parExpression_in_primary6622);
+                    pushFollow(FOLLOW_parExpression_in_primary6785);
                     parExpression();
 
                     state._fsp--;
@@ -11557,11 +11625,11 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:840:9: 'this' ( '.' IDENTIFIER )* ( identifierSuffix )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:865:9: 'this' ( '.' IDENTIFIER )* ( identifierSuffix )?
                     {
-                    match(input,THIS,FOLLOW_THIS_in_primary6644); if (state.failed) return ;
+                    match(input,THIS,FOLLOW_THIS_in_primary6807); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:841:9: ( '.' IDENTIFIER )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:866:9: ( '.' IDENTIFIER )*
                     loop131:
                     do {
                         int alt131=2;
@@ -11586,11 +11654,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                         switch (alt131) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:841:10: '.' IDENTIFIER
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:866:10: '.' IDENTIFIER
                     	    {
-                    	    match(input,DOT,FOLLOW_DOT_in_primary6655); if (state.failed) return ;
+                    	    match(input,DOT,FOLLOW_DOT_in_primary6818); if (state.failed) return ;
 
-                    	    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_primary6657); if (state.failed) return ;
+                    	    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_primary6820); if (state.failed) return ;
 
                     	    }
                     	    break;
@@ -11601,7 +11669,7 @@ public class RJavaSymbolTableParser extends Parser {
                     } while (true);
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:843:9: ( identifierSuffix )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:868:9: ( identifierSuffix )?
                     int alt132=2;
                     switch ( input.LA(1) ) {
                         case LBRACKET:
@@ -11631,9 +11699,9 @@ public class RJavaSymbolTableParser extends Parser {
 
                     switch (alt132) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:843:10: identifierSuffix
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:868:10: identifierSuffix
                             {
-                            pushFollow(FOLLOW_identifierSuffix_in_primary6679);
+                            pushFollow(FOLLOW_identifierSuffix_in_primary6842);
                             identifierSuffix();
 
                             state._fsp--;
@@ -11648,11 +11716,11 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:845:9: IDENTIFIER ( '.' IDENTIFIER )* ( identifierSuffix )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:870:9: IDENTIFIER ( '.' IDENTIFIER )* ( identifierSuffix )?
                     {
-                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_primary6700); if (state.failed) return ;
+                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_primary6863); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:846:9: ( '.' IDENTIFIER )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:871:9: ( '.' IDENTIFIER )*
                     loop133:
                     do {
                         int alt133=2;
@@ -11677,11 +11745,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                         switch (alt133) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:846:10: '.' IDENTIFIER
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:871:10: '.' IDENTIFIER
                     	    {
-                    	    match(input,DOT,FOLLOW_DOT_in_primary6711); if (state.failed) return ;
+                    	    match(input,DOT,FOLLOW_DOT_in_primary6874); if (state.failed) return ;
 
-                    	    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_primary6713); if (state.failed) return ;
+                    	    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_primary6876); if (state.failed) return ;
 
                     	    }
                     	    break;
@@ -11692,7 +11760,7 @@ public class RJavaSymbolTableParser extends Parser {
                     } while (true);
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:848:9: ( identifierSuffix )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:873:9: ( identifierSuffix )?
                     int alt134=2;
                     switch ( input.LA(1) ) {
                         case LBRACKET:
@@ -11722,9 +11790,9 @@ public class RJavaSymbolTableParser extends Parser {
 
                     switch (alt134) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:848:10: identifierSuffix
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:873:10: identifierSuffix
                             {
-                            pushFollow(FOLLOW_identifierSuffix_in_primary6735);
+                            pushFollow(FOLLOW_identifierSuffix_in_primary6898);
                             identifierSuffix();
 
                             state._fsp--;
@@ -11739,11 +11807,11 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:850:9: 'super' superSuffix
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:875:9: 'super' superSuffix
                     {
-                    match(input,SUPER,FOLLOW_SUPER_in_primary6756); if (state.failed) return ;
+                    match(input,SUPER,FOLLOW_SUPER_in_primary6919); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_superSuffix_in_primary6766);
+                    pushFollow(FOLLOW_superSuffix_in_primary6929);
                     superSuffix();
 
                     state._fsp--;
@@ -11752,9 +11820,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 5 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:852:9: literal
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:877:9: literal
                     {
-                    pushFollow(FOLLOW_literal_in_primary6776);
+                    pushFollow(FOLLOW_literal_in_primary6939);
                     literal();
 
                     state._fsp--;
@@ -11763,9 +11831,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 6 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:853:9: creator
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:878:9: creator
                     {
-                    pushFollow(FOLLOW_creator_in_primary6786);
+                    pushFollow(FOLLOW_creator_in_primary6949);
                     creator();
 
                     state._fsp--;
@@ -11774,15 +11842,15 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 7 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:854:9: primitiveType ( '[' ']' )* '.' 'class'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:879:9: primitiveType ( '[' ']' )* '.' 'class'
                     {
-                    pushFollow(FOLLOW_primitiveType_in_primary6796);
+                    pushFollow(FOLLOW_primitiveType_in_primary6959);
                     primitiveType();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:855:9: ( '[' ']' )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:880:9: ( '[' ']' )*
                     loop135:
                     do {
                         int alt135=2;
@@ -11795,11 +11863,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                         switch (alt135) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:855:10: '[' ']'
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:880:10: '[' ']'
                     	    {
-                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_primary6807); if (state.failed) return ;
+                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_primary6970); if (state.failed) return ;
 
-                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_primary6809); if (state.failed) return ;
+                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_primary6972); if (state.failed) return ;
 
                     	    }
                     	    break;
@@ -11810,20 +11878,20 @@ public class RJavaSymbolTableParser extends Parser {
                     } while (true);
 
 
-                    match(input,DOT,FOLLOW_DOT_in_primary6830); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_primary6993); if (state.failed) return ;
 
-                    match(input,CLASS,FOLLOW_CLASS_in_primary6832); if (state.failed) return ;
+                    match(input,CLASS,FOLLOW_CLASS_in_primary6995); if (state.failed) return ;
 
                     }
                     break;
                 case 8 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:858:9: 'void' '.' 'class'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:883:9: 'void' '.' 'class'
                     {
-                    match(input,VOID,FOLLOW_VOID_in_primary6842); if (state.failed) return ;
+                    match(input,VOID,FOLLOW_VOID_in_primary7005); if (state.failed) return ;
 
-                    match(input,DOT,FOLLOW_DOT_in_primary6844); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_primary7007); if (state.failed) return ;
 
-                    match(input,CLASS,FOLLOW_CLASS_in_primary6846); if (state.failed) return ;
+                    match(input,CLASS,FOLLOW_CLASS_in_primary7009); if (state.failed) return ;
 
                     }
                     break;
@@ -11847,14 +11915,14 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "superSuffix"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:862:1: superSuffix : ( arguments | '.' ( typeArguments )? IDENTIFIER ( arguments )? );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:887:1: superSuffix : ( arguments | '.' ( typeArguments )? IDENTIFIER ( arguments )? );
     public final void superSuffix() throws RecognitionException {
         int superSuffix_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 90) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:863:5: ( arguments | '.' ( typeArguments )? IDENTIFIER ( arguments )? )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:888:5: ( arguments | '.' ( typeArguments )? IDENTIFIER ( arguments )? )
             int alt139=2;
             int LA139_0 = input.LA(1);
 
@@ -11874,9 +11942,9 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt139) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:863:9: arguments
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:888:9: arguments
                     {
-                    pushFollow(FOLLOW_arguments_in_superSuffix6872);
+                    pushFollow(FOLLOW_arguments_in_superSuffix7035);
                     arguments();
 
                     state._fsp--;
@@ -11885,11 +11953,11 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:864:9: '.' ( typeArguments )? IDENTIFIER ( arguments )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:889:9: '.' ( typeArguments )? IDENTIFIER ( arguments )?
                     {
-                    match(input,DOT,FOLLOW_DOT_in_superSuffix6882); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_superSuffix7045); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:864:13: ( typeArguments )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:889:13: ( typeArguments )?
                     int alt137=2;
                     int LA137_0 = input.LA(1);
 
@@ -11898,9 +11966,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     switch (alt137) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:864:14: typeArguments
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:889:14: typeArguments
                             {
-                            pushFollow(FOLLOW_typeArguments_in_superSuffix6885);
+                            pushFollow(FOLLOW_typeArguments_in_superSuffix7048);
                             typeArguments();
 
                             state._fsp--;
@@ -11912,9 +11980,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
 
 
-                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_superSuffix6906); if (state.failed) return ;
+                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_superSuffix7069); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:867:9: ( arguments )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:892:9: ( arguments )?
                     int alt138=2;
                     int LA138_0 = input.LA(1);
 
@@ -11923,9 +11991,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     switch (alt138) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:867:10: arguments
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:892:10: arguments
                             {
-                            pushFollow(FOLLOW_arguments_in_superSuffix6917);
+                            pushFollow(FOLLOW_arguments_in_superSuffix7080);
                             arguments();
 
                             state._fsp--;
@@ -11959,14 +12027,14 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "identifierSuffix"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:872:1: identifierSuffix : ( ( '[' ']' )+ '.' 'class' | ( '[' expression ']' )+ | arguments | '.' 'class' | '.' nonWildcardTypeArguments IDENTIFIER arguments | '.' 'this' | '.' 'super' arguments | innerCreator );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:897:1: identifierSuffix : ( ( '[' ']' )+ '.' 'class' | ( '[' expression ']' )+ | arguments | '.' 'class' | '.' nonWildcardTypeArguments IDENTIFIER arguments | '.' 'this' | '.' 'super' arguments | innerCreator );
     public final void identifierSuffix() throws RecognitionException {
         int identifierSuffix_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 91) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:873:5: ( ( '[' ']' )+ '.' 'class' | ( '[' expression ']' )+ | arguments | '.' 'class' | '.' nonWildcardTypeArguments IDENTIFIER arguments | '.' 'this' | '.' 'super' arguments | innerCreator )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:898:5: ( ( '[' ']' )+ '.' 'class' | ( '[' expression ']' )+ | arguments | '.' 'class' | '.' nonWildcardTypeArguments IDENTIFIER arguments | '.' 'this' | '.' 'super' arguments | innerCreator )
             int alt142=8;
             switch ( input.LA(1) ) {
             case LBRACKET:
@@ -12044,9 +12112,9 @@ public class RJavaSymbolTableParser extends Parser {
 
             switch (alt142) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:873:9: ( '[' ']' )+ '.' 'class'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:898:9: ( '[' ']' )+ '.' 'class'
                     {
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:873:9: ( '[' ']' )+
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:898:9: ( '[' ']' )+
                     int cnt140=0;
                     loop140:
                     do {
@@ -12060,11 +12128,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                         switch (alt140) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:873:10: '[' ']'
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:898:10: '[' ']'
                     	    {
-                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_identifierSuffix6950); if (state.failed) return ;
+                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_identifierSuffix7113); if (state.failed) return ;
 
-                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_identifierSuffix6952); if (state.failed) return ;
+                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_identifierSuffix7115); if (state.failed) return ;
 
                     	    }
                     	    break;
@@ -12080,16 +12148,16 @@ public class RJavaSymbolTableParser extends Parser {
                     } while (true);
 
 
-                    match(input,DOT,FOLLOW_DOT_in_identifierSuffix6973); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_identifierSuffix7136); if (state.failed) return ;
 
-                    match(input,CLASS,FOLLOW_CLASS_in_identifierSuffix6975); if (state.failed) return ;
+                    match(input,CLASS,FOLLOW_CLASS_in_identifierSuffix7138); if (state.failed) return ;
 
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:876:9: ( '[' expression ']' )+
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:901:9: ( '[' expression ']' )+
                     {
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:876:9: ( '[' expression ']' )+
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:901:9: ( '[' expression ']' )+
                     int cnt141=0;
                     loop141:
                     do {
@@ -12109,17 +12177,17 @@ public class RJavaSymbolTableParser extends Parser {
 
                         switch (alt141) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:876:10: '[' expression ']'
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:901:10: '[' expression ']'
                     	    {
-                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_identifierSuffix6986); if (state.failed) return ;
+                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_identifierSuffix7149); if (state.failed) return ;
 
-                    	    pushFollow(FOLLOW_expression_in_identifierSuffix6988);
+                    	    pushFollow(FOLLOW_expression_in_identifierSuffix7151);
                     	    expression();
 
                     	    state._fsp--;
                     	    if (state.failed) return ;
 
-                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_identifierSuffix6990); if (state.failed) return ;
+                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_identifierSuffix7153); if (state.failed) return ;
 
                     	    }
                     	    break;
@@ -12138,9 +12206,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:878:9: arguments
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:903:9: arguments
                     {
-                    pushFollow(FOLLOW_arguments_in_identifierSuffix7011);
+                    pushFollow(FOLLOW_arguments_in_identifierSuffix7174);
                     arguments();
 
                     state._fsp--;
@@ -12149,28 +12217,28 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:879:9: '.' 'class'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:904:9: '.' 'class'
                     {
-                    match(input,DOT,FOLLOW_DOT_in_identifierSuffix7021); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_identifierSuffix7184); if (state.failed) return ;
 
-                    match(input,CLASS,FOLLOW_CLASS_in_identifierSuffix7023); if (state.failed) return ;
+                    match(input,CLASS,FOLLOW_CLASS_in_identifierSuffix7186); if (state.failed) return ;
 
                     }
                     break;
                 case 5 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:880:9: '.' nonWildcardTypeArguments IDENTIFIER arguments
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:905:9: '.' nonWildcardTypeArguments IDENTIFIER arguments
                     {
-                    match(input,DOT,FOLLOW_DOT_in_identifierSuffix7033); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_identifierSuffix7196); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_nonWildcardTypeArguments_in_identifierSuffix7035);
+                    pushFollow(FOLLOW_nonWildcardTypeArguments_in_identifierSuffix7198);
                     nonWildcardTypeArguments();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_identifierSuffix7037); if (state.failed) return ;
+                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_identifierSuffix7200); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_arguments_in_identifierSuffix7039);
+                    pushFollow(FOLLOW_arguments_in_identifierSuffix7202);
                     arguments();
 
                     state._fsp--;
@@ -12179,22 +12247,22 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 6 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:881:9: '.' 'this'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:906:9: '.' 'this'
                     {
-                    match(input,DOT,FOLLOW_DOT_in_identifierSuffix7049); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_identifierSuffix7212); if (state.failed) return ;
 
-                    match(input,THIS,FOLLOW_THIS_in_identifierSuffix7051); if (state.failed) return ;
+                    match(input,THIS,FOLLOW_THIS_in_identifierSuffix7214); if (state.failed) return ;
 
                     }
                     break;
                 case 7 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:882:9: '.' 'super' arguments
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:907:9: '.' 'super' arguments
                     {
-                    match(input,DOT,FOLLOW_DOT_in_identifierSuffix7061); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_identifierSuffix7224); if (state.failed) return ;
 
-                    match(input,SUPER,FOLLOW_SUPER_in_identifierSuffix7063); if (state.failed) return ;
+                    match(input,SUPER,FOLLOW_SUPER_in_identifierSuffix7226); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_arguments_in_identifierSuffix7065);
+                    pushFollow(FOLLOW_arguments_in_identifierSuffix7228);
                     arguments();
 
                     state._fsp--;
@@ -12203,9 +12271,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 8 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:883:9: innerCreator
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:908:9: innerCreator
                     {
-                    pushFollow(FOLLOW_innerCreator_in_identifierSuffix7075);
+                    pushFollow(FOLLOW_innerCreator_in_identifierSuffix7238);
                     innerCreator();
 
                     state._fsp--;
@@ -12233,14 +12301,14 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "selector"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:887:1: selector : ( '.' IDENTIFIER ( arguments )? | '.' 'this' | '.' 'super' superSuffix | innerCreator | '[' expression ']' );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:912:1: selector : ( '.' IDENTIFIER ( arguments )? | '.' 'this' | '.' 'super' superSuffix | innerCreator | '[' expression ']' );
     public final void selector() throws RecognitionException {
         int selector_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 92) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:888:5: ( '.' IDENTIFIER ( arguments )? | '.' 'this' | '.' 'super' superSuffix | innerCreator | '[' expression ']' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:913:5: ( '.' IDENTIFIER ( arguments )? | '.' 'this' | '.' 'super' superSuffix | innerCreator | '[' expression ']' )
             int alt144=5;
             int LA144_0 = input.LA(1);
 
@@ -12289,13 +12357,13 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt144) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:888:9: '.' IDENTIFIER ( arguments )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:913:9: '.' IDENTIFIER ( arguments )?
                     {
-                    match(input,DOT,FOLLOW_DOT_in_selector7097); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_selector7260); if (state.failed) return ;
 
-                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_selector7099); if (state.failed) return ;
+                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_selector7262); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:889:9: ( arguments )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:914:9: ( arguments )?
                     int alt143=2;
                     int LA143_0 = input.LA(1);
 
@@ -12304,9 +12372,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     switch (alt143) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:889:10: arguments
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:914:10: arguments
                             {
-                            pushFollow(FOLLOW_arguments_in_selector7110);
+                            pushFollow(FOLLOW_arguments_in_selector7273);
                             arguments();
 
                             state._fsp--;
@@ -12321,22 +12389,22 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:891:9: '.' 'this'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:916:9: '.' 'this'
                     {
-                    match(input,DOT,FOLLOW_DOT_in_selector7131); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_selector7294); if (state.failed) return ;
 
-                    match(input,THIS,FOLLOW_THIS_in_selector7133); if (state.failed) return ;
+                    match(input,THIS,FOLLOW_THIS_in_selector7296); if (state.failed) return ;
 
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:892:9: '.' 'super' superSuffix
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:917:9: '.' 'super' superSuffix
                     {
-                    match(input,DOT,FOLLOW_DOT_in_selector7143); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_selector7306); if (state.failed) return ;
 
-                    match(input,SUPER,FOLLOW_SUPER_in_selector7145); if (state.failed) return ;
+                    match(input,SUPER,FOLLOW_SUPER_in_selector7308); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_superSuffix_in_selector7155);
+                    pushFollow(FOLLOW_superSuffix_in_selector7318);
                     superSuffix();
 
                     state._fsp--;
@@ -12345,9 +12413,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:894:9: innerCreator
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:919:9: innerCreator
                     {
-                    pushFollow(FOLLOW_innerCreator_in_selector7165);
+                    pushFollow(FOLLOW_innerCreator_in_selector7328);
                     innerCreator();
 
                     state._fsp--;
@@ -12356,17 +12424,17 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 5 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:895:9: '[' expression ']'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:920:9: '[' expression ']'
                     {
-                    match(input,LBRACKET,FOLLOW_LBRACKET_in_selector7175); if (state.failed) return ;
+                    match(input,LBRACKET,FOLLOW_LBRACKET_in_selector7338); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_expression_in_selector7177);
+                    pushFollow(FOLLOW_expression_in_selector7340);
                     expression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,RBRACKET,FOLLOW_RBRACKET_in_selector7179); if (state.failed) return ;
+                    match(input,RBRACKET,FOLLOW_RBRACKET_in_selector7342); if (state.failed) return ;
 
                     }
                     break;
@@ -12390,14 +12458,14 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "creator"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:898:1: creator : ( 'new' nonWildcardTypeArguments classOrInterfaceType classCreatorRest | 'new' classOrInterfaceType classCreatorRest | arrayCreator );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:923:1: creator : ( 'new' nonWildcardTypeArguments classOrInterfaceType classCreatorRest | 'new' classOrInterfaceType classCreatorRest | arrayCreator );
     public final void creator() throws RecognitionException {
         int creator_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 93) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:899:5: ( 'new' nonWildcardTypeArguments classOrInterfaceType classCreatorRest | 'new' classOrInterfaceType classCreatorRest | arrayCreator )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:924:5: ( 'new' nonWildcardTypeArguments classOrInterfaceType classCreatorRest | 'new' classOrInterfaceType classCreatorRest | arrayCreator )
             int alt145=3;
             int LA145_0 = input.LA(1);
 
@@ -12432,23 +12500,23 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt145) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:899:9: 'new' nonWildcardTypeArguments classOrInterfaceType classCreatorRest
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:924:9: 'new' nonWildcardTypeArguments classOrInterfaceType classCreatorRest
                     {
-                    match(input,NEW,FOLLOW_NEW_in_creator7199); if (state.failed) return ;
+                    match(input,NEW,FOLLOW_NEW_in_creator7362); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_nonWildcardTypeArguments_in_creator7201);
+                    pushFollow(FOLLOW_nonWildcardTypeArguments_in_creator7364);
                     nonWildcardTypeArguments();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    pushFollow(FOLLOW_classOrInterfaceType_in_creator7203);
+                    pushFollow(FOLLOW_classOrInterfaceType_in_creator7366);
                     classOrInterfaceType();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    pushFollow(FOLLOW_classCreatorRest_in_creator7205);
+                    pushFollow(FOLLOW_classCreatorRest_in_creator7368);
                     classCreatorRest();
 
                     state._fsp--;
@@ -12457,17 +12525,17 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:900:9: 'new' classOrInterfaceType classCreatorRest
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:925:9: 'new' classOrInterfaceType classCreatorRest
                     {
-                    match(input,NEW,FOLLOW_NEW_in_creator7215); if (state.failed) return ;
+                    match(input,NEW,FOLLOW_NEW_in_creator7378); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_classOrInterfaceType_in_creator7217);
+                    pushFollow(FOLLOW_classOrInterfaceType_in_creator7380);
                     classOrInterfaceType();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    pushFollow(FOLLOW_classCreatorRest_in_creator7219);
+                    pushFollow(FOLLOW_classCreatorRest_in_creator7382);
                     classCreatorRest();
 
                     state._fsp--;
@@ -12476,9 +12544,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:901:9: arrayCreator
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:926:9: arrayCreator
                     {
-                    pushFollow(FOLLOW_arrayCreator_in_creator7229);
+                    pushFollow(FOLLOW_arrayCreator_in_creator7392);
                     arrayCreator();
 
                     state._fsp--;
@@ -12506,14 +12574,14 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "arrayCreator"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:904:1: arrayCreator : ( 'new' createdName '[' ']' ( '[' ']' )* arrayInitializer | 'new' createdName '[' expression ']' ( '[' expression ']' )* ( '[' ']' )* );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:929:1: arrayCreator : ( 'new' createdName '[' ']' ( '[' ']' )* arrayInitializer | 'new' createdName '[' expression ']' ( '[' expression ']' )* ( '[' ']' )* );
     public final void arrayCreator() throws RecognitionException {
         int arrayCreator_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 94) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:905:5: ( 'new' createdName '[' ']' ( '[' ']' )* arrayInitializer | 'new' createdName '[' expression ']' ( '[' expression ']' )* ( '[' ']' )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:930:5: ( 'new' createdName '[' ']' ( '[' ']' )* arrayInitializer | 'new' createdName '[' expression ']' ( '[' expression ']' )* ( '[' ']' )* )
             int alt149=2;
             int LA149_0 = input.LA(1);
 
@@ -12545,21 +12613,21 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt149) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:905:9: 'new' createdName '[' ']' ( '[' ']' )* arrayInitializer
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:930:9: 'new' createdName '[' ']' ( '[' ']' )* arrayInitializer
                     {
-                    match(input,NEW,FOLLOW_NEW_in_arrayCreator7249); if (state.failed) return ;
+                    match(input,NEW,FOLLOW_NEW_in_arrayCreator7412); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_createdName_in_arrayCreator7251);
+                    pushFollow(FOLLOW_createdName_in_arrayCreator7414);
                     createdName();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,LBRACKET,FOLLOW_LBRACKET_in_arrayCreator7261); if (state.failed) return ;
+                    match(input,LBRACKET,FOLLOW_LBRACKET_in_arrayCreator7424); if (state.failed) return ;
 
-                    match(input,RBRACKET,FOLLOW_RBRACKET_in_arrayCreator7263); if (state.failed) return ;
+                    match(input,RBRACKET,FOLLOW_RBRACKET_in_arrayCreator7426); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:907:9: ( '[' ']' )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:932:9: ( '[' ']' )*
                     loop146:
                     do {
                         int alt146=2;
@@ -12572,11 +12640,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                         switch (alt146) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:907:10: '[' ']'
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:932:10: '[' ']'
                     	    {
-                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_arrayCreator7274); if (state.failed) return ;
+                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_arrayCreator7437); if (state.failed) return ;
 
-                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_arrayCreator7276); if (state.failed) return ;
+                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_arrayCreator7439); if (state.failed) return ;
 
                     	    }
                     	    break;
@@ -12587,7 +12655,7 @@ public class RJavaSymbolTableParser extends Parser {
                     } while (true);
 
 
-                    pushFollow(FOLLOW_arrayInitializer_in_arrayCreator7297);
+                    pushFollow(FOLLOW_arrayInitializer_in_arrayCreator7460);
                     arrayInitializer();
 
                     state._fsp--;
@@ -12596,27 +12664,27 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:911:9: 'new' createdName '[' expression ']' ( '[' expression ']' )* ( '[' ']' )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:936:9: 'new' createdName '[' expression ']' ( '[' expression ']' )* ( '[' ']' )*
                     {
-                    match(input,NEW,FOLLOW_NEW_in_arrayCreator7308); if (state.failed) return ;
+                    match(input,NEW,FOLLOW_NEW_in_arrayCreator7471); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_createdName_in_arrayCreator7310);
+                    pushFollow(FOLLOW_createdName_in_arrayCreator7473);
                     createdName();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,LBRACKET,FOLLOW_LBRACKET_in_arrayCreator7320); if (state.failed) return ;
+                    match(input,LBRACKET,FOLLOW_LBRACKET_in_arrayCreator7483); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_expression_in_arrayCreator7322);
+                    pushFollow(FOLLOW_expression_in_arrayCreator7485);
                     expression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,RBRACKET,FOLLOW_RBRACKET_in_arrayCreator7332); if (state.failed) return ;
+                    match(input,RBRACKET,FOLLOW_RBRACKET_in_arrayCreator7495); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:914:9: ( '[' expression ']' )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:939:9: ( '[' expression ']' )*
                     loop147:
                     do {
                         int alt147=2;
@@ -12635,17 +12703,17 @@ public class RJavaSymbolTableParser extends Parser {
 
                         switch (alt147) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:914:13: '[' expression ']'
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:939:13: '[' expression ']'
                     	    {
-                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_arrayCreator7346); if (state.failed) return ;
+                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_arrayCreator7509); if (state.failed) return ;
 
-                    	    pushFollow(FOLLOW_expression_in_arrayCreator7348);
+                    	    pushFollow(FOLLOW_expression_in_arrayCreator7511);
                     	    expression();
 
                     	    state._fsp--;
                     	    if (state.failed) return ;
 
-                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_arrayCreator7362); if (state.failed) return ;
+                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_arrayCreator7525); if (state.failed) return ;
 
                     	    }
                     	    break;
@@ -12656,7 +12724,7 @@ public class RJavaSymbolTableParser extends Parser {
                     } while (true);
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:917:9: ( '[' ']' )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:942:9: ( '[' ']' )*
                     loop148:
                     do {
                         int alt148=2;
@@ -12675,11 +12743,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                         switch (alt148) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:917:10: '[' ']'
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:942:10: '[' ']'
                     	    {
-                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_arrayCreator7384); if (state.failed) return ;
+                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_arrayCreator7547); if (state.failed) return ;
 
-                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_arrayCreator7386); if (state.failed) return ;
+                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_arrayCreator7549); if (state.failed) return ;
 
                     	    }
                     	    break;
@@ -12712,14 +12780,14 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "variableInitializer"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:921:1: variableInitializer : ( arrayInitializer | expression );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:946:1: variableInitializer : ( arrayInitializer | expression );
     public final void variableInitializer() throws RecognitionException {
         int variableInitializer_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 95) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:922:5: ( arrayInitializer | expression )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:947:5: ( arrayInitializer | expression )
             int alt150=2;
             int LA150_0 = input.LA(1);
 
@@ -12739,9 +12807,9 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt150) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:922:9: arrayInitializer
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:947:9: arrayInitializer
                     {
-                    pushFollow(FOLLOW_arrayInitializer_in_variableInitializer7417);
+                    pushFollow(FOLLOW_arrayInitializer_in_variableInitializer7580);
                     arrayInitializer();
 
                     state._fsp--;
@@ -12750,9 +12818,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:923:9: expression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:948:9: expression
                     {
-                    pushFollow(FOLLOW_expression_in_variableInitializer7427);
+                    pushFollow(FOLLOW_expression_in_variableInitializer7590);
                     expression();
 
                     state._fsp--;
@@ -12780,19 +12848,19 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "arrayInitializer"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:926:1: arrayInitializer : '{' ( variableInitializer ( ',' variableInitializer )* )? ( ',' )? '}' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:951:1: arrayInitializer : '{' ( variableInitializer ( ',' variableInitializer )* )? ( ',' )? '}' ;
     public final void arrayInitializer() throws RecognitionException {
         int arrayInitializer_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 96) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:927:5: ( '{' ( variableInitializer ( ',' variableInitializer )* )? ( ',' )? '}' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:927:9: '{' ( variableInitializer ( ',' variableInitializer )* )? ( ',' )? '}'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:952:5: ( '{' ( variableInitializer ( ',' variableInitializer )* )? ( ',' )? '}' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:952:9: '{' ( variableInitializer ( ',' variableInitializer )* )? ( ',' )? '}'
             {
-            match(input,LBRACE,FOLLOW_LBRACE_in_arrayInitializer7447); if (state.failed) return ;
+            match(input,LBRACE,FOLLOW_LBRACE_in_arrayInitializer7610); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:928:13: ( variableInitializer ( ',' variableInitializer )* )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:953:13: ( variableInitializer ( ',' variableInitializer )* )?
             int alt152=2;
             int LA152_0 = input.LA(1);
 
@@ -12801,15 +12869,15 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt152) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:928:14: variableInitializer ( ',' variableInitializer )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:953:14: variableInitializer ( ',' variableInitializer )*
                     {
-                    pushFollow(FOLLOW_variableInitializer_in_arrayInitializer7463);
+                    pushFollow(FOLLOW_variableInitializer_in_arrayInitializer7626);
                     variableInitializer();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:929:17: ( ',' variableInitializer )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:954:17: ( ',' variableInitializer )*
                     loop151:
                     do {
                         int alt151=2;
@@ -12828,11 +12896,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                         switch (alt151) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:929:18: ',' variableInitializer
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:954:18: ',' variableInitializer
                     	    {
-                    	    match(input,COMMA,FOLLOW_COMMA_in_arrayInitializer7482); if (state.failed) return ;
+                    	    match(input,COMMA,FOLLOW_COMMA_in_arrayInitializer7645); if (state.failed) return ;
 
-                    	    pushFollow(FOLLOW_variableInitializer_in_arrayInitializer7484);
+                    	    pushFollow(FOLLOW_variableInitializer_in_arrayInitializer7647);
                     	    variableInitializer();
 
                     	    state._fsp--;
@@ -12853,7 +12921,7 @@ public class RJavaSymbolTableParser extends Parser {
             }
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:932:13: ( ',' )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:957:13: ( ',' )?
             int alt153=2;
             int LA153_0 = input.LA(1);
 
@@ -12862,9 +12930,9 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt153) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:932:14: ','
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:957:14: ','
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_arrayInitializer7534); if (state.failed) return ;
+                    match(input,COMMA,FOLLOW_COMMA_in_arrayInitializer7697); if (state.failed) return ;
 
                     }
                     break;
@@ -12872,7 +12940,7 @@ public class RJavaSymbolTableParser extends Parser {
             }
 
 
-            match(input,RBRACE,FOLLOW_RBRACE_in_arrayInitializer7547); if (state.failed) return ;
+            match(input,RBRACE,FOLLOW_RBRACE_in_arrayInitializer7710); if (state.failed) return ;
 
             }
 
@@ -12894,14 +12962,14 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "createdName"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:937:1: createdName : ( classOrInterfaceType | primitiveType );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:962:1: createdName : ( classOrInterfaceType | primitiveType );
     public final void createdName() throws RecognitionException {
         int createdName_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 97) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:938:5: ( classOrInterfaceType | primitiveType )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:963:5: ( classOrInterfaceType | primitiveType )
             int alt154=2;
             int LA154_0 = input.LA(1);
 
@@ -12921,9 +12989,9 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt154) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:938:9: classOrInterfaceType
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:963:9: classOrInterfaceType
                     {
-                    pushFollow(FOLLOW_classOrInterfaceType_in_createdName7581);
+                    pushFollow(FOLLOW_classOrInterfaceType_in_createdName7744);
                     classOrInterfaceType();
 
                     state._fsp--;
@@ -12932,9 +13000,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:939:9: primitiveType
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:964:9: primitiveType
                     {
-                    pushFollow(FOLLOW_primitiveType_in_createdName7591);
+                    pushFollow(FOLLOW_primitiveType_in_createdName7754);
                     primitiveType();
 
                     state._fsp--;
@@ -12962,21 +13030,21 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "innerCreator"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:942:1: innerCreator : '.' 'new' ( nonWildcardTypeArguments )? IDENTIFIER ( typeArguments )? classCreatorRest ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:967:1: innerCreator : '.' 'new' ( nonWildcardTypeArguments )? IDENTIFIER ( typeArguments )? classCreatorRest ;
     public final void innerCreator() throws RecognitionException {
         int innerCreator_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 98) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:943:5: ( '.' 'new' ( nonWildcardTypeArguments )? IDENTIFIER ( typeArguments )? classCreatorRest )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:943:9: '.' 'new' ( nonWildcardTypeArguments )? IDENTIFIER ( typeArguments )? classCreatorRest
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:968:5: ( '.' 'new' ( nonWildcardTypeArguments )? IDENTIFIER ( typeArguments )? classCreatorRest )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:968:9: '.' 'new' ( nonWildcardTypeArguments )? IDENTIFIER ( typeArguments )? classCreatorRest
             {
-            match(input,DOT,FOLLOW_DOT_in_innerCreator7612); if (state.failed) return ;
+            match(input,DOT,FOLLOW_DOT_in_innerCreator7775); if (state.failed) return ;
 
-            match(input,NEW,FOLLOW_NEW_in_innerCreator7614); if (state.failed) return ;
+            match(input,NEW,FOLLOW_NEW_in_innerCreator7777); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:944:9: ( nonWildcardTypeArguments )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:969:9: ( nonWildcardTypeArguments )?
             int alt155=2;
             int LA155_0 = input.LA(1);
 
@@ -12985,9 +13053,9 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt155) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:944:10: nonWildcardTypeArguments
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:969:10: nonWildcardTypeArguments
                     {
-                    pushFollow(FOLLOW_nonWildcardTypeArguments_in_innerCreator7625);
+                    pushFollow(FOLLOW_nonWildcardTypeArguments_in_innerCreator7788);
                     nonWildcardTypeArguments();
 
                     state._fsp--;
@@ -12999,9 +13067,9 @@ public class RJavaSymbolTableParser extends Parser {
             }
 
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_innerCreator7646); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_innerCreator7809); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:947:9: ( typeArguments )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:972:9: ( typeArguments )?
             int alt156=2;
             int LA156_0 = input.LA(1);
 
@@ -13010,9 +13078,9 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt156) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:947:10: typeArguments
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:972:10: typeArguments
                     {
-                    pushFollow(FOLLOW_typeArguments_in_innerCreator7657);
+                    pushFollow(FOLLOW_typeArguments_in_innerCreator7820);
                     typeArguments();
 
                     state._fsp--;
@@ -13024,7 +13092,7 @@ public class RJavaSymbolTableParser extends Parser {
             }
 
 
-            pushFollow(FOLLOW_classCreatorRest_in_innerCreator7678);
+            pushFollow(FOLLOW_classCreatorRest_in_innerCreator7841);
             classCreatorRest();
 
             state._fsp--;
@@ -13050,23 +13118,23 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "classCreatorRest"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:953:1: classCreatorRest : arguments ( classBody )? ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:978:1: classCreatorRest : arguments ( classBody )? ;
     public final void classCreatorRest() throws RecognitionException {
         int classCreatorRest_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 99) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:954:5: ( arguments ( classBody )? )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:954:9: arguments ( classBody )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:979:5: ( arguments ( classBody )? )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:979:9: arguments ( classBody )?
             {
-            pushFollow(FOLLOW_arguments_in_classCreatorRest7699);
+            pushFollow(FOLLOW_arguments_in_classCreatorRest7862);
             arguments();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:955:9: ( classBody )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:980:9: ( classBody )?
             int alt157=2;
             int LA157_0 = input.LA(1);
 
@@ -13075,9 +13143,9 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt157) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:955:10: classBody
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:980:10: classBody
                     {
-                    pushFollow(FOLLOW_classBody_in_classCreatorRest7710);
+                    pushFollow(FOLLOW_classBody_in_classCreatorRest7873);
                     classBody();
 
                     state._fsp--;
@@ -13109,25 +13177,25 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "nonWildcardTypeArguments"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:960:1: nonWildcardTypeArguments : '<' typeList '>' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:985:1: nonWildcardTypeArguments : '<' typeList '>' ;
     public final void nonWildcardTypeArguments() throws RecognitionException {
         int nonWildcardTypeArguments_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 100) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:961:5: ( '<' typeList '>' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:961:9: '<' typeList '>'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:986:5: ( '<' typeList '>' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:986:9: '<' typeList '>'
             {
-            match(input,LT,FOLLOW_LT_in_nonWildcardTypeArguments7742); if (state.failed) return ;
+            match(input,LT,FOLLOW_LT_in_nonWildcardTypeArguments7905); if (state.failed) return ;
 
-            pushFollow(FOLLOW_typeList_in_nonWildcardTypeArguments7744);
+            pushFollow(FOLLOW_typeList_in_nonWildcardTypeArguments7907);
             typeList();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,GT,FOLLOW_GT_in_nonWildcardTypeArguments7754); if (state.failed) return ;
+            match(input,GT,FOLLOW_GT_in_nonWildcardTypeArguments7917); if (state.failed) return ;
 
             }
 
@@ -13149,19 +13217,19 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "arguments"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:965:1: arguments : '(' ( expressionList )? ')' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:990:1: arguments : '(' ( expressionList )? ')' ;
     public final void arguments() throws RecognitionException {
         int arguments_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 101) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:966:5: ( '(' ( expressionList )? ')' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:966:9: '(' ( expressionList )? ')'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:991:5: ( '(' ( expressionList )? ')' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:991:9: '(' ( expressionList )? ')'
             {
-            match(input,LPAREN,FOLLOW_LPAREN_in_arguments7774); if (state.failed) return ;
+            match(input,LPAREN,FOLLOW_LPAREN_in_arguments7937); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:966:13: ( expressionList )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:991:13: ( expressionList )?
             int alt158=2;
             int LA158_0 = input.LA(1);
 
@@ -13170,9 +13238,9 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt158) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:966:14: expressionList
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:991:14: expressionList
                     {
-                    pushFollow(FOLLOW_expressionList_in_arguments7777);
+                    pushFollow(FOLLOW_expressionList_in_arguments7940);
                     expressionList();
 
                     state._fsp--;
@@ -13184,7 +13252,7 @@ public class RJavaSymbolTableParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_arguments7790); if (state.failed) return ;
+            match(input,RPAREN,FOLLOW_RPAREN_in_arguments7953); if (state.failed) return ;
 
             }
 
@@ -13206,14 +13274,14 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "literal"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:970:1: literal : ( INTLITERAL | LONGLITERAL | FLOATLITERAL | DOUBLELITERAL | CHARLITERAL | STRINGLITERAL | TRUE | FALSE | NULL );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:995:1: literal : ( INTLITERAL | LONGLITERAL | FLOATLITERAL | DOUBLELITERAL | CHARLITERAL | STRINGLITERAL | TRUE | FALSE | NULL );
     public final void literal() throws RecognitionException {
         int literal_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 102) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:971:5: ( INTLITERAL | LONGLITERAL | FLOATLITERAL | DOUBLELITERAL | CHARLITERAL | STRINGLITERAL | TRUE | FALSE | NULL )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:996:5: ( INTLITERAL | LONGLITERAL | FLOATLITERAL | DOUBLELITERAL | CHARLITERAL | STRINGLITERAL | TRUE | FALSE | NULL )
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:
             {
             if ( input.LA(1)==CHARLITERAL||input.LA(1)==DOUBLELITERAL||input.LA(1)==FALSE||input.LA(1)==FLOATLITERAL||input.LA(1)==INTLITERAL||input.LA(1)==LONGLITERAL||input.LA(1)==NULL||input.LA(1)==STRINGLITERAL||input.LA(1)==TRUE ) {
@@ -13248,25 +13316,25 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "classHeader"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:986:1: classHeader : modifiers 'class' IDENTIFIER ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1011:1: classHeader : modifiers 'class' IDENTIFIER ;
     public final void classHeader() throws RecognitionException {
         int classHeader_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 103) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:987:5: ( modifiers 'class' IDENTIFIER )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:987:9: modifiers 'class' IDENTIFIER
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1012:5: ( modifiers 'class' IDENTIFIER )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1012:9: modifiers 'class' IDENTIFIER
             {
-            pushFollow(FOLLOW_modifiers_in_classHeader7914);
+            pushFollow(FOLLOW_modifiers_in_classHeader8077);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,CLASS,FOLLOW_CLASS_in_classHeader7916); if (state.failed) return ;
+            match(input,CLASS,FOLLOW_CLASS_in_classHeader8079); if (state.failed) return ;
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_classHeader7918); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_classHeader8081); if (state.failed) return ;
 
             }
 
@@ -13288,17 +13356,17 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "enumHeader"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:990:1: enumHeader : modifiers ( 'enum' | IDENTIFIER ) IDENTIFIER ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1015:1: enumHeader : modifiers ( 'enum' | IDENTIFIER ) IDENTIFIER ;
     public final void enumHeader() throws RecognitionException {
         int enumHeader_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 104) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:991:5: ( modifiers ( 'enum' | IDENTIFIER ) IDENTIFIER )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:991:9: modifiers ( 'enum' | IDENTIFIER ) IDENTIFIER
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1016:5: ( modifiers ( 'enum' | IDENTIFIER ) IDENTIFIER )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1016:9: modifiers ( 'enum' | IDENTIFIER ) IDENTIFIER
             {
-            pushFollow(FOLLOW_modifiers_in_enumHeader7938);
+            pushFollow(FOLLOW_modifiers_in_enumHeader8101);
             modifiers();
 
             state._fsp--;
@@ -13316,7 +13384,7 @@ public class RJavaSymbolTableParser extends Parser {
             }
 
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_enumHeader7946); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_enumHeader8109); if (state.failed) return ;
 
             }
 
@@ -13338,25 +13406,25 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "interfaceHeader"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:994:1: interfaceHeader : modifiers 'interface' IDENTIFIER ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1019:1: interfaceHeader : modifiers 'interface' IDENTIFIER ;
     public final void interfaceHeader() throws RecognitionException {
         int interfaceHeader_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 105) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:995:5: ( modifiers 'interface' IDENTIFIER )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:995:9: modifiers 'interface' IDENTIFIER
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1020:5: ( modifiers 'interface' IDENTIFIER )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1020:9: modifiers 'interface' IDENTIFIER
             {
-            pushFollow(FOLLOW_modifiers_in_interfaceHeader7966);
+            pushFollow(FOLLOW_modifiers_in_interfaceHeader8129);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,INTERFACE,FOLLOW_INTERFACE_in_interfaceHeader7968); if (state.failed) return ;
+            match(input,INTERFACE,FOLLOW_INTERFACE_in_interfaceHeader8131); if (state.failed) return ;
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_interfaceHeader7970); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_interfaceHeader8133); if (state.failed) return ;
 
             }
 
@@ -13378,27 +13446,27 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "annotationHeader"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:998:1: annotationHeader : modifiers '@' 'interface' IDENTIFIER ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1023:1: annotationHeader : modifiers '@' 'interface' IDENTIFIER ;
     public final void annotationHeader() throws RecognitionException {
         int annotationHeader_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 106) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:999:5: ( modifiers '@' 'interface' IDENTIFIER )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:999:9: modifiers '@' 'interface' IDENTIFIER
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1024:5: ( modifiers '@' 'interface' IDENTIFIER )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1024:9: modifiers '@' 'interface' IDENTIFIER
             {
-            pushFollow(FOLLOW_modifiers_in_annotationHeader7990);
+            pushFollow(FOLLOW_modifiers_in_annotationHeader8153);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,MONKEYS_AT,FOLLOW_MONKEYS_AT_in_annotationHeader7992); if (state.failed) return ;
+            match(input,MONKEYS_AT,FOLLOW_MONKEYS_AT_in_annotationHeader8155); if (state.failed) return ;
 
-            match(input,INTERFACE,FOLLOW_INTERFACE_in_annotationHeader7994); if (state.failed) return ;
+            match(input,INTERFACE,FOLLOW_INTERFACE_in_annotationHeader8157); if (state.failed) return ;
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_annotationHeader7996); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_annotationHeader8159); if (state.failed) return ;
 
             }
 
@@ -13420,23 +13488,23 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "typeHeader"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1002:1: typeHeader : modifiers ( 'class' | 'enum' | ( ( '@' )? 'interface' ) ) IDENTIFIER ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1027:1: typeHeader : modifiers ( 'class' | 'enum' | ( ( '@' )? 'interface' ) ) IDENTIFIER ;
     public final void typeHeader() throws RecognitionException {
         int typeHeader_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 107) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1003:5: ( modifiers ( 'class' | 'enum' | ( ( '@' )? 'interface' ) ) IDENTIFIER )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1003:9: modifiers ( 'class' | 'enum' | ( ( '@' )? 'interface' ) ) IDENTIFIER
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1028:5: ( modifiers ( 'class' | 'enum' | ( ( '@' )? 'interface' ) ) IDENTIFIER )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1028:9: modifiers ( 'class' | 'enum' | ( ( '@' )? 'interface' ) ) IDENTIFIER
             {
-            pushFollow(FOLLOW_modifiers_in_typeHeader8016);
+            pushFollow(FOLLOW_modifiers_in_typeHeader8179);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1003:19: ( 'class' | 'enum' | ( ( '@' )? 'interface' ) )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1028:19: ( 'class' | 'enum' | ( ( '@' )? 'interface' ) )
             int alt160=3;
             switch ( input.LA(1) ) {
             case CLASS:
@@ -13466,26 +13534,26 @@ public class RJavaSymbolTableParser extends Parser {
 
             switch (alt160) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1003:20: 'class'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1028:20: 'class'
                     {
-                    match(input,CLASS,FOLLOW_CLASS_in_typeHeader8019); if (state.failed) return ;
+                    match(input,CLASS,FOLLOW_CLASS_in_typeHeader8182); if (state.failed) return ;
 
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1003:28: 'enum'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1028:28: 'enum'
                     {
-                    match(input,ENUM,FOLLOW_ENUM_in_typeHeader8021); if (state.failed) return ;
+                    match(input,ENUM,FOLLOW_ENUM_in_typeHeader8184); if (state.failed) return ;
 
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1003:35: ( ( '@' )? 'interface' )
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1028:35: ( ( '@' )? 'interface' )
                     {
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1003:35: ( ( '@' )? 'interface' )
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1003:36: ( '@' )? 'interface'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1028:35: ( ( '@' )? 'interface' )
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1028:36: ( '@' )? 'interface'
                     {
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1003:36: ( '@' )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1028:36: ( '@' )?
                     int alt159=2;
                     int LA159_0 = input.LA(1);
 
@@ -13494,9 +13562,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     switch (alt159) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1003:36: '@'
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1028:36: '@'
                             {
-                            match(input,MONKEYS_AT,FOLLOW_MONKEYS_AT_in_typeHeader8024); if (state.failed) return ;
+                            match(input,MONKEYS_AT,FOLLOW_MONKEYS_AT_in_typeHeader8187); if (state.failed) return ;
 
                             }
                             break;
@@ -13504,7 +13572,7 @@ public class RJavaSymbolTableParser extends Parser {
                     }
 
 
-                    match(input,INTERFACE,FOLLOW_INTERFACE_in_typeHeader8028); if (state.failed) return ;
+                    match(input,INTERFACE,FOLLOW_INTERFACE_in_typeHeader8191); if (state.failed) return ;
 
                     }
 
@@ -13515,7 +13583,7 @@ public class RJavaSymbolTableParser extends Parser {
             }
 
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_typeHeader8032); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_typeHeader8195); if (state.failed) return ;
 
             }
 
@@ -13537,23 +13605,23 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "methodHeader"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1006:1: methodHeader : modifiers ( typeParameters )? ( type | 'void' )? IDENTIFIER '(' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1031:1: methodHeader : modifiers ( typeParameters )? ( type | 'void' )? IDENTIFIER '(' ;
     public final void methodHeader() throws RecognitionException {
         int methodHeader_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 108) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1007:5: ( modifiers ( typeParameters )? ( type | 'void' )? IDENTIFIER '(' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1007:9: modifiers ( typeParameters )? ( type | 'void' )? IDENTIFIER '('
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1032:5: ( modifiers ( typeParameters )? ( type | 'void' )? IDENTIFIER '(' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1032:9: modifiers ( typeParameters )? ( type | 'void' )? IDENTIFIER '('
             {
-            pushFollow(FOLLOW_modifiers_in_methodHeader8052);
+            pushFollow(FOLLOW_modifiers_in_methodHeader8215);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1007:19: ( typeParameters )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1032:19: ( typeParameters )?
             int alt161=2;
             int LA161_0 = input.LA(1);
 
@@ -13562,9 +13630,9 @@ public class RJavaSymbolTableParser extends Parser {
             }
             switch (alt161) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1007:19: typeParameters
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1032:19: typeParameters
                     {
-                    pushFollow(FOLLOW_typeParameters_in_methodHeader8054);
+                    pushFollow(FOLLOW_typeParameters_in_methodHeader8217);
                     typeParameters();
 
                     state._fsp--;
@@ -13576,7 +13644,7 @@ public class RJavaSymbolTableParser extends Parser {
             }
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1007:35: ( type | 'void' )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1032:35: ( type | 'void' )?
             int alt162=3;
             switch ( input.LA(1) ) {
                 case IDENTIFIER:
@@ -13609,9 +13677,9 @@ public class RJavaSymbolTableParser extends Parser {
 
             switch (alt162) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1007:36: type
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1032:36: type
                     {
-                    pushFollow(FOLLOW_type_in_methodHeader8058);
+                    pushFollow(FOLLOW_type_in_methodHeader8221);
                     type();
 
                     state._fsp--;
@@ -13620,9 +13688,9 @@ public class RJavaSymbolTableParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1007:41: 'void'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1032:41: 'void'
                     {
-                    match(input,VOID,FOLLOW_VOID_in_methodHeader8060); if (state.failed) return ;
+                    match(input,VOID,FOLLOW_VOID_in_methodHeader8223); if (state.failed) return ;
 
                     }
                     break;
@@ -13630,9 +13698,9 @@ public class RJavaSymbolTableParser extends Parser {
             }
 
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_methodHeader8064); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_methodHeader8227); if (state.failed) return ;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_methodHeader8066); if (state.failed) return ;
+            match(input,LPAREN,FOLLOW_LPAREN_in_methodHeader8229); if (state.failed) return ;
 
             }
 
@@ -13654,31 +13722,31 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "fieldHeader"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1010:1: fieldHeader : modifiers type IDENTIFIER ( '[' ']' )* ( '=' | ',' | ';' ) ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1035:1: fieldHeader : modifiers type IDENTIFIER ( '[' ']' )* ( '=' | ',' | ';' ) ;
     public final void fieldHeader() throws RecognitionException {
         int fieldHeader_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 109) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1011:5: ( modifiers type IDENTIFIER ( '[' ']' )* ( '=' | ',' | ';' ) )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1011:9: modifiers type IDENTIFIER ( '[' ']' )* ( '=' | ',' | ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1036:5: ( modifiers type IDENTIFIER ( '[' ']' )* ( '=' | ',' | ';' ) )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1036:9: modifiers type IDENTIFIER ( '[' ']' )* ( '=' | ',' | ';' )
             {
-            pushFollow(FOLLOW_modifiers_in_fieldHeader8086);
+            pushFollow(FOLLOW_modifiers_in_fieldHeader8249);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            pushFollow(FOLLOW_type_in_fieldHeader8088);
+            pushFollow(FOLLOW_type_in_fieldHeader8251);
             type();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_fieldHeader8090); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_fieldHeader8253); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1011:35: ( '[' ']' )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1036:35: ( '[' ']' )*
             loop163:
             do {
                 int alt163=2;
@@ -13691,11 +13759,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt163) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1011:36: '[' ']'
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1036:36: '[' ']'
             	    {
-            	    match(input,LBRACKET,FOLLOW_LBRACKET_in_fieldHeader8093); if (state.failed) return ;
+            	    match(input,LBRACKET,FOLLOW_LBRACKET_in_fieldHeader8256); if (state.failed) return ;
 
-            	    match(input,RBRACKET,FOLLOW_RBRACKET_in_fieldHeader8094); if (state.failed) return ;
+            	    match(input,RBRACKET,FOLLOW_RBRACKET_in_fieldHeader8257); if (state.failed) return ;
 
             	    }
             	    break;
@@ -13738,31 +13806,31 @@ public class RJavaSymbolTableParser extends Parser {
 
 
     // $ANTLR start "localVariableHeader"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1014:1: localVariableHeader : variableModifiers type IDENTIFIER ( '[' ']' )* ( '=' | ',' | ';' ) ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1039:1: localVariableHeader : variableModifiers type IDENTIFIER ( '[' ']' )* ( '=' | ',' | ';' ) ;
     public final void localVariableHeader() throws RecognitionException {
         int localVariableHeader_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 110) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1015:5: ( variableModifiers type IDENTIFIER ( '[' ']' )* ( '=' | ',' | ';' ) )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1015:9: variableModifiers type IDENTIFIER ( '[' ']' )* ( '=' | ',' | ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1040:5: ( variableModifiers type IDENTIFIER ( '[' ']' )* ( '=' | ',' | ';' ) )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1040:9: variableModifiers type IDENTIFIER ( '[' ']' )* ( '=' | ',' | ';' )
             {
-            pushFollow(FOLLOW_variableModifiers_in_localVariableHeader8124);
+            pushFollow(FOLLOW_variableModifiers_in_localVariableHeader8287);
             variableModifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            pushFollow(FOLLOW_type_in_localVariableHeader8126);
+            pushFollow(FOLLOW_type_in_localVariableHeader8289);
             type();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_localVariableHeader8128); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_localVariableHeader8291); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1015:43: ( '[' ']' )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1040:43: ( '[' ']' )*
             loop164:
             do {
                 int alt164=2;
@@ -13775,11 +13843,11 @@ public class RJavaSymbolTableParser extends Parser {
 
                 switch (alt164) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1015:44: '[' ']'
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:1040:44: '[' ']'
             	    {
-            	    match(input,LBRACKET,FOLLOW_LBRACKET_in_localVariableHeader8131); if (state.failed) return ;
+            	    match(input,LBRACKET,FOLLOW_LBRACKET_in_localVariableHeader8294); if (state.failed) return ;
 
-            	    match(input,RBRACKET,FOLLOW_RBRACKET_in_localVariableHeader8132); if (state.failed) return ;
+            	    match(input,RBRACKET,FOLLOW_RBRACKET_in_localVariableHeader8295); if (state.failed) return ;
 
             	    }
             	    break;
@@ -13863,7 +13931,7 @@ public class RJavaSymbolTableParser extends Parser {
         // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:72:10: ( classDeclaration )
         // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:72:10: classDeclaration
         {
-        pushFollow(FOLLOW_classDeclaration_in_synpred12_RJavaSymbolTable462);
+        pushFollow(FOLLOW_classDeclaration_in_synpred12_RJavaSymbolTable465);
         classDeclaration();
 
         state._fsp--;
@@ -13879,7 +13947,7 @@ public class RJavaSymbolTableParser extends Parser {
         // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:103:9: ( normalClassDeclaration )
         // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:103:9: normalClassDeclaration
         {
-        pushFollow(FOLLOW_normalClassDeclaration_in_synpred27_RJavaSymbolTable699);
+        pushFollow(FOLLOW_normalClassDeclaration_in_synpred27_RJavaSymbolTable702);
         normalClassDeclaration();
 
         state._fsp--;
@@ -13895,7 +13963,7 @@ public class RJavaSymbolTableParser extends Parser {
         // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:191:9: ( normalInterfaceDeclaration )
         // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:191:9: normalInterfaceDeclaration
         {
-        pushFollow(FOLLOW_normalInterfaceDeclaration_in_synpred43_RJavaSymbolTable1378);
+        pushFollow(FOLLOW_normalInterfaceDeclaration_in_synpred43_RJavaSymbolTable1381);
         normalInterfaceDeclaration();
 
         state._fsp--;
@@ -13911,7 +13979,7 @@ public class RJavaSymbolTableParser extends Parser {
         // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:236:10: ( fieldDeclaration )
         // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:236:10: fieldDeclaration
         {
-        pushFollow(FOLLOW_fieldDeclaration_in_synpred52_RJavaSymbolTable1741);
+        pushFollow(FOLLOW_fieldDeclaration_in_synpred52_RJavaSymbolTable1744);
         fieldDeclaration();
 
         state._fsp--;
@@ -13927,7 +13995,7 @@ public class RJavaSymbolTableParser extends Parser {
         // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:237:10: ( methodDeclaration )
         // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:237:10: methodDeclaration
         {
-        pushFollow(FOLLOW_methodDeclaration_in_synpred53_RJavaSymbolTable1752);
+        pushFollow(FOLLOW_methodDeclaration_in_synpred53_RJavaSymbolTable1755);
         methodDeclaration();
 
         state._fsp--;
@@ -13943,7 +14011,7 @@ public class RJavaSymbolTableParser extends Parser {
         // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:238:10: ( classDeclaration )
         // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:238:10: classDeclaration
         {
-        pushFollow(FOLLOW_classDeclaration_in_synpred54_RJavaSymbolTable1763);
+        pushFollow(FOLLOW_classDeclaration_in_synpred54_RJavaSymbolTable1766);
         classDeclaration();
 
         state._fsp--;
@@ -13956,10 +14024,10 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred57_RJavaSymbolTable
     public final void synpred57_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:254:10: ( explicitConstructorInvocation )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:254:10: explicitConstructorInvocation
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:255:10: ( explicitConstructorInvocation )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:255:10: explicitConstructorInvocation
         {
-        pushFollow(FOLLOW_explicitConstructorInvocation_in_synpred57_RJavaSymbolTable1900);
+        pushFollow(FOLLOW_explicitConstructorInvocation_in_synpred57_RJavaSymbolTable1914);
         explicitConstructorInvocation();
 
         state._fsp--;
@@ -13972,16 +14040,16 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred59_RJavaSymbolTable
     public final void synpred59_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:246:10: ( modifiers ( typeParameters )? IDENTIFIER formalParameters ( 'throws' qualifiedNameList )? '{' ( explicitConstructorInvocation )? ( blockStatement )* '}' )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:246:10: modifiers ( typeParameters )? IDENTIFIER formalParameters ( 'throws' qualifiedNameList )? '{' ( explicitConstructorInvocation )? ( blockStatement )* '}'
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:246:9: ( modifiers ( typeParameters )? IDENTIFIER formalParameters ( 'throws' qualifiedNameList )? '{' ( explicitConstructorInvocation )? ( blockStatement )* '}' )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:246:9: modifiers ( typeParameters )? IDENTIFIER formalParameters ( 'throws' qualifiedNameList )? '{' ( explicitConstructorInvocation )? ( blockStatement )* '}'
         {
-        pushFollow(FOLLOW_modifiers_in_synpred59_RJavaSymbolTable1812);
+        pushFollow(FOLLOW_modifiers_in_synpred59_RJavaSymbolTable1825);
         modifiers();
 
         state._fsp--;
         if (state.failed) return ;
 
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:247:9: ( typeParameters )?
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:248:9: ( typeParameters )?
         int alt167=2;
         int LA167_0 = input.LA(1);
 
@@ -13990,9 +14058,9 @@ public class RJavaSymbolTableParser extends Parser {
         }
         switch (alt167) {
             case 1 :
-                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:247:10: typeParameters
+                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:248:10: typeParameters
                 {
-                pushFollow(FOLLOW_typeParameters_in_synpred59_RJavaSymbolTable1823);
+                pushFollow(FOLLOW_typeParameters_in_synpred59_RJavaSymbolTable1836);
                 typeParameters();
 
                 state._fsp--;
@@ -14004,15 +14072,15 @@ public class RJavaSymbolTableParser extends Parser {
         }
 
 
-        match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_synpred59_RJavaSymbolTable1844); if (state.failed) return ;
+        match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_synpred59_RJavaSymbolTable1857); if (state.failed) return ;
 
-        pushFollow(FOLLOW_formalParameters_in_synpred59_RJavaSymbolTable1854);
+        pushFollow(FOLLOW_formalParameters_in_synpred59_RJavaSymbolTable1868);
         formalParameters();
 
         state._fsp--;
         if (state.failed) return ;
 
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:251:9: ( 'throws' qualifiedNameList )?
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:252:9: ( 'throws' qualifiedNameList )?
         int alt168=2;
         int LA168_0 = input.LA(1);
 
@@ -14021,11 +14089,11 @@ public class RJavaSymbolTableParser extends Parser {
         }
         switch (alt168) {
             case 1 :
-                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:251:10: 'throws' qualifiedNameList
+                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:252:10: 'throws' qualifiedNameList
                 {
-                match(input,THROWS,FOLLOW_THROWS_in_synpred59_RJavaSymbolTable1865); if (state.failed) return ;
+                match(input,THROWS,FOLLOW_THROWS_in_synpred59_RJavaSymbolTable1879); if (state.failed) return ;
 
-                pushFollow(FOLLOW_qualifiedNameList_in_synpred59_RJavaSymbolTable1867);
+                pushFollow(FOLLOW_qualifiedNameList_in_synpred59_RJavaSymbolTable1881);
                 qualifiedNameList();
 
                 state._fsp--;
@@ -14037,9 +14105,9 @@ public class RJavaSymbolTableParser extends Parser {
         }
 
 
-        match(input,LBRACE,FOLLOW_LBRACE_in_synpred59_RJavaSymbolTable1888); if (state.failed) return ;
+        match(input,LBRACE,FOLLOW_LBRACE_in_synpred59_RJavaSymbolTable1902); if (state.failed) return ;
 
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:254:9: ( explicitConstructorInvocation )?
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:255:9: ( explicitConstructorInvocation )?
         int alt169=2;
         switch ( input.LA(1) ) {
             case LT:
@@ -14138,9 +14206,9 @@ public class RJavaSymbolTableParser extends Parser {
 
         switch (alt169) {
             case 1 :
-                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:254:10: explicitConstructorInvocation
+                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:255:10: explicitConstructorInvocation
                 {
-                pushFollow(FOLLOW_explicitConstructorInvocation_in_synpred59_RJavaSymbolTable1900);
+                pushFollow(FOLLOW_explicitConstructorInvocation_in_synpred59_RJavaSymbolTable1914);
                 explicitConstructorInvocation();
 
                 state._fsp--;
@@ -14152,7 +14220,7 @@ public class RJavaSymbolTableParser extends Parser {
         }
 
 
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:256:9: ( blockStatement )*
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:257:9: ( blockStatement )*
         loop170:
         do {
             int alt170=2;
@@ -14165,9 +14233,9 @@ public class RJavaSymbolTableParser extends Parser {
 
             switch (alt170) {
         	case 1 :
-        	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:256:10: blockStatement
+        	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:257:10: blockStatement
         	    {
-        	    pushFollow(FOLLOW_blockStatement_in_synpred59_RJavaSymbolTable1922);
+        	    pushFollow(FOLLOW_blockStatement_in_synpred59_RJavaSymbolTable1936);
         	    blockStatement();
 
         	    state._fsp--;
@@ -14182,7 +14250,7 @@ public class RJavaSymbolTableParser extends Parser {
         } while (true);
 
 
-        match(input,RBRACE,FOLLOW_RBRACE_in_synpred59_RJavaSymbolTable1943); if (state.failed) return ;
+        match(input,RBRACE,FOLLOW_RBRACE_in_synpred59_RJavaSymbolTable1957); if (state.failed) return ;
 
         }
 
@@ -14191,10 +14259,10 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred68_RJavaSymbolTable
     public final void synpred68_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:305:9: ( interfaceFieldDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:305:9: interfaceFieldDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:308:9: ( interfaceFieldDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:308:9: interfaceFieldDeclaration
         {
-        pushFollow(FOLLOW_interfaceFieldDeclaration_in_synpred68_RJavaSymbolTable2342);
+        pushFollow(FOLLOW_interfaceFieldDeclaration_in_synpred68_RJavaSymbolTable2378);
         interfaceFieldDeclaration();
 
         state._fsp--;
@@ -14207,10 +14275,10 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred69_RJavaSymbolTable
     public final void synpred69_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:306:9: ( interfaceMethodDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:306:9: interfaceMethodDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:309:9: ( interfaceMethodDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:309:9: interfaceMethodDeclaration
         {
-        pushFollow(FOLLOW_interfaceMethodDeclaration_in_synpred69_RJavaSymbolTable2352);
+        pushFollow(FOLLOW_interfaceMethodDeclaration_in_synpred69_RJavaSymbolTable2388);
         interfaceMethodDeclaration();
 
         state._fsp--;
@@ -14223,10 +14291,10 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred70_RJavaSymbolTable
     public final void synpred70_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:307:9: ( interfaceDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:307:9: interfaceDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:310:9: ( interfaceDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:310:9: interfaceDeclaration
         {
-        pushFollow(FOLLOW_interfaceDeclaration_in_synpred70_RJavaSymbolTable2362);
+        pushFollow(FOLLOW_interfaceDeclaration_in_synpred70_RJavaSymbolTable2398);
         interfaceDeclaration();
 
         state._fsp--;
@@ -14239,10 +14307,10 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred71_RJavaSymbolTable
     public final void synpred71_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:308:9: ( classDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:308:9: classDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:311:9: ( classDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:311:9: classDeclaration
         {
-        pushFollow(FOLLOW_classDeclaration_in_synpred71_RJavaSymbolTable2372);
+        pushFollow(FOLLOW_classDeclaration_in_synpred71_RJavaSymbolTable2408);
         classDeclaration();
 
         state._fsp--;
@@ -14255,10 +14323,10 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred96_RJavaSymbolTable
     public final void synpred96_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:403:9: ( ellipsisParameterDecl )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:403:9: ellipsisParameterDecl
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:406:9: ( ellipsisParameterDecl )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:406:9: ellipsisParameterDecl
         {
-        pushFollow(FOLLOW_ellipsisParameterDecl_in_synpred96_RJavaSymbolTable3136);
+        pushFollow(FOLLOW_ellipsisParameterDecl_in_synpred96_RJavaSymbolTable3172);
         ellipsisParameterDecl();
 
         state._fsp--;
@@ -14271,16 +14339,16 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred98_RJavaSymbolTable
     public final void synpred98_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:404:9: ( normalParameterDecl ( ',' normalParameterDecl )* )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:404:9: normalParameterDecl ( ',' normalParameterDecl )*
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:407:9: ( normalParameterDecl ( ',' normalParameterDecl )* )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:407:9: normalParameterDecl ( ',' normalParameterDecl )*
         {
-        pushFollow(FOLLOW_normalParameterDecl_in_synpred98_RJavaSymbolTable3146);
+        pushFollow(FOLLOW_normalParameterDecl_in_synpred98_RJavaSymbolTable3182);
         normalParameterDecl();
 
         state._fsp--;
         if (state.failed) return ;
 
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:405:9: ( ',' normalParameterDecl )*
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:408:9: ( ',' normalParameterDecl )*
         loop173:
         do {
             int alt173=2;
@@ -14293,11 +14361,11 @@ public class RJavaSymbolTableParser extends Parser {
 
             switch (alt173) {
         	case 1 :
-        	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:405:10: ',' normalParameterDecl
+        	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:408:10: ',' normalParameterDecl
         	    {
-        	    match(input,COMMA,FOLLOW_COMMA_in_synpred98_RJavaSymbolTable3157); if (state.failed) return ;
+        	    match(input,COMMA,FOLLOW_COMMA_in_synpred98_RJavaSymbolTable3193); if (state.failed) return ;
 
-        	    pushFollow(FOLLOW_normalParameterDecl_in_synpred98_RJavaSymbolTable3159);
+        	    pushFollow(FOLLOW_normalParameterDecl_in_synpred98_RJavaSymbolTable3195);
         	    normalParameterDecl();
 
         	    state._fsp--;
@@ -14319,16 +14387,16 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred99_RJavaSymbolTable
     public final void synpred99_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:407:10: ( normalParameterDecl ',' )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:407:10: normalParameterDecl ','
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:410:10: ( normalParameterDecl ',' )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:410:10: normalParameterDecl ','
         {
-        pushFollow(FOLLOW_normalParameterDecl_in_synpred99_RJavaSymbolTable3181);
+        pushFollow(FOLLOW_normalParameterDecl_in_synpred99_RJavaSymbolTable3217);
         normalParameterDecl();
 
         state._fsp--;
         if (state.failed) return ;
 
-        match(input,COMMA,FOLLOW_COMMA_in_synpred99_RJavaSymbolTable3191); if (state.failed) return ;
+        match(input,COMMA,FOLLOW_COMMA_in_synpred99_RJavaSymbolTable3227); if (state.failed) return ;
 
         }
 
@@ -14337,10 +14405,10 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred103_RJavaSymbolTable
     public final void synpred103_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:427:9: ( ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';' )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:427:9: ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';'
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:441:9: ( ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';' )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:441:9: ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';'
         {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:427:9: ( nonWildcardTypeArguments )?
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:441:9: ( nonWildcardTypeArguments )?
         int alt174=2;
         int LA174_0 = input.LA(1);
 
@@ -14349,9 +14417,9 @@ public class RJavaSymbolTableParser extends Parser {
         }
         switch (alt174) {
             case 1 :
-                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:427:10: nonWildcardTypeArguments
+                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:441:10: nonWildcardTypeArguments
                 {
-                pushFollow(FOLLOW_nonWildcardTypeArguments_in_synpred103_RJavaSymbolTable3326);
+                pushFollow(FOLLOW_nonWildcardTypeArguments_in_synpred103_RJavaSymbolTable3410);
                 nonWildcardTypeArguments();
 
                 state._fsp--;
@@ -14375,13 +14443,13 @@ public class RJavaSymbolTableParser extends Parser {
         }
 
 
-        pushFollow(FOLLOW_arguments_in_synpred103_RJavaSymbolTable3384);
+        pushFollow(FOLLOW_arguments_in_synpred103_RJavaSymbolTable3468);
         arguments();
 
         state._fsp--;
         if (state.failed) return ;
 
-        match(input,SEMI,FOLLOW_SEMI_in_synpred103_RJavaSymbolTable3386); if (state.failed) return ;
+        match(input,SEMI,FOLLOW_SEMI_in_synpred103_RJavaSymbolTable3470); if (state.failed) return ;
 
         }
 
@@ -14390,10 +14458,10 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred117_RJavaSymbolTable
     public final void synpred117_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:514:9: ( annotationMethodDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:514:9: annotationMethodDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:528:9: ( annotationMethodDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:528:9: annotationMethodDeclaration
         {
-        pushFollow(FOLLOW_annotationMethodDeclaration_in_synpred117_RJavaSymbolTable3985);
+        pushFollow(FOLLOW_annotationMethodDeclaration_in_synpred117_RJavaSymbolTable4069);
         annotationMethodDeclaration();
 
         state._fsp--;
@@ -14406,10 +14474,10 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred118_RJavaSymbolTable
     public final void synpred118_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:515:9: ( interfaceFieldDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:515:9: interfaceFieldDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:529:9: ( interfaceFieldDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:529:9: interfaceFieldDeclaration
         {
-        pushFollow(FOLLOW_interfaceFieldDeclaration_in_synpred118_RJavaSymbolTable3995);
+        pushFollow(FOLLOW_interfaceFieldDeclaration_in_synpred118_RJavaSymbolTable4079);
         interfaceFieldDeclaration();
 
         state._fsp--;
@@ -14422,10 +14490,10 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred119_RJavaSymbolTable
     public final void synpred119_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:516:9: ( normalClassDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:516:9: normalClassDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:530:9: ( normalClassDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:530:9: normalClassDeclaration
         {
-        pushFollow(FOLLOW_normalClassDeclaration_in_synpred119_RJavaSymbolTable4005);
+        pushFollow(FOLLOW_normalClassDeclaration_in_synpred119_RJavaSymbolTable4089);
         normalClassDeclaration();
 
         state._fsp--;
@@ -14438,10 +14506,10 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred120_RJavaSymbolTable
     public final void synpred120_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:517:9: ( normalInterfaceDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:517:9: normalInterfaceDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:531:9: ( normalInterfaceDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:531:9: normalInterfaceDeclaration
         {
-        pushFollow(FOLLOW_normalInterfaceDeclaration_in_synpred120_RJavaSymbolTable4015);
+        pushFollow(FOLLOW_normalInterfaceDeclaration_in_synpred120_RJavaSymbolTable4099);
         normalInterfaceDeclaration();
 
         state._fsp--;
@@ -14454,10 +14522,10 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred121_RJavaSymbolTable
     public final void synpred121_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:518:9: ( enumDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:518:9: enumDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:532:9: ( enumDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:532:9: enumDeclaration
         {
-        pushFollow(FOLLOW_enumDeclaration_in_synpred121_RJavaSymbolTable4025);
+        pushFollow(FOLLOW_enumDeclaration_in_synpred121_RJavaSymbolTable4109);
         enumDeclaration();
 
         state._fsp--;
@@ -14470,10 +14538,10 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred122_RJavaSymbolTable
     public final void synpred122_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:519:9: ( annotationTypeDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:519:9: annotationTypeDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:533:9: ( annotationTypeDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:533:9: annotationTypeDeclaration
         {
-        pushFollow(FOLLOW_annotationTypeDeclaration_in_synpred122_RJavaSymbolTable4035);
+        pushFollow(FOLLOW_annotationTypeDeclaration_in_synpred122_RJavaSymbolTable4119);
         annotationTypeDeclaration();
 
         state._fsp--;
@@ -14486,10 +14554,10 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred125_RJavaSymbolTable
     public final void synpred125_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:562:9: ( localVariableDeclarationStatement )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:562:9: localVariableDeclarationStatement
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:578:9: ( localVariableDeclarationStatement )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:578:9: localVariableDeclarationStatement
         {
-        pushFollow(FOLLOW_localVariableDeclarationStatement_in_synpred125_RJavaSymbolTable4193);
+        pushFollow(FOLLOW_localVariableDeclarationStatement_in_synpred125_RJavaSymbolTable4297);
         localVariableDeclarationStatement();
 
         state._fsp--;
@@ -14502,10 +14570,10 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred126_RJavaSymbolTable
     public final void synpred126_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:563:9: ( classOrInterfaceDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:563:9: classOrInterfaceDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:579:9: ( classOrInterfaceDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:579:9: classOrInterfaceDeclaration
         {
-        pushFollow(FOLLOW_classOrInterfaceDeclaration_in_synpred126_RJavaSymbolTable4203);
+        pushFollow(FOLLOW_classOrInterfaceDeclaration_in_synpred126_RJavaSymbolTable4307);
         classOrInterfaceDeclaration();
 
         state._fsp--;
@@ -14518,24 +14586,24 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred130_RJavaSymbolTable
     public final void synpred130_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:583:9: ( ( 'assert' ) expression ( ':' expression )? ';' )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:583:9: ( 'assert' ) expression ( ':' expression )? ';'
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:599:9: ( ( 'assert' ) expression ( ':' expression )? ';' )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:599:9: ( 'assert' ) expression ( ':' expression )? ';'
         {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:583:9: ( 'assert' )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:583:10: 'assert'
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:599:9: ( 'assert' )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:599:10: 'assert'
         {
-        match(input,ASSERT,FOLLOW_ASSERT_in_synpred130_RJavaSymbolTable4346); if (state.failed) return ;
+        match(input,ASSERT,FOLLOW_ASSERT_in_synpred130_RJavaSymbolTable4450); if (state.failed) return ;
 
         }
 
 
-        pushFollow(FOLLOW_expression_in_synpred130_RJavaSymbolTable4366);
+        pushFollow(FOLLOW_expression_in_synpred130_RJavaSymbolTable4470);
         expression();
 
         state._fsp--;
         if (state.failed) return ;
 
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:585:20: ( ':' expression )?
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:601:20: ( ':' expression )?
         int alt177=2;
         int LA177_0 = input.LA(1);
 
@@ -14544,11 +14612,11 @@ public class RJavaSymbolTableParser extends Parser {
         }
         switch (alt177) {
             case 1 :
-                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:585:21: ':' expression
+                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:601:21: ':' expression
                 {
-                match(input,COLON,FOLLOW_COLON_in_synpred130_RJavaSymbolTable4369); if (state.failed) return ;
+                match(input,COLON,FOLLOW_COLON_in_synpred130_RJavaSymbolTable4473); if (state.failed) return ;
 
-                pushFollow(FOLLOW_expression_in_synpred130_RJavaSymbolTable4371);
+                pushFollow(FOLLOW_expression_in_synpred130_RJavaSymbolTable4475);
                 expression();
 
                 state._fsp--;
@@ -14560,7 +14628,7 @@ public class RJavaSymbolTableParser extends Parser {
         }
 
 
-        match(input,SEMI,FOLLOW_SEMI_in_synpred130_RJavaSymbolTable4375); if (state.failed) return ;
+        match(input,SEMI,FOLLOW_SEMI_in_synpred130_RJavaSymbolTable4479); if (state.failed) return ;
 
         }
 
@@ -14569,18 +14637,18 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred132_RJavaSymbolTable
     public final void synpred132_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:586:9: ( 'assert' expression ( ':' expression )? ';' )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:586:9: 'assert' expression ( ':' expression )? ';'
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:602:9: ( 'assert' expression ( ':' expression )? ';' )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:602:9: 'assert' expression ( ':' expression )? ';'
         {
-        match(input,ASSERT,FOLLOW_ASSERT_in_synpred132_RJavaSymbolTable4385); if (state.failed) return ;
+        match(input,ASSERT,FOLLOW_ASSERT_in_synpred132_RJavaSymbolTable4489); if (state.failed) return ;
 
-        pushFollow(FOLLOW_expression_in_synpred132_RJavaSymbolTable4388);
+        pushFollow(FOLLOW_expression_in_synpred132_RJavaSymbolTable4492);
         expression();
 
         state._fsp--;
         if (state.failed) return ;
 
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:586:30: ( ':' expression )?
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:602:30: ( ':' expression )?
         int alt178=2;
         int LA178_0 = input.LA(1);
 
@@ -14589,11 +14657,11 @@ public class RJavaSymbolTableParser extends Parser {
         }
         switch (alt178) {
             case 1 :
-                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:586:31: ':' expression
+                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:602:31: ':' expression
                 {
-                match(input,COLON,FOLLOW_COLON_in_synpred132_RJavaSymbolTable4391); if (state.failed) return ;
+                match(input,COLON,FOLLOW_COLON_in_synpred132_RJavaSymbolTable4495); if (state.failed) return ;
 
-                pushFollow(FOLLOW_expression_in_synpred132_RJavaSymbolTable4393);
+                pushFollow(FOLLOW_expression_in_synpred132_RJavaSymbolTable4497);
                 expression();
 
                 state._fsp--;
@@ -14605,7 +14673,7 @@ public class RJavaSymbolTableParser extends Parser {
         }
 
 
-        match(input,SEMI,FOLLOW_SEMI_in_synpred132_RJavaSymbolTable4397); if (state.failed) return ;
+        match(input,SEMI,FOLLOW_SEMI_in_synpred132_RJavaSymbolTable4501); if (state.failed) return ;
 
         }
 
@@ -14614,12 +14682,12 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred133_RJavaSymbolTable
     public final void synpred133_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:587:39: ( 'else' statement )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:587:39: 'else' statement
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:603:39: ( 'else' statement )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:603:39: 'else' statement
         {
-        match(input,ELSE,FOLLOW_ELSE_in_synpred133_RJavaSymbolTable4426); if (state.failed) return ;
+        match(input,ELSE,FOLLOW_ELSE_in_synpred133_RJavaSymbolTable4530); if (state.failed) return ;
 
-        pushFollow(FOLLOW_statement_in_synpred133_RJavaSymbolTable4428);
+        pushFollow(FOLLOW_statement_in_synpred133_RJavaSymbolTable4532);
         statement();
 
         state._fsp--;
@@ -14632,16 +14700,16 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred148_RJavaSymbolTable
     public final void synpred148_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:602:9: ( expression ';' )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:602:9: expression ';'
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:618:9: ( expression ';' )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:618:9: expression ';'
         {
-        pushFollow(FOLLOW_expression_in_synpred148_RJavaSymbolTable4650);
+        pushFollow(FOLLOW_expression_in_synpred148_RJavaSymbolTable4754);
         expression();
 
         state._fsp--;
         if (state.failed) return ;
 
-        match(input,SEMI,FOLLOW_SEMI_in_synpred148_RJavaSymbolTable4653); if (state.failed) return ;
+        match(input,SEMI,FOLLOW_SEMI_in_synpred148_RJavaSymbolTable4757); if (state.failed) return ;
 
         }
 
@@ -14650,14 +14718,14 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred149_RJavaSymbolTable
     public final void synpred149_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:603:9: ( IDENTIFIER ':' statement )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:603:9: IDENTIFIER ':' statement
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:619:9: ( IDENTIFIER ':' statement )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:619:9: IDENTIFIER ':' statement
         {
-        match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_synpred149_RJavaSymbolTable4668); if (state.failed) return ;
+        match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_synpred149_RJavaSymbolTable4772); if (state.failed) return ;
 
-        match(input,COLON,FOLLOW_COLON_in_synpred149_RJavaSymbolTable4670); if (state.failed) return ;
+        match(input,COLON,FOLLOW_COLON_in_synpred149_RJavaSymbolTable4774); if (state.failed) return ;
 
-        pushFollow(FOLLOW_statement_in_synpred149_RJavaSymbolTable4672);
+        pushFollow(FOLLOW_statement_in_synpred149_RJavaSymbolTable4776);
         statement();
 
         state._fsp--;
@@ -14670,18 +14738,18 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred153_RJavaSymbolTable
     public final void synpred153_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:627:13: ( catches 'finally' block )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:627:13: catches 'finally' block
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:643:13: ( catches 'finally' block )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:643:13: catches 'finally' block
         {
-        pushFollow(FOLLOW_catches_in_synpred153_RJavaSymbolTable4828);
+        pushFollow(FOLLOW_catches_in_synpred153_RJavaSymbolTable4932);
         catches();
 
         state._fsp--;
         if (state.failed) return ;
 
-        match(input,FINALLY,FOLLOW_FINALLY_in_synpred153_RJavaSymbolTable4830); if (state.failed) return ;
+        match(input,FINALLY,FOLLOW_FINALLY_in_synpred153_RJavaSymbolTable4934); if (state.failed) return ;
 
-        pushFollow(FOLLOW_block_in_synpred153_RJavaSymbolTable4832);
+        pushFollow(FOLLOW_block_in_synpred153_RJavaSymbolTable4936);
         block();
 
         state._fsp--;
@@ -14694,10 +14762,10 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred154_RJavaSymbolTable
     public final void synpred154_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:628:13: ( catches )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:628:13: catches
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:644:13: ( catches )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:644:13: catches
         {
-        pushFollow(FOLLOW_catches_in_synpred154_RJavaSymbolTable4846);
+        pushFollow(FOLLOW_catches_in_synpred154_RJavaSymbolTable4950);
         catches();
 
         state._fsp--;
@@ -14710,38 +14778,38 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred157_RJavaSymbolTable
     public final void synpred157_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:653:9: ( 'for' '(' variableModifiers type IDENTIFIER ':' expression ')' statement )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:653:9: 'for' '(' variableModifiers type IDENTIFIER ':' expression ')' statement
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:669:9: ( 'for' '(' variableModifiers type IDENTIFIER ':' expression ')' statement )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:669:9: 'for' '(' variableModifiers type IDENTIFIER ':' expression ')' statement
         {
-        match(input,FOR,FOLLOW_FOR_in_synpred157_RJavaSymbolTable5038); if (state.failed) return ;
+        match(input,FOR,FOLLOW_FOR_in_synpred157_RJavaSymbolTable5152); if (state.failed) return ;
 
-        match(input,LPAREN,FOLLOW_LPAREN_in_synpred157_RJavaSymbolTable5040); if (state.failed) return ;
+        match(input,LPAREN,FOLLOW_LPAREN_in_synpred157_RJavaSymbolTable5154); if (state.failed) return ;
 
-        pushFollow(FOLLOW_variableModifiers_in_synpred157_RJavaSymbolTable5042);
+        pushFollow(FOLLOW_variableModifiers_in_synpred157_RJavaSymbolTable5156);
         variableModifiers();
 
         state._fsp--;
         if (state.failed) return ;
 
-        pushFollow(FOLLOW_type_in_synpred157_RJavaSymbolTable5044);
+        pushFollow(FOLLOW_type_in_synpred157_RJavaSymbolTable5158);
         type();
 
         state._fsp--;
         if (state.failed) return ;
 
-        match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_synpred157_RJavaSymbolTable5046); if (state.failed) return ;
+        match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_synpred157_RJavaSymbolTable5160); if (state.failed) return ;
 
-        match(input,COLON,FOLLOW_COLON_in_synpred157_RJavaSymbolTable5048); if (state.failed) return ;
+        match(input,COLON,FOLLOW_COLON_in_synpred157_RJavaSymbolTable5162); if (state.failed) return ;
 
-        pushFollow(FOLLOW_expression_in_synpred157_RJavaSymbolTable5059);
+        pushFollow(FOLLOW_expression_in_synpred157_RJavaSymbolTable5183);
         expression();
 
         state._fsp--;
         if (state.failed) return ;
 
-        match(input,RPAREN,FOLLOW_RPAREN_in_synpred157_RJavaSymbolTable5061); if (state.failed) return ;
+        match(input,RPAREN,FOLLOW_RPAREN_in_synpred157_RJavaSymbolTable5185); if (state.failed) return ;
 
-        pushFollow(FOLLOW_statement_in_synpred157_RJavaSymbolTable5063);
+        pushFollow(FOLLOW_statement_in_synpred157_RJavaSymbolTable5187);
         statement();
 
         state._fsp--;
@@ -14754,10 +14822,10 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred161_RJavaSymbolTable
     public final void synpred161_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:667:9: ( localVariableDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:667:9: localVariableDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:692:9: ( localVariableDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:692:9: localVariableDeclaration
         {
-        pushFollow(FOLLOW_localVariableDeclaration_in_synpred161_RJavaSymbolTable5242);
+        pushFollow(FOLLOW_localVariableDeclaration_in_synpred161_RJavaSymbolTable5405);
         localVariableDeclaration();
 
         state._fsp--;
@@ -14770,10 +14838,10 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred202_RJavaSymbolTable
     public final void synpred202_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:821:9: ( castExpression )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:821:9: castExpression
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:846:9: ( castExpression )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:846:9: castExpression
         {
-        pushFollow(FOLLOW_castExpression_in_synpred202_RJavaSymbolTable6487);
+        pushFollow(FOLLOW_castExpression_in_synpred202_RJavaSymbolTable6650);
         castExpression();
 
         state._fsp--;
@@ -14786,20 +14854,20 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred206_RJavaSymbolTable
     public final void synpred206_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:831:9: ( '(' primitiveType ')' unaryExpression )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:831:9: '(' primitiveType ')' unaryExpression
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:856:9: ( '(' primitiveType ')' unaryExpression )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:856:9: '(' primitiveType ')' unaryExpression
         {
-        match(input,LPAREN,FOLLOW_LPAREN_in_synpred206_RJavaSymbolTable6578); if (state.failed) return ;
+        match(input,LPAREN,FOLLOW_LPAREN_in_synpred206_RJavaSymbolTable6741); if (state.failed) return ;
 
-        pushFollow(FOLLOW_primitiveType_in_synpred206_RJavaSymbolTable6580);
+        pushFollow(FOLLOW_primitiveType_in_synpred206_RJavaSymbolTable6743);
         primitiveType();
 
         state._fsp--;
         if (state.failed) return ;
 
-        match(input,RPAREN,FOLLOW_RPAREN_in_synpred206_RJavaSymbolTable6582); if (state.failed) return ;
+        match(input,RPAREN,FOLLOW_RPAREN_in_synpred206_RJavaSymbolTable6745); if (state.failed) return ;
 
-        pushFollow(FOLLOW_unaryExpression_in_synpred206_RJavaSymbolTable6584);
+        pushFollow(FOLLOW_unaryExpression_in_synpred206_RJavaSymbolTable6747);
         unaryExpression();
 
         state._fsp--;
@@ -14812,12 +14880,12 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred208_RJavaSymbolTable
     public final void synpred208_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:841:10: ( '.' IDENTIFIER )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:841:10: '.' IDENTIFIER
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:866:10: ( '.' IDENTIFIER )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:866:10: '.' IDENTIFIER
         {
-        match(input,DOT,FOLLOW_DOT_in_synpred208_RJavaSymbolTable6655); if (state.failed) return ;
+        match(input,DOT,FOLLOW_DOT_in_synpred208_RJavaSymbolTable6818); if (state.failed) return ;
 
-        match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_synpred208_RJavaSymbolTable6657); if (state.failed) return ;
+        match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_synpred208_RJavaSymbolTable6820); if (state.failed) return ;
 
         }
 
@@ -14826,10 +14894,10 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred209_RJavaSymbolTable
     public final void synpred209_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:843:10: ( identifierSuffix )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:843:10: identifierSuffix
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:868:10: ( identifierSuffix )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:868:10: identifierSuffix
         {
-        pushFollow(FOLLOW_identifierSuffix_in_synpred209_RJavaSymbolTable6679);
+        pushFollow(FOLLOW_identifierSuffix_in_synpred209_RJavaSymbolTable6842);
         identifierSuffix();
 
         state._fsp--;
@@ -14842,12 +14910,12 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred211_RJavaSymbolTable
     public final void synpred211_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:846:10: ( '.' IDENTIFIER )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:846:10: '.' IDENTIFIER
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:871:10: ( '.' IDENTIFIER )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:871:10: '.' IDENTIFIER
         {
-        match(input,DOT,FOLLOW_DOT_in_synpred211_RJavaSymbolTable6711); if (state.failed) return ;
+        match(input,DOT,FOLLOW_DOT_in_synpred211_RJavaSymbolTable6874); if (state.failed) return ;
 
-        match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_synpred211_RJavaSymbolTable6713); if (state.failed) return ;
+        match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_synpred211_RJavaSymbolTable6876); if (state.failed) return ;
 
         }
 
@@ -14856,10 +14924,10 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred212_RJavaSymbolTable
     public final void synpred212_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:848:10: ( identifierSuffix )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:848:10: identifierSuffix
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:873:10: ( identifierSuffix )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:873:10: identifierSuffix
         {
-        pushFollow(FOLLOW_identifierSuffix_in_synpred212_RJavaSymbolTable6735);
+        pushFollow(FOLLOW_identifierSuffix_in_synpred212_RJavaSymbolTable6898);
         identifierSuffix();
 
         state._fsp--;
@@ -14872,18 +14940,18 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred224_RJavaSymbolTable
     public final void synpred224_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:876:10: ( '[' expression ']' )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:876:10: '[' expression ']'
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:901:10: ( '[' expression ']' )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:901:10: '[' expression ']'
         {
-        match(input,LBRACKET,FOLLOW_LBRACKET_in_synpred224_RJavaSymbolTable6986); if (state.failed) return ;
+        match(input,LBRACKET,FOLLOW_LBRACKET_in_synpred224_RJavaSymbolTable7149); if (state.failed) return ;
 
-        pushFollow(FOLLOW_expression_in_synpred224_RJavaSymbolTable6988);
+        pushFollow(FOLLOW_expression_in_synpred224_RJavaSymbolTable7151);
         expression();
 
         state._fsp--;
         if (state.failed) return ;
 
-        match(input,RBRACKET,FOLLOW_RBRACKET_in_synpred224_RJavaSymbolTable6990); if (state.failed) return ;
+        match(input,RBRACKET,FOLLOW_RBRACKET_in_synpred224_RJavaSymbolTable7153); if (state.failed) return ;
 
         }
 
@@ -14892,24 +14960,24 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred236_RJavaSymbolTable
     public final void synpred236_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:899:9: ( 'new' nonWildcardTypeArguments classOrInterfaceType classCreatorRest )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:899:9: 'new' nonWildcardTypeArguments classOrInterfaceType classCreatorRest
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:924:9: ( 'new' nonWildcardTypeArguments classOrInterfaceType classCreatorRest )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:924:9: 'new' nonWildcardTypeArguments classOrInterfaceType classCreatorRest
         {
-        match(input,NEW,FOLLOW_NEW_in_synpred236_RJavaSymbolTable7199); if (state.failed) return ;
+        match(input,NEW,FOLLOW_NEW_in_synpred236_RJavaSymbolTable7362); if (state.failed) return ;
 
-        pushFollow(FOLLOW_nonWildcardTypeArguments_in_synpred236_RJavaSymbolTable7201);
+        pushFollow(FOLLOW_nonWildcardTypeArguments_in_synpred236_RJavaSymbolTable7364);
         nonWildcardTypeArguments();
 
         state._fsp--;
         if (state.failed) return ;
 
-        pushFollow(FOLLOW_classOrInterfaceType_in_synpred236_RJavaSymbolTable7203);
+        pushFollow(FOLLOW_classOrInterfaceType_in_synpred236_RJavaSymbolTable7366);
         classOrInterfaceType();
 
         state._fsp--;
         if (state.failed) return ;
 
-        pushFollow(FOLLOW_classCreatorRest_in_synpred236_RJavaSymbolTable7205);
+        pushFollow(FOLLOW_classCreatorRest_in_synpred236_RJavaSymbolTable7368);
         classCreatorRest();
 
         state._fsp--;
@@ -14922,18 +14990,18 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred237_RJavaSymbolTable
     public final void synpred237_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:900:9: ( 'new' classOrInterfaceType classCreatorRest )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:900:9: 'new' classOrInterfaceType classCreatorRest
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:925:9: ( 'new' classOrInterfaceType classCreatorRest )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:925:9: 'new' classOrInterfaceType classCreatorRest
         {
-        match(input,NEW,FOLLOW_NEW_in_synpred237_RJavaSymbolTable7215); if (state.failed) return ;
+        match(input,NEW,FOLLOW_NEW_in_synpred237_RJavaSymbolTable7378); if (state.failed) return ;
 
-        pushFollow(FOLLOW_classOrInterfaceType_in_synpred237_RJavaSymbolTable7217);
+        pushFollow(FOLLOW_classOrInterfaceType_in_synpred237_RJavaSymbolTable7380);
         classOrInterfaceType();
 
         state._fsp--;
         if (state.failed) return ;
 
-        pushFollow(FOLLOW_classCreatorRest_in_synpred237_RJavaSymbolTable7219);
+        pushFollow(FOLLOW_classCreatorRest_in_synpred237_RJavaSymbolTable7382);
         classCreatorRest();
 
         state._fsp--;
@@ -14946,22 +15014,22 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred239_RJavaSymbolTable
     public final void synpred239_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:905:9: ( 'new' createdName '[' ']' ( '[' ']' )* arrayInitializer )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:905:9: 'new' createdName '[' ']' ( '[' ']' )* arrayInitializer
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:930:9: ( 'new' createdName '[' ']' ( '[' ']' )* arrayInitializer )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:930:9: 'new' createdName '[' ']' ( '[' ']' )* arrayInitializer
         {
-        match(input,NEW,FOLLOW_NEW_in_synpred239_RJavaSymbolTable7249); if (state.failed) return ;
+        match(input,NEW,FOLLOW_NEW_in_synpred239_RJavaSymbolTable7412); if (state.failed) return ;
 
-        pushFollow(FOLLOW_createdName_in_synpred239_RJavaSymbolTable7251);
+        pushFollow(FOLLOW_createdName_in_synpred239_RJavaSymbolTable7414);
         createdName();
 
         state._fsp--;
         if (state.failed) return ;
 
-        match(input,LBRACKET,FOLLOW_LBRACKET_in_synpred239_RJavaSymbolTable7261); if (state.failed) return ;
+        match(input,LBRACKET,FOLLOW_LBRACKET_in_synpred239_RJavaSymbolTable7424); if (state.failed) return ;
 
-        match(input,RBRACKET,FOLLOW_RBRACKET_in_synpred239_RJavaSymbolTable7263); if (state.failed) return ;
+        match(input,RBRACKET,FOLLOW_RBRACKET_in_synpred239_RJavaSymbolTable7426); if (state.failed) return ;
 
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:907:9: ( '[' ']' )*
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:932:9: ( '[' ']' )*
         loop191:
         do {
             int alt191=2;
@@ -14974,11 +15042,11 @@ public class RJavaSymbolTableParser extends Parser {
 
             switch (alt191) {
         	case 1 :
-        	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:907:10: '[' ']'
+        	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:932:10: '[' ']'
         	    {
-        	    match(input,LBRACKET,FOLLOW_LBRACKET_in_synpred239_RJavaSymbolTable7274); if (state.failed) return ;
+        	    match(input,LBRACKET,FOLLOW_LBRACKET_in_synpred239_RJavaSymbolTable7437); if (state.failed) return ;
 
-        	    match(input,RBRACKET,FOLLOW_RBRACKET_in_synpred239_RJavaSymbolTable7276); if (state.failed) return ;
+        	    match(input,RBRACKET,FOLLOW_RBRACKET_in_synpred239_RJavaSymbolTable7439); if (state.failed) return ;
 
         	    }
         	    break;
@@ -14989,7 +15057,7 @@ public class RJavaSymbolTableParser extends Parser {
         } while (true);
 
 
-        pushFollow(FOLLOW_arrayInitializer_in_synpred239_RJavaSymbolTable7297);
+        pushFollow(FOLLOW_arrayInitializer_in_synpred239_RJavaSymbolTable7460);
         arrayInitializer();
 
         state._fsp--;
@@ -15002,18 +15070,18 @@ public class RJavaSymbolTableParser extends Parser {
 
     // $ANTLR start synpred240_RJavaSymbolTable
     public final void synpred240_RJavaSymbolTable_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:914:13: ( '[' expression ']' )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:914:13: '[' expression ']'
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:939:13: ( '[' expression ']' )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/compiler/semantics/symtab/RJavaSymbolTable.g:939:13: '[' expression ']'
         {
-        match(input,LBRACKET,FOLLOW_LBRACKET_in_synpred240_RJavaSymbolTable7346); if (state.failed) return ;
+        match(input,LBRACKET,FOLLOW_LBRACKET_in_synpred240_RJavaSymbolTable7509); if (state.failed) return ;
 
-        pushFollow(FOLLOW_expression_in_synpred240_RJavaSymbolTable7348);
+        pushFollow(FOLLOW_expression_in_synpred240_RJavaSymbolTable7511);
         expression();
 
         state._fsp--;
         if (state.failed) return ;
 
-        match(input,RBRACKET,FOLLOW_RBRACKET_in_synpred240_RJavaSymbolTable7362); if (state.failed) return ;
+        match(input,RBRACKET,FOLLOW_RBRACKET_in_synpred240_RJavaSymbolTable7525); if (state.failed) return ;
 
         }
 
@@ -15659,731 +15727,731 @@ public class RJavaSymbolTableParser extends Parser {
     public static final BitSet FOLLOW_annotations_in_compilationUnit75 = new BitSet(new long[]{0x0000000000000000L,0x0000000000004000L});
     public static final BitSet FOLLOW_packageDeclaration_in_compilationUnit104 = new BitSet(new long[]{0x1200102000800012L,0x0011040C10700600L});
     public static final BitSet FOLLOW_importDeclaration_in_compilationUnit126 = new BitSet(new long[]{0x1200102000800012L,0x0011040C10700600L});
-    public static final BitSet FOLLOW_typeDeclaration_in_compilationUnit148 = new BitSet(new long[]{0x1000102000800012L,0x0011040C10700600L});
-    public static final BitSet FOLLOW_PACKAGE_in_packageDeclaration179 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_qualifiedName_in_packageDeclaration181 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_packageDeclaration191 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IMPORT_in_importDeclaration212 = new BitSet(new long[]{0x0040000000000000L,0x0000000400000000L});
-    public static final BitSet FOLLOW_STATIC_in_importDeclaration224 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_importDeclaration245 = new BitSet(new long[]{0x0000000080000000L});
-    public static final BitSet FOLLOW_DOT_in_importDeclaration247 = new BitSet(new long[]{0x0000000000000000L,0x0000000100000000L});
-    public static final BitSet FOLLOW_STAR_in_importDeclaration249 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_importDeclaration259 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IMPORT_in_importDeclaration276 = new BitSet(new long[]{0x0040000000000000L,0x0000000400000000L});
-    public static final BitSet FOLLOW_STATIC_in_importDeclaration288 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_importDeclaration309 = new BitSet(new long[]{0x0000000080000000L});
-    public static final BitSet FOLLOW_DOT_in_importDeclaration320 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_importDeclaration322 = new BitSet(new long[]{0x0000000080000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_DOT_in_importDeclaration344 = new BitSet(new long[]{0x0000000000000000L,0x0000000100000000L});
-    public static final BitSet FOLLOW_STAR_in_importDeclaration346 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_importDeclaration367 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_qualifiedImportName387 = new BitSet(new long[]{0x0000000080000002L});
-    public static final BitSet FOLLOW_DOT_in_qualifiedImportName398 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_qualifiedImportName400 = new BitSet(new long[]{0x0000000080000002L});
-    public static final BitSet FOLLOW_classOrInterfaceDeclaration_in_typeDeclaration431 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SEMI_in_typeDeclaration441 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classDeclaration_in_classOrInterfaceDeclaration462 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceDeclaration_in_classOrInterfaceDeclaration472 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_annotation_in_modifiers507 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
-    public static final BitSet FOLLOW_PUBLIC_in_modifiers517 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
-    public static final BitSet FOLLOW_PROTECTED_in_modifiers527 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
-    public static final BitSet FOLLOW_PRIVATE_in_modifiers537 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
-    public static final BitSet FOLLOW_STATIC_in_modifiers547 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
-    public static final BitSet FOLLOW_ABSTRACT_in_modifiers557 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
-    public static final BitSet FOLLOW_FINAL_in_modifiers567 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
-    public static final BitSet FOLLOW_NATIVE_in_modifiers577 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
-    public static final BitSet FOLLOW_SYNCHRONIZED_in_modifiers587 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
-    public static final BitSet FOLLOW_TRANSIENT_in_modifiers597 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
-    public static final BitSet FOLLOW_VOLATILE_in_modifiers607 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
-    public static final BitSet FOLLOW_STRICTFP_in_modifiers617 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
-    public static final BitSet FOLLOW_FINAL_in_variableModifiers649 = new BitSet(new long[]{0x0000100000000002L,0x0000000000000200L});
-    public static final BitSet FOLLOW_annotation_in_variableModifiers663 = new BitSet(new long[]{0x0000100000000002L,0x0000000000000200L});
-    public static final BitSet FOLLOW_normalClassDeclaration_in_classDeclaration699 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_enumDeclaration_in_classDeclaration709 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_normalClassDeclaration729 = new BitSet(new long[]{0x0000000000800000L});
-    public static final BitSet FOLLOW_CLASS_in_normalClassDeclaration732 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_normalClassDeclaration734 = new BitSet(new long[]{0x0100010000000000L,0x0000000000000082L});
-    public static final BitSet FOLLOW_typeParameters_in_normalClassDeclaration745 = new BitSet(new long[]{0x0100010000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_EXTENDS_in_normalClassDeclaration767 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_normalClassDeclaration769 = new BitSet(new long[]{0x0100000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_IMPLEMENTS_in_normalClassDeclaration791 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_typeList_in_normalClassDeclaration793 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_classBody_in_normalClassDeclaration826 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LT_in_typeParameters847 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_typeParameter_in_typeParameters861 = new BitSet(new long[]{0x0008000002000000L});
-    public static final BitSet FOLLOW_COMMA_in_typeParameters876 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_typeParameter_in_typeParameters878 = new BitSet(new long[]{0x0008000002000000L});
-    public static final BitSet FOLLOW_GT_in_typeParameters903 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_typeParameter923 = new BitSet(new long[]{0x0000010000000002L});
-    public static final BitSet FOLLOW_EXTENDS_in_typeParameter934 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_typeBound_in_typeParameter936 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_type_in_typeBound968 = new BitSet(new long[]{0x0000000000000022L});
-    public static final BitSet FOLLOW_AMP_in_typeBound979 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_typeBound981 = new BitSet(new long[]{0x0000000000000022L});
-    public static final BitSet FOLLOW_modifiers_in_enumDeclaration1013 = new BitSet(new long[]{0x0000002000000000L});
-    public static final BitSet FOLLOW_ENUM_in_enumDeclaration1025 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_enumDeclaration1046 = new BitSet(new long[]{0x0100000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_IMPLEMENTS_in_enumDeclaration1057 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_typeList_in_enumDeclaration1059 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_enumBody_in_enumDeclaration1080 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACE_in_enumBody1105 = new BitSet(new long[]{0x0040000002000000L,0x0000000011000200L});
-    public static final BitSet FOLLOW_enumConstants_in_enumBody1116 = new BitSet(new long[]{0x0000000002000000L,0x0000000011000000L});
-    public static final BitSet FOLLOW_COMMA_in_enumBody1138 = new BitSet(new long[]{0x0000000000000000L,0x0000000011000000L});
-    public static final BitSet FOLLOW_enumBodyDeclarations_in_enumBody1151 = new BitSet(new long[]{0x0000000000000000L,0x0000000001000000L});
-    public static final BitSet FOLLOW_RBRACE_in_enumBody1173 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_enumConstant_in_enumConstants1193 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_COMMA_in_enumConstants1204 = new BitSet(new long[]{0x0040000000000000L,0x0000000000000200L});
-    public static final BitSet FOLLOW_enumConstant_in_enumConstants1206 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_annotations_in_enumConstant1240 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_enumConstant1261 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000042L});
-    public static final BitSet FOLLOW_arguments_in_enumConstant1272 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000002L});
-    public static final BitSet FOLLOW_classBody_in_enumConstant1294 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SEMI_in_enumBodyDeclarations1335 = new BitSet(new long[]{0x1840502100A14012L,0x0019040C30700692L});
-    public static final BitSet FOLLOW_classBodyDeclaration_in_enumBodyDeclarations1347 = new BitSet(new long[]{0x1840502100A14012L,0x0019040C30700692L});
-    public static final BitSet FOLLOW_normalInterfaceDeclaration_in_interfaceDeclaration1378 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_annotationTypeDeclaration_in_interfaceDeclaration1388 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_normalInterfaceDeclaration1412 = new BitSet(new long[]{0x1000000000000000L});
-    public static final BitSet FOLLOW_INTERFACE_in_normalInterfaceDeclaration1414 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_normalInterfaceDeclaration1416 = new BitSet(new long[]{0x0000010000000000L,0x0000000000000082L});
-    public static final BitSet FOLLOW_typeParameters_in_normalInterfaceDeclaration1427 = new BitSet(new long[]{0x0000010000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_EXTENDS_in_normalInterfaceDeclaration1449 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_typeList_in_normalInterfaceDeclaration1451 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceBody_in_normalInterfaceDeclaration1472 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_type_in_typeList1492 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_COMMA_in_typeList1503 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_typeList1505 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_LBRACE_in_classBody1536 = new BitSet(new long[]{0x1840502100A14010L,0x0019040C31700692L});
-    public static final BitSet FOLLOW_classBodyDeclaration_in_classBody1549 = new BitSet(new long[]{0x1840502100A14010L,0x0019040C31700692L});
-    public static final BitSet FOLLOW_RBRACE_in_classBody1571 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACE_in_interfaceBody1593 = new BitSet(new long[]{0x1840502100A14010L,0x0019040C31700690L});
-    public static final BitSet FOLLOW_interfaceBodyDeclaration_in_interfaceBody1605 = new BitSet(new long[]{0x1840502100A14010L,0x0019040C31700690L});
-    public static final BitSet FOLLOW_RBRACE_in_interfaceBody1627 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SEMI_in_classBodyDeclaration1647 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_STATIC_in_classBodyDeclaration1657 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_block_in_classBodyDeclaration1670 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_block_in_classBodyDeclaration1700 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_memberDecl_in_classBodyDeclaration1720 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_fieldDeclaration_in_memberDecl1741 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_methodDeclaration_in_memberDecl1752 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classDeclaration_in_memberDecl1763 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceDeclaration_in_memberDecl1774 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_methodDeclaration1812 = new BitSet(new long[]{0x0040000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_typeParameters_in_methodDeclaration1823 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_methodDeclaration1844 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_formalParameters_in_methodDeclaration1854 = new BitSet(new long[]{0x0000000000000000L,0x0000400000000002L});
-    public static final BitSet FOLLOW_THROWS_in_methodDeclaration1865 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_qualifiedNameList_in_methodDeclaration1867 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACE_in_methodDeclaration1888 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1EF2L});
-    public static final BitSet FOLLOW_explicitConstructorInvocation_in_methodDeclaration1900 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1E72L});
-    public static final BitSet FOLLOW_blockStatement_in_methodDeclaration1922 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1E72L});
-    public static final BitSet FOLLOW_RBRACE_in_methodDeclaration1943 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_methodDeclaration1953 = new BitSet(new long[]{0x0840400100214000L,0x0008000020000090L});
-    public static final BitSet FOLLOW_typeParameters_in_methodDeclaration1964 = new BitSet(new long[]{0x0840400100214000L,0x0008000020000010L});
-    public static final BitSet FOLLOW_type_in_methodDeclaration1986 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_VOID_in_methodDeclaration2000 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_methodDeclaration2020 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_formalParameters_in_methodDeclaration2030 = new BitSet(new long[]{0x0000000000000000L,0x0000400010000006L});
-    public static final BitSet FOLLOW_LBRACKET_in_methodDeclaration2041 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_methodDeclaration2043 = new BitSet(new long[]{0x0000000000000000L,0x0000400010000006L});
-    public static final BitSet FOLLOW_THROWS_in_methodDeclaration2065 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_qualifiedNameList_in_methodDeclaration2067 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000002L});
-    public static final BitSet FOLLOW_block_in_methodDeclaration2122 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SEMI_in_methodDeclaration2136 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_fieldDeclaration2168 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_fieldDeclaration2179 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_variableDeclarator_in_fieldDeclaration2191 = new BitSet(new long[]{0x0000000002000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_COMMA_in_fieldDeclaration2203 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_variableDeclarator_in_fieldDeclaration2205 = new BitSet(new long[]{0x0000000002000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_fieldDeclaration2227 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_variableDeclarator2252 = new BitSet(new long[]{0x0000004000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_variableDeclarator2265 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_variableDeclarator2267 = new BitSet(new long[]{0x0000004000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_EQ_in_variableDeclarator2291 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1872L});
-    public static final BitSet FOLLOW_variableInitializer_in_variableDeclarator2293 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceFieldDeclaration_in_interfaceBodyDeclaration2342 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceMethodDeclaration_in_interfaceBodyDeclaration2352 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceDeclaration_in_interfaceBodyDeclaration2362 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classDeclaration_in_interfaceBodyDeclaration2372 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SEMI_in_interfaceBodyDeclaration2382 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_interfaceMethodDeclaration2402 = new BitSet(new long[]{0x0840400100214000L,0x0008000020000090L});
-    public static final BitSet FOLLOW_typeParameters_in_interfaceMethodDeclaration2413 = new BitSet(new long[]{0x0840400100214000L,0x0008000020000010L});
-    public static final BitSet FOLLOW_type_in_interfaceMethodDeclaration2435 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_VOID_in_interfaceMethodDeclaration2446 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_interfaceMethodDeclaration2466 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_formalParameters_in_interfaceMethodDeclaration2476 = new BitSet(new long[]{0x0000000000000000L,0x0000400010000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_interfaceMethodDeclaration2487 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_interfaceMethodDeclaration2489 = new BitSet(new long[]{0x0000000000000000L,0x0000400010000004L});
-    public static final BitSet FOLLOW_THROWS_in_interfaceMethodDeclaration2511 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_qualifiedNameList_in_interfaceMethodDeclaration2513 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_interfaceMethodDeclaration2526 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_interfaceFieldDeclaration2548 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_interfaceFieldDeclaration2550 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_variableDeclarator_in_interfaceFieldDeclaration2552 = new BitSet(new long[]{0x0000000002000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_COMMA_in_interfaceFieldDeclaration2563 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_variableDeclarator_in_interfaceFieldDeclaration2565 = new BitSet(new long[]{0x0000000002000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_interfaceFieldDeclaration2586 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classOrInterfaceType_in_type2607 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_type2618 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_type2620 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_primitiveType_in_type2641 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_type2652 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_type2654 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_classOrInterfaceType2686 = new BitSet(new long[]{0x0000000080000002L,0x0000000000000080L});
-    public static final BitSet FOLLOW_typeArguments_in_classOrInterfaceType2697 = new BitSet(new long[]{0x0000000080000002L});
-    public static final BitSet FOLLOW_DOT_in_classOrInterfaceType2719 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_classOrInterfaceType2721 = new BitSet(new long[]{0x0000000080000002L,0x0000000000000080L});
-    public static final BitSet FOLLOW_typeArguments_in_classOrInterfaceType2736 = new BitSet(new long[]{0x0000000080000002L});
-    public static final BitSet FOLLOW_LT_in_typeArguments2873 = new BitSet(new long[]{0x0840400100214000L,0x0000000020800010L});
-    public static final BitSet FOLLOW_typeArgument_in_typeArguments2875 = new BitSet(new long[]{0x0008000002000000L});
-    public static final BitSet FOLLOW_COMMA_in_typeArguments2886 = new BitSet(new long[]{0x0840400100214000L,0x0000000020800010L});
-    public static final BitSet FOLLOW_typeArgument_in_typeArguments2888 = new BitSet(new long[]{0x0008000002000000L});
-    public static final BitSet FOLLOW_GT_in_typeArguments2910 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_type_in_typeArgument2930 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_QUES_in_typeArgument2940 = new BitSet(new long[]{0x0000010000000002L,0x0000010000000000L});
-    public static final BitSet FOLLOW_set_in_typeArgument2964 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_typeArgument3008 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_qualifiedName_in_qualifiedNameList3039 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_COMMA_in_qualifiedNameList3050 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_qualifiedName_in_qualifiedNameList3052 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_LPAREN_in_formalParameters3083 = new BitSet(new long[]{0x0840500100214000L,0x0000000028000210L});
-    public static final BitSet FOLLOW_formalParameterDecls_in_formalParameters3094 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_RPAREN_in_formalParameters3116 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ellipsisParameterDecl_in_formalParameterDecls3136 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_normalParameterDecl_in_formalParameterDecls3146 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_COMMA_in_formalParameterDecls3157 = new BitSet(new long[]{0x0840500100214000L,0x0000000020000210L});
-    public static final BitSet FOLLOW_normalParameterDecl_in_formalParameterDecls3159 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_normalParameterDecl_in_formalParameterDecls3181 = new BitSet(new long[]{0x0000000002000000L});
-    public static final BitSet FOLLOW_COMMA_in_formalParameterDecls3191 = new BitSet(new long[]{0x0840500100214000L,0x0000000020000210L});
-    public static final BitSet FOLLOW_ellipsisParameterDecl_in_formalParameterDecls3213 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_variableModifiers_in_normalParameterDecl3233 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_normalParameterDecl3235 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_normalParameterDecl3237 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_normalParameterDecl3248 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_normalParameterDecl3250 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_variableModifiers_in_ellipsisParameterDecl3281 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_ellipsisParameterDecl3291 = new BitSet(new long[]{0x0000000800000000L});
-    public static final BitSet FOLLOW_ELLIPSIS_in_ellipsisParameterDecl3294 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_ellipsisParameterDecl3304 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_explicitConstructorInvocation3326 = new BitSet(new long[]{0x0000000000000000L,0x0000110000000000L});
-    public static final BitSet FOLLOW_set_in_explicitConstructorInvocation3352 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_arguments_in_explicitConstructorInvocation3384 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_explicitConstructorInvocation3386 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_primary_in_explicitConstructorInvocation3397 = new BitSet(new long[]{0x0000000080000000L});
-    public static final BitSet FOLLOW_DOT_in_explicitConstructorInvocation3407 = new BitSet(new long[]{0x0000000000000000L,0x0000010000000080L});
-    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_explicitConstructorInvocation3418 = new BitSet(new long[]{0x0000000000000000L,0x0000010000000000L});
-    public static final BitSet FOLLOW_SUPER_in_explicitConstructorInvocation3439 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_arguments_in_explicitConstructorInvocation3449 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_explicitConstructorInvocation3451 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_qualifiedName3471 = new BitSet(new long[]{0x0000000080000002L});
-    public static final BitSet FOLLOW_DOT_in_qualifiedName3482 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_qualifiedName3484 = new BitSet(new long[]{0x0000000080000002L});
-    public static final BitSet FOLLOW_annotation_in_annotations3516 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000200L});
-    public static final BitSet FOLLOW_MONKEYS_AT_in_annotation3549 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_qualifiedName_in_annotation3551 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000040L});
-    public static final BitSet FOLLOW_LPAREN_in_annotation3565 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0280A1A72L});
-    public static final BitSet FOLLOW_elementValuePairs_in_annotation3592 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_elementValue_in_annotation3616 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_RPAREN_in_annotation3652 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_elementValuePair_in_elementValuePairs3684 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_COMMA_in_elementValuePairs3695 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_elementValuePair_in_elementValuePairs3697 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_elementValuePair3728 = new BitSet(new long[]{0x0000004000000000L});
-    public static final BitSet FOLLOW_EQ_in_elementValuePair3730 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1A72L});
-    public static final BitSet FOLLOW_elementValue_in_elementValuePair3732 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionalExpression_in_elementValue3752 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_annotation_in_elementValue3762 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_elementValueArrayInitializer_in_elementValue3772 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACE_in_elementValueArrayInitializer3792 = new BitSet(new long[]{0x2840C80302614200L,0x000A91B0210A1A72L});
-    public static final BitSet FOLLOW_elementValue_in_elementValueArrayInitializer3803 = new BitSet(new long[]{0x0000000002000000L,0x0000000001000000L});
-    public static final BitSet FOLLOW_COMMA_in_elementValueArrayInitializer3818 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1A72L});
-    public static final BitSet FOLLOW_elementValue_in_elementValueArrayInitializer3820 = new BitSet(new long[]{0x0000000002000000L,0x0000000001000000L});
-    public static final BitSet FOLLOW_COMMA_in_elementValueArrayInitializer3849 = new BitSet(new long[]{0x0000000000000000L,0x0000000001000000L});
-    public static final BitSet FOLLOW_RBRACE_in_elementValueArrayInitializer3853 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_annotationTypeDeclaration3876 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000200L});
-    public static final BitSet FOLLOW_MONKEYS_AT_in_annotationTypeDeclaration3878 = new BitSet(new long[]{0x1000000000000000L});
-    public static final BitSet FOLLOW_INTERFACE_in_annotationTypeDeclaration3888 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_annotationTypeDeclaration3898 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_annotationTypeBody_in_annotationTypeDeclaration3908 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACE_in_annotationTypeBody3929 = new BitSet(new long[]{0x1840502100A14010L,0x0011040C31700610L});
-    public static final BitSet FOLLOW_annotationTypeElementDeclaration_in_annotationTypeBody3941 = new BitSet(new long[]{0x1840502100A14010L,0x0011040C31700610L});
-    public static final BitSet FOLLOW_RBRACE_in_annotationTypeBody3963 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_annotationMethodDeclaration_in_annotationTypeElementDeclaration3985 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceFieldDeclaration_in_annotationTypeElementDeclaration3995 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_normalClassDeclaration_in_annotationTypeElementDeclaration4005 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_normalInterfaceDeclaration_in_annotationTypeElementDeclaration4015 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_enumDeclaration_in_annotationTypeElementDeclaration4025 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_annotationTypeDeclaration_in_annotationTypeElementDeclaration4035 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SEMI_in_annotationTypeElementDeclaration4045 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_annotationMethodDeclaration4065 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_annotationMethodDeclaration4067 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_annotationMethodDeclaration4069 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_LPAREN_in_annotationMethodDeclaration4079 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_RPAREN_in_annotationMethodDeclaration4081 = new BitSet(new long[]{0x0000000020000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_DEFAULT_in_annotationMethodDeclaration4084 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1A72L});
-    public static final BitSet FOLLOW_elementValue_in_annotationMethodDeclaration4086 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_annotationMethodDeclaration4115 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACE_in_block4139 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1E72L});
-    public static final BitSet FOLLOW_blockStatement_in_block4150 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1E72L});
-    public static final BitSet FOLLOW_RBRACE_in_block4171 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_localVariableDeclarationStatement_in_blockStatement4193 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classOrInterfaceDeclaration_in_blockStatement4203 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_statement_in_blockStatement4213 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_localVariableDeclaration_in_localVariableDeclarationStatement4234 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_localVariableDeclarationStatement4244 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_variableModifiers_in_localVariableDeclaration4264 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_localVariableDeclaration4266 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_variableDeclarator_in_localVariableDeclaration4278 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_COMMA_in_localVariableDeclaration4289 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_variableDeclarator_in_localVariableDeclaration4291 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_block_in_statement4322 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ASSERT_in_statement4346 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_statement4366 = new BitSet(new long[]{0x0000000001000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_COLON_in_statement4369 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_statement4371 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_statement4375 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ASSERT_in_statement4385 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_statement4388 = new BitSet(new long[]{0x0000000001000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_COLON_in_statement4391 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_statement4393 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_statement4397 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IF_in_statement4419 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_parExpression_in_statement4421 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
-    public static final BitSet FOLLOW_statement_in_statement4423 = new BitSet(new long[]{0x0000001000000002L});
-    public static final BitSet FOLLOW_ELSE_in_statement4426 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
-    public static final BitSet FOLLOW_statement_in_statement4428 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_forstatement_in_statement4450 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_WHILE_in_statement4460 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_parExpression_in_statement4462 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
-    public static final BitSet FOLLOW_statement_in_statement4464 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DO_in_statement4474 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
-    public static final BitSet FOLLOW_statement_in_statement4476 = new BitSet(new long[]{0x0000000000000000L,0x0020000000000000L});
-    public static final BitSet FOLLOW_WHILE_in_statement4478 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_parExpression_in_statement4480 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_statement4482 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_trystatement_in_statement4492 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SWITCH_in_statement4502 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_parExpression_in_statement4504 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACE_in_statement4506 = new BitSet(new long[]{0x0000000020080000L,0x0000000001000000L});
-    public static final BitSet FOLLOW_switchBlockStatementGroups_in_statement4508 = new BitSet(new long[]{0x0000000000000000L,0x0000000001000000L});
-    public static final BitSet FOLLOW_RBRACE_in_statement4510 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SYNCHRONIZED_in_statement4520 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_parExpression_in_statement4522 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_block_in_statement4524 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RETURN_in_statement4534 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0300A1870L});
-    public static final BitSet FOLLOW_expression_in_statement4537 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_statement4542 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_THROW_in_statement4552 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_statement4554 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_statement4556 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_BREAK_in_statement4566 = new BitSet(new long[]{0x0040000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_statement4581 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_statement4598 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_CONTINUE_in_statement4608 = new BitSet(new long[]{0x0040000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_statement4623 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_statement4640 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expression_in_statement4650 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_statement4653 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_statement4668 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_COLON_in_statement4670 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
-    public static final BitSet FOLLOW_statement_in_statement4672 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SEMI_in_statement4682 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_switchBlockStatementGroup_in_switchBlockStatementGroups4704 = new BitSet(new long[]{0x0000000020080002L});
-    public static final BitSet FOLLOW_switchLabel_in_switchBlockStatementGroup4733 = new BitSet(new long[]{0x38C1D82350E1C312L,0x003FB7BC347A1E72L});
-    public static final BitSet FOLLOW_blockStatement_in_switchBlockStatementGroup4744 = new BitSet(new long[]{0x38C1D82350E1C312L,0x003FB7BC347A1E72L});
-    public static final BitSet FOLLOW_CASE_in_switchLabel4775 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_switchLabel4777 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_COLON_in_switchLabel4779 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DEFAULT_in_switchLabel4789 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_COLON_in_switchLabel4791 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_TRY_in_trystatement4812 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_block_in_trystatement4814 = new BitSet(new long[]{0x0000200000100000L});
-    public static final BitSet FOLLOW_catches_in_trystatement4828 = new BitSet(new long[]{0x0000200000000000L});
-    public static final BitSet FOLLOW_FINALLY_in_trystatement4830 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_block_in_trystatement4832 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_catches_in_trystatement4846 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_FINALLY_in_trystatement4860 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_block_in_trystatement4862 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_catchClause_in_catches4893 = new BitSet(new long[]{0x0000000000100002L});
-    public static final BitSet FOLLOW_catchClause_in_catches4904 = new BitSet(new long[]{0x0000000000100002L});
-    public static final BitSet FOLLOW_CATCH_in_catchClause4935 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_LPAREN_in_catchClause4937 = new BitSet(new long[]{0x0840500100214000L,0x0000000020000210L});
-    public static final BitSet FOLLOW_formalParameter_in_catchClause4939 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_RPAREN_in_catchClause4949 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_block_in_catchClause4951 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_variableModifiers_in_formalParameter4972 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_formalParameter4974 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_formalParameter4976 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_formalParameter4987 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_formalParameter4989 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_FOR_in_forstatement5038 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_LPAREN_in_forstatement5040 = new BitSet(new long[]{0x0840500100214000L,0x0000000020000210L});
-    public static final BitSet FOLLOW_variableModifiers_in_forstatement5042 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_forstatement5044 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_forstatement5046 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_COLON_in_forstatement5048 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_forstatement5059 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_RPAREN_in_forstatement5061 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
-    public static final BitSet FOLLOW_statement_in_forstatement5063 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_FOR_in_forstatement5095 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_LPAREN_in_forstatement5097 = new BitSet(new long[]{0x2840D80300614200L,0x000A91B0300A1A70L});
-    public static final BitSet FOLLOW_forInit_in_forstatement5117 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_forstatement5138 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0300A1870L});
-    public static final BitSet FOLLOW_expression_in_forstatement5158 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_forstatement5179 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0280A1870L});
-    public static final BitSet FOLLOW_expressionList_in_forstatement5199 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_RPAREN_in_forstatement5220 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
-    public static final BitSet FOLLOW_statement_in_forstatement5222 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_localVariableDeclaration_in_forInit5242 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expressionList_in_forInit5252 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LPAREN_in_parExpression5272 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_parExpression5274 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_RPAREN_in_parExpression5276 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expression_in_expressionList5296 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_COMMA_in_expressionList5307 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_expressionList5309 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_conditionalExpression_in_expression5341 = new BitSet(new long[]{0x0008004000042082L,0x0000004280050080L});
-    public static final BitSet FOLLOW_assignmentOperator_in_expression5352 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_expression5354 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_EQ_in_assignmentOperator5386 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_PLUSEQ_in_assignmentOperator5396 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SUBEQ_in_assignmentOperator5406 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_STAREQ_in_assignmentOperator5416 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SLASHEQ_in_assignmentOperator5426 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_AMPEQ_in_assignmentOperator5436 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_BAREQ_in_assignmentOperator5446 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_CARETEQ_in_assignmentOperator5456 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_PERCENTEQ_in_assignmentOperator5466 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LT_in_assignmentOperator5477 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_LT_in_assignmentOperator5479 = new BitSet(new long[]{0x0000004000000000L});
-    public static final BitSet FOLLOW_EQ_in_assignmentOperator5481 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_GT_in_assignmentOperator5492 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_GT_in_assignmentOperator5494 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_GT_in_assignmentOperator5496 = new BitSet(new long[]{0x0000004000000000L});
-    public static final BitSet FOLLOW_EQ_in_assignmentOperator5498 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_GT_in_assignmentOperator5509 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_GT_in_assignmentOperator5511 = new BitSet(new long[]{0x0000004000000000L});
-    public static final BitSet FOLLOW_EQ_in_assignmentOperator5513 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionalOrExpression_in_conditionalExpression5534 = new BitSet(new long[]{0x0000000000000002L,0x0000000000800000L});
-    public static final BitSet FOLLOW_QUES_in_conditionalExpression5545 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_conditionalExpression5547 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_COLON_in_conditionalExpression5549 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_conditionalExpression_in_conditionalExpression5551 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionalAndExpression_in_conditionalOrExpression5582 = new BitSet(new long[]{0x0000000000001002L});
-    public static final BitSet FOLLOW_BARBAR_in_conditionalOrExpression5593 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_conditionalAndExpression_in_conditionalOrExpression5595 = new BitSet(new long[]{0x0000000000001002L});
-    public static final BitSet FOLLOW_inclusiveOrExpression_in_conditionalAndExpression5626 = new BitSet(new long[]{0x0000000000000042L});
-    public static final BitSet FOLLOW_AMPAMP_in_conditionalAndExpression5637 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_inclusiveOrExpression_in_conditionalAndExpression5639 = new BitSet(new long[]{0x0000000000000042L});
-    public static final BitSet FOLLOW_exclusiveOrExpression_in_inclusiveOrExpression5670 = new BitSet(new long[]{0x0000000000000802L});
-    public static final BitSet FOLLOW_BAR_in_inclusiveOrExpression5681 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_exclusiveOrExpression_in_inclusiveOrExpression5683 = new BitSet(new long[]{0x0000000000000802L});
-    public static final BitSet FOLLOW_andExpression_in_exclusiveOrExpression5714 = new BitSet(new long[]{0x0000000000020002L});
-    public static final BitSet FOLLOW_CARET_in_exclusiveOrExpression5725 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_andExpression_in_exclusiveOrExpression5727 = new BitSet(new long[]{0x0000000000020002L});
-    public static final BitSet FOLLOW_equalityExpression_in_andExpression5758 = new BitSet(new long[]{0x0000000000000022L});
-    public static final BitSet FOLLOW_AMP_in_andExpression5769 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_equalityExpression_in_andExpression5771 = new BitSet(new long[]{0x0000000000000022L});
-    public static final BitSet FOLLOW_instanceOfExpression_in_equalityExpression5802 = new BitSet(new long[]{0x0000008000000402L});
-    public static final BitSet FOLLOW_set_in_equalityExpression5829 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_instanceOfExpression_in_equalityExpression5879 = new BitSet(new long[]{0x0000008000000402L});
-    public static final BitSet FOLLOW_relationalExpression_in_instanceOfExpression5910 = new BitSet(new long[]{0x0400000000000002L});
-    public static final BitSet FOLLOW_INSTANCEOF_in_instanceOfExpression5921 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_instanceOfExpression5923 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_shiftExpression_in_relationalExpression5954 = new BitSet(new long[]{0x0008000000000002L,0x0000000000000080L});
-    public static final BitSet FOLLOW_relationalOp_in_relationalExpression5965 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_shiftExpression_in_relationalExpression5967 = new BitSet(new long[]{0x0008000000000002L,0x0000000000000080L});
-    public static final BitSet FOLLOW_LT_in_relationalOp5999 = new BitSet(new long[]{0x0000004000000000L});
-    public static final BitSet FOLLOW_EQ_in_relationalOp6001 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_GT_in_relationalOp6012 = new BitSet(new long[]{0x0000004000000000L});
-    public static final BitSet FOLLOW_EQ_in_relationalOp6014 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LT_in_relationalOp6024 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_GT_in_relationalOp6034 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_additiveExpression_in_shiftExpression6054 = new BitSet(new long[]{0x0008000000000002L,0x0000000000000080L});
-    public static final BitSet FOLLOW_shiftOp_in_shiftExpression6065 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_additiveExpression_in_shiftExpression6067 = new BitSet(new long[]{0x0008000000000002L,0x0000000000000080L});
-    public static final BitSet FOLLOW_LT_in_shiftOp6100 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_LT_in_shiftOp6102 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_GT_in_shiftOp6113 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_GT_in_shiftOp6115 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_GT_in_shiftOp6117 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_GT_in_shiftOp6128 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_GT_in_shiftOp6130 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_multiplicativeExpression_in_additiveExpression6151 = new BitSet(new long[]{0x0000000000000002L,0x0000002000020000L});
-    public static final BitSet FOLLOW_set_in_additiveExpression6178 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_multiplicativeExpression_in_additiveExpression6228 = new BitSet(new long[]{0x0000000000000002L,0x0000002000020000L});
-    public static final BitSet FOLLOW_unaryExpression_in_multiplicativeExpression6266 = new BitSet(new long[]{0x0000000000000002L,0x0000000140008000L});
-    public static final BitSet FOLLOW_set_in_multiplicativeExpression6293 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_unaryExpression_in_multiplicativeExpression6361 = new BitSet(new long[]{0x0000000000000002L,0x0000000140008000L});
-    public static final BitSet FOLLOW_PLUS_in_unaryExpression6394 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_unaryExpression_in_unaryExpression6397 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SUB_in_unaryExpression6407 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_unaryExpression_in_unaryExpression6409 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_PLUSPLUS_in_unaryExpression6419 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_unaryExpression_in_unaryExpression6421 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SUBSUB_in_unaryExpression6431 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_unaryExpression_in_unaryExpression6433 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_unaryExpressionNotPlusMinus_in_unaryExpression6443 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_TILDE_in_unaryExpressionNotPlusMinus6463 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_unaryExpression_in_unaryExpressionNotPlusMinus6465 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_BANG_in_unaryExpressionNotPlusMinus6475 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_unaryExpression_in_unaryExpressionNotPlusMinus6477 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_castExpression_in_unaryExpressionNotPlusMinus6487 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_primary_in_unaryExpressionNotPlusMinus6497 = new BitSet(new long[]{0x0000000080000002L,0x0000008000080004L});
-    public static final BitSet FOLLOW_selector_in_unaryExpressionNotPlusMinus6508 = new BitSet(new long[]{0x0000000080000002L,0x0000008000080004L});
-    public static final BitSet FOLLOW_LPAREN_in_castExpression6578 = new BitSet(new long[]{0x0800400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_primitiveType_in_castExpression6580 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_RPAREN_in_castExpression6582 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_unaryExpression_in_castExpression6584 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LPAREN_in_castExpression6594 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_castExpression6596 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_RPAREN_in_castExpression6598 = new BitSet(new long[]{0x2840C80300614200L,0x000A911020001870L});
-    public static final BitSet FOLLOW_unaryExpressionNotPlusMinus_in_castExpression6600 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_parExpression_in_primary6622 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_THIS_in_primary6644 = new BitSet(new long[]{0x0000000080000002L,0x0000000000000044L});
-    public static final BitSet FOLLOW_DOT_in_primary6655 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_primary6657 = new BitSet(new long[]{0x0000000080000002L,0x0000000000000044L});
-    public static final BitSet FOLLOW_identifierSuffix_in_primary6679 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_primary6700 = new BitSet(new long[]{0x0000000080000002L,0x0000000000000044L});
-    public static final BitSet FOLLOW_DOT_in_primary6711 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_primary6713 = new BitSet(new long[]{0x0000000080000002L,0x0000000000000044L});
-    public static final BitSet FOLLOW_identifierSuffix_in_primary6735 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SUPER_in_primary6756 = new BitSet(new long[]{0x0000000080000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_superSuffix_in_primary6766 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_literal_in_primary6776 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_creator_in_primary6786 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_primitiveType_in_primary6796 = new BitSet(new long[]{0x0000000080000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_primary6807 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_primary6809 = new BitSet(new long[]{0x0000000080000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_DOT_in_primary6830 = new BitSet(new long[]{0x0000000000800000L});
-    public static final BitSet FOLLOW_CLASS_in_primary6832 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_VOID_in_primary6842 = new BitSet(new long[]{0x0000000080000000L});
-    public static final BitSet FOLLOW_DOT_in_primary6844 = new BitSet(new long[]{0x0000000000800000L});
-    public static final BitSet FOLLOW_CLASS_in_primary6846 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_arguments_in_superSuffix6872 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DOT_in_superSuffix6882 = new BitSet(new long[]{0x0040000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_typeArguments_in_superSuffix6885 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_superSuffix6906 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000040L});
-    public static final BitSet FOLLOW_arguments_in_superSuffix6917 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACKET_in_identifierSuffix6950 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_identifierSuffix6952 = new BitSet(new long[]{0x0000000080000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_DOT_in_identifierSuffix6973 = new BitSet(new long[]{0x0000000000800000L});
-    public static final BitSet FOLLOW_CLASS_in_identifierSuffix6975 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACKET_in_identifierSuffix6986 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_identifierSuffix6988 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_identifierSuffix6990 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_arguments_in_identifierSuffix7011 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DOT_in_identifierSuffix7021 = new BitSet(new long[]{0x0000000000800000L});
-    public static final BitSet FOLLOW_CLASS_in_identifierSuffix7023 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DOT_in_identifierSuffix7033 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_identifierSuffix7035 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_identifierSuffix7037 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_arguments_in_identifierSuffix7039 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DOT_in_identifierSuffix7049 = new BitSet(new long[]{0x0000000000000000L,0x0000100000000000L});
-    public static final BitSet FOLLOW_THIS_in_identifierSuffix7051 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DOT_in_identifierSuffix7061 = new BitSet(new long[]{0x0000000000000000L,0x0000010000000000L});
-    public static final BitSet FOLLOW_SUPER_in_identifierSuffix7063 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_arguments_in_identifierSuffix7065 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_innerCreator_in_identifierSuffix7075 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DOT_in_selector7097 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_selector7099 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000040L});
-    public static final BitSet FOLLOW_arguments_in_selector7110 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DOT_in_selector7131 = new BitSet(new long[]{0x0000000000000000L,0x0000100000000000L});
-    public static final BitSet FOLLOW_THIS_in_selector7133 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DOT_in_selector7143 = new BitSet(new long[]{0x0000000000000000L,0x0000010000000000L});
-    public static final BitSet FOLLOW_SUPER_in_selector7145 = new BitSet(new long[]{0x0000000080000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_superSuffix_in_selector7155 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_innerCreator_in_selector7165 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACKET_in_selector7175 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_selector7177 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_selector7179 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_NEW_in_creator7199 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_creator7201 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_classOrInterfaceType_in_creator7203 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_classCreatorRest_in_creator7205 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_NEW_in_creator7215 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_classOrInterfaceType_in_creator7217 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_classCreatorRest_in_creator7219 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_arrayCreator_in_creator7229 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_NEW_in_arrayCreator7249 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_createdName_in_arrayCreator7251 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_arrayCreator7261 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_arrayCreator7263 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000006L});
-    public static final BitSet FOLLOW_LBRACKET_in_arrayCreator7274 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_arrayCreator7276 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000006L});
-    public static final BitSet FOLLOW_arrayInitializer_in_arrayCreator7297 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_NEW_in_arrayCreator7308 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_createdName_in_arrayCreator7310 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_arrayCreator7320 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_arrayCreator7322 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_arrayCreator7332 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_arrayCreator7346 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_arrayCreator7348 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_arrayCreator7362 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_arrayCreator7384 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_arrayCreator7386 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_arrayInitializer_in_variableInitializer7417 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expression_in_variableInitializer7427 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACE_in_arrayInitializer7447 = new BitSet(new long[]{0x2840C80302614200L,0x000A91B0210A1872L});
-    public static final BitSet FOLLOW_variableInitializer_in_arrayInitializer7463 = new BitSet(new long[]{0x0000000002000000L,0x0000000001000000L});
-    public static final BitSet FOLLOW_COMMA_in_arrayInitializer7482 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1872L});
-    public static final BitSet FOLLOW_variableInitializer_in_arrayInitializer7484 = new BitSet(new long[]{0x0000000002000000L,0x0000000001000000L});
-    public static final BitSet FOLLOW_COMMA_in_arrayInitializer7534 = new BitSet(new long[]{0x0000000000000000L,0x0000000001000000L});
-    public static final BitSet FOLLOW_RBRACE_in_arrayInitializer7547 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classOrInterfaceType_in_createdName7581 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_primitiveType_in_createdName7591 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DOT_in_innerCreator7612 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_NEW_in_innerCreator7614 = new BitSet(new long[]{0x0040000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_innerCreator7625 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_innerCreator7646 = new BitSet(new long[]{0x0000000000000000L,0x00000000000000C0L});
-    public static final BitSet FOLLOW_typeArguments_in_innerCreator7657 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_classCreatorRest_in_innerCreator7678 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_arguments_in_classCreatorRest7699 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000002L});
-    public static final BitSet FOLLOW_classBody_in_classCreatorRest7710 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LT_in_nonWildcardTypeArguments7742 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_typeList_in_nonWildcardTypeArguments7744 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_GT_in_nonWildcardTypeArguments7754 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LPAREN_in_arguments7774 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0280A1870L});
-    public static final BitSet FOLLOW_expressionList_in_arguments7777 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_RPAREN_in_arguments7790 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_classHeader7914 = new BitSet(new long[]{0x0000000000800000L});
-    public static final BitSet FOLLOW_CLASS_in_classHeader7916 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_classHeader7918 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_enumHeader7938 = new BitSet(new long[]{0x0040002000000000L});
-    public static final BitSet FOLLOW_set_in_enumHeader7940 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_enumHeader7946 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_interfaceHeader7966 = new BitSet(new long[]{0x1000000000000000L});
-    public static final BitSet FOLLOW_INTERFACE_in_interfaceHeader7968 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_interfaceHeader7970 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_annotationHeader7990 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000200L});
-    public static final BitSet FOLLOW_MONKEYS_AT_in_annotationHeader7992 = new BitSet(new long[]{0x1000000000000000L});
-    public static final BitSet FOLLOW_INTERFACE_in_annotationHeader7994 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_annotationHeader7996 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_typeHeader8016 = new BitSet(new long[]{0x1000002000800000L,0x0000000000000200L});
-    public static final BitSet FOLLOW_CLASS_in_typeHeader8019 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_ENUM_in_typeHeader8021 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_MONKEYS_AT_in_typeHeader8024 = new BitSet(new long[]{0x1000000000000000L});
-    public static final BitSet FOLLOW_INTERFACE_in_typeHeader8028 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_typeHeader8032 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_methodHeader8052 = new BitSet(new long[]{0x0840400100214000L,0x0008000020000090L});
-    public static final BitSet FOLLOW_typeParameters_in_methodHeader8054 = new BitSet(new long[]{0x0840400100214000L,0x0008000020000010L});
-    public static final BitSet FOLLOW_type_in_methodHeader8058 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_VOID_in_methodHeader8060 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_methodHeader8064 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_LPAREN_in_methodHeader8066 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_fieldHeader8086 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_fieldHeader8088 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_fieldHeader8090 = new BitSet(new long[]{0x0000004002000000L,0x0000000010000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_fieldHeader8093 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_fieldHeader8094 = new BitSet(new long[]{0x0000004002000000L,0x0000000010000004L});
-    public static final BitSet FOLLOW_set_in_fieldHeader8098 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_variableModifiers_in_localVariableHeader8124 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_localVariableHeader8126 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_localVariableHeader8128 = new BitSet(new long[]{0x0000004002000000L,0x0000000010000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_localVariableHeader8131 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_localVariableHeader8132 = new BitSet(new long[]{0x0000004002000000L,0x0000000010000004L});
-    public static final BitSet FOLLOW_set_in_localVariableHeader8136 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_typeDeclaration_in_compilationUnit150 = new BitSet(new long[]{0x1000102000800012L,0x0011040C10700600L});
+    public static final BitSet FOLLOW_PACKAGE_in_packageDeclaration181 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_qualifiedName_in_packageDeclaration183 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_packageDeclaration193 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IMPORT_in_importDeclaration215 = new BitSet(new long[]{0x0040000000000000L,0x0000000400000000L});
+    public static final BitSet FOLLOW_STATIC_in_importDeclaration227 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_importDeclaration248 = new BitSet(new long[]{0x0000000080000000L});
+    public static final BitSet FOLLOW_DOT_in_importDeclaration250 = new BitSet(new long[]{0x0000000000000000L,0x0000000100000000L});
+    public static final BitSet FOLLOW_STAR_in_importDeclaration252 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_importDeclaration262 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IMPORT_in_importDeclaration279 = new BitSet(new long[]{0x0040000000000000L,0x0000000400000000L});
+    public static final BitSet FOLLOW_STATIC_in_importDeclaration291 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_importDeclaration312 = new BitSet(new long[]{0x0000000080000000L});
+    public static final BitSet FOLLOW_DOT_in_importDeclaration323 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_importDeclaration325 = new BitSet(new long[]{0x0000000080000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_DOT_in_importDeclaration347 = new BitSet(new long[]{0x0000000000000000L,0x0000000100000000L});
+    public static final BitSet FOLLOW_STAR_in_importDeclaration349 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_importDeclaration370 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_qualifiedImportName390 = new BitSet(new long[]{0x0000000080000002L});
+    public static final BitSet FOLLOW_DOT_in_qualifiedImportName401 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_qualifiedImportName403 = new BitSet(new long[]{0x0000000080000002L});
+    public static final BitSet FOLLOW_classOrInterfaceDeclaration_in_typeDeclaration434 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SEMI_in_typeDeclaration444 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classDeclaration_in_classOrInterfaceDeclaration465 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceDeclaration_in_classOrInterfaceDeclaration475 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_annotation_in_modifiers510 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
+    public static final BitSet FOLLOW_PUBLIC_in_modifiers520 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
+    public static final BitSet FOLLOW_PROTECTED_in_modifiers530 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
+    public static final BitSet FOLLOW_PRIVATE_in_modifiers540 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
+    public static final BitSet FOLLOW_STATIC_in_modifiers550 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
+    public static final BitSet FOLLOW_ABSTRACT_in_modifiers560 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
+    public static final BitSet FOLLOW_FINAL_in_modifiers570 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
+    public static final BitSet FOLLOW_NATIVE_in_modifiers580 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
+    public static final BitSet FOLLOW_SYNCHRONIZED_in_modifiers590 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
+    public static final BitSet FOLLOW_TRANSIENT_in_modifiers600 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
+    public static final BitSet FOLLOW_VOLATILE_in_modifiers610 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
+    public static final BitSet FOLLOW_STRICTFP_in_modifiers620 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
+    public static final BitSet FOLLOW_FINAL_in_variableModifiers652 = new BitSet(new long[]{0x0000100000000002L,0x0000000000000200L});
+    public static final BitSet FOLLOW_annotation_in_variableModifiers666 = new BitSet(new long[]{0x0000100000000002L,0x0000000000000200L});
+    public static final BitSet FOLLOW_normalClassDeclaration_in_classDeclaration702 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_enumDeclaration_in_classDeclaration712 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_normalClassDeclaration732 = new BitSet(new long[]{0x0000000000800000L});
+    public static final BitSet FOLLOW_CLASS_in_normalClassDeclaration735 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_normalClassDeclaration737 = new BitSet(new long[]{0x0100010000000000L,0x0000000000000082L});
+    public static final BitSet FOLLOW_typeParameters_in_normalClassDeclaration748 = new BitSet(new long[]{0x0100010000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_EXTENDS_in_normalClassDeclaration770 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_normalClassDeclaration772 = new BitSet(new long[]{0x0100000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_IMPLEMENTS_in_normalClassDeclaration794 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_typeList_in_normalClassDeclaration796 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_classBody_in_normalClassDeclaration829 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LT_in_typeParameters850 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_typeParameter_in_typeParameters864 = new BitSet(new long[]{0x0008000002000000L});
+    public static final BitSet FOLLOW_COMMA_in_typeParameters879 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_typeParameter_in_typeParameters881 = new BitSet(new long[]{0x0008000002000000L});
+    public static final BitSet FOLLOW_GT_in_typeParameters906 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_typeParameter926 = new BitSet(new long[]{0x0000010000000002L});
+    public static final BitSet FOLLOW_EXTENDS_in_typeParameter937 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_typeBound_in_typeParameter939 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_type_in_typeBound971 = new BitSet(new long[]{0x0000000000000022L});
+    public static final BitSet FOLLOW_AMP_in_typeBound982 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_typeBound984 = new BitSet(new long[]{0x0000000000000022L});
+    public static final BitSet FOLLOW_modifiers_in_enumDeclaration1016 = new BitSet(new long[]{0x0000002000000000L});
+    public static final BitSet FOLLOW_ENUM_in_enumDeclaration1028 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_enumDeclaration1049 = new BitSet(new long[]{0x0100000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_IMPLEMENTS_in_enumDeclaration1060 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_typeList_in_enumDeclaration1062 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_enumBody_in_enumDeclaration1083 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACE_in_enumBody1108 = new BitSet(new long[]{0x0040000002000000L,0x0000000011000200L});
+    public static final BitSet FOLLOW_enumConstants_in_enumBody1119 = new BitSet(new long[]{0x0000000002000000L,0x0000000011000000L});
+    public static final BitSet FOLLOW_COMMA_in_enumBody1141 = new BitSet(new long[]{0x0000000000000000L,0x0000000011000000L});
+    public static final BitSet FOLLOW_enumBodyDeclarations_in_enumBody1154 = new BitSet(new long[]{0x0000000000000000L,0x0000000001000000L});
+    public static final BitSet FOLLOW_RBRACE_in_enumBody1176 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_enumConstant_in_enumConstants1196 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_COMMA_in_enumConstants1207 = new BitSet(new long[]{0x0040000000000000L,0x0000000000000200L});
+    public static final BitSet FOLLOW_enumConstant_in_enumConstants1209 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_annotations_in_enumConstant1243 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_enumConstant1264 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000042L});
+    public static final BitSet FOLLOW_arguments_in_enumConstant1275 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000002L});
+    public static final BitSet FOLLOW_classBody_in_enumConstant1297 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SEMI_in_enumBodyDeclarations1338 = new BitSet(new long[]{0x1840502100A14012L,0x0019040C30700692L});
+    public static final BitSet FOLLOW_classBodyDeclaration_in_enumBodyDeclarations1350 = new BitSet(new long[]{0x1840502100A14012L,0x0019040C30700692L});
+    public static final BitSet FOLLOW_normalInterfaceDeclaration_in_interfaceDeclaration1381 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_annotationTypeDeclaration_in_interfaceDeclaration1391 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_normalInterfaceDeclaration1415 = new BitSet(new long[]{0x1000000000000000L});
+    public static final BitSet FOLLOW_INTERFACE_in_normalInterfaceDeclaration1417 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_normalInterfaceDeclaration1419 = new BitSet(new long[]{0x0000010000000000L,0x0000000000000082L});
+    public static final BitSet FOLLOW_typeParameters_in_normalInterfaceDeclaration1430 = new BitSet(new long[]{0x0000010000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_EXTENDS_in_normalInterfaceDeclaration1452 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_typeList_in_normalInterfaceDeclaration1454 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceBody_in_normalInterfaceDeclaration1475 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_type_in_typeList1495 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_COMMA_in_typeList1506 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_typeList1508 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_LBRACE_in_classBody1539 = new BitSet(new long[]{0x1840502100A14010L,0x0019040C31700692L});
+    public static final BitSet FOLLOW_classBodyDeclaration_in_classBody1552 = new BitSet(new long[]{0x1840502100A14010L,0x0019040C31700692L});
+    public static final BitSet FOLLOW_RBRACE_in_classBody1574 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACE_in_interfaceBody1596 = new BitSet(new long[]{0x1840502100A14010L,0x0019040C31700690L});
+    public static final BitSet FOLLOW_interfaceBodyDeclaration_in_interfaceBody1608 = new BitSet(new long[]{0x1840502100A14010L,0x0019040C31700690L});
+    public static final BitSet FOLLOW_RBRACE_in_interfaceBody1630 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SEMI_in_classBodyDeclaration1650 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_STATIC_in_classBodyDeclaration1660 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_block_in_classBodyDeclaration1673 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_block_in_classBodyDeclaration1703 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_memberDecl_in_classBodyDeclaration1723 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_fieldDeclaration_in_memberDecl1744 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_methodDeclaration_in_memberDecl1755 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classDeclaration_in_memberDecl1766 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceDeclaration_in_memberDecl1777 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_methodDeclaration1825 = new BitSet(new long[]{0x0040000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_typeParameters_in_methodDeclaration1836 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_methodDeclaration1857 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_formalParameters_in_methodDeclaration1868 = new BitSet(new long[]{0x0000000000000000L,0x0000400000000002L});
+    public static final BitSet FOLLOW_THROWS_in_methodDeclaration1879 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_qualifiedNameList_in_methodDeclaration1881 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACE_in_methodDeclaration1902 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1EF2L});
+    public static final BitSet FOLLOW_explicitConstructorInvocation_in_methodDeclaration1914 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1E72L});
+    public static final BitSet FOLLOW_blockStatement_in_methodDeclaration1936 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1E72L});
+    public static final BitSet FOLLOW_RBRACE_in_methodDeclaration1957 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_methodDeclaration1988 = new BitSet(new long[]{0x0840400100214000L,0x0008000020000090L});
+    public static final BitSet FOLLOW_typeParameters_in_methodDeclaration1999 = new BitSet(new long[]{0x0840400100214000L,0x0008000020000010L});
+    public static final BitSet FOLLOW_type_in_methodDeclaration2021 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_VOID_in_methodDeclaration2035 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_methodDeclaration2055 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_formalParameters_in_methodDeclaration2066 = new BitSet(new long[]{0x0000000000000000L,0x0000400010000006L});
+    public static final BitSet FOLLOW_LBRACKET_in_methodDeclaration2077 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_methodDeclaration2079 = new BitSet(new long[]{0x0000000000000000L,0x0000400010000006L});
+    public static final BitSet FOLLOW_THROWS_in_methodDeclaration2101 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_qualifiedNameList_in_methodDeclaration2103 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000002L});
+    public static final BitSet FOLLOW_block_in_methodDeclaration2158 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SEMI_in_methodDeclaration2172 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_fieldDeclaration2204 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_fieldDeclaration2215 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_variableDeclarator_in_fieldDeclaration2227 = new BitSet(new long[]{0x0000000002000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_COMMA_in_fieldDeclaration2239 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_variableDeclarator_in_fieldDeclaration2241 = new BitSet(new long[]{0x0000000002000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_fieldDeclaration2263 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_variableDeclarator2288 = new BitSet(new long[]{0x0000004000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_variableDeclarator2301 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_variableDeclarator2303 = new BitSet(new long[]{0x0000004000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_EQ_in_variableDeclarator2327 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1872L});
+    public static final BitSet FOLLOW_variableInitializer_in_variableDeclarator2329 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceFieldDeclaration_in_interfaceBodyDeclaration2378 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceMethodDeclaration_in_interfaceBodyDeclaration2388 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceDeclaration_in_interfaceBodyDeclaration2398 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classDeclaration_in_interfaceBodyDeclaration2408 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SEMI_in_interfaceBodyDeclaration2418 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_interfaceMethodDeclaration2438 = new BitSet(new long[]{0x0840400100214000L,0x0008000020000090L});
+    public static final BitSet FOLLOW_typeParameters_in_interfaceMethodDeclaration2449 = new BitSet(new long[]{0x0840400100214000L,0x0008000020000010L});
+    public static final BitSet FOLLOW_type_in_interfaceMethodDeclaration2471 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_VOID_in_interfaceMethodDeclaration2482 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_interfaceMethodDeclaration2502 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_formalParameters_in_interfaceMethodDeclaration2512 = new BitSet(new long[]{0x0000000000000000L,0x0000400010000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_interfaceMethodDeclaration2523 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_interfaceMethodDeclaration2525 = new BitSet(new long[]{0x0000000000000000L,0x0000400010000004L});
+    public static final BitSet FOLLOW_THROWS_in_interfaceMethodDeclaration2547 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_qualifiedNameList_in_interfaceMethodDeclaration2549 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_interfaceMethodDeclaration2562 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_interfaceFieldDeclaration2584 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_interfaceFieldDeclaration2586 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_variableDeclarator_in_interfaceFieldDeclaration2588 = new BitSet(new long[]{0x0000000002000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_COMMA_in_interfaceFieldDeclaration2599 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_variableDeclarator_in_interfaceFieldDeclaration2601 = new BitSet(new long[]{0x0000000002000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_interfaceFieldDeclaration2622 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classOrInterfaceType_in_type2643 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_type2654 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_type2656 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_primitiveType_in_type2677 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_type2688 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_type2690 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_classOrInterfaceType2722 = new BitSet(new long[]{0x0000000080000002L,0x0000000000000080L});
+    public static final BitSet FOLLOW_typeArguments_in_classOrInterfaceType2733 = new BitSet(new long[]{0x0000000080000002L});
+    public static final BitSet FOLLOW_DOT_in_classOrInterfaceType2755 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_classOrInterfaceType2757 = new BitSet(new long[]{0x0000000080000002L,0x0000000000000080L});
+    public static final BitSet FOLLOW_typeArguments_in_classOrInterfaceType2772 = new BitSet(new long[]{0x0000000080000002L});
+    public static final BitSet FOLLOW_LT_in_typeArguments2909 = new BitSet(new long[]{0x0840400100214000L,0x0000000020800010L});
+    public static final BitSet FOLLOW_typeArgument_in_typeArguments2911 = new BitSet(new long[]{0x0008000002000000L});
+    public static final BitSet FOLLOW_COMMA_in_typeArguments2922 = new BitSet(new long[]{0x0840400100214000L,0x0000000020800010L});
+    public static final BitSet FOLLOW_typeArgument_in_typeArguments2924 = new BitSet(new long[]{0x0008000002000000L});
+    public static final BitSet FOLLOW_GT_in_typeArguments2946 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_type_in_typeArgument2966 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_QUES_in_typeArgument2976 = new BitSet(new long[]{0x0000010000000002L,0x0000010000000000L});
+    public static final BitSet FOLLOW_set_in_typeArgument3000 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_typeArgument3044 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_qualifiedName_in_qualifiedNameList3075 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_COMMA_in_qualifiedNameList3086 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_qualifiedName_in_qualifiedNameList3088 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_LPAREN_in_formalParameters3119 = new BitSet(new long[]{0x0840500100214000L,0x0000000028000210L});
+    public static final BitSet FOLLOW_formalParameterDecls_in_formalParameters3130 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_RPAREN_in_formalParameters3152 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ellipsisParameterDecl_in_formalParameterDecls3172 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_normalParameterDecl_in_formalParameterDecls3182 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_COMMA_in_formalParameterDecls3193 = new BitSet(new long[]{0x0840500100214000L,0x0000000020000210L});
+    public static final BitSet FOLLOW_normalParameterDecl_in_formalParameterDecls3195 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_normalParameterDecl_in_formalParameterDecls3217 = new BitSet(new long[]{0x0000000002000000L});
+    public static final BitSet FOLLOW_COMMA_in_formalParameterDecls3227 = new BitSet(new long[]{0x0840500100214000L,0x0000000020000210L});
+    public static final BitSet FOLLOW_ellipsisParameterDecl_in_formalParameterDecls3249 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_variableModifiers_in_normalParameterDecl3281 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_normalParameterDecl3283 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_normalParameterDecl3285 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_normalParameterDecl3306 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_normalParameterDecl3308 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_variableModifiers_in_ellipsisParameterDecl3355 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_ellipsisParameterDecl3365 = new BitSet(new long[]{0x0000000800000000L});
+    public static final BitSet FOLLOW_ELLIPSIS_in_ellipsisParameterDecl3368 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_ellipsisParameterDecl3378 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_explicitConstructorInvocation3410 = new BitSet(new long[]{0x0000000000000000L,0x0000110000000000L});
+    public static final BitSet FOLLOW_set_in_explicitConstructorInvocation3436 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_arguments_in_explicitConstructorInvocation3468 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_explicitConstructorInvocation3470 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_primary_in_explicitConstructorInvocation3481 = new BitSet(new long[]{0x0000000080000000L});
+    public static final BitSet FOLLOW_DOT_in_explicitConstructorInvocation3491 = new BitSet(new long[]{0x0000000000000000L,0x0000010000000080L});
+    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_explicitConstructorInvocation3502 = new BitSet(new long[]{0x0000000000000000L,0x0000010000000000L});
+    public static final BitSet FOLLOW_SUPER_in_explicitConstructorInvocation3523 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_arguments_in_explicitConstructorInvocation3533 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_explicitConstructorInvocation3535 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_qualifiedName3555 = new BitSet(new long[]{0x0000000080000002L});
+    public static final BitSet FOLLOW_DOT_in_qualifiedName3566 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_qualifiedName3568 = new BitSet(new long[]{0x0000000080000002L});
+    public static final BitSet FOLLOW_annotation_in_annotations3600 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000200L});
+    public static final BitSet FOLLOW_MONKEYS_AT_in_annotation3633 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_qualifiedName_in_annotation3635 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000040L});
+    public static final BitSet FOLLOW_LPAREN_in_annotation3649 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0280A1A72L});
+    public static final BitSet FOLLOW_elementValuePairs_in_annotation3676 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_elementValue_in_annotation3700 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_RPAREN_in_annotation3736 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_elementValuePair_in_elementValuePairs3768 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_COMMA_in_elementValuePairs3779 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_elementValuePair_in_elementValuePairs3781 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_elementValuePair3812 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_EQ_in_elementValuePair3814 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1A72L});
+    public static final BitSet FOLLOW_elementValue_in_elementValuePair3816 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionalExpression_in_elementValue3836 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_annotation_in_elementValue3846 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_elementValueArrayInitializer_in_elementValue3856 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACE_in_elementValueArrayInitializer3876 = new BitSet(new long[]{0x2840C80302614200L,0x000A91B0210A1A72L});
+    public static final BitSet FOLLOW_elementValue_in_elementValueArrayInitializer3887 = new BitSet(new long[]{0x0000000002000000L,0x0000000001000000L});
+    public static final BitSet FOLLOW_COMMA_in_elementValueArrayInitializer3902 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1A72L});
+    public static final BitSet FOLLOW_elementValue_in_elementValueArrayInitializer3904 = new BitSet(new long[]{0x0000000002000000L,0x0000000001000000L});
+    public static final BitSet FOLLOW_COMMA_in_elementValueArrayInitializer3933 = new BitSet(new long[]{0x0000000000000000L,0x0000000001000000L});
+    public static final BitSet FOLLOW_RBRACE_in_elementValueArrayInitializer3937 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_annotationTypeDeclaration3960 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000200L});
+    public static final BitSet FOLLOW_MONKEYS_AT_in_annotationTypeDeclaration3962 = new BitSet(new long[]{0x1000000000000000L});
+    public static final BitSet FOLLOW_INTERFACE_in_annotationTypeDeclaration3972 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_annotationTypeDeclaration3982 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_annotationTypeBody_in_annotationTypeDeclaration3992 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACE_in_annotationTypeBody4013 = new BitSet(new long[]{0x1840502100A14010L,0x0011040C31700610L});
+    public static final BitSet FOLLOW_annotationTypeElementDeclaration_in_annotationTypeBody4025 = new BitSet(new long[]{0x1840502100A14010L,0x0011040C31700610L});
+    public static final BitSet FOLLOW_RBRACE_in_annotationTypeBody4047 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_annotationMethodDeclaration_in_annotationTypeElementDeclaration4069 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceFieldDeclaration_in_annotationTypeElementDeclaration4079 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_normalClassDeclaration_in_annotationTypeElementDeclaration4089 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_normalInterfaceDeclaration_in_annotationTypeElementDeclaration4099 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_enumDeclaration_in_annotationTypeElementDeclaration4109 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_annotationTypeDeclaration_in_annotationTypeElementDeclaration4119 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SEMI_in_annotationTypeElementDeclaration4129 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_annotationMethodDeclaration4149 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_annotationMethodDeclaration4151 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_annotationMethodDeclaration4153 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_LPAREN_in_annotationMethodDeclaration4163 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_RPAREN_in_annotationMethodDeclaration4165 = new BitSet(new long[]{0x0000000020000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_DEFAULT_in_annotationMethodDeclaration4168 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1A72L});
+    public static final BitSet FOLLOW_elementValue_in_annotationMethodDeclaration4170 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_annotationMethodDeclaration4199 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACE_in_block4233 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1E72L});
+    public static final BitSet FOLLOW_blockStatement_in_block4244 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1E72L});
+    public static final BitSet FOLLOW_RBRACE_in_block4265 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_localVariableDeclarationStatement_in_blockStatement4297 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classOrInterfaceDeclaration_in_blockStatement4307 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_statement_in_blockStatement4317 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_localVariableDeclaration_in_localVariableDeclarationStatement4338 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_localVariableDeclarationStatement4348 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_variableModifiers_in_localVariableDeclaration4368 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_localVariableDeclaration4370 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_variableDeclarator_in_localVariableDeclaration4382 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_COMMA_in_localVariableDeclaration4393 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_variableDeclarator_in_localVariableDeclaration4395 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_block_in_statement4426 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ASSERT_in_statement4450 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_statement4470 = new BitSet(new long[]{0x0000000001000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_COLON_in_statement4473 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_statement4475 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_statement4479 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ASSERT_in_statement4489 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_statement4492 = new BitSet(new long[]{0x0000000001000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_COLON_in_statement4495 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_statement4497 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_statement4501 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IF_in_statement4523 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_parExpression_in_statement4525 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
+    public static final BitSet FOLLOW_statement_in_statement4527 = new BitSet(new long[]{0x0000001000000002L});
+    public static final BitSet FOLLOW_ELSE_in_statement4530 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
+    public static final BitSet FOLLOW_statement_in_statement4532 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_forstatement_in_statement4554 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_WHILE_in_statement4564 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_parExpression_in_statement4566 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
+    public static final BitSet FOLLOW_statement_in_statement4568 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DO_in_statement4578 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
+    public static final BitSet FOLLOW_statement_in_statement4580 = new BitSet(new long[]{0x0000000000000000L,0x0020000000000000L});
+    public static final BitSet FOLLOW_WHILE_in_statement4582 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_parExpression_in_statement4584 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_statement4586 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_trystatement_in_statement4596 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SWITCH_in_statement4606 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_parExpression_in_statement4608 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACE_in_statement4610 = new BitSet(new long[]{0x0000000020080000L,0x0000000001000000L});
+    public static final BitSet FOLLOW_switchBlockStatementGroups_in_statement4612 = new BitSet(new long[]{0x0000000000000000L,0x0000000001000000L});
+    public static final BitSet FOLLOW_RBRACE_in_statement4614 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SYNCHRONIZED_in_statement4624 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_parExpression_in_statement4626 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_block_in_statement4628 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_RETURN_in_statement4638 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0300A1870L});
+    public static final BitSet FOLLOW_expression_in_statement4641 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_statement4646 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_THROW_in_statement4656 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_statement4658 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_statement4660 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_BREAK_in_statement4670 = new BitSet(new long[]{0x0040000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_statement4685 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_statement4702 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_CONTINUE_in_statement4712 = new BitSet(new long[]{0x0040000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_statement4727 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_statement4744 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expression_in_statement4754 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_statement4757 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_statement4772 = new BitSet(new long[]{0x0000000001000000L});
+    public static final BitSet FOLLOW_COLON_in_statement4774 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
+    public static final BitSet FOLLOW_statement_in_statement4776 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SEMI_in_statement4786 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_switchBlockStatementGroup_in_switchBlockStatementGroups4808 = new BitSet(new long[]{0x0000000020080002L});
+    public static final BitSet FOLLOW_switchLabel_in_switchBlockStatementGroup4837 = new BitSet(new long[]{0x38C1D82350E1C312L,0x003FB7BC347A1E72L});
+    public static final BitSet FOLLOW_blockStatement_in_switchBlockStatementGroup4848 = new BitSet(new long[]{0x38C1D82350E1C312L,0x003FB7BC347A1E72L});
+    public static final BitSet FOLLOW_CASE_in_switchLabel4879 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_switchLabel4881 = new BitSet(new long[]{0x0000000001000000L});
+    public static final BitSet FOLLOW_COLON_in_switchLabel4883 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DEFAULT_in_switchLabel4893 = new BitSet(new long[]{0x0000000001000000L});
+    public static final BitSet FOLLOW_COLON_in_switchLabel4895 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_TRY_in_trystatement4916 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_block_in_trystatement4918 = new BitSet(new long[]{0x0000200000100000L});
+    public static final BitSet FOLLOW_catches_in_trystatement4932 = new BitSet(new long[]{0x0000200000000000L});
+    public static final BitSet FOLLOW_FINALLY_in_trystatement4934 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_block_in_trystatement4936 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_catches_in_trystatement4950 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_FINALLY_in_trystatement4964 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_block_in_trystatement4966 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_catchClause_in_catches4997 = new BitSet(new long[]{0x0000000000100002L});
+    public static final BitSet FOLLOW_catchClause_in_catches5008 = new BitSet(new long[]{0x0000000000100002L});
+    public static final BitSet FOLLOW_CATCH_in_catchClause5039 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_LPAREN_in_catchClause5041 = new BitSet(new long[]{0x0840500100214000L,0x0000000020000210L});
+    public static final BitSet FOLLOW_formalParameter_in_catchClause5043 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_RPAREN_in_catchClause5053 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_block_in_catchClause5055 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_variableModifiers_in_formalParameter5076 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_formalParameter5078 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_formalParameter5080 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_formalParameter5091 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_formalParameter5093 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_FOR_in_forstatement5152 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_LPAREN_in_forstatement5154 = new BitSet(new long[]{0x0840500100214000L,0x0000000020000210L});
+    public static final BitSet FOLLOW_variableModifiers_in_forstatement5156 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_forstatement5158 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_forstatement5160 = new BitSet(new long[]{0x0000000001000000L});
+    public static final BitSet FOLLOW_COLON_in_forstatement5162 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_forstatement5183 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_RPAREN_in_forstatement5185 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
+    public static final BitSet FOLLOW_statement_in_forstatement5187 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_FOR_in_forstatement5248 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_LPAREN_in_forstatement5250 = new BitSet(new long[]{0x2840D80300614200L,0x000A91B0300A1A70L});
+    public static final BitSet FOLLOW_forInit_in_forstatement5270 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_forstatement5291 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0300A1870L});
+    public static final BitSet FOLLOW_expression_in_forstatement5311 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_forstatement5332 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0280A1870L});
+    public static final BitSet FOLLOW_expressionList_in_forstatement5352 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_RPAREN_in_forstatement5373 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
+    public static final BitSet FOLLOW_statement_in_forstatement5375 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_localVariableDeclaration_in_forInit5405 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expressionList_in_forInit5415 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LPAREN_in_parExpression5435 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_parExpression5437 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_RPAREN_in_parExpression5439 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expression_in_expressionList5459 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_COMMA_in_expressionList5470 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_expressionList5472 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_conditionalExpression_in_expression5504 = new BitSet(new long[]{0x0008004000042082L,0x0000004280050080L});
+    public static final BitSet FOLLOW_assignmentOperator_in_expression5515 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_expression5517 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_EQ_in_assignmentOperator5549 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_PLUSEQ_in_assignmentOperator5559 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SUBEQ_in_assignmentOperator5569 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_STAREQ_in_assignmentOperator5579 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SLASHEQ_in_assignmentOperator5589 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_AMPEQ_in_assignmentOperator5599 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_BAREQ_in_assignmentOperator5609 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_CARETEQ_in_assignmentOperator5619 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_PERCENTEQ_in_assignmentOperator5629 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LT_in_assignmentOperator5640 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_LT_in_assignmentOperator5642 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_EQ_in_assignmentOperator5644 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_GT_in_assignmentOperator5655 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_GT_in_assignmentOperator5657 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_GT_in_assignmentOperator5659 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_EQ_in_assignmentOperator5661 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_GT_in_assignmentOperator5672 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_GT_in_assignmentOperator5674 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_EQ_in_assignmentOperator5676 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionalOrExpression_in_conditionalExpression5697 = new BitSet(new long[]{0x0000000000000002L,0x0000000000800000L});
+    public static final BitSet FOLLOW_QUES_in_conditionalExpression5708 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_conditionalExpression5710 = new BitSet(new long[]{0x0000000001000000L});
+    public static final BitSet FOLLOW_COLON_in_conditionalExpression5712 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_conditionalExpression_in_conditionalExpression5714 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionalAndExpression_in_conditionalOrExpression5745 = new BitSet(new long[]{0x0000000000001002L});
+    public static final BitSet FOLLOW_BARBAR_in_conditionalOrExpression5756 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_conditionalAndExpression_in_conditionalOrExpression5758 = new BitSet(new long[]{0x0000000000001002L});
+    public static final BitSet FOLLOW_inclusiveOrExpression_in_conditionalAndExpression5789 = new BitSet(new long[]{0x0000000000000042L});
+    public static final BitSet FOLLOW_AMPAMP_in_conditionalAndExpression5800 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_inclusiveOrExpression_in_conditionalAndExpression5802 = new BitSet(new long[]{0x0000000000000042L});
+    public static final BitSet FOLLOW_exclusiveOrExpression_in_inclusiveOrExpression5833 = new BitSet(new long[]{0x0000000000000802L});
+    public static final BitSet FOLLOW_BAR_in_inclusiveOrExpression5844 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_exclusiveOrExpression_in_inclusiveOrExpression5846 = new BitSet(new long[]{0x0000000000000802L});
+    public static final BitSet FOLLOW_andExpression_in_exclusiveOrExpression5877 = new BitSet(new long[]{0x0000000000020002L});
+    public static final BitSet FOLLOW_CARET_in_exclusiveOrExpression5888 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_andExpression_in_exclusiveOrExpression5890 = new BitSet(new long[]{0x0000000000020002L});
+    public static final BitSet FOLLOW_equalityExpression_in_andExpression5921 = new BitSet(new long[]{0x0000000000000022L});
+    public static final BitSet FOLLOW_AMP_in_andExpression5932 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_equalityExpression_in_andExpression5934 = new BitSet(new long[]{0x0000000000000022L});
+    public static final BitSet FOLLOW_instanceOfExpression_in_equalityExpression5965 = new BitSet(new long[]{0x0000008000000402L});
+    public static final BitSet FOLLOW_set_in_equalityExpression5992 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_instanceOfExpression_in_equalityExpression6042 = new BitSet(new long[]{0x0000008000000402L});
+    public static final BitSet FOLLOW_relationalExpression_in_instanceOfExpression6073 = new BitSet(new long[]{0x0400000000000002L});
+    public static final BitSet FOLLOW_INSTANCEOF_in_instanceOfExpression6084 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_instanceOfExpression6086 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_shiftExpression_in_relationalExpression6117 = new BitSet(new long[]{0x0008000000000002L,0x0000000000000080L});
+    public static final BitSet FOLLOW_relationalOp_in_relationalExpression6128 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_shiftExpression_in_relationalExpression6130 = new BitSet(new long[]{0x0008000000000002L,0x0000000000000080L});
+    public static final BitSet FOLLOW_LT_in_relationalOp6162 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_EQ_in_relationalOp6164 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_GT_in_relationalOp6175 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_EQ_in_relationalOp6177 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LT_in_relationalOp6187 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_GT_in_relationalOp6197 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_additiveExpression_in_shiftExpression6217 = new BitSet(new long[]{0x0008000000000002L,0x0000000000000080L});
+    public static final BitSet FOLLOW_shiftOp_in_shiftExpression6228 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_additiveExpression_in_shiftExpression6230 = new BitSet(new long[]{0x0008000000000002L,0x0000000000000080L});
+    public static final BitSet FOLLOW_LT_in_shiftOp6263 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_LT_in_shiftOp6265 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_GT_in_shiftOp6276 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_GT_in_shiftOp6278 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_GT_in_shiftOp6280 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_GT_in_shiftOp6291 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_GT_in_shiftOp6293 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_multiplicativeExpression_in_additiveExpression6314 = new BitSet(new long[]{0x0000000000000002L,0x0000002000020000L});
+    public static final BitSet FOLLOW_set_in_additiveExpression6341 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_multiplicativeExpression_in_additiveExpression6391 = new BitSet(new long[]{0x0000000000000002L,0x0000002000020000L});
+    public static final BitSet FOLLOW_unaryExpression_in_multiplicativeExpression6429 = new BitSet(new long[]{0x0000000000000002L,0x0000000140008000L});
+    public static final BitSet FOLLOW_set_in_multiplicativeExpression6456 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_unaryExpression_in_multiplicativeExpression6524 = new BitSet(new long[]{0x0000000000000002L,0x0000000140008000L});
+    public static final BitSet FOLLOW_PLUS_in_unaryExpression6557 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_unaryExpression_in_unaryExpression6560 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SUB_in_unaryExpression6570 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_unaryExpression_in_unaryExpression6572 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_PLUSPLUS_in_unaryExpression6582 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_unaryExpression_in_unaryExpression6584 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SUBSUB_in_unaryExpression6594 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_unaryExpression_in_unaryExpression6596 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_unaryExpressionNotPlusMinus_in_unaryExpression6606 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_TILDE_in_unaryExpressionNotPlusMinus6626 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_unaryExpression_in_unaryExpressionNotPlusMinus6628 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_BANG_in_unaryExpressionNotPlusMinus6638 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_unaryExpression_in_unaryExpressionNotPlusMinus6640 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_castExpression_in_unaryExpressionNotPlusMinus6650 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_primary_in_unaryExpressionNotPlusMinus6660 = new BitSet(new long[]{0x0000000080000002L,0x0000008000080004L});
+    public static final BitSet FOLLOW_selector_in_unaryExpressionNotPlusMinus6671 = new BitSet(new long[]{0x0000000080000002L,0x0000008000080004L});
+    public static final BitSet FOLLOW_LPAREN_in_castExpression6741 = new BitSet(new long[]{0x0800400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_primitiveType_in_castExpression6743 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_RPAREN_in_castExpression6745 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_unaryExpression_in_castExpression6747 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LPAREN_in_castExpression6757 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_castExpression6759 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_RPAREN_in_castExpression6761 = new BitSet(new long[]{0x2840C80300614200L,0x000A911020001870L});
+    public static final BitSet FOLLOW_unaryExpressionNotPlusMinus_in_castExpression6763 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_parExpression_in_primary6785 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_THIS_in_primary6807 = new BitSet(new long[]{0x0000000080000002L,0x0000000000000044L});
+    public static final BitSet FOLLOW_DOT_in_primary6818 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_primary6820 = new BitSet(new long[]{0x0000000080000002L,0x0000000000000044L});
+    public static final BitSet FOLLOW_identifierSuffix_in_primary6842 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_primary6863 = new BitSet(new long[]{0x0000000080000002L,0x0000000000000044L});
+    public static final BitSet FOLLOW_DOT_in_primary6874 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_primary6876 = new BitSet(new long[]{0x0000000080000002L,0x0000000000000044L});
+    public static final BitSet FOLLOW_identifierSuffix_in_primary6898 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SUPER_in_primary6919 = new BitSet(new long[]{0x0000000080000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_superSuffix_in_primary6929 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_literal_in_primary6939 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_creator_in_primary6949 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_primitiveType_in_primary6959 = new BitSet(new long[]{0x0000000080000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_primary6970 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_primary6972 = new BitSet(new long[]{0x0000000080000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_DOT_in_primary6993 = new BitSet(new long[]{0x0000000000800000L});
+    public static final BitSet FOLLOW_CLASS_in_primary6995 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_VOID_in_primary7005 = new BitSet(new long[]{0x0000000080000000L});
+    public static final BitSet FOLLOW_DOT_in_primary7007 = new BitSet(new long[]{0x0000000000800000L});
+    public static final BitSet FOLLOW_CLASS_in_primary7009 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_arguments_in_superSuffix7035 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOT_in_superSuffix7045 = new BitSet(new long[]{0x0040000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_typeArguments_in_superSuffix7048 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_superSuffix7069 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000040L});
+    public static final BitSet FOLLOW_arguments_in_superSuffix7080 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACKET_in_identifierSuffix7113 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_identifierSuffix7115 = new BitSet(new long[]{0x0000000080000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_DOT_in_identifierSuffix7136 = new BitSet(new long[]{0x0000000000800000L});
+    public static final BitSet FOLLOW_CLASS_in_identifierSuffix7138 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACKET_in_identifierSuffix7149 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_identifierSuffix7151 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_identifierSuffix7153 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_arguments_in_identifierSuffix7174 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOT_in_identifierSuffix7184 = new BitSet(new long[]{0x0000000000800000L});
+    public static final BitSet FOLLOW_CLASS_in_identifierSuffix7186 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOT_in_identifierSuffix7196 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_identifierSuffix7198 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_identifierSuffix7200 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_arguments_in_identifierSuffix7202 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOT_in_identifierSuffix7212 = new BitSet(new long[]{0x0000000000000000L,0x0000100000000000L});
+    public static final BitSet FOLLOW_THIS_in_identifierSuffix7214 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOT_in_identifierSuffix7224 = new BitSet(new long[]{0x0000000000000000L,0x0000010000000000L});
+    public static final BitSet FOLLOW_SUPER_in_identifierSuffix7226 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_arguments_in_identifierSuffix7228 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_innerCreator_in_identifierSuffix7238 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOT_in_selector7260 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_selector7262 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000040L});
+    public static final BitSet FOLLOW_arguments_in_selector7273 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOT_in_selector7294 = new BitSet(new long[]{0x0000000000000000L,0x0000100000000000L});
+    public static final BitSet FOLLOW_THIS_in_selector7296 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOT_in_selector7306 = new BitSet(new long[]{0x0000000000000000L,0x0000010000000000L});
+    public static final BitSet FOLLOW_SUPER_in_selector7308 = new BitSet(new long[]{0x0000000080000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_superSuffix_in_selector7318 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_innerCreator_in_selector7328 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACKET_in_selector7338 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_selector7340 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_selector7342 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_NEW_in_creator7362 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_creator7364 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_classOrInterfaceType_in_creator7366 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_classCreatorRest_in_creator7368 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_NEW_in_creator7378 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_classOrInterfaceType_in_creator7380 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_classCreatorRest_in_creator7382 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_arrayCreator_in_creator7392 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_NEW_in_arrayCreator7412 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_createdName_in_arrayCreator7414 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_arrayCreator7424 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_arrayCreator7426 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000006L});
+    public static final BitSet FOLLOW_LBRACKET_in_arrayCreator7437 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_arrayCreator7439 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000006L});
+    public static final BitSet FOLLOW_arrayInitializer_in_arrayCreator7460 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_NEW_in_arrayCreator7471 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_createdName_in_arrayCreator7473 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_arrayCreator7483 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_arrayCreator7485 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_arrayCreator7495 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_arrayCreator7509 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_arrayCreator7511 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_arrayCreator7525 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_arrayCreator7547 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_arrayCreator7549 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_arrayInitializer_in_variableInitializer7580 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expression_in_variableInitializer7590 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACE_in_arrayInitializer7610 = new BitSet(new long[]{0x2840C80302614200L,0x000A91B0210A1872L});
+    public static final BitSet FOLLOW_variableInitializer_in_arrayInitializer7626 = new BitSet(new long[]{0x0000000002000000L,0x0000000001000000L});
+    public static final BitSet FOLLOW_COMMA_in_arrayInitializer7645 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1872L});
+    public static final BitSet FOLLOW_variableInitializer_in_arrayInitializer7647 = new BitSet(new long[]{0x0000000002000000L,0x0000000001000000L});
+    public static final BitSet FOLLOW_COMMA_in_arrayInitializer7697 = new BitSet(new long[]{0x0000000000000000L,0x0000000001000000L});
+    public static final BitSet FOLLOW_RBRACE_in_arrayInitializer7710 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classOrInterfaceType_in_createdName7744 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_primitiveType_in_createdName7754 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOT_in_innerCreator7775 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_NEW_in_innerCreator7777 = new BitSet(new long[]{0x0040000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_innerCreator7788 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_innerCreator7809 = new BitSet(new long[]{0x0000000000000000L,0x00000000000000C0L});
+    public static final BitSet FOLLOW_typeArguments_in_innerCreator7820 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_classCreatorRest_in_innerCreator7841 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_arguments_in_classCreatorRest7862 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000002L});
+    public static final BitSet FOLLOW_classBody_in_classCreatorRest7873 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LT_in_nonWildcardTypeArguments7905 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_typeList_in_nonWildcardTypeArguments7907 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_GT_in_nonWildcardTypeArguments7917 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LPAREN_in_arguments7937 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0280A1870L});
+    public static final BitSet FOLLOW_expressionList_in_arguments7940 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_RPAREN_in_arguments7953 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_classHeader8077 = new BitSet(new long[]{0x0000000000800000L});
+    public static final BitSet FOLLOW_CLASS_in_classHeader8079 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_classHeader8081 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_enumHeader8101 = new BitSet(new long[]{0x0040002000000000L});
+    public static final BitSet FOLLOW_set_in_enumHeader8103 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_enumHeader8109 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_interfaceHeader8129 = new BitSet(new long[]{0x1000000000000000L});
+    public static final BitSet FOLLOW_INTERFACE_in_interfaceHeader8131 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_interfaceHeader8133 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_annotationHeader8153 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000200L});
+    public static final BitSet FOLLOW_MONKEYS_AT_in_annotationHeader8155 = new BitSet(new long[]{0x1000000000000000L});
+    public static final BitSet FOLLOW_INTERFACE_in_annotationHeader8157 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_annotationHeader8159 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_typeHeader8179 = new BitSet(new long[]{0x1000002000800000L,0x0000000000000200L});
+    public static final BitSet FOLLOW_CLASS_in_typeHeader8182 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_ENUM_in_typeHeader8184 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_MONKEYS_AT_in_typeHeader8187 = new BitSet(new long[]{0x1000000000000000L});
+    public static final BitSet FOLLOW_INTERFACE_in_typeHeader8191 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_typeHeader8195 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_methodHeader8215 = new BitSet(new long[]{0x0840400100214000L,0x0008000020000090L});
+    public static final BitSet FOLLOW_typeParameters_in_methodHeader8217 = new BitSet(new long[]{0x0840400100214000L,0x0008000020000010L});
+    public static final BitSet FOLLOW_type_in_methodHeader8221 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_VOID_in_methodHeader8223 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_methodHeader8227 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_LPAREN_in_methodHeader8229 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_fieldHeader8249 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_fieldHeader8251 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_fieldHeader8253 = new BitSet(new long[]{0x0000004002000000L,0x0000000010000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_fieldHeader8256 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_fieldHeader8257 = new BitSet(new long[]{0x0000004002000000L,0x0000000010000004L});
+    public static final BitSet FOLLOW_set_in_fieldHeader8261 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_variableModifiers_in_localVariableHeader8287 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_localVariableHeader8289 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_localVariableHeader8291 = new BitSet(new long[]{0x0000004002000000L,0x0000000010000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_localVariableHeader8294 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_localVariableHeader8295 = new BitSet(new long[]{0x0000004002000000L,0x0000000010000004L});
+    public static final BitSet FOLLOW_set_in_localVariableHeader8299 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_annotations_in_synpred2_RJavaSymbolTable75 = new BitSet(new long[]{0x0000000000000000L,0x0000000000004000L});
     public static final BitSet FOLLOW_packageDeclaration_in_synpred2_RJavaSymbolTable104 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classDeclaration_in_synpred12_RJavaSymbolTable462 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_normalClassDeclaration_in_synpred27_RJavaSymbolTable699 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_normalInterfaceDeclaration_in_synpred43_RJavaSymbolTable1378 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_fieldDeclaration_in_synpred52_RJavaSymbolTable1741 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_methodDeclaration_in_synpred53_RJavaSymbolTable1752 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classDeclaration_in_synpred54_RJavaSymbolTable1763 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_explicitConstructorInvocation_in_synpred57_RJavaSymbolTable1900 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_synpred59_RJavaSymbolTable1812 = new BitSet(new long[]{0x0040000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_typeParameters_in_synpred59_RJavaSymbolTable1823 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_synpred59_RJavaSymbolTable1844 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_formalParameters_in_synpred59_RJavaSymbolTable1854 = new BitSet(new long[]{0x0000000000000000L,0x0000400000000002L});
-    public static final BitSet FOLLOW_THROWS_in_synpred59_RJavaSymbolTable1865 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_qualifiedNameList_in_synpred59_RJavaSymbolTable1867 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACE_in_synpred59_RJavaSymbolTable1888 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1EF2L});
-    public static final BitSet FOLLOW_explicitConstructorInvocation_in_synpred59_RJavaSymbolTable1900 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1E72L});
-    public static final BitSet FOLLOW_blockStatement_in_synpred59_RJavaSymbolTable1922 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1E72L});
-    public static final BitSet FOLLOW_RBRACE_in_synpred59_RJavaSymbolTable1943 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceFieldDeclaration_in_synpred68_RJavaSymbolTable2342 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceMethodDeclaration_in_synpred69_RJavaSymbolTable2352 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceDeclaration_in_synpred70_RJavaSymbolTable2362 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classDeclaration_in_synpred71_RJavaSymbolTable2372 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ellipsisParameterDecl_in_synpred96_RJavaSymbolTable3136 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_normalParameterDecl_in_synpred98_RJavaSymbolTable3146 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_COMMA_in_synpred98_RJavaSymbolTable3157 = new BitSet(new long[]{0x0840500100214000L,0x0000000020000210L});
-    public static final BitSet FOLLOW_normalParameterDecl_in_synpred98_RJavaSymbolTable3159 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_normalParameterDecl_in_synpred99_RJavaSymbolTable3181 = new BitSet(new long[]{0x0000000002000000L});
-    public static final BitSet FOLLOW_COMMA_in_synpred99_RJavaSymbolTable3191 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_synpred103_RJavaSymbolTable3326 = new BitSet(new long[]{0x0000000000000000L,0x0000110000000000L});
-    public static final BitSet FOLLOW_set_in_synpred103_RJavaSymbolTable3352 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_arguments_in_synpred103_RJavaSymbolTable3384 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_synpred103_RJavaSymbolTable3386 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_annotationMethodDeclaration_in_synpred117_RJavaSymbolTable3985 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceFieldDeclaration_in_synpred118_RJavaSymbolTable3995 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_normalClassDeclaration_in_synpred119_RJavaSymbolTable4005 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_normalInterfaceDeclaration_in_synpred120_RJavaSymbolTable4015 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_enumDeclaration_in_synpred121_RJavaSymbolTable4025 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_annotationTypeDeclaration_in_synpred122_RJavaSymbolTable4035 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_localVariableDeclarationStatement_in_synpred125_RJavaSymbolTable4193 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classOrInterfaceDeclaration_in_synpred126_RJavaSymbolTable4203 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ASSERT_in_synpred130_RJavaSymbolTable4346 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_synpred130_RJavaSymbolTable4366 = new BitSet(new long[]{0x0000000001000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_COLON_in_synpred130_RJavaSymbolTable4369 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_synpred130_RJavaSymbolTable4371 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_synpred130_RJavaSymbolTable4375 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ASSERT_in_synpred132_RJavaSymbolTable4385 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_synpred132_RJavaSymbolTable4388 = new BitSet(new long[]{0x0000000001000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_COLON_in_synpred132_RJavaSymbolTable4391 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_synpred132_RJavaSymbolTable4393 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_synpred132_RJavaSymbolTable4397 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ELSE_in_synpred133_RJavaSymbolTable4426 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
-    public static final BitSet FOLLOW_statement_in_synpred133_RJavaSymbolTable4428 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expression_in_synpred148_RJavaSymbolTable4650 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_synpred148_RJavaSymbolTable4653 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_synpred149_RJavaSymbolTable4668 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_COLON_in_synpred149_RJavaSymbolTable4670 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
-    public static final BitSet FOLLOW_statement_in_synpred149_RJavaSymbolTable4672 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_catches_in_synpred153_RJavaSymbolTable4828 = new BitSet(new long[]{0x0000200000000000L});
-    public static final BitSet FOLLOW_FINALLY_in_synpred153_RJavaSymbolTable4830 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_block_in_synpred153_RJavaSymbolTable4832 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_catches_in_synpred154_RJavaSymbolTable4846 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_FOR_in_synpred157_RJavaSymbolTable5038 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_LPAREN_in_synpred157_RJavaSymbolTable5040 = new BitSet(new long[]{0x0840500100214000L,0x0000000020000210L});
-    public static final BitSet FOLLOW_variableModifiers_in_synpred157_RJavaSymbolTable5042 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_synpred157_RJavaSymbolTable5044 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_synpred157_RJavaSymbolTable5046 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_COLON_in_synpred157_RJavaSymbolTable5048 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_synpred157_RJavaSymbolTable5059 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_RPAREN_in_synpred157_RJavaSymbolTable5061 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
-    public static final BitSet FOLLOW_statement_in_synpred157_RJavaSymbolTable5063 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_localVariableDeclaration_in_synpred161_RJavaSymbolTable5242 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_castExpression_in_synpred202_RJavaSymbolTable6487 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LPAREN_in_synpred206_RJavaSymbolTable6578 = new BitSet(new long[]{0x0800400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_primitiveType_in_synpred206_RJavaSymbolTable6580 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_RPAREN_in_synpred206_RJavaSymbolTable6582 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_unaryExpression_in_synpred206_RJavaSymbolTable6584 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DOT_in_synpred208_RJavaSymbolTable6655 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_synpred208_RJavaSymbolTable6657 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_identifierSuffix_in_synpred209_RJavaSymbolTable6679 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DOT_in_synpred211_RJavaSymbolTable6711 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_synpred211_RJavaSymbolTable6713 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_identifierSuffix_in_synpred212_RJavaSymbolTable6735 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACKET_in_synpred224_RJavaSymbolTable6986 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_synpred224_RJavaSymbolTable6988 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_synpred224_RJavaSymbolTable6990 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_NEW_in_synpred236_RJavaSymbolTable7199 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_synpred236_RJavaSymbolTable7201 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_classOrInterfaceType_in_synpred236_RJavaSymbolTable7203 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_classCreatorRest_in_synpred236_RJavaSymbolTable7205 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_NEW_in_synpred237_RJavaSymbolTable7215 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_classOrInterfaceType_in_synpred237_RJavaSymbolTable7217 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_classCreatorRest_in_synpred237_RJavaSymbolTable7219 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_NEW_in_synpred239_RJavaSymbolTable7249 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_createdName_in_synpred239_RJavaSymbolTable7251 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_synpred239_RJavaSymbolTable7261 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_synpred239_RJavaSymbolTable7263 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000006L});
-    public static final BitSet FOLLOW_LBRACKET_in_synpred239_RJavaSymbolTable7274 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_synpred239_RJavaSymbolTable7276 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000006L});
-    public static final BitSet FOLLOW_arrayInitializer_in_synpred239_RJavaSymbolTable7297 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACKET_in_synpred240_RJavaSymbolTable7346 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_synpred240_RJavaSymbolTable7348 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_synpred240_RJavaSymbolTable7362 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classDeclaration_in_synpred12_RJavaSymbolTable465 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_normalClassDeclaration_in_synpred27_RJavaSymbolTable702 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_normalInterfaceDeclaration_in_synpred43_RJavaSymbolTable1381 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_fieldDeclaration_in_synpred52_RJavaSymbolTable1744 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_methodDeclaration_in_synpred53_RJavaSymbolTable1755 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classDeclaration_in_synpred54_RJavaSymbolTable1766 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_explicitConstructorInvocation_in_synpred57_RJavaSymbolTable1914 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_synpred59_RJavaSymbolTable1825 = new BitSet(new long[]{0x0040000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_typeParameters_in_synpred59_RJavaSymbolTable1836 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_synpred59_RJavaSymbolTable1857 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_formalParameters_in_synpred59_RJavaSymbolTable1868 = new BitSet(new long[]{0x0000000000000000L,0x0000400000000002L});
+    public static final BitSet FOLLOW_THROWS_in_synpred59_RJavaSymbolTable1879 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_qualifiedNameList_in_synpred59_RJavaSymbolTable1881 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACE_in_synpred59_RJavaSymbolTable1902 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1EF2L});
+    public static final BitSet FOLLOW_explicitConstructorInvocation_in_synpred59_RJavaSymbolTable1914 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1E72L});
+    public static final BitSet FOLLOW_blockStatement_in_synpred59_RJavaSymbolTable1936 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1E72L});
+    public static final BitSet FOLLOW_RBRACE_in_synpred59_RJavaSymbolTable1957 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceFieldDeclaration_in_synpred68_RJavaSymbolTable2378 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceMethodDeclaration_in_synpred69_RJavaSymbolTable2388 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceDeclaration_in_synpred70_RJavaSymbolTable2398 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classDeclaration_in_synpred71_RJavaSymbolTable2408 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ellipsisParameterDecl_in_synpred96_RJavaSymbolTable3172 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_normalParameterDecl_in_synpred98_RJavaSymbolTable3182 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_COMMA_in_synpred98_RJavaSymbolTable3193 = new BitSet(new long[]{0x0840500100214000L,0x0000000020000210L});
+    public static final BitSet FOLLOW_normalParameterDecl_in_synpred98_RJavaSymbolTable3195 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_normalParameterDecl_in_synpred99_RJavaSymbolTable3217 = new BitSet(new long[]{0x0000000002000000L});
+    public static final BitSet FOLLOW_COMMA_in_synpred99_RJavaSymbolTable3227 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_synpred103_RJavaSymbolTable3410 = new BitSet(new long[]{0x0000000000000000L,0x0000110000000000L});
+    public static final BitSet FOLLOW_set_in_synpred103_RJavaSymbolTable3436 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_arguments_in_synpred103_RJavaSymbolTable3468 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_synpred103_RJavaSymbolTable3470 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_annotationMethodDeclaration_in_synpred117_RJavaSymbolTable4069 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceFieldDeclaration_in_synpred118_RJavaSymbolTable4079 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_normalClassDeclaration_in_synpred119_RJavaSymbolTable4089 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_normalInterfaceDeclaration_in_synpred120_RJavaSymbolTable4099 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_enumDeclaration_in_synpred121_RJavaSymbolTable4109 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_annotationTypeDeclaration_in_synpred122_RJavaSymbolTable4119 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_localVariableDeclarationStatement_in_synpred125_RJavaSymbolTable4297 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classOrInterfaceDeclaration_in_synpred126_RJavaSymbolTable4307 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ASSERT_in_synpred130_RJavaSymbolTable4450 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_synpred130_RJavaSymbolTable4470 = new BitSet(new long[]{0x0000000001000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_COLON_in_synpred130_RJavaSymbolTable4473 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_synpred130_RJavaSymbolTable4475 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_synpred130_RJavaSymbolTable4479 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ASSERT_in_synpred132_RJavaSymbolTable4489 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_synpred132_RJavaSymbolTable4492 = new BitSet(new long[]{0x0000000001000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_COLON_in_synpred132_RJavaSymbolTable4495 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_synpred132_RJavaSymbolTable4497 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_synpred132_RJavaSymbolTable4501 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ELSE_in_synpred133_RJavaSymbolTable4530 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
+    public static final BitSet FOLLOW_statement_in_synpred133_RJavaSymbolTable4532 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expression_in_synpred148_RJavaSymbolTable4754 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_synpred148_RJavaSymbolTable4757 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_synpred149_RJavaSymbolTable4772 = new BitSet(new long[]{0x0000000001000000L});
+    public static final BitSet FOLLOW_COLON_in_synpred149_RJavaSymbolTable4774 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
+    public static final BitSet FOLLOW_statement_in_synpred149_RJavaSymbolTable4776 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_catches_in_synpred153_RJavaSymbolTable4932 = new BitSet(new long[]{0x0000200000000000L});
+    public static final BitSet FOLLOW_FINALLY_in_synpred153_RJavaSymbolTable4934 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_block_in_synpred153_RJavaSymbolTable4936 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_catches_in_synpred154_RJavaSymbolTable4950 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_FOR_in_synpred157_RJavaSymbolTable5152 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_LPAREN_in_synpred157_RJavaSymbolTable5154 = new BitSet(new long[]{0x0840500100214000L,0x0000000020000210L});
+    public static final BitSet FOLLOW_variableModifiers_in_synpred157_RJavaSymbolTable5156 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_synpred157_RJavaSymbolTable5158 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_synpred157_RJavaSymbolTable5160 = new BitSet(new long[]{0x0000000001000000L});
+    public static final BitSet FOLLOW_COLON_in_synpred157_RJavaSymbolTable5162 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_synpred157_RJavaSymbolTable5183 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_RPAREN_in_synpred157_RJavaSymbolTable5185 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
+    public static final BitSet FOLLOW_statement_in_synpred157_RJavaSymbolTable5187 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_localVariableDeclaration_in_synpred161_RJavaSymbolTable5405 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_castExpression_in_synpred202_RJavaSymbolTable6650 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LPAREN_in_synpred206_RJavaSymbolTable6741 = new BitSet(new long[]{0x0800400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_primitiveType_in_synpred206_RJavaSymbolTable6743 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_RPAREN_in_synpred206_RJavaSymbolTable6745 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_unaryExpression_in_synpred206_RJavaSymbolTable6747 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOT_in_synpred208_RJavaSymbolTable6818 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_synpred208_RJavaSymbolTable6820 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_identifierSuffix_in_synpred209_RJavaSymbolTable6842 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOT_in_synpred211_RJavaSymbolTable6874 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_synpred211_RJavaSymbolTable6876 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_identifierSuffix_in_synpred212_RJavaSymbolTable6898 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACKET_in_synpred224_RJavaSymbolTable7149 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_synpred224_RJavaSymbolTable7151 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_synpred224_RJavaSymbolTable7153 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_NEW_in_synpred236_RJavaSymbolTable7362 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_synpred236_RJavaSymbolTable7364 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_classOrInterfaceType_in_synpred236_RJavaSymbolTable7366 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_classCreatorRest_in_synpred236_RJavaSymbolTable7368 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_NEW_in_synpred237_RJavaSymbolTable7378 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_classOrInterfaceType_in_synpred237_RJavaSymbolTable7380 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_classCreatorRest_in_synpred237_RJavaSymbolTable7382 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_NEW_in_synpred239_RJavaSymbolTable7412 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_createdName_in_synpred239_RJavaSymbolTable7414 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_synpred239_RJavaSymbolTable7424 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_synpred239_RJavaSymbolTable7426 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000006L});
+    public static final BitSet FOLLOW_LBRACKET_in_synpred239_RJavaSymbolTable7437 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_synpred239_RJavaSymbolTable7439 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000006L});
+    public static final BitSet FOLLOW_arrayInitializer_in_synpred239_RJavaSymbolTable7460 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACKET_in_synpred240_RJavaSymbolTable7509 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_synpred240_RJavaSymbolTable7511 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_synpred240_RJavaSymbolTable7525 = new BitSet(new long[]{0x0000000000000002L});
 
 }

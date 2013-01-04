@@ -14,6 +14,7 @@ import static org.rjava.compiler.Constants.*;
 import soot.Scene;
 import soot.SootClass;
 import soot.SootMethod;
+import soot.SootResolver;
 import soot.options.Options;
 
 public class SootEngine {  
@@ -43,9 +44,9 @@ public class SootEngine {
 	Options.v().set_src_prec(Options.src_prec_java);
 	Options.v().set_whole_program(true);
 	Options.v().set_process_dir(dir);
-	Options.v().set_exclude(Arrays.asList("java"));
-	Options.v().set_no_bodies_for_excluded(true);
-	Options.v().set_allow_phantom_refs(true);
+	//Options.v().set_exclude(Arrays.asList("java"));
+	//Options.v().set_no_bodies_for_excluded(true);
+	//Options.v().set_allow_phantom_refs(true);
 	
 	// set class path
 	String classpath = "";
@@ -56,6 +57,8 @@ public class SootEngine {
 	classpath += RJAVA_ANNOTATION_DIR + ":"; 
 	classpath += ".";
 	Options.v().set_soot_classpath(classpath);
+	if (DEBUG)
+	    System.out.println("soot classpath: " + classpath);
 	
 	// get all classes and methods
 	allClasses = new HashMap<String, SootClass>();
@@ -97,7 +100,9 @@ public class SootEngine {
     }
 
     public static SootClass resolveAndGetClass(String name) {
-	Scene.v().forceResolve(name, SootClass.SIGNATURES);
-	return Scene.v().getSootClass(name);
+	//Scene.v().forceResolve(name, SootClass.SIGNATURES);
+	SootResolver.v().resolveClass(name, SootClass.SIGNATURES);
+	SootClass ret = Scene.v().getSootClass(name);
+	return ret;
     }
 }

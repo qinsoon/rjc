@@ -5,7 +5,6 @@ import org.rjava.compiler.semantics.representation.RType;
 public class RIdentifier {
     RType type;
     String id;
-    boolean array;
     
     public RType getType() {
         return type;
@@ -19,14 +18,11 @@ public class RIdentifier {
     public void setId(String id) {
         this.id = id;
     }
-    public boolean isArray() {
-        return array;
-    }
     public void setArray(boolean array) {
-        this.array = array;
+        this.type.setArray(array);
     }
     
     public String toString() {
-	return type.getClassName() + " " + id + (array ? "[]":"");
+	return type + " " + id;
     }
 }

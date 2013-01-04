@@ -29,7 +29,7 @@ compilationUnit
             )?
             packageDeclaration
         )?
-        (importDeclaration
+        (importDeclaration {klass.addNewImport($importDeclaration.text);}
         )*
         (typeDeclaration
         )*
@@ -40,7 +40,7 @@ packageDeclaration
         ';'
     ;
 
-importDeclaration  
+importDeclaration   
     :   'import' 
         ('static'
         )?
@@ -243,10 +243,11 @@ memberDecl
 methodDeclaration 
     :
         /* For constructor, return type is null, name is 'init' */
+        {klass.newBlock(RBlock.METHOD_WIDE);}
          modifiers
         (typeParameters
         )?
-        IDENTIFIER
+        IDENTIFIER 
         formalParameters
         ('throws' qualifiedNameList
         )?
@@ -255,14 +256,16 @@ methodDeclaration
         )?
         (blockStatement
         )*
-        '}'
-    |   modifiers
+        '}' {klass.backToUpperBlock();}
+    |   
+        {klass.newBlock(RBlock.METHOD_WIDE);}
+        modifiers
         (typeParameters
         )?
         (type
         |   'void'
         )
-        IDENTIFIER
+        IDENTIFIER 
         formalParameters
         ('[' ']'
         )*
@@ -288,7 +291,7 @@ variableDeclarator returns [RIdentifier id]
     :   IDENTIFIER {
           $id = new RIdentifier(); 
           $id.setId($IDENTIFIER.text); 
-          $id.setType(RType.initWithClassName(type));
+          $id.setType(RType.initWithClassName(klass, type));
           }
         ('[' ']' {$id.setArray(true);}
         )*
@@ -410,16 +413,27 @@ formalParameterDecls
         ellipsisParameterDecl
     ;
 
-normalParameterDecl 
-    :   variableModifiers type IDENTIFIER
-        ('[' ']'
+normalParameterDecl returns [RIdentifier id]
+    :   
+        variableModifiers type IDENTIFIER
+        {$id = new RIdentifier();
+        $id.setId($IDENTIFIER.text);
+        $id.setType(RType.initWithClassName(klass, $type.text));
+        }
+        ('[' ']' {$id.setArray(true);}
         )*
+        {klass.newIdToCurrentBlock($id);}
     ;
 
-ellipsisParameterDecl 
+ellipsisParameterDecl returns [RIdentifier id] 
     :   variableModifiers
         type  '...'
         IDENTIFIER
+        {$id = new RIdentifier();
+        $id.setId($IDENTIFIER.text);
+        $id.setType(RType.initWithClassName(klass, $type.text));
+        $id.setArray(true);
+        klass.newIdToCurrentBlock($id);}
     ;
 
 
@@ -528,10 +542,12 @@ annotationMethodDeclaration
         ;
 
 block 
-    :   '{'
+    :   {klass.newBlock(RBlock.IN_METHOD);}
+        '{'
         (blockStatement
         )*
         '}'
+        {klass.backToUpperBlock();}
     ;
 
 /*
@@ -650,17 +666,26 @@ formalParameter
 forstatement 
     :   
         // enhanced for loop
-        'for' '(' variableModifiers type IDENTIFIER ':' 
+        {klass.newBlock(RBlock.IN_METHOD);}
+        'for' '(' variableModifiers type IDENTIFIER ':'
+        {RIdentifier id = new RIdentifier();
+        id.setType(RType.initWithClassName(klass, $type.text));
+        id.setId($IDENTIFIER.text);
+        klass.newIdToCurrentBlock(id);} 
         expression ')' statement
+        {klass.backToUpperBlock();}
             
         // normal for loop
-    |   'for' '(' 
+    |   
+        {klass.newBlock(RBlock.IN_METHOD);}
+        'for' '(' 
                 (forInit
                 )? ';' 
                 (expression
                 )? ';' 
                 (expressionList
                 )? ')' statement
+        {klass.backToUpperBlock();}
     ;
 
 forInit 

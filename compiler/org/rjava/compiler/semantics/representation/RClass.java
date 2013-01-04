@@ -4,17 +4,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.SootEngine;
 import org.rjava.compiler.semantics.symtab.RBlock;
 import org.rjava.compiler.semantics.symtab.RIdentifier;
+import org.rjava.compiler.semantics.symtab.RImport;
 
 import soot.SootClass;
+import soot.SootMethod;
 import soot.tagkit.AnnotationTag;
 import soot.tagkit.Tag;
 import soot.tagkit.VisibilityAnnotationTag;
 
 public class RClass {
-    private SootClass internal;
+    SootClass internal;
     private String name;
     
     // 'annotations' are what are declared with source
@@ -22,8 +25,15 @@ public class RClass {
     // 'restrictions' are RJava restriction rules, including those unfolded from rulesets
     private List<RAnnotation> annotations;
     
+    // blocks in such class
     private RBlock topBlock;
     private RBlock currentBlock = null;
+    
+    // imports
+    private List<RImport> imports = new ArrayList<RImport>();
+    
+    // methods
+    private List<RMethod> methods = new ArrayList<RMethod>();
     
     public RClass(SootClass sootClass) {
 	this.internal = sootClass;
@@ -32,6 +42,20 @@ public class RClass {
 	this.annotations = fetchAnnotations(internal);
 	
 	topBlock = new RBlock(RBlock.CLASS_WIDE);
+	
+	fetchMethods();
+    }
+
+    private void fetchMethods() {
+	for (SootMethod m : internal.getMethods()) {
+	    methods.add(new RMethod(this, m));
+	}
+	
+	if (SemanticMap.DEBUG) {
+	    System.out.println("---Methods for " + name + "---");
+	    for (RMethod m : methods)
+		System.out.println(m);
+	}
     }
 
     /**
@@ -46,7 +70,7 @@ public class RClass {
 	    if (tag instanceof VisibilityAnnotationTag) {
 		VisibilityAnnotationTag annoTag = (VisibilityAnnotationTag) tag;
 		for (AnnotationTag t : annoTag.getAnnotations()) {
-		    result.add(new RAnnotation(t));  
+		    result.add(new RAnnotation(t, this));  
 		}
 	    }
 	}
@@ -124,5 +148,18 @@ public class RClass {
     public void printSymbolTalbe() {
 	System.out.println("---Symbol Table for " + name + "---");
 	topBlock.verbose();
+    }
+    
+    public void printImports() {
+	for (RImport i : imports)
+	    System.out.println(i);
+    }
+    
+    public void addNewImport(String statement) {
+	this.imports.add(new RImport(statement));
+    }
+
+    public List<RImport> getImports() {
+        return imports;
     }
 }

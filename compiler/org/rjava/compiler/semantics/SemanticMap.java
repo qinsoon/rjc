@@ -17,7 +17,11 @@ import org.rjava.compiler.semantics.symtab.RJavaSymbolTableParser;
 import antlr.RecognitionException;
 
 public class SemanticMap {
+    public static final boolean DEBUG = true;
+    
+    // task.class <-> RClass
     Map<String, RClass> classes;
+    // task.class <-> task.sources
     Map<String, String> sources;
     SootEngine engine;
     
@@ -52,8 +56,10 @@ public class SemanticMap {
 		parser.setClass(classes.get(klass));
 		parser.compilationUnit();
 		
-		if (RJavaCompiler.DEBUG)
+		if (RJavaCompiler.DEBUG) {
+		    //classes.get(klass).printImports();
 		    classes.get(klass).printSymbolTalbe();
+		}
 	    } catch (FileNotFoundException e) {
 		e.printStackTrace();
 	    } catch (IOException e) {

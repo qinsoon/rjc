@@ -10,6 +10,13 @@ public class RJavaSymTab {
   }
 
   public static void main(String[] args) {
-    double d;
+    double d = 0;
+    for (int i = 0; i < 5; i++) {
+	d += i;
+    }
+  }
+  
+  public void foo(Object... objects) {
+      
   }
 }
