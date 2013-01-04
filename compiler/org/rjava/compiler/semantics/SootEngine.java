@@ -84,11 +84,6 @@ public class SootEngine {
 		System.out.println("(" + entry.getKey() + ", " + entry.getValue() + ")");
 	    }
 	    System.out.println();
-	    System.out.println("---Methods---");
-	    for (Map.Entry<String, SootMethod> entry : allMethods.entrySet()) {
-		System.out.println("(" + entry.getKey() + ")");
-	    }
-	    System.out.println();
 	}
     }
 

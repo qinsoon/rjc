@@ -58,7 +58,7 @@ public class SemanticMap {
 		
 		if (RJavaCompiler.DEBUG) {
 		    //classes.get(klass).printImports();
-		    classes.get(klass).printSymbolTalbe();
+		    //classes.get(klass).printSymbolTalbe();
 		}
 	    } catch (FileNotFoundException e) {
 		e.printStackTrace();
@@ -68,5 +68,9 @@ public class SemanticMap {
 		e.printStackTrace();
 	    }
 	}
+    }
+
+    public Map<String, String> getSources() {
+        return sources;
     }
 }

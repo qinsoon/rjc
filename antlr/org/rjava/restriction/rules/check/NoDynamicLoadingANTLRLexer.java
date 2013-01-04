@@ -1,4 +1,4 @@
-// $ANTLR 3.4 /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g 2013-01-03 16:03:12
+// $ANTLR 3.4 /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g 2013-01-04 17:41:23
 
 package org.rjava.restriction.rules.check;
 
@@ -147,8 +147,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = LONGLITERAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1297:5: ( IntegerNumber LongSuffix )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1297:9: IntegerNumber LongSuffix
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1326:5: ( IntegerNumber LongSuffix )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1326:9: IntegerNumber LongSuffix
             {
             mIntegerNumber(); 
 
@@ -172,8 +172,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = INTLITERAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1298:5: ( IntegerNumber )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1298:9: IntegerNumber
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1327:5: ( IntegerNumber )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1327:9: IntegerNumber
             {
             mIntegerNumber(); 
 
@@ -192,7 +192,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
     // $ANTLR start "IntegerNumber"
     public final void mIntegerNumber() throws RecognitionException {
         try {
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1304:5: ( '0' | '1' .. '9' ( '0' .. '9' )* | '0' ( '0' .. '7' )+ | HexPrefix ( HexDigit )+ )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1333:5: ( '0' | '1' .. '9' ( '0' .. '9' )* | '0' ( '0' .. '7' )+ | HexPrefix ( HexDigit )+ )
             int alt4=4;
             int LA4_0 = input.LA(1);
 
@@ -233,18 +233,18 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
             }
             switch (alt4) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1304:9: '0'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1333:9: '0'
                     {
                     match('0'); 
 
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1305:9: '1' .. '9' ( '0' .. '9' )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1334:9: '1' .. '9' ( '0' .. '9' )*
                     {
                     matchRange('1','9'); 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1305:18: ( '0' .. '9' )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1334:18: ( '0' .. '9' )*
                     loop1:
                     do {
                         int alt1=2;
@@ -281,11 +281,11 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1306:9: '0' ( '0' .. '7' )+
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1335:9: '0' ( '0' .. '7' )+
                     {
                     match('0'); 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1306:13: ( '0' .. '7' )+
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1335:13: ( '0' .. '7' )+
                     int cnt2=0;
                     loop2:
                     do {
@@ -327,12 +327,12 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1307:9: HexPrefix ( HexDigit )+
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1336:9: HexPrefix ( HexDigit )+
                     {
                     mHexPrefix(); 
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1307:19: ( HexDigit )+
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1336:19: ( HexDigit )+
                     int cnt3=0;
                     loop3:
                     do {
@@ -386,7 +386,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
     // $ANTLR start "HexPrefix"
     public final void mHexPrefix() throws RecognitionException {
         try {
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1312:5: ( '0x' | '0X' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1341:5: ( '0x' | '0X' )
             int alt5=2;
             int LA5_0 = input.LA(1);
 
@@ -416,7 +416,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
             }
             switch (alt5) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1312:9: '0x'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1341:9: '0x'
                     {
                     match("0x"); 
 
@@ -425,7 +425,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1312:16: '0X'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1341:16: '0X'
                     {
                     match("0X"); 
 
@@ -446,7 +446,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
     // $ANTLR start "HexDigit"
     public final void mHexDigit() throws RecognitionException {
         try {
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1317:5: ( ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' ) )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1346:5: ( ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' ) )
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:
             {
             if ( (input.LA(1) >= '0' && input.LA(1) <= '9')||(input.LA(1) >= 'A' && input.LA(1) <= 'F')||(input.LA(1) >= 'a' && input.LA(1) <= 'f') ) {
@@ -472,7 +472,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
     // $ANTLR start "LongSuffix"
     public final void mLongSuffix() throws RecognitionException {
         try {
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1322:5: ( 'l' | 'L' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1351:5: ( 'l' | 'L' )
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:
             {
             if ( input.LA(1)=='L'||input.LA(1)=='l' ) {
@@ -498,14 +498,14 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
     // $ANTLR start "NonIntegerNumber"
     public final void mNonIntegerNumber() throws RecognitionException {
         try {
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1328:5: ( ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( Exponent )? | '.' ( '0' .. '9' )+ ( Exponent )? | ( '0' .. '9' )+ Exponent | ( '0' .. '9' )+ | HexPrefix ( HexDigit )* ( () | ( '.' ( HexDigit )* ) ) ( 'p' | 'P' ) ( '+' | '-' )? ( '0' .. '9' )+ )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1357:5: ( ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( Exponent )? | '.' ( '0' .. '9' )+ ( Exponent )? | ( '0' .. '9' )+ Exponent | ( '0' .. '9' )+ | HexPrefix ( HexDigit )* ( () | ( '.' ( HexDigit )* ) ) ( 'p' | 'P' ) ( '+' | '-' )? ( '0' .. '9' )+ )
             int alt18=5;
             alt18 = dfa18.predict(input);
             switch (alt18) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1328:9: ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( Exponent )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1357:9: ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( Exponent )?
                     {
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1328:9: ( '0' .. '9' )+
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1357:9: ( '0' .. '9' )+
                     int cnt6=0;
                     loop6:
                     do {
@@ -546,7 +546,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
 
                     match('.'); 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1328:27: ( '0' .. '9' )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1357:27: ( '0' .. '9' )*
                     loop7:
                     do {
                         int alt7=2;
@@ -580,7 +580,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
                     } while (true);
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1328:41: ( Exponent )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1357:41: ( Exponent )?
                     int alt8=2;
                     int LA8_0 = input.LA(1);
 
@@ -589,7 +589,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
                     }
                     switch (alt8) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1328:41: Exponent
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1357:41: Exponent
                             {
                             mExponent(); 
 
@@ -603,11 +603,11 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1329:9: '.' ( '0' .. '9' )+ ( Exponent )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1358:9: '.' ( '0' .. '9' )+ ( Exponent )?
                     {
                     match('.'); 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1329:13: ( '0' .. '9' )+
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1358:13: ( '0' .. '9' )+
                     int cnt9=0;
                     loop9:
                     do {
@@ -646,7 +646,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
                     } while (true);
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1329:29: ( Exponent )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1358:29: ( Exponent )?
                     int alt10=2;
                     int LA10_0 = input.LA(1);
 
@@ -655,7 +655,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
                     }
                     switch (alt10) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1329:29: Exponent
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1358:29: Exponent
                             {
                             mExponent(); 
 
@@ -669,9 +669,9 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1330:9: ( '0' .. '9' )+ Exponent
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1359:9: ( '0' .. '9' )+ Exponent
                     {
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1330:9: ( '0' .. '9' )+
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1359:9: ( '0' .. '9' )+
                     int cnt11=0;
                     loop11:
                     do {
@@ -716,9 +716,9 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1331:9: ( '0' .. '9' )+
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1360:9: ( '0' .. '9' )+
                     {
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1331:9: ( '0' .. '9' )+
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1360:9: ( '0' .. '9' )+
                     int cnt12=0;
                     loop12:
                     do {
@@ -760,12 +760,12 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
                     }
                     break;
                 case 5 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1333:9: HexPrefix ( HexDigit )* ( () | ( '.' ( HexDigit )* ) ) ( 'p' | 'P' ) ( '+' | '-' )? ( '0' .. '9' )+
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1362:9: HexPrefix ( HexDigit )* ( () | ( '.' ( HexDigit )* ) ) ( 'p' | 'P' ) ( '+' | '-' )? ( '0' .. '9' )+
                     {
                     mHexPrefix(); 
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1333:19: ( HexDigit )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1362:19: ( HexDigit )*
                     loop13:
                     do {
                         int alt13=2;
@@ -799,7 +799,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
                     } while (true);
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1334:9: ( () | ( '.' ( HexDigit )* ) )
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1363:9: ( () | ( '.' ( HexDigit )* ) )
                     int alt15=2;
                     int LA15_0 = input.LA(1);
 
@@ -818,10 +818,10 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
                     }
                     switch (alt15) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1334:14: ()
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1363:14: ()
                             {
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1334:14: ()
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1334:15: 
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1363:14: ()
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1363:15: 
                             {
                             }
 
@@ -829,14 +829,14 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
                             }
                             break;
                         case 2 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1335:14: ( '.' ( HexDigit )* )
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1364:14: ( '.' ( HexDigit )* )
                             {
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1335:14: ( '.' ( HexDigit )* )
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1335:15: '.' ( HexDigit )*
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1364:14: ( '.' ( HexDigit )* )
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1364:15: '.' ( HexDigit )*
                             {
                             match('.'); 
 
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1335:19: ( HexDigit )*
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1364:19: ( HexDigit )*
                             loop14:
                             do {
                                 int alt14=2;
@@ -889,7 +889,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
                     }
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1338:9: ( '+' | '-' )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1367:9: ( '+' | '-' )?
                     int alt16=2;
                     int LA16_0 = input.LA(1);
 
@@ -916,7 +916,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
                     }
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1339:9: ( '0' .. '9' )+
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1368:9: ( '0' .. '9' )+
                     int cnt17=0;
                     loop17:
                     do {
@@ -970,8 +970,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
     // $ANTLR start "Exponent"
     public final void mExponent() throws RecognitionException {
         try {
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1344:5: ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1344:9: ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1373:5: ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1373:9: ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
             {
             if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
                 input.consume();
@@ -983,7 +983,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
             }
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1344:23: ( '+' | '-' )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1373:23: ( '+' | '-' )?
             int alt19=2;
             int LA19_0 = input.LA(1);
 
@@ -1010,7 +1010,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
             }
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1344:38: ( '0' .. '9' )+
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1373:38: ( '0' .. '9' )+
             int cnt20=0;
             loop20:
             do {
@@ -1062,7 +1062,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
     // $ANTLR start "FloatSuffix"
     public final void mFloatSuffix() throws RecognitionException {
         try {
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1349:5: ( 'f' | 'F' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1378:5: ( 'f' | 'F' )
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:
             {
             if ( input.LA(1)=='F'||input.LA(1)=='f' ) {
@@ -1088,7 +1088,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
     // $ANTLR start "DoubleSuffix"
     public final void mDoubleSuffix() throws RecognitionException {
         try {
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1354:5: ( 'd' | 'D' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1383:5: ( 'd' | 'D' )
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:
             {
             if ( input.LA(1)=='D'||input.LA(1)=='d' ) {
@@ -1116,8 +1116,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = FLOATLITERAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1357:5: ( NonIntegerNumber FloatSuffix )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1357:9: NonIntegerNumber FloatSuffix
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1386:5: ( NonIntegerNumber FloatSuffix )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1386:9: NonIntegerNumber FloatSuffix
             {
             mNonIntegerNumber(); 
 
@@ -1141,13 +1141,13 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = DOUBLELITERAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1361:5: ( NonIntegerNumber ( DoubleSuffix )? )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1361:9: NonIntegerNumber ( DoubleSuffix )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1390:5: ( NonIntegerNumber ( DoubleSuffix )? )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1390:9: NonIntegerNumber ( DoubleSuffix )?
             {
             mNonIntegerNumber(); 
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1361:26: ( DoubleSuffix )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1390:26: ( DoubleSuffix )?
             int alt21=2;
             int LA21_0 = input.LA(1);
 
@@ -1190,12 +1190,12 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = CHARLITERAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1365:5: ( '\\'' ( EscapeSequence |~ ( '\\'' | '\\\\' | '\\r' | '\\n' ) ) '\\'' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1365:9: '\\'' ( EscapeSequence |~ ( '\\'' | '\\\\' | '\\r' | '\\n' ) ) '\\''
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1394:5: ( '\\'' ( EscapeSequence |~ ( '\\'' | '\\\\' | '\\r' | '\\n' ) ) '\\'' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1394:9: '\\'' ( EscapeSequence |~ ( '\\'' | '\\\\' | '\\r' | '\\n' ) ) '\\''
             {
             match('\''); 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1366:9: ( EscapeSequence |~ ( '\\'' | '\\\\' | '\\r' | '\\n' ) )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1395:9: ( EscapeSequence |~ ( '\\'' | '\\\\' | '\\r' | '\\n' ) )
             int alt22=2;
             int LA22_0 = input.LA(1);
 
@@ -1214,7 +1214,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
             }
             switch (alt22) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1366:13: EscapeSequence
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1395:13: EscapeSequence
                     {
                     mEscapeSequence(); 
 
@@ -1222,7 +1222,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1367:13: ~ ( '\\'' | '\\\\' | '\\r' | '\\n' )
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1396:13: ~ ( '\\'' | '\\\\' | '\\r' | '\\n' )
                     {
                     if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t')||(input.LA(1) >= '\u000B' && input.LA(1) <= '\f')||(input.LA(1) >= '\u000E' && input.LA(1) <= '&')||(input.LA(1) >= '(' && input.LA(1) <= '[')||(input.LA(1) >= ']' && input.LA(1) <= '\uFFFF') ) {
                         input.consume();
@@ -1258,12 +1258,12 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = STRINGLITERAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1373:5: ( '\"' ( EscapeSequence |~ ( '\\\\' | '\"' | '\\r' | '\\n' ) )* '\"' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1373:9: '\"' ( EscapeSequence |~ ( '\\\\' | '\"' | '\\r' | '\\n' ) )* '\"'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1402:5: ( '\"' ( EscapeSequence |~ ( '\\\\' | '\"' | '\\r' | '\\n' ) )* '\"' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1402:9: '\"' ( EscapeSequence |~ ( '\\\\' | '\"' | '\\r' | '\\n' ) )* '\"'
             {
             match('\"'); 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1374:9: ( EscapeSequence |~ ( '\\\\' | '\"' | '\\r' | '\\n' ) )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1403:9: ( EscapeSequence |~ ( '\\\\' | '\"' | '\\r' | '\\n' ) )*
             loop23:
             do {
                 int alt23=3;
@@ -1279,7 +1279,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
 
                 switch (alt23) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1374:13: EscapeSequence
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1403:13: EscapeSequence
             	    {
             	    mEscapeSequence(); 
 
@@ -1287,7 +1287,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
             	    }
             	    break;
             	case 2 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1375:13: ~ ( '\\\\' | '\"' | '\\r' | '\\n' )
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1404:13: ~ ( '\\\\' | '\"' | '\\r' | '\\n' )
             	    {
             	    if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t')||(input.LA(1) >= '\u000B' && input.LA(1) <= '\f')||(input.LA(1) >= '\u000E' && input.LA(1) <= '!')||(input.LA(1) >= '#' && input.LA(1) <= '[')||(input.LA(1) >= ']' && input.LA(1) <= '\uFFFF') ) {
             	        input.consume();
@@ -1324,12 +1324,12 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
     // $ANTLR start "EscapeSequence"
     public final void mEscapeSequence() throws RecognitionException {
         try {
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1383:5: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' | ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' ) | ( '0' .. '7' ) ( '0' .. '7' ) | ( '0' .. '7' ) ) )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1383:9: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' | ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' ) | ( '0' .. '7' ) ( '0' .. '7' ) | ( '0' .. '7' ) )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1412:5: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' | ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' ) | ( '0' .. '7' ) ( '0' .. '7' ) | ( '0' .. '7' ) ) )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1412:9: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' | ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' ) | ( '0' .. '7' ) ( '0' .. '7' ) | ( '0' .. '7' ) )
             {
             match('\\'); 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1383:14: ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' | ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' ) | ( '0' .. '7' ) ( '0' .. '7' ) | ( '0' .. '7' ) )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1412:14: ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' | ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' ) | ( '0' .. '7' ) ( '0' .. '7' ) | ( '0' .. '7' ) )
             int alt24=11;
             switch ( input.LA(1) ) {
             case 'b':
@@ -1419,63 +1419,63 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
 
             switch (alt24) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1384:18: 'b'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1413:18: 'b'
                     {
                     match('b'); 
 
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1385:18: 't'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1414:18: 't'
                     {
                     match('t'); 
 
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1386:18: 'n'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1415:18: 'n'
                     {
                     match('n'); 
 
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1387:18: 'f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1416:18: 'f'
                     {
                     match('f'); 
 
                     }
                     break;
                 case 5 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1388:18: 'r'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1417:18: 'r'
                     {
                     match('r'); 
 
                     }
                     break;
                 case 6 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1389:18: '\\\"'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1418:18: '\\\"'
                     {
                     match('\"'); 
 
                     }
                     break;
                 case 7 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1390:18: '\\''
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1419:18: '\\''
                     {
                     match('\''); 
 
                     }
                     break;
                 case 8 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1391:18: '\\\\'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1420:18: '\\\\'
                     {
                     match('\\'); 
 
                     }
                     break;
                 case 9 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1393:18: ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' )
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1422:18: ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' )
                     {
                     if ( (input.LA(1) >= '0' && input.LA(1) <= '3') ) {
                         input.consume();
@@ -1510,7 +1510,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
                     }
                     break;
                 case 10 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1395:18: ( '0' .. '7' ) ( '0' .. '7' )
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1424:18: ( '0' .. '7' ) ( '0' .. '7' )
                     {
                     if ( (input.LA(1) >= '0' && input.LA(1) <= '7') ) {
                         input.consume();
@@ -1535,7 +1535,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
                     }
                     break;
                 case 11 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1397:18: ( '0' .. '7' )
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1426:18: ( '0' .. '7' )
                     {
                     if ( (input.LA(1) >= '0' && input.LA(1) <= '7') ) {
                         input.consume();
@@ -1568,8 +1568,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1401:5: ( ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' ) )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1401:9: ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1430:5: ( ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' ) )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1430:9: ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' )
             {
             if ( (input.LA(1) >= '\t' && input.LA(1) <= '\n')||(input.LA(1) >= '\f' && input.LA(1) <= '\r')||input.LA(1)==' ' ) {
                 input.consume();
@@ -1604,8 +1604,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
 
                         boolean isJavaDoc = false;
                     
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1417:5: ( '/*' ( options {greedy=false; } : . )* '*/' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1417:9: '/*' ( options {greedy=false; } : . )* '*/'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1446:5: ( '/*' ( options {greedy=false; } : . )* '*/' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1446:9: '/*' ( options {greedy=false; } : . )* '*/'
             {
             match("/*"); 
 
@@ -1617,7 +1617,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
                             }
                         
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1423:9: ( options {greedy=false; } : . )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1452:9: ( options {greedy=false; } : . )*
             loop25:
             do {
                 int alt25=2;
@@ -1642,7 +1642,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
 
                 switch (alt25) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1423:36: .
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1452:36: .
             	    {
             	    matchAny(); 
 
@@ -1683,18 +1683,18 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = LINE_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1435:5: ( '//' (~ ( '\\n' | '\\r' ) )* ( '\\r\\n' | '\\r' | '\\n' ) | '//' (~ ( '\\n' | '\\r' ) )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1464:5: ( '//' (~ ( '\\n' | '\\r' ) )* ( '\\r\\n' | '\\r' | '\\n' ) | '//' (~ ( '\\n' | '\\r' ) )* )
             int alt29=2;
             alt29 = dfa29.predict(input);
             switch (alt29) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1435:9: '//' (~ ( '\\n' | '\\r' ) )* ( '\\r\\n' | '\\r' | '\\n' )
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1464:9: '//' (~ ( '\\n' | '\\r' ) )* ( '\\r\\n' | '\\r' | '\\n' )
                     {
                     match("//"); 
 
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1435:14: (~ ( '\\n' | '\\r' ) )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1464:14: (~ ( '\\n' | '\\r' ) )*
                     loop26:
                     do {
                         int alt26=2;
@@ -1728,7 +1728,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
                     } while (true);
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1435:29: ( '\\r\\n' | '\\r' | '\\n' )
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1464:29: ( '\\r\\n' | '\\r' | '\\n' )
                     int alt27=3;
                     int LA27_0 = input.LA(1);
 
@@ -1754,7 +1754,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
                     }
                     switch (alt27) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1435:30: '\\r\\n'
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1464:30: '\\r\\n'
                             {
                             match("\r\n"); 
 
@@ -1763,14 +1763,14 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
                             }
                             break;
                         case 2 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1435:39: '\\r'
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1464:39: '\\r'
                             {
                             match('\r'); 
 
                             }
                             break;
                         case 3 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1435:46: '\\n'
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1464:46: '\\n'
                             {
                             match('\n'); 
 
@@ -1787,13 +1787,13 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1439:9: '//' (~ ( '\\n' | '\\r' ) )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1468:9: '//' (~ ( '\\n' | '\\r' ) )*
                     {
                     match("//"); 
 
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1439:14: (~ ( '\\n' | '\\r' ) )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1468:14: (~ ( '\\n' | '\\r' ) )*
                     loop28:
                     do {
                         int alt28=2;
@@ -1849,8 +1849,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = ABSTRACT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1446:5: ( 'abstract' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1446:9: 'abstract'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1475:5: ( 'abstract' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1475:9: 'abstract'
             {
             match("abstract"); 
 
@@ -1872,8 +1872,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = ASSERT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1450:5: ( 'assert' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1450:9: 'assert'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1479:5: ( 'assert' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1479:9: 'assert'
             {
             match("assert"); 
 
@@ -1895,8 +1895,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = BOOLEAN;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1454:5: ( 'boolean' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1454:9: 'boolean'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1483:5: ( 'boolean' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1483:9: 'boolean'
             {
             match("boolean"); 
 
@@ -1918,8 +1918,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = BREAK;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1458:5: ( 'break' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1458:9: 'break'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1487:5: ( 'break' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1487:9: 'break'
             {
             match("break"); 
 
@@ -1941,8 +1941,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = BYTE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1462:5: ( 'byte' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1462:9: 'byte'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1491:5: ( 'byte' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1491:9: 'byte'
             {
             match("byte"); 
 
@@ -1964,8 +1964,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = CASE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1466:5: ( 'case' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1466:9: 'case'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1495:5: ( 'case' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1495:9: 'case'
             {
             match("case"); 
 
@@ -1987,8 +1987,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = CATCH;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1470:5: ( 'catch' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1470:9: 'catch'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1499:5: ( 'catch' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1499:9: 'catch'
             {
             match("catch"); 
 
@@ -2010,8 +2010,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = CHAR;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1474:5: ( 'char' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1474:9: 'char'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1503:5: ( 'char' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1503:9: 'char'
             {
             match("char"); 
 
@@ -2033,8 +2033,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = CLASS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1478:5: ( 'class' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1478:9: 'class'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1507:5: ( 'class' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1507:9: 'class'
             {
             match("class"); 
 
@@ -2056,8 +2056,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = CONST;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1482:5: ( 'const' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1482:9: 'const'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1511:5: ( 'const' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1511:9: 'const'
             {
             match("const"); 
 
@@ -2079,8 +2079,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = CONTINUE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1486:5: ( 'continue' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1486:9: 'continue'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1515:5: ( 'continue' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1515:9: 'continue'
             {
             match("continue"); 
 
@@ -2102,8 +2102,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = DEFAULT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1490:5: ( 'default' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1490:9: 'default'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1519:5: ( 'default' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1519:9: 'default'
             {
             match("default"); 
 
@@ -2125,8 +2125,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = DO;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1494:5: ( 'do' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1494:9: 'do'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1523:5: ( 'do' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1523:9: 'do'
             {
             match("do"); 
 
@@ -2148,8 +2148,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = DOUBLE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1498:5: ( 'double' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1498:9: 'double'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1527:5: ( 'double' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1527:9: 'double'
             {
             match("double"); 
 
@@ -2171,8 +2171,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = ELSE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1502:5: ( 'else' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1502:9: 'else'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1531:5: ( 'else' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1531:9: 'else'
             {
             match("else"); 
 
@@ -2194,8 +2194,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = ENUM;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1506:5: ( 'enum' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1506:9: 'enum'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1535:5: ( 'enum' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1535:9: 'enum'
             {
             match("enum"); 
 
@@ -2217,8 +2217,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = EXTENDS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1510:5: ( 'extends' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1510:9: 'extends'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1539:5: ( 'extends' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1539:9: 'extends'
             {
             match("extends"); 
 
@@ -2240,8 +2240,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = FINAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1514:5: ( 'final' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1514:9: 'final'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1543:5: ( 'final' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1543:9: 'final'
             {
             match("final"); 
 
@@ -2263,8 +2263,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = FINALLY;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1518:5: ( 'finally' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1518:9: 'finally'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1547:5: ( 'finally' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1547:9: 'finally'
             {
             match("finally"); 
 
@@ -2286,8 +2286,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = FLOAT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1522:5: ( 'float' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1522:9: 'float'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1551:5: ( 'float' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1551:9: 'float'
             {
             match("float"); 
 
@@ -2309,8 +2309,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = FOR;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1526:5: ( 'for' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1526:9: 'for'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1555:5: ( 'for' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1555:9: 'for'
             {
             match("for"); 
 
@@ -2332,8 +2332,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = GOTO;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1530:5: ( 'goto' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1530:9: 'goto'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1559:5: ( 'goto' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1559:9: 'goto'
             {
             match("goto"); 
 
@@ -2355,8 +2355,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = IF;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1534:5: ( 'if' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1534:9: 'if'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1563:5: ( 'if' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1563:9: 'if'
             {
             match("if"); 
 
@@ -2378,8 +2378,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = IMPLEMENTS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1538:5: ( 'implements' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1538:9: 'implements'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1567:5: ( 'implements' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1567:9: 'implements'
             {
             match("implements"); 
 
@@ -2401,8 +2401,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = IMPORT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1542:5: ( 'import' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1542:9: 'import'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1571:5: ( 'import' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1571:9: 'import'
             {
             match("import"); 
 
@@ -2424,8 +2424,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = INSTANCEOF;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1546:5: ( 'instanceof' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1546:9: 'instanceof'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1575:5: ( 'instanceof' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1575:9: 'instanceof'
             {
             match("instanceof"); 
 
@@ -2447,8 +2447,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = INT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1550:5: ( 'int' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1550:9: 'int'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1579:5: ( 'int' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1579:9: 'int'
             {
             match("int"); 
 
@@ -2470,8 +2470,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = INTERFACE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1554:5: ( 'interface' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1554:9: 'interface'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1583:5: ( 'interface' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1583:9: 'interface'
             {
             match("interface"); 
 
@@ -2493,8 +2493,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = LONG;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1558:5: ( 'long' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1558:9: 'long'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1587:5: ( 'long' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1587:9: 'long'
             {
             match("long"); 
 
@@ -2516,8 +2516,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = NATIVE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1562:5: ( 'native' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1562:9: 'native'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1591:5: ( 'native' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1591:9: 'native'
             {
             match("native"); 
 
@@ -2539,8 +2539,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = NEW;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1566:5: ( 'new' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1566:9: 'new'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1595:5: ( 'new' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1595:9: 'new'
             {
             match("new"); 
 
@@ -2562,8 +2562,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = PACKAGE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1570:5: ( 'package' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1570:9: 'package'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1599:5: ( 'package' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1599:9: 'package'
             {
             match("package"); 
 
@@ -2585,8 +2585,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = PRIVATE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1574:5: ( 'private' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1574:9: 'private'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1603:5: ( 'private' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1603:9: 'private'
             {
             match("private"); 
 
@@ -2608,8 +2608,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = PROTECTED;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1578:5: ( 'protected' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1578:9: 'protected'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1607:5: ( 'protected' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1607:9: 'protected'
             {
             match("protected"); 
 
@@ -2631,8 +2631,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = PUBLIC;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1582:5: ( 'public' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1582:9: 'public'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1611:5: ( 'public' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1611:9: 'public'
             {
             match("public"); 
 
@@ -2654,8 +2654,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = RETURN;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1586:5: ( 'return' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1586:9: 'return'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1615:5: ( 'return' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1615:9: 'return'
             {
             match("return"); 
 
@@ -2677,8 +2677,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = SHORT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1590:5: ( 'short' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1590:9: 'short'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1619:5: ( 'short' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1619:9: 'short'
             {
             match("short"); 
 
@@ -2700,8 +2700,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = STATIC;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1594:5: ( 'static' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1594:9: 'static'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1623:5: ( 'static' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1623:9: 'static'
             {
             match("static"); 
 
@@ -2723,8 +2723,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = STRICTFP;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1598:5: ( 'strictfp' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1598:9: 'strictfp'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1627:5: ( 'strictfp' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1627:9: 'strictfp'
             {
             match("strictfp"); 
 
@@ -2746,8 +2746,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = SUPER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1602:5: ( 'super' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1602:9: 'super'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1631:5: ( 'super' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1631:9: 'super'
             {
             match("super"); 
 
@@ -2769,8 +2769,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = SWITCH;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1606:5: ( 'switch' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1606:9: 'switch'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1635:5: ( 'switch' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1635:9: 'switch'
             {
             match("switch"); 
 
@@ -2792,8 +2792,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = SYNCHRONIZED;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1610:5: ( 'synchronized' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1610:9: 'synchronized'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1639:5: ( 'synchronized' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1639:9: 'synchronized'
             {
             match("synchronized"); 
 
@@ -2815,8 +2815,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = THIS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1614:5: ( 'this' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1614:9: 'this'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1643:5: ( 'this' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1643:9: 'this'
             {
             match("this"); 
 
@@ -2838,8 +2838,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = THROW;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1618:5: ( 'throw' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1618:9: 'throw'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1647:5: ( 'throw' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1647:9: 'throw'
             {
             match("throw"); 
 
@@ -2861,8 +2861,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = THROWS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1622:5: ( 'throws' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1622:9: 'throws'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1651:5: ( 'throws' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1651:9: 'throws'
             {
             match("throws"); 
 
@@ -2884,8 +2884,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = TRANSIENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1626:5: ( 'transient' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1626:9: 'transient'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1655:5: ( 'transient' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1655:9: 'transient'
             {
             match("transient"); 
 
@@ -2907,8 +2907,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = TRY;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1630:5: ( 'try' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1630:9: 'try'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1659:5: ( 'try' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1659:9: 'try'
             {
             match("try"); 
 
@@ -2930,8 +2930,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = VOID;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1634:5: ( 'void' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1634:9: 'void'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1663:5: ( 'void' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1663:9: 'void'
             {
             match("void"); 
 
@@ -2953,8 +2953,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = VOLATILE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1638:5: ( 'volatile' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1638:9: 'volatile'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1667:5: ( 'volatile' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1667:9: 'volatile'
             {
             match("volatile"); 
 
@@ -2976,8 +2976,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = WHILE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1642:5: ( 'while' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1642:9: 'while'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1671:5: ( 'while' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1671:9: 'while'
             {
             match("while"); 
 
@@ -2999,8 +2999,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = TRUE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1646:5: ( 'true' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1646:9: 'true'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1675:5: ( 'true' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1675:9: 'true'
             {
             match("true"); 
 
@@ -3022,8 +3022,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = FALSE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1650:5: ( 'false' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1650:9: 'false'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1679:5: ( 'false' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1679:9: 'false'
             {
             match("false"); 
 
@@ -3045,8 +3045,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = NULL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1654:5: ( 'null' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1654:9: 'null'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1683:5: ( 'null' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1683:9: 'null'
             {
             match("null"); 
 
@@ -3068,8 +3068,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = LPAREN;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1658:5: ( '(' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1658:9: '('
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1687:5: ( '(' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1687:9: '('
             {
             match('('); 
 
@@ -3089,8 +3089,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = RPAREN;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1662:5: ( ')' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1662:9: ')'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1691:5: ( ')' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1691:9: ')'
             {
             match(')'); 
 
@@ -3110,8 +3110,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = LBRACE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1666:5: ( '{' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1666:9: '{'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1695:5: ( '{' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1695:9: '{'
             {
             match('{'); 
 
@@ -3131,8 +3131,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = RBRACE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1670:5: ( '}' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1670:9: '}'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1699:5: ( '}' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1699:9: '}'
             {
             match('}'); 
 
@@ -3152,8 +3152,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = LBRACKET;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1674:5: ( '[' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1674:9: '['
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1703:5: ( '[' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1703:9: '['
             {
             match('['); 
 
@@ -3173,8 +3173,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = RBRACKET;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1678:5: ( ']' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1678:9: ']'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1707:5: ( ']' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1707:9: ']'
             {
             match(']'); 
 
@@ -3194,8 +3194,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = SEMI;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1682:5: ( ';' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1682:9: ';'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1711:5: ( ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1711:9: ';'
             {
             match(';'); 
 
@@ -3215,8 +3215,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = COMMA;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1686:5: ( ',' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1686:9: ','
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1715:5: ( ',' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1715:9: ','
             {
             match(','); 
 
@@ -3236,8 +3236,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = DOT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1690:5: ( '.' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1690:9: '.'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1719:5: ( '.' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1719:9: '.'
             {
             match('.'); 
 
@@ -3257,8 +3257,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = ELLIPSIS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1694:5: ( '...' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1694:9: '...'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1723:5: ( '...' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1723:9: '...'
             {
             match("..."); 
 
@@ -3280,8 +3280,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = EQ;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1698:5: ( '=' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1698:9: '='
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1727:5: ( '=' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1727:9: '='
             {
             match('='); 
 
@@ -3301,8 +3301,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = BANG;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1702:5: ( '!' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1702:9: '!'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1731:5: ( '!' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1731:9: '!'
             {
             match('!'); 
 
@@ -3322,8 +3322,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = TILDE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1706:5: ( '~' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1706:9: '~'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1735:5: ( '~' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1735:9: '~'
             {
             match('~'); 
 
@@ -3343,8 +3343,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = QUES;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1710:5: ( '?' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1710:9: '?'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1739:5: ( '?' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1739:9: '?'
             {
             match('?'); 
 
@@ -3364,8 +3364,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = COLON;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1714:5: ( ':' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1714:9: ':'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1743:5: ( ':' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1743:9: ':'
             {
             match(':'); 
 
@@ -3385,8 +3385,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = EQEQ;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1718:5: ( '==' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1718:9: '=='
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1747:5: ( '==' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1747:9: '=='
             {
             match("=="); 
 
@@ -3408,8 +3408,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = AMPAMP;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1722:5: ( '&&' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1722:9: '&&'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1751:5: ( '&&' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1751:9: '&&'
             {
             match("&&"); 
 
@@ -3431,8 +3431,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = BARBAR;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1726:5: ( '||' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1726:9: '||'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1755:5: ( '||' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1755:9: '||'
             {
             match("||"); 
 
@@ -3454,8 +3454,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = PLUSPLUS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1730:5: ( '++' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1730:9: '++'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1759:5: ( '++' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1759:9: '++'
             {
             match("++"); 
 
@@ -3477,8 +3477,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = SUBSUB;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1734:5: ( '--' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1734:9: '--'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1763:5: ( '--' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1763:9: '--'
             {
             match("--"); 
 
@@ -3500,8 +3500,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = PLUS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1738:5: ( '+' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1738:9: '+'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1767:5: ( '+' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1767:9: '+'
             {
             match('+'); 
 
@@ -3521,8 +3521,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = SUB;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1742:5: ( '-' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1742:9: '-'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1771:5: ( '-' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1771:9: '-'
             {
             match('-'); 
 
@@ -3542,8 +3542,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = STAR;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1746:5: ( '*' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1746:9: '*'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1775:5: ( '*' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1775:9: '*'
             {
             match('*'); 
 
@@ -3563,8 +3563,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = SLASH;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1750:5: ( '/' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1750:9: '/'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1779:5: ( '/' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1779:9: '/'
             {
             match('/'); 
 
@@ -3584,8 +3584,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = AMP;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1754:5: ( '&' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1754:9: '&'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1783:5: ( '&' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1783:9: '&'
             {
             match('&'); 
 
@@ -3605,8 +3605,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = BAR;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1758:5: ( '|' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1758:9: '|'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1787:5: ( '|' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1787:9: '|'
             {
             match('|'); 
 
@@ -3626,8 +3626,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = CARET;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1762:5: ( '^' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1762:9: '^'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1791:5: ( '^' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1791:9: '^'
             {
             match('^'); 
 
@@ -3647,8 +3647,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = PERCENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1766:5: ( '%' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1766:9: '%'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1795:5: ( '%' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1795:9: '%'
             {
             match('%'); 
 
@@ -3668,8 +3668,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = PLUSEQ;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1770:5: ( '+=' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1770:9: '+='
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1799:5: ( '+=' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1799:9: '+='
             {
             match("+="); 
 
@@ -3691,8 +3691,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = SUBEQ;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1774:5: ( '-=' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1774:9: '-='
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1803:5: ( '-=' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1803:9: '-='
             {
             match("-="); 
 
@@ -3714,8 +3714,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = STAREQ;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1778:5: ( '*=' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1778:9: '*='
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1807:5: ( '*=' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1807:9: '*='
             {
             match("*="); 
 
@@ -3737,8 +3737,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = SLASHEQ;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1782:5: ( '/=' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1782:9: '/='
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1811:5: ( '/=' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1811:9: '/='
             {
             match("/="); 
 
@@ -3760,8 +3760,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = AMPEQ;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1786:5: ( '&=' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1786:9: '&='
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1815:5: ( '&=' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1815:9: '&='
             {
             match("&="); 
 
@@ -3783,8 +3783,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = BAREQ;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1790:5: ( '|=' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1790:9: '|='
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1819:5: ( '|=' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1819:9: '|='
             {
             match("|="); 
 
@@ -3806,8 +3806,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = CARETEQ;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1794:5: ( '^=' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1794:9: '^='
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1823:5: ( '^=' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1823:9: '^='
             {
             match("^="); 
 
@@ -3829,8 +3829,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = PERCENTEQ;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1798:5: ( '%=' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1798:9: '%='
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1827:5: ( '%=' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1827:9: '%='
             {
             match("%="); 
 
@@ -3852,8 +3852,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = MONKEYS_AT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1802:5: ( '@' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1802:9: '@'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1831:5: ( '@' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1831:9: '@'
             {
             match('@'); 
 
@@ -3873,8 +3873,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = BANGEQ;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1806:5: ( '!=' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1806:9: '!='
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1835:5: ( '!=' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1835:9: '!='
             {
             match("!="); 
 
@@ -3896,8 +3896,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = GT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1810:5: ( '>' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1810:9: '>'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1839:5: ( '>' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1839:9: '>'
             {
             match('>'); 
 
@@ -3917,8 +3917,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = LT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1814:5: ( '<' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1814:9: '<'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1843:5: ( '<' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1843:9: '<'
             {
             match('<'); 
 
@@ -3938,13 +3938,13 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
         try {
             int _type = IDENTIFIER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1818:5: ( IdentifierStart ( IdentifierPart )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1818:9: IdentifierStart ( IdentifierPart )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1847:5: ( IdentifierStart ( IdentifierPart )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1847:9: IdentifierStart ( IdentifierPart )*
             {
             mIdentifierStart(); 
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1818:25: ( IdentifierPart )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1847:25: ( IdentifierPart )*
             loop30:
             do {
                 int alt30=2;
@@ -3957,7 +3957,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
 
                 switch (alt30) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1818:25: IdentifierPart
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1847:25: IdentifierPart
             	    {
             	    mIdentifierPart(); 
 
@@ -3985,8 +3985,8 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
     // $ANTLR start "SurrogateIdentifer"
     public final void mSurrogateIdentifer() throws RecognitionException {
         try {
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1824:5: ( ( '\\ud800' .. '\\udbff' ) ( '\\udc00' .. '\\udfff' ) )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1824:9: ( '\\ud800' .. '\\udbff' ) ( '\\udc00' .. '\\udfff' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1853:5: ( ( '\\ud800' .. '\\udbff' ) ( '\\udc00' .. '\\udfff' ) )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1853:9: ( '\\ud800' .. '\\udbff' ) ( '\\udc00' .. '\\udfff' )
             {
             if ( (input.LA(1) >= '\uD800' && input.LA(1) <= '\uDBFF') ) {
                 input.consume();
@@ -4021,7 +4021,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
     // $ANTLR start "IdentifierStart"
     public final void mIdentifierStart() throws RecognitionException {
         try {
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1829:5: ( '\\u0024' | '\\u0041' .. '\\u005a' | '\\u005f' | '\\u0061' .. '\\u007a' | '\\u00a2' .. '\\u00a5' | '\\u00aa' | '\\u00b5' | '\\u00ba' | '\\u00c0' .. '\\u00d6' | '\\u00d8' .. '\\u00f6' | '\\u00f8' .. '\\u0236' | '\\u0250' .. '\\u02c1' | '\\u02c6' .. '\\u02d1' | '\\u02e0' .. '\\u02e4' | '\\u02ee' | '\\u037a' | '\\u0386' | '\\u0388' .. '\\u038a' | '\\u038c' | '\\u038e' .. '\\u03a1' | '\\u03a3' .. '\\u03ce' | '\\u03d0' .. '\\u03f5' | '\\u03f7' .. '\\u03fb' | '\\u0400' .. '\\u0481' | '\\u048a' .. '\\u04ce' | '\\u04d0' .. '\\u04f5' | '\\u04f8' .. '\\u04f9' | '\\u0500' .. '\\u050f' | '\\u0531' .. '\\u0556' | '\\u0559' | '\\u0561' .. '\\u0587' | '\\u05d0' .. '\\u05ea' | '\\u05f0' .. '\\u05f2' | '\\u0621' .. '\\u063a' | '\\u0640' .. '\\u064a' | '\\u066e' .. '\\u066f' | '\\u0671' .. '\\u06d3' | '\\u06d5' | '\\u06e5' .. '\\u06e6' | '\\u06ee' .. '\\u06ef' | '\\u06fa' .. '\\u06fc' | '\\u06ff' | '\\u0710' | '\\u0712' .. '\\u072f' | '\\u074d' .. '\\u074f' | '\\u0780' .. '\\u07a5' | '\\u07b1' | '\\u0904' .. '\\u0939' | '\\u093d' | '\\u0950' | '\\u0958' .. '\\u0961' | '\\u0985' .. '\\u098c' | '\\u098f' .. '\\u0990' | '\\u0993' .. '\\u09a8' | '\\u09aa' .. '\\u09b0' | '\\u09b2' | '\\u09b6' .. '\\u09b9' | '\\u09bd' | '\\u09dc' .. '\\u09dd' | '\\u09df' .. '\\u09e1' | '\\u09f0' .. '\\u09f3' | '\\u0a05' .. '\\u0a0a' | '\\u0a0f' .. '\\u0a10' | '\\u0a13' .. '\\u0a28' | '\\u0a2a' .. '\\u0a30' | '\\u0a32' .. '\\u0a33' | '\\u0a35' .. '\\u0a36' | '\\u0a38' .. '\\u0a39' | '\\u0a59' .. '\\u0a5c' | '\\u0a5e' | '\\u0a72' .. '\\u0a74' | '\\u0a85' .. '\\u0a8d' | '\\u0a8f' .. '\\u0a91' | '\\u0a93' .. '\\u0aa8' | '\\u0aaa' .. '\\u0ab0' | '\\u0ab2' .. '\\u0ab3' | '\\u0ab5' .. '\\u0ab9' | '\\u0abd' | '\\u0ad0' | '\\u0ae0' .. '\\u0ae1' | '\\u0af1' | '\\u0b05' .. '\\u0b0c' | '\\u0b0f' .. '\\u0b10' | '\\u0b13' .. '\\u0b28' | '\\u0b2a' .. '\\u0b30' | '\\u0b32' .. '\\u0b33' | '\\u0b35' .. '\\u0b39' | '\\u0b3d' | '\\u0b5c' .. '\\u0b5d' | '\\u0b5f' .. '\\u0b61' | '\\u0b71' | '\\u0b83' | '\\u0b85' .. '\\u0b8a' | '\\u0b8e' .. '\\u0b90' | '\\u0b92' .. '\\u0b95' | '\\u0b99' .. '\\u0b9a' | '\\u0b9c' | '\\u0b9e' .. '\\u0b9f' | '\\u0ba3' .. '\\u0ba4' | '\\u0ba8' .. '\\u0baa' | '\\u0bae' .. '\\u0bb5' | '\\u0bb7' .. '\\u0bb9' | '\\u0bf9' | '\\u0c05' .. '\\u0c0c' | '\\u0c0e' .. '\\u0c10' | '\\u0c12' .. '\\u0c28' | '\\u0c2a' .. '\\u0c33' | '\\u0c35' .. '\\u0c39' | '\\u0c60' .. '\\u0c61' | '\\u0c85' .. '\\u0c8c' | '\\u0c8e' .. '\\u0c90' | '\\u0c92' .. '\\u0ca8' | '\\u0caa' .. '\\u0cb3' | '\\u0cb5' .. '\\u0cb9' | '\\u0cbd' | '\\u0cde' | '\\u0ce0' .. '\\u0ce1' | '\\u0d05' .. '\\u0d0c' | '\\u0d0e' .. '\\u0d10' | '\\u0d12' .. '\\u0d28' | '\\u0d2a' .. '\\u0d39' | '\\u0d60' .. '\\u0d61' | '\\u0d85' .. '\\u0d96' | '\\u0d9a' .. '\\u0db1' | '\\u0db3' .. '\\u0dbb' | '\\u0dbd' | '\\u0dc0' .. '\\u0dc6' | '\\u0e01' .. '\\u0e30' | '\\u0e32' .. '\\u0e33' | '\\u0e3f' .. '\\u0e46' | '\\u0e81' .. '\\u0e82' | '\\u0e84' | '\\u0e87' .. '\\u0e88' | '\\u0e8a' | '\\u0e8d' | '\\u0e94' .. '\\u0e97' | '\\u0e99' .. '\\u0e9f' | '\\u0ea1' .. '\\u0ea3' | '\\u0ea5' | '\\u0ea7' | '\\u0eaa' .. '\\u0eab' | '\\u0ead' .. '\\u0eb0' | '\\u0eb2' .. '\\u0eb3' | '\\u0ebd' | '\\u0ec0' .. '\\u0ec4' | '\\u0ec6' | '\\u0edc' .. '\\u0edd' | '\\u0f00' | '\\u0f40' .. '\\u0f47' | '\\u0f49' .. '\\u0f6a' | '\\u0f88' .. '\\u0f8b' | '\\u1000' .. '\\u1021' | '\\u1023' .. '\\u1027' | '\\u1029' .. '\\u102a' | '\\u1050' .. '\\u1055' | '\\u10a0' .. '\\u10c5' | '\\u10d0' .. '\\u10f8' | '\\u1100' .. '\\u1159' | '\\u115f' .. '\\u11a2' | '\\u11a8' .. '\\u11f9' | '\\u1200' .. '\\u1206' | '\\u1208' .. '\\u1246' | '\\u1248' | '\\u124a' .. '\\u124d' | '\\u1250' .. '\\u1256' | '\\u1258' | '\\u125a' .. '\\u125d' | '\\u1260' .. '\\u1286' | '\\u1288' | '\\u128a' .. '\\u128d' | '\\u1290' .. '\\u12ae' | '\\u12b0' | '\\u12b2' .. '\\u12b5' | '\\u12b8' .. '\\u12be' | '\\u12c0' | '\\u12c2' .. '\\u12c5' | '\\u12c8' .. '\\u12ce' | '\\u12d0' .. '\\u12d6' | '\\u12d8' .. '\\u12ee' | '\\u12f0' .. '\\u130e' | '\\u1310' | '\\u1312' .. '\\u1315' | '\\u1318' .. '\\u131e' | '\\u1320' .. '\\u1346' | '\\u1348' .. '\\u135a' | '\\u13a0' .. '\\u13f4' | '\\u1401' .. '\\u166c' | '\\u166f' .. '\\u1676' | '\\u1681' .. '\\u169a' | '\\u16a0' .. '\\u16ea' | '\\u16ee' .. '\\u16f0' | '\\u1700' .. '\\u170c' | '\\u170e' .. '\\u1711' | '\\u1720' .. '\\u1731' | '\\u1740' .. '\\u1751' | '\\u1760' .. '\\u176c' | '\\u176e' .. '\\u1770' | '\\u1780' .. '\\u17b3' | '\\u17d7' | '\\u17db' .. '\\u17dc' | '\\u1820' .. '\\u1877' | '\\u1880' .. '\\u18a8' | '\\u1900' .. '\\u191c' | '\\u1950' .. '\\u196d' | '\\u1970' .. '\\u1974' | '\\u1d00' .. '\\u1d6b' | '\\u1e00' .. '\\u1e9b' | '\\u1ea0' .. '\\u1ef9' | '\\u1f00' .. '\\u1f15' | '\\u1f18' .. '\\u1f1d' | '\\u1f20' .. '\\u1f45' | '\\u1f48' .. '\\u1f4d' | '\\u1f50' .. '\\u1f57' | '\\u1f59' | '\\u1f5b' | '\\u1f5d' | '\\u1f5f' .. '\\u1f7d' | '\\u1f80' .. '\\u1fb4' | '\\u1fb6' .. '\\u1fbc' | '\\u1fbe' | '\\u1fc2' .. '\\u1fc4' | '\\u1fc6' .. '\\u1fcc' | '\\u1fd0' .. '\\u1fd3' | '\\u1fd6' .. '\\u1fdb' | '\\u1fe0' .. '\\u1fec' | '\\u1ff2' .. '\\u1ff4' | '\\u1ff6' .. '\\u1ffc' | '\\u203f' .. '\\u2040' | '\\u2054' | '\\u2071' | '\\u207f' | '\\u20a0' .. '\\u20b1' | '\\u2102' | '\\u2107' | '\\u210a' .. '\\u2113' | '\\u2115' | '\\u2119' .. '\\u211d' | '\\u2124' | '\\u2126' | '\\u2128' | '\\u212a' .. '\\u212d' | '\\u212f' .. '\\u2131' | '\\u2133' .. '\\u2139' | '\\u213d' .. '\\u213f' | '\\u2145' .. '\\u2149' | '\\u2160' .. '\\u2183' | '\\u3005' .. '\\u3007' | '\\u3021' .. '\\u3029' | '\\u3031' .. '\\u3035' | '\\u3038' .. '\\u303c' | '\\u3041' .. '\\u3096' | '\\u309d' .. '\\u309f' | '\\u30a1' .. '\\u30ff' | '\\u3105' .. '\\u312c' | '\\u3131' .. '\\u318e' | '\\u31a0' .. '\\u31b7' | '\\u31f0' .. '\\u31ff' | '\\u3400' .. '\\u4db5' | '\\u4e00' .. '\\u9fa5' | '\\ua000' .. '\\ua48c' | '\\uac00' .. '\\ud7a3' | '\\uf900' .. '\\ufa2d' | '\\ufa30' .. '\\ufa6a' | '\\ufb00' .. '\\ufb06' | '\\ufb13' .. '\\ufb17' | '\\ufb1d' | '\\ufb1f' .. '\\ufb28' | '\\ufb2a' .. '\\ufb36' | '\\ufb38' .. '\\ufb3c' | '\\ufb3e' | '\\ufb40' .. '\\ufb41' | '\\ufb43' .. '\\ufb44' | '\\ufb46' .. '\\ufbb1' | '\\ufbd3' .. '\\ufd3d' | '\\ufd50' .. '\\ufd8f' | '\\ufd92' .. '\\ufdc7' | '\\ufdf0' .. '\\ufdfc' | '\\ufe33' .. '\\ufe34' | '\\ufe4d' .. '\\ufe4f' | '\\ufe69' | '\\ufe70' .. '\\ufe74' | '\\ufe76' .. '\\ufefc' | '\\uff04' | '\\uff21' .. '\\uff3a' | '\\uff3f' | '\\uff41' .. '\\uff5a' | '\\uff65' .. '\\uffbe' | '\\uffc2' .. '\\uffc7' | '\\uffca' .. '\\uffcf' | '\\uffd2' .. '\\uffd7' | '\\uffda' .. '\\uffdc' | '\\uffe0' .. '\\uffe1' | '\\uffe5' .. '\\uffe6' | ( '\\ud800' .. '\\udbff' ) ( '\\udc00' .. '\\udfff' ) )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1858:5: ( '\\u0024' | '\\u0041' .. '\\u005a' | '\\u005f' | '\\u0061' .. '\\u007a' | '\\u00a2' .. '\\u00a5' | '\\u00aa' | '\\u00b5' | '\\u00ba' | '\\u00c0' .. '\\u00d6' | '\\u00d8' .. '\\u00f6' | '\\u00f8' .. '\\u0236' | '\\u0250' .. '\\u02c1' | '\\u02c6' .. '\\u02d1' | '\\u02e0' .. '\\u02e4' | '\\u02ee' | '\\u037a' | '\\u0386' | '\\u0388' .. '\\u038a' | '\\u038c' | '\\u038e' .. '\\u03a1' | '\\u03a3' .. '\\u03ce' | '\\u03d0' .. '\\u03f5' | '\\u03f7' .. '\\u03fb' | '\\u0400' .. '\\u0481' | '\\u048a' .. '\\u04ce' | '\\u04d0' .. '\\u04f5' | '\\u04f8' .. '\\u04f9' | '\\u0500' .. '\\u050f' | '\\u0531' .. '\\u0556' | '\\u0559' | '\\u0561' .. '\\u0587' | '\\u05d0' .. '\\u05ea' | '\\u05f0' .. '\\u05f2' | '\\u0621' .. '\\u063a' | '\\u0640' .. '\\u064a' | '\\u066e' .. '\\u066f' | '\\u0671' .. '\\u06d3' | '\\u06d5' | '\\u06e5' .. '\\u06e6' | '\\u06ee' .. '\\u06ef' | '\\u06fa' .. '\\u06fc' | '\\u06ff' | '\\u0710' | '\\u0712' .. '\\u072f' | '\\u074d' .. '\\u074f' | '\\u0780' .. '\\u07a5' | '\\u07b1' | '\\u0904' .. '\\u0939' | '\\u093d' | '\\u0950' | '\\u0958' .. '\\u0961' | '\\u0985' .. '\\u098c' | '\\u098f' .. '\\u0990' | '\\u0993' .. '\\u09a8' | '\\u09aa' .. '\\u09b0' | '\\u09b2' | '\\u09b6' .. '\\u09b9' | '\\u09bd' | '\\u09dc' .. '\\u09dd' | '\\u09df' .. '\\u09e1' | '\\u09f0' .. '\\u09f3' | '\\u0a05' .. '\\u0a0a' | '\\u0a0f' .. '\\u0a10' | '\\u0a13' .. '\\u0a28' | '\\u0a2a' .. '\\u0a30' | '\\u0a32' .. '\\u0a33' | '\\u0a35' .. '\\u0a36' | '\\u0a38' .. '\\u0a39' | '\\u0a59' .. '\\u0a5c' | '\\u0a5e' | '\\u0a72' .. '\\u0a74' | '\\u0a85' .. '\\u0a8d' | '\\u0a8f' .. '\\u0a91' | '\\u0a93' .. '\\u0aa8' | '\\u0aaa' .. '\\u0ab0' | '\\u0ab2' .. '\\u0ab3' | '\\u0ab5' .. '\\u0ab9' | '\\u0abd' | '\\u0ad0' | '\\u0ae0' .. '\\u0ae1' | '\\u0af1' | '\\u0b05' .. '\\u0b0c' | '\\u0b0f' .. '\\u0b10' | '\\u0b13' .. '\\u0b28' | '\\u0b2a' .. '\\u0b30' | '\\u0b32' .. '\\u0b33' | '\\u0b35' .. '\\u0b39' | '\\u0b3d' | '\\u0b5c' .. '\\u0b5d' | '\\u0b5f' .. '\\u0b61' | '\\u0b71' | '\\u0b83' | '\\u0b85' .. '\\u0b8a' | '\\u0b8e' .. '\\u0b90' | '\\u0b92' .. '\\u0b95' | '\\u0b99' .. '\\u0b9a' | '\\u0b9c' | '\\u0b9e' .. '\\u0b9f' | '\\u0ba3' .. '\\u0ba4' | '\\u0ba8' .. '\\u0baa' | '\\u0bae' .. '\\u0bb5' | '\\u0bb7' .. '\\u0bb9' | '\\u0bf9' | '\\u0c05' .. '\\u0c0c' | '\\u0c0e' .. '\\u0c10' | '\\u0c12' .. '\\u0c28' | '\\u0c2a' .. '\\u0c33' | '\\u0c35' .. '\\u0c39' | '\\u0c60' .. '\\u0c61' | '\\u0c85' .. '\\u0c8c' | '\\u0c8e' .. '\\u0c90' | '\\u0c92' .. '\\u0ca8' | '\\u0caa' .. '\\u0cb3' | '\\u0cb5' .. '\\u0cb9' | '\\u0cbd' | '\\u0cde' | '\\u0ce0' .. '\\u0ce1' | '\\u0d05' .. '\\u0d0c' | '\\u0d0e' .. '\\u0d10' | '\\u0d12' .. '\\u0d28' | '\\u0d2a' .. '\\u0d39' | '\\u0d60' .. '\\u0d61' | '\\u0d85' .. '\\u0d96' | '\\u0d9a' .. '\\u0db1' | '\\u0db3' .. '\\u0dbb' | '\\u0dbd' | '\\u0dc0' .. '\\u0dc6' | '\\u0e01' .. '\\u0e30' | '\\u0e32' .. '\\u0e33' | '\\u0e3f' .. '\\u0e46' | '\\u0e81' .. '\\u0e82' | '\\u0e84' | '\\u0e87' .. '\\u0e88' | '\\u0e8a' | '\\u0e8d' | '\\u0e94' .. '\\u0e97' | '\\u0e99' .. '\\u0e9f' | '\\u0ea1' .. '\\u0ea3' | '\\u0ea5' | '\\u0ea7' | '\\u0eaa' .. '\\u0eab' | '\\u0ead' .. '\\u0eb0' | '\\u0eb2' .. '\\u0eb3' | '\\u0ebd' | '\\u0ec0' .. '\\u0ec4' | '\\u0ec6' | '\\u0edc' .. '\\u0edd' | '\\u0f00' | '\\u0f40' .. '\\u0f47' | '\\u0f49' .. '\\u0f6a' | '\\u0f88' .. '\\u0f8b' | '\\u1000' .. '\\u1021' | '\\u1023' .. '\\u1027' | '\\u1029' .. '\\u102a' | '\\u1050' .. '\\u1055' | '\\u10a0' .. '\\u10c5' | '\\u10d0' .. '\\u10f8' | '\\u1100' .. '\\u1159' | '\\u115f' .. '\\u11a2' | '\\u11a8' .. '\\u11f9' | '\\u1200' .. '\\u1206' | '\\u1208' .. '\\u1246' | '\\u1248' | '\\u124a' .. '\\u124d' | '\\u1250' .. '\\u1256' | '\\u1258' | '\\u125a' .. '\\u125d' | '\\u1260' .. '\\u1286' | '\\u1288' | '\\u128a' .. '\\u128d' | '\\u1290' .. '\\u12ae' | '\\u12b0' | '\\u12b2' .. '\\u12b5' | '\\u12b8' .. '\\u12be' | '\\u12c0' | '\\u12c2' .. '\\u12c5' | '\\u12c8' .. '\\u12ce' | '\\u12d0' .. '\\u12d6' | '\\u12d8' .. '\\u12ee' | '\\u12f0' .. '\\u130e' | '\\u1310' | '\\u1312' .. '\\u1315' | '\\u1318' .. '\\u131e' | '\\u1320' .. '\\u1346' | '\\u1348' .. '\\u135a' | '\\u13a0' .. '\\u13f4' | '\\u1401' .. '\\u166c' | '\\u166f' .. '\\u1676' | '\\u1681' .. '\\u169a' | '\\u16a0' .. '\\u16ea' | '\\u16ee' .. '\\u16f0' | '\\u1700' .. '\\u170c' | '\\u170e' .. '\\u1711' | '\\u1720' .. '\\u1731' | '\\u1740' .. '\\u1751' | '\\u1760' .. '\\u176c' | '\\u176e' .. '\\u1770' | '\\u1780' .. '\\u17b3' | '\\u17d7' | '\\u17db' .. '\\u17dc' | '\\u1820' .. '\\u1877' | '\\u1880' .. '\\u18a8' | '\\u1900' .. '\\u191c' | '\\u1950' .. '\\u196d' | '\\u1970' .. '\\u1974' | '\\u1d00' .. '\\u1d6b' | '\\u1e00' .. '\\u1e9b' | '\\u1ea0' .. '\\u1ef9' | '\\u1f00' .. '\\u1f15' | '\\u1f18' .. '\\u1f1d' | '\\u1f20' .. '\\u1f45' | '\\u1f48' .. '\\u1f4d' | '\\u1f50' .. '\\u1f57' | '\\u1f59' | '\\u1f5b' | '\\u1f5d' | '\\u1f5f' .. '\\u1f7d' | '\\u1f80' .. '\\u1fb4' | '\\u1fb6' .. '\\u1fbc' | '\\u1fbe' | '\\u1fc2' .. '\\u1fc4' | '\\u1fc6' .. '\\u1fcc' | '\\u1fd0' .. '\\u1fd3' | '\\u1fd6' .. '\\u1fdb' | '\\u1fe0' .. '\\u1fec' | '\\u1ff2' .. '\\u1ff4' | '\\u1ff6' .. '\\u1ffc' | '\\u203f' .. '\\u2040' | '\\u2054' | '\\u2071' | '\\u207f' | '\\u20a0' .. '\\u20b1' | '\\u2102' | '\\u2107' | '\\u210a' .. '\\u2113' | '\\u2115' | '\\u2119' .. '\\u211d' | '\\u2124' | '\\u2126' | '\\u2128' | '\\u212a' .. '\\u212d' | '\\u212f' .. '\\u2131' | '\\u2133' .. '\\u2139' | '\\u213d' .. '\\u213f' | '\\u2145' .. '\\u2149' | '\\u2160' .. '\\u2183' | '\\u3005' .. '\\u3007' | '\\u3021' .. '\\u3029' | '\\u3031' .. '\\u3035' | '\\u3038' .. '\\u303c' | '\\u3041' .. '\\u3096' | '\\u309d' .. '\\u309f' | '\\u30a1' .. '\\u30ff' | '\\u3105' .. '\\u312c' | '\\u3131' .. '\\u318e' | '\\u31a0' .. '\\u31b7' | '\\u31f0' .. '\\u31ff' | '\\u3400' .. '\\u4db5' | '\\u4e00' .. '\\u9fa5' | '\\ua000' .. '\\ua48c' | '\\uac00' .. '\\ud7a3' | '\\uf900' .. '\\ufa2d' | '\\ufa30' .. '\\ufa6a' | '\\ufb00' .. '\\ufb06' | '\\ufb13' .. '\\ufb17' | '\\ufb1d' | '\\ufb1f' .. '\\ufb28' | '\\ufb2a' .. '\\ufb36' | '\\ufb38' .. '\\ufb3c' | '\\ufb3e' | '\\ufb40' .. '\\ufb41' | '\\ufb43' .. '\\ufb44' | '\\ufb46' .. '\\ufbb1' | '\\ufbd3' .. '\\ufd3d' | '\\ufd50' .. '\\ufd8f' | '\\ufd92' .. '\\ufdc7' | '\\ufdf0' .. '\\ufdfc' | '\\ufe33' .. '\\ufe34' | '\\ufe4d' .. '\\ufe4f' | '\\ufe69' | '\\ufe70' .. '\\ufe74' | '\\ufe76' .. '\\ufefc' | '\\uff04' | '\\uff21' .. '\\uff3a' | '\\uff3f' | '\\uff41' .. '\\uff5a' | '\\uff65' .. '\\uffbe' | '\\uffc2' .. '\\uffc7' | '\\uffca' .. '\\uffcf' | '\\uffd2' .. '\\uffd7' | '\\uffda' .. '\\uffdc' | '\\uffe0' .. '\\uffe1' | '\\uffe5' .. '\\uffe6' | ( '\\ud800' .. '\\udbff' ) ( '\\udc00' .. '\\udfff' ) )
             int alt31=294;
             int LA31_0 = input.LA(1);
 
@@ -4916,2058 +4916,2058 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
             }
             switch (alt31) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1829:9: '\\u0024'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1858:9: '\\u0024'
                     {
                     match('$'); 
 
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1830:9: '\\u0041' .. '\\u005a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1859:9: '\\u0041' .. '\\u005a'
                     {
                     matchRange('A','Z'); 
 
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1831:9: '\\u005f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1860:9: '\\u005f'
                     {
                     match('_'); 
 
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1832:9: '\\u0061' .. '\\u007a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1861:9: '\\u0061' .. '\\u007a'
                     {
                     matchRange('a','z'); 
 
                     }
                     break;
                 case 5 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1833:9: '\\u00a2' .. '\\u00a5'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1862:9: '\\u00a2' .. '\\u00a5'
                     {
                     matchRange('\u00A2','\u00A5'); 
 
                     }
                     break;
                 case 6 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1834:9: '\\u00aa'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1863:9: '\\u00aa'
                     {
                     match('\u00AA'); 
 
                     }
                     break;
                 case 7 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1835:9: '\\u00b5'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1864:9: '\\u00b5'
                     {
                     match('\u00B5'); 
 
                     }
                     break;
                 case 8 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1836:9: '\\u00ba'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1865:9: '\\u00ba'
                     {
                     match('\u00BA'); 
 
                     }
                     break;
                 case 9 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1837:9: '\\u00c0' .. '\\u00d6'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1866:9: '\\u00c0' .. '\\u00d6'
                     {
                     matchRange('\u00C0','\u00D6'); 
 
                     }
                     break;
                 case 10 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1838:9: '\\u00d8' .. '\\u00f6'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1867:9: '\\u00d8' .. '\\u00f6'
                     {
                     matchRange('\u00D8','\u00F6'); 
 
                     }
                     break;
                 case 11 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1839:9: '\\u00f8' .. '\\u0236'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1868:9: '\\u00f8' .. '\\u0236'
                     {
                     matchRange('\u00F8','\u0236'); 
 
                     }
                     break;
                 case 12 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1840:9: '\\u0250' .. '\\u02c1'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1869:9: '\\u0250' .. '\\u02c1'
                     {
                     matchRange('\u0250','\u02C1'); 
 
                     }
                     break;
                 case 13 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1841:9: '\\u02c6' .. '\\u02d1'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1870:9: '\\u02c6' .. '\\u02d1'
                     {
                     matchRange('\u02C6','\u02D1'); 
 
                     }
                     break;
                 case 14 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1842:9: '\\u02e0' .. '\\u02e4'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1871:9: '\\u02e0' .. '\\u02e4'
                     {
                     matchRange('\u02E0','\u02E4'); 
 
                     }
                     break;
                 case 15 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1843:9: '\\u02ee'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1872:9: '\\u02ee'
                     {
                     match('\u02EE'); 
 
                     }
                     break;
                 case 16 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1844:9: '\\u037a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1873:9: '\\u037a'
                     {
                     match('\u037A'); 
 
                     }
                     break;
                 case 17 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1845:9: '\\u0386'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1874:9: '\\u0386'
                     {
                     match('\u0386'); 
 
                     }
                     break;
                 case 18 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1846:9: '\\u0388' .. '\\u038a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1875:9: '\\u0388' .. '\\u038a'
                     {
                     matchRange('\u0388','\u038A'); 
 
                     }
                     break;
                 case 19 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1847:9: '\\u038c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1876:9: '\\u038c'
                     {
                     match('\u038C'); 
 
                     }
                     break;
                 case 20 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1848:9: '\\u038e' .. '\\u03a1'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1877:9: '\\u038e' .. '\\u03a1'
                     {
                     matchRange('\u038E','\u03A1'); 
 
                     }
                     break;
                 case 21 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1849:9: '\\u03a3' .. '\\u03ce'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1878:9: '\\u03a3' .. '\\u03ce'
                     {
                     matchRange('\u03A3','\u03CE'); 
 
                     }
                     break;
                 case 22 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1850:9: '\\u03d0' .. '\\u03f5'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1879:9: '\\u03d0' .. '\\u03f5'
                     {
                     matchRange('\u03D0','\u03F5'); 
 
                     }
                     break;
                 case 23 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1851:9: '\\u03f7' .. '\\u03fb'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1880:9: '\\u03f7' .. '\\u03fb'
                     {
                     matchRange('\u03F7','\u03FB'); 
 
                     }
                     break;
                 case 24 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1852:9: '\\u0400' .. '\\u0481'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1881:9: '\\u0400' .. '\\u0481'
                     {
                     matchRange('\u0400','\u0481'); 
 
                     }
                     break;
                 case 25 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1853:9: '\\u048a' .. '\\u04ce'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1882:9: '\\u048a' .. '\\u04ce'
                     {
                     matchRange('\u048A','\u04CE'); 
 
                     }
                     break;
                 case 26 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1854:9: '\\u04d0' .. '\\u04f5'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1883:9: '\\u04d0' .. '\\u04f5'
                     {
                     matchRange('\u04D0','\u04F5'); 
 
                     }
                     break;
                 case 27 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1855:9: '\\u04f8' .. '\\u04f9'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1884:9: '\\u04f8' .. '\\u04f9'
                     {
                     matchRange('\u04F8','\u04F9'); 
 
                     }
                     break;
                 case 28 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1856:9: '\\u0500' .. '\\u050f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1885:9: '\\u0500' .. '\\u050f'
                     {
                     matchRange('\u0500','\u050F'); 
 
                     }
                     break;
                 case 29 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1857:9: '\\u0531' .. '\\u0556'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1886:9: '\\u0531' .. '\\u0556'
                     {
                     matchRange('\u0531','\u0556'); 
 
                     }
                     break;
                 case 30 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1858:9: '\\u0559'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1887:9: '\\u0559'
                     {
                     match('\u0559'); 
 
                     }
                     break;
                 case 31 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1859:9: '\\u0561' .. '\\u0587'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1888:9: '\\u0561' .. '\\u0587'
                     {
                     matchRange('\u0561','\u0587'); 
 
                     }
                     break;
                 case 32 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1860:9: '\\u05d0' .. '\\u05ea'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1889:9: '\\u05d0' .. '\\u05ea'
                     {
                     matchRange('\u05D0','\u05EA'); 
 
                     }
                     break;
                 case 33 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1861:9: '\\u05f0' .. '\\u05f2'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1890:9: '\\u05f0' .. '\\u05f2'
                     {
                     matchRange('\u05F0','\u05F2'); 
 
                     }
                     break;
                 case 34 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1862:9: '\\u0621' .. '\\u063a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1891:9: '\\u0621' .. '\\u063a'
                     {
                     matchRange('\u0621','\u063A'); 
 
                     }
                     break;
                 case 35 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1863:9: '\\u0640' .. '\\u064a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1892:9: '\\u0640' .. '\\u064a'
                     {
                     matchRange('\u0640','\u064A'); 
 
                     }
                     break;
                 case 36 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1864:9: '\\u066e' .. '\\u066f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1893:9: '\\u066e' .. '\\u066f'
                     {
                     matchRange('\u066E','\u066F'); 
 
                     }
                     break;
                 case 37 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1865:9: '\\u0671' .. '\\u06d3'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1894:9: '\\u0671' .. '\\u06d3'
                     {
                     matchRange('\u0671','\u06D3'); 
 
                     }
                     break;
                 case 38 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1866:9: '\\u06d5'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1895:9: '\\u06d5'
                     {
                     match('\u06D5'); 
 
                     }
                     break;
                 case 39 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1867:9: '\\u06e5' .. '\\u06e6'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1896:9: '\\u06e5' .. '\\u06e6'
                     {
                     matchRange('\u06E5','\u06E6'); 
 
                     }
                     break;
                 case 40 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1868:9: '\\u06ee' .. '\\u06ef'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1897:9: '\\u06ee' .. '\\u06ef'
                     {
                     matchRange('\u06EE','\u06EF'); 
 
                     }
                     break;
                 case 41 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1869:9: '\\u06fa' .. '\\u06fc'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1898:9: '\\u06fa' .. '\\u06fc'
                     {
                     matchRange('\u06FA','\u06FC'); 
 
                     }
                     break;
                 case 42 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1870:9: '\\u06ff'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1899:9: '\\u06ff'
                     {
                     match('\u06FF'); 
 
                     }
                     break;
                 case 43 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1871:9: '\\u0710'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1900:9: '\\u0710'
                     {
                     match('\u0710'); 
 
                     }
                     break;
                 case 44 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1872:9: '\\u0712' .. '\\u072f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1901:9: '\\u0712' .. '\\u072f'
                     {
                     matchRange('\u0712','\u072F'); 
 
                     }
                     break;
                 case 45 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1873:9: '\\u074d' .. '\\u074f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1902:9: '\\u074d' .. '\\u074f'
                     {
                     matchRange('\u074D','\u074F'); 
 
                     }
                     break;
                 case 46 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1874:9: '\\u0780' .. '\\u07a5'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1903:9: '\\u0780' .. '\\u07a5'
                     {
                     matchRange('\u0780','\u07A5'); 
 
                     }
                     break;
                 case 47 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1875:9: '\\u07b1'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1904:9: '\\u07b1'
                     {
                     match('\u07B1'); 
 
                     }
                     break;
                 case 48 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1876:9: '\\u0904' .. '\\u0939'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1905:9: '\\u0904' .. '\\u0939'
                     {
                     matchRange('\u0904','\u0939'); 
 
                     }
                     break;
                 case 49 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1877:9: '\\u093d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1906:9: '\\u093d'
                     {
                     match('\u093D'); 
 
                     }
                     break;
                 case 50 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1878:9: '\\u0950'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1907:9: '\\u0950'
                     {
                     match('\u0950'); 
 
                     }
                     break;
                 case 51 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1879:9: '\\u0958' .. '\\u0961'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1908:9: '\\u0958' .. '\\u0961'
                     {
                     matchRange('\u0958','\u0961'); 
 
                     }
                     break;
                 case 52 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1880:9: '\\u0985' .. '\\u098c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1909:9: '\\u0985' .. '\\u098c'
                     {
                     matchRange('\u0985','\u098C'); 
 
                     }
                     break;
                 case 53 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1881:9: '\\u098f' .. '\\u0990'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1910:9: '\\u098f' .. '\\u0990'
                     {
                     matchRange('\u098F','\u0990'); 
 
                     }
                     break;
                 case 54 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1882:9: '\\u0993' .. '\\u09a8'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1911:9: '\\u0993' .. '\\u09a8'
                     {
                     matchRange('\u0993','\u09A8'); 
 
                     }
                     break;
                 case 55 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1883:9: '\\u09aa' .. '\\u09b0'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1912:9: '\\u09aa' .. '\\u09b0'
                     {
                     matchRange('\u09AA','\u09B0'); 
 
                     }
                     break;
                 case 56 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1884:9: '\\u09b2'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1913:9: '\\u09b2'
                     {
                     match('\u09B2'); 
 
                     }
                     break;
                 case 57 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1885:9: '\\u09b6' .. '\\u09b9'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1914:9: '\\u09b6' .. '\\u09b9'
                     {
                     matchRange('\u09B6','\u09B9'); 
 
                     }
                     break;
                 case 58 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1886:9: '\\u09bd'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1915:9: '\\u09bd'
                     {
                     match('\u09BD'); 
 
                     }
                     break;
                 case 59 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1887:9: '\\u09dc' .. '\\u09dd'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1916:9: '\\u09dc' .. '\\u09dd'
                     {
                     matchRange('\u09DC','\u09DD'); 
 
                     }
                     break;
                 case 60 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1888:9: '\\u09df' .. '\\u09e1'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1917:9: '\\u09df' .. '\\u09e1'
                     {
                     matchRange('\u09DF','\u09E1'); 
 
                     }
                     break;
                 case 61 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1889:9: '\\u09f0' .. '\\u09f3'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1918:9: '\\u09f0' .. '\\u09f3'
                     {
                     matchRange('\u09F0','\u09F3'); 
 
                     }
                     break;
                 case 62 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1890:9: '\\u0a05' .. '\\u0a0a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1919:9: '\\u0a05' .. '\\u0a0a'
                     {
                     matchRange('\u0A05','\u0A0A'); 
 
                     }
                     break;
                 case 63 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1891:9: '\\u0a0f' .. '\\u0a10'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1920:9: '\\u0a0f' .. '\\u0a10'
                     {
                     matchRange('\u0A0F','\u0A10'); 
 
                     }
                     break;
                 case 64 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1892:9: '\\u0a13' .. '\\u0a28'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1921:9: '\\u0a13' .. '\\u0a28'
                     {
                     matchRange('\u0A13','\u0A28'); 
 
                     }
                     break;
                 case 65 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1893:9: '\\u0a2a' .. '\\u0a30'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1922:9: '\\u0a2a' .. '\\u0a30'
                     {
                     matchRange('\u0A2A','\u0A30'); 
 
                     }
                     break;
                 case 66 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1894:9: '\\u0a32' .. '\\u0a33'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1923:9: '\\u0a32' .. '\\u0a33'
                     {
                     matchRange('\u0A32','\u0A33'); 
 
                     }
                     break;
                 case 67 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1895:9: '\\u0a35' .. '\\u0a36'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1924:9: '\\u0a35' .. '\\u0a36'
                     {
                     matchRange('\u0A35','\u0A36'); 
 
                     }
                     break;
                 case 68 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1896:9: '\\u0a38' .. '\\u0a39'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1925:9: '\\u0a38' .. '\\u0a39'
                     {
                     matchRange('\u0A38','\u0A39'); 
 
                     }
                     break;
                 case 69 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1897:9: '\\u0a59' .. '\\u0a5c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1926:9: '\\u0a59' .. '\\u0a5c'
                     {
                     matchRange('\u0A59','\u0A5C'); 
 
                     }
                     break;
                 case 70 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1898:9: '\\u0a5e'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1927:9: '\\u0a5e'
                     {
                     match('\u0A5E'); 
 
                     }
                     break;
                 case 71 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1899:9: '\\u0a72' .. '\\u0a74'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1928:9: '\\u0a72' .. '\\u0a74'
                     {
                     matchRange('\u0A72','\u0A74'); 
 
                     }
                     break;
                 case 72 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1900:9: '\\u0a85' .. '\\u0a8d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1929:9: '\\u0a85' .. '\\u0a8d'
                     {
                     matchRange('\u0A85','\u0A8D'); 
 
                     }
                     break;
                 case 73 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1901:9: '\\u0a8f' .. '\\u0a91'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1930:9: '\\u0a8f' .. '\\u0a91'
                     {
                     matchRange('\u0A8F','\u0A91'); 
 
                     }
                     break;
                 case 74 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1902:9: '\\u0a93' .. '\\u0aa8'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1931:9: '\\u0a93' .. '\\u0aa8'
                     {
                     matchRange('\u0A93','\u0AA8'); 
 
                     }
                     break;
                 case 75 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1903:9: '\\u0aaa' .. '\\u0ab0'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1932:9: '\\u0aaa' .. '\\u0ab0'
                     {
                     matchRange('\u0AAA','\u0AB0'); 
 
                     }
                     break;
                 case 76 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1904:9: '\\u0ab2' .. '\\u0ab3'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1933:9: '\\u0ab2' .. '\\u0ab3'
                     {
                     matchRange('\u0AB2','\u0AB3'); 
 
                     }
                     break;
                 case 77 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1905:9: '\\u0ab5' .. '\\u0ab9'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1934:9: '\\u0ab5' .. '\\u0ab9'
                     {
                     matchRange('\u0AB5','\u0AB9'); 
 
                     }
                     break;
                 case 78 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1906:9: '\\u0abd'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1935:9: '\\u0abd'
                     {
                     match('\u0ABD'); 
 
                     }
                     break;
                 case 79 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1907:9: '\\u0ad0'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1936:9: '\\u0ad0'
                     {
                     match('\u0AD0'); 
 
                     }
                     break;
                 case 80 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1908:9: '\\u0ae0' .. '\\u0ae1'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1937:9: '\\u0ae0' .. '\\u0ae1'
                     {
                     matchRange('\u0AE0','\u0AE1'); 
 
                     }
                     break;
                 case 81 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1909:9: '\\u0af1'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1938:9: '\\u0af1'
                     {
                     match('\u0AF1'); 
 
                     }
                     break;
                 case 82 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1910:9: '\\u0b05' .. '\\u0b0c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1939:9: '\\u0b05' .. '\\u0b0c'
                     {
                     matchRange('\u0B05','\u0B0C'); 
 
                     }
                     break;
                 case 83 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1911:9: '\\u0b0f' .. '\\u0b10'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1940:9: '\\u0b0f' .. '\\u0b10'
                     {
                     matchRange('\u0B0F','\u0B10'); 
 
                     }
                     break;
                 case 84 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1912:9: '\\u0b13' .. '\\u0b28'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1941:9: '\\u0b13' .. '\\u0b28'
                     {
                     matchRange('\u0B13','\u0B28'); 
 
                     }
                     break;
                 case 85 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1913:9: '\\u0b2a' .. '\\u0b30'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1942:9: '\\u0b2a' .. '\\u0b30'
                     {
                     matchRange('\u0B2A','\u0B30'); 
 
                     }
                     break;
                 case 86 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1914:9: '\\u0b32' .. '\\u0b33'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1943:9: '\\u0b32' .. '\\u0b33'
                     {
                     matchRange('\u0B32','\u0B33'); 
 
                     }
                     break;
                 case 87 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1915:9: '\\u0b35' .. '\\u0b39'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1944:9: '\\u0b35' .. '\\u0b39'
                     {
                     matchRange('\u0B35','\u0B39'); 
 
                     }
                     break;
                 case 88 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1916:9: '\\u0b3d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1945:9: '\\u0b3d'
                     {
                     match('\u0B3D'); 
 
                     }
                     break;
                 case 89 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1917:9: '\\u0b5c' .. '\\u0b5d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1946:9: '\\u0b5c' .. '\\u0b5d'
                     {
                     matchRange('\u0B5C','\u0B5D'); 
 
                     }
                     break;
                 case 90 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1918:9: '\\u0b5f' .. '\\u0b61'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1947:9: '\\u0b5f' .. '\\u0b61'
                     {
                     matchRange('\u0B5F','\u0B61'); 
 
                     }
                     break;
                 case 91 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1919:9: '\\u0b71'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1948:9: '\\u0b71'
                     {
                     match('\u0B71'); 
 
                     }
                     break;
                 case 92 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1920:9: '\\u0b83'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1949:9: '\\u0b83'
                     {
                     match('\u0B83'); 
 
                     }
                     break;
                 case 93 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1921:9: '\\u0b85' .. '\\u0b8a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1950:9: '\\u0b85' .. '\\u0b8a'
                     {
                     matchRange('\u0B85','\u0B8A'); 
 
                     }
                     break;
                 case 94 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1922:9: '\\u0b8e' .. '\\u0b90'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1951:9: '\\u0b8e' .. '\\u0b90'
                     {
                     matchRange('\u0B8E','\u0B90'); 
 
                     }
                     break;
                 case 95 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1923:9: '\\u0b92' .. '\\u0b95'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1952:9: '\\u0b92' .. '\\u0b95'
                     {
                     matchRange('\u0B92','\u0B95'); 
 
                     }
                     break;
                 case 96 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1924:9: '\\u0b99' .. '\\u0b9a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1953:9: '\\u0b99' .. '\\u0b9a'
                     {
                     matchRange('\u0B99','\u0B9A'); 
 
                     }
                     break;
                 case 97 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1925:9: '\\u0b9c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1954:9: '\\u0b9c'
                     {
                     match('\u0B9C'); 
 
                     }
                     break;
                 case 98 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1926:9: '\\u0b9e' .. '\\u0b9f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1955:9: '\\u0b9e' .. '\\u0b9f'
                     {
                     matchRange('\u0B9E','\u0B9F'); 
 
                     }
                     break;
                 case 99 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1927:9: '\\u0ba3' .. '\\u0ba4'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1956:9: '\\u0ba3' .. '\\u0ba4'
                     {
                     matchRange('\u0BA3','\u0BA4'); 
 
                     }
                     break;
                 case 100 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1928:9: '\\u0ba8' .. '\\u0baa'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1957:9: '\\u0ba8' .. '\\u0baa'
                     {
                     matchRange('\u0BA8','\u0BAA'); 
 
                     }
                     break;
                 case 101 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1929:9: '\\u0bae' .. '\\u0bb5'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1958:9: '\\u0bae' .. '\\u0bb5'
                     {
                     matchRange('\u0BAE','\u0BB5'); 
 
                     }
                     break;
                 case 102 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1930:9: '\\u0bb7' .. '\\u0bb9'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1959:9: '\\u0bb7' .. '\\u0bb9'
                     {
                     matchRange('\u0BB7','\u0BB9'); 
 
                     }
                     break;
                 case 103 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1931:9: '\\u0bf9'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1960:9: '\\u0bf9'
                     {
                     match('\u0BF9'); 
 
                     }
                     break;
                 case 104 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1932:9: '\\u0c05' .. '\\u0c0c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1961:9: '\\u0c05' .. '\\u0c0c'
                     {
                     matchRange('\u0C05','\u0C0C'); 
 
                     }
                     break;
                 case 105 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1933:9: '\\u0c0e' .. '\\u0c10'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1962:9: '\\u0c0e' .. '\\u0c10'
                     {
                     matchRange('\u0C0E','\u0C10'); 
 
                     }
                     break;
                 case 106 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1934:9: '\\u0c12' .. '\\u0c28'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1963:9: '\\u0c12' .. '\\u0c28'
                     {
                     matchRange('\u0C12','\u0C28'); 
 
                     }
                     break;
                 case 107 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1935:9: '\\u0c2a' .. '\\u0c33'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1964:9: '\\u0c2a' .. '\\u0c33'
                     {
                     matchRange('\u0C2A','\u0C33'); 
 
                     }
                     break;
                 case 108 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1936:9: '\\u0c35' .. '\\u0c39'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1965:9: '\\u0c35' .. '\\u0c39'
                     {
                     matchRange('\u0C35','\u0C39'); 
 
                     }
                     break;
                 case 109 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1937:9: '\\u0c60' .. '\\u0c61'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1966:9: '\\u0c60' .. '\\u0c61'
                     {
                     matchRange('\u0C60','\u0C61'); 
 
                     }
                     break;
                 case 110 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1938:9: '\\u0c85' .. '\\u0c8c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1967:9: '\\u0c85' .. '\\u0c8c'
                     {
                     matchRange('\u0C85','\u0C8C'); 
 
                     }
                     break;
                 case 111 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1939:9: '\\u0c8e' .. '\\u0c90'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1968:9: '\\u0c8e' .. '\\u0c90'
                     {
                     matchRange('\u0C8E','\u0C90'); 
 
                     }
                     break;
                 case 112 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1940:9: '\\u0c92' .. '\\u0ca8'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1969:9: '\\u0c92' .. '\\u0ca8'
                     {
                     matchRange('\u0C92','\u0CA8'); 
 
                     }
                     break;
                 case 113 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1941:9: '\\u0caa' .. '\\u0cb3'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1970:9: '\\u0caa' .. '\\u0cb3'
                     {
                     matchRange('\u0CAA','\u0CB3'); 
 
                     }
                     break;
                 case 114 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1942:9: '\\u0cb5' .. '\\u0cb9'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1971:9: '\\u0cb5' .. '\\u0cb9'
                     {
                     matchRange('\u0CB5','\u0CB9'); 
 
                     }
                     break;
                 case 115 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1943:9: '\\u0cbd'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1972:9: '\\u0cbd'
                     {
                     match('\u0CBD'); 
 
                     }
                     break;
                 case 116 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1944:9: '\\u0cde'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1973:9: '\\u0cde'
                     {
                     match('\u0CDE'); 
 
                     }
                     break;
                 case 117 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1945:9: '\\u0ce0' .. '\\u0ce1'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1974:9: '\\u0ce0' .. '\\u0ce1'
                     {
                     matchRange('\u0CE0','\u0CE1'); 
 
                     }
                     break;
                 case 118 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1946:9: '\\u0d05' .. '\\u0d0c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1975:9: '\\u0d05' .. '\\u0d0c'
                     {
                     matchRange('\u0D05','\u0D0C'); 
 
                     }
                     break;
                 case 119 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1947:9: '\\u0d0e' .. '\\u0d10'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1976:9: '\\u0d0e' .. '\\u0d10'
                     {
                     matchRange('\u0D0E','\u0D10'); 
 
                     }
                     break;
                 case 120 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1948:9: '\\u0d12' .. '\\u0d28'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1977:9: '\\u0d12' .. '\\u0d28'
                     {
                     matchRange('\u0D12','\u0D28'); 
 
                     }
                     break;
                 case 121 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1949:9: '\\u0d2a' .. '\\u0d39'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1978:9: '\\u0d2a' .. '\\u0d39'
                     {
                     matchRange('\u0D2A','\u0D39'); 
 
                     }
                     break;
                 case 122 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1950:9: '\\u0d60' .. '\\u0d61'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1979:9: '\\u0d60' .. '\\u0d61'
                     {
                     matchRange('\u0D60','\u0D61'); 
 
                     }
                     break;
                 case 123 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1951:9: '\\u0d85' .. '\\u0d96'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1980:9: '\\u0d85' .. '\\u0d96'
                     {
                     matchRange('\u0D85','\u0D96'); 
 
                     }
                     break;
                 case 124 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1952:9: '\\u0d9a' .. '\\u0db1'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1981:9: '\\u0d9a' .. '\\u0db1'
                     {
                     matchRange('\u0D9A','\u0DB1'); 
 
                     }
                     break;
                 case 125 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1953:9: '\\u0db3' .. '\\u0dbb'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1982:9: '\\u0db3' .. '\\u0dbb'
                     {
                     matchRange('\u0DB3','\u0DBB'); 
 
                     }
                     break;
                 case 126 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1954:9: '\\u0dbd'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1983:9: '\\u0dbd'
                     {
                     match('\u0DBD'); 
 
                     }
                     break;
                 case 127 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1955:9: '\\u0dc0' .. '\\u0dc6'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1984:9: '\\u0dc0' .. '\\u0dc6'
                     {
                     matchRange('\u0DC0','\u0DC6'); 
 
                     }
                     break;
                 case 128 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1956:9: '\\u0e01' .. '\\u0e30'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1985:9: '\\u0e01' .. '\\u0e30'
                     {
                     matchRange('\u0E01','\u0E30'); 
 
                     }
                     break;
                 case 129 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1957:9: '\\u0e32' .. '\\u0e33'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1986:9: '\\u0e32' .. '\\u0e33'
                     {
                     matchRange('\u0E32','\u0E33'); 
 
                     }
                     break;
                 case 130 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1958:9: '\\u0e3f' .. '\\u0e46'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1987:9: '\\u0e3f' .. '\\u0e46'
                     {
                     matchRange('\u0E3F','\u0E46'); 
 
                     }
                     break;
                 case 131 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1959:9: '\\u0e81' .. '\\u0e82'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1988:9: '\\u0e81' .. '\\u0e82'
                     {
                     matchRange('\u0E81','\u0E82'); 
 
                     }
                     break;
                 case 132 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1960:9: '\\u0e84'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1989:9: '\\u0e84'
                     {
                     match('\u0E84'); 
 
                     }
                     break;
                 case 133 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1961:9: '\\u0e87' .. '\\u0e88'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1990:9: '\\u0e87' .. '\\u0e88'
                     {
                     matchRange('\u0E87','\u0E88'); 
 
                     }
                     break;
                 case 134 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1962:9: '\\u0e8a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1991:9: '\\u0e8a'
                     {
                     match('\u0E8A'); 
 
                     }
                     break;
                 case 135 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1963:9: '\\u0e8d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1992:9: '\\u0e8d'
                     {
                     match('\u0E8D'); 
 
                     }
                     break;
                 case 136 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1964:9: '\\u0e94' .. '\\u0e97'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1993:9: '\\u0e94' .. '\\u0e97'
                     {
                     matchRange('\u0E94','\u0E97'); 
 
                     }
                     break;
                 case 137 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1965:9: '\\u0e99' .. '\\u0e9f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1994:9: '\\u0e99' .. '\\u0e9f'
                     {
                     matchRange('\u0E99','\u0E9F'); 
 
                     }
                     break;
                 case 138 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1966:9: '\\u0ea1' .. '\\u0ea3'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1995:9: '\\u0ea1' .. '\\u0ea3'
                     {
                     matchRange('\u0EA1','\u0EA3'); 
 
                     }
                     break;
                 case 139 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1967:9: '\\u0ea5'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1996:9: '\\u0ea5'
                     {
                     match('\u0EA5'); 
 
                     }
                     break;
                 case 140 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1968:9: '\\u0ea7'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1997:9: '\\u0ea7'
                     {
                     match('\u0EA7'); 
 
                     }
                     break;
                 case 141 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1969:9: '\\u0eaa' .. '\\u0eab'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1998:9: '\\u0eaa' .. '\\u0eab'
                     {
                     matchRange('\u0EAA','\u0EAB'); 
 
                     }
                     break;
                 case 142 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1970:9: '\\u0ead' .. '\\u0eb0'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1999:9: '\\u0ead' .. '\\u0eb0'
                     {
                     matchRange('\u0EAD','\u0EB0'); 
 
                     }
                     break;
                 case 143 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1971:9: '\\u0eb2' .. '\\u0eb3'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2000:9: '\\u0eb2' .. '\\u0eb3'
                     {
                     matchRange('\u0EB2','\u0EB3'); 
 
                     }
                     break;
                 case 144 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1972:9: '\\u0ebd'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2001:9: '\\u0ebd'
                     {
                     match('\u0EBD'); 
 
                     }
                     break;
                 case 145 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1973:9: '\\u0ec0' .. '\\u0ec4'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2002:9: '\\u0ec0' .. '\\u0ec4'
                     {
                     matchRange('\u0EC0','\u0EC4'); 
 
                     }
                     break;
                 case 146 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1974:9: '\\u0ec6'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2003:9: '\\u0ec6'
                     {
                     match('\u0EC6'); 
 
                     }
                     break;
                 case 147 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1975:9: '\\u0edc' .. '\\u0edd'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2004:9: '\\u0edc' .. '\\u0edd'
                     {
                     matchRange('\u0EDC','\u0EDD'); 
 
                     }
                     break;
                 case 148 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1976:9: '\\u0f00'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2005:9: '\\u0f00'
                     {
                     match('\u0F00'); 
 
                     }
                     break;
                 case 149 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1977:9: '\\u0f40' .. '\\u0f47'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2006:9: '\\u0f40' .. '\\u0f47'
                     {
                     matchRange('\u0F40','\u0F47'); 
 
                     }
                     break;
                 case 150 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1978:9: '\\u0f49' .. '\\u0f6a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2007:9: '\\u0f49' .. '\\u0f6a'
                     {
                     matchRange('\u0F49','\u0F6A'); 
 
                     }
                     break;
                 case 151 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1979:9: '\\u0f88' .. '\\u0f8b'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2008:9: '\\u0f88' .. '\\u0f8b'
                     {
                     matchRange('\u0F88','\u0F8B'); 
 
                     }
                     break;
                 case 152 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1980:9: '\\u1000' .. '\\u1021'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2009:9: '\\u1000' .. '\\u1021'
                     {
                     matchRange('\u1000','\u1021'); 
 
                     }
                     break;
                 case 153 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1981:9: '\\u1023' .. '\\u1027'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2010:9: '\\u1023' .. '\\u1027'
                     {
                     matchRange('\u1023','\u1027'); 
 
                     }
                     break;
                 case 154 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1982:9: '\\u1029' .. '\\u102a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2011:9: '\\u1029' .. '\\u102a'
                     {
                     matchRange('\u1029','\u102A'); 
 
                     }
                     break;
                 case 155 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1983:9: '\\u1050' .. '\\u1055'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2012:9: '\\u1050' .. '\\u1055'
                     {
                     matchRange('\u1050','\u1055'); 
 
                     }
                     break;
                 case 156 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1984:9: '\\u10a0' .. '\\u10c5'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2013:9: '\\u10a0' .. '\\u10c5'
                     {
                     matchRange('\u10A0','\u10C5'); 
 
                     }
                     break;
                 case 157 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1985:9: '\\u10d0' .. '\\u10f8'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2014:9: '\\u10d0' .. '\\u10f8'
                     {
                     matchRange('\u10D0','\u10F8'); 
 
                     }
                     break;
                 case 158 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1986:9: '\\u1100' .. '\\u1159'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2015:9: '\\u1100' .. '\\u1159'
                     {
                     matchRange('\u1100','\u1159'); 
 
                     }
                     break;
                 case 159 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1987:9: '\\u115f' .. '\\u11a2'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2016:9: '\\u115f' .. '\\u11a2'
                     {
                     matchRange('\u115F','\u11A2'); 
 
                     }
                     break;
                 case 160 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1988:9: '\\u11a8' .. '\\u11f9'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2017:9: '\\u11a8' .. '\\u11f9'
                     {
                     matchRange('\u11A8','\u11F9'); 
 
                     }
                     break;
                 case 161 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1989:9: '\\u1200' .. '\\u1206'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2018:9: '\\u1200' .. '\\u1206'
                     {
                     matchRange('\u1200','\u1206'); 
 
                     }
                     break;
                 case 162 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1990:9: '\\u1208' .. '\\u1246'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2019:9: '\\u1208' .. '\\u1246'
                     {
                     matchRange('\u1208','\u1246'); 
 
                     }
                     break;
                 case 163 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1991:9: '\\u1248'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2020:9: '\\u1248'
                     {
                     match('\u1248'); 
 
                     }
                     break;
                 case 164 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1992:9: '\\u124a' .. '\\u124d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2021:9: '\\u124a' .. '\\u124d'
                     {
                     matchRange('\u124A','\u124D'); 
 
                     }
                     break;
                 case 165 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1993:9: '\\u1250' .. '\\u1256'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2022:9: '\\u1250' .. '\\u1256'
                     {
                     matchRange('\u1250','\u1256'); 
 
                     }
                     break;
                 case 166 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1994:9: '\\u1258'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2023:9: '\\u1258'
                     {
                     match('\u1258'); 
 
                     }
                     break;
                 case 167 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1995:9: '\\u125a' .. '\\u125d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2024:9: '\\u125a' .. '\\u125d'
                     {
                     matchRange('\u125A','\u125D'); 
 
                     }
                     break;
                 case 168 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1996:9: '\\u1260' .. '\\u1286'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2025:9: '\\u1260' .. '\\u1286'
                     {
                     matchRange('\u1260','\u1286'); 
 
                     }
                     break;
                 case 169 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1997:9: '\\u1288'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2026:9: '\\u1288'
                     {
                     match('\u1288'); 
 
                     }
                     break;
                 case 170 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1998:9: '\\u128a' .. '\\u128d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2027:9: '\\u128a' .. '\\u128d'
                     {
                     matchRange('\u128A','\u128D'); 
 
                     }
                     break;
                 case 171 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1999:9: '\\u1290' .. '\\u12ae'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2028:9: '\\u1290' .. '\\u12ae'
                     {
                     matchRange('\u1290','\u12AE'); 
 
                     }
                     break;
                 case 172 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2000:9: '\\u12b0'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2029:9: '\\u12b0'
                     {
                     match('\u12B0'); 
 
                     }
                     break;
                 case 173 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2001:9: '\\u12b2' .. '\\u12b5'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2030:9: '\\u12b2' .. '\\u12b5'
                     {
                     matchRange('\u12B2','\u12B5'); 
 
                     }
                     break;
                 case 174 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2002:9: '\\u12b8' .. '\\u12be'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2031:9: '\\u12b8' .. '\\u12be'
                     {
                     matchRange('\u12B8','\u12BE'); 
 
                     }
                     break;
                 case 175 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2003:9: '\\u12c0'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2032:9: '\\u12c0'
                     {
                     match('\u12C0'); 
 
                     }
                     break;
                 case 176 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2004:9: '\\u12c2' .. '\\u12c5'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2033:9: '\\u12c2' .. '\\u12c5'
                     {
                     matchRange('\u12C2','\u12C5'); 
 
                     }
                     break;
                 case 177 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2005:9: '\\u12c8' .. '\\u12ce'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2034:9: '\\u12c8' .. '\\u12ce'
                     {
                     matchRange('\u12C8','\u12CE'); 
 
                     }
                     break;
                 case 178 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2006:9: '\\u12d0' .. '\\u12d6'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2035:9: '\\u12d0' .. '\\u12d6'
                     {
                     matchRange('\u12D0','\u12D6'); 
 
                     }
                     break;
                 case 179 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2007:9: '\\u12d8' .. '\\u12ee'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2036:9: '\\u12d8' .. '\\u12ee'
                     {
                     matchRange('\u12D8','\u12EE'); 
 
                     }
                     break;
                 case 180 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2008:9: '\\u12f0' .. '\\u130e'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2037:9: '\\u12f0' .. '\\u130e'
                     {
                     matchRange('\u12F0','\u130E'); 
 
                     }
                     break;
                 case 181 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2009:9: '\\u1310'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2038:9: '\\u1310'
                     {
                     match('\u1310'); 
 
                     }
                     break;
                 case 182 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2010:9: '\\u1312' .. '\\u1315'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2039:9: '\\u1312' .. '\\u1315'
                     {
                     matchRange('\u1312','\u1315'); 
 
                     }
                     break;
                 case 183 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2011:9: '\\u1318' .. '\\u131e'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2040:9: '\\u1318' .. '\\u131e'
                     {
                     matchRange('\u1318','\u131E'); 
 
                     }
                     break;
                 case 184 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2012:9: '\\u1320' .. '\\u1346'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2041:9: '\\u1320' .. '\\u1346'
                     {
                     matchRange('\u1320','\u1346'); 
 
                     }
                     break;
                 case 185 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2013:9: '\\u1348' .. '\\u135a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2042:9: '\\u1348' .. '\\u135a'
                     {
                     matchRange('\u1348','\u135A'); 
 
                     }
                     break;
                 case 186 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2014:9: '\\u13a0' .. '\\u13f4'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2043:9: '\\u13a0' .. '\\u13f4'
                     {
                     matchRange('\u13A0','\u13F4'); 
 
                     }
                     break;
                 case 187 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2015:9: '\\u1401' .. '\\u166c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2044:9: '\\u1401' .. '\\u166c'
                     {
                     matchRange('\u1401','\u166C'); 
 
                     }
                     break;
                 case 188 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2016:9: '\\u166f' .. '\\u1676'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2045:9: '\\u166f' .. '\\u1676'
                     {
                     matchRange('\u166F','\u1676'); 
 
                     }
                     break;
                 case 189 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2017:9: '\\u1681' .. '\\u169a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2046:9: '\\u1681' .. '\\u169a'
                     {
                     matchRange('\u1681','\u169A'); 
 
                     }
                     break;
                 case 190 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2018:9: '\\u16a0' .. '\\u16ea'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2047:9: '\\u16a0' .. '\\u16ea'
                     {
                     matchRange('\u16A0','\u16EA'); 
 
                     }
                     break;
                 case 191 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2019:9: '\\u16ee' .. '\\u16f0'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2048:9: '\\u16ee' .. '\\u16f0'
                     {
                     matchRange('\u16EE','\u16F0'); 
 
                     }
                     break;
                 case 192 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2020:9: '\\u1700' .. '\\u170c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2049:9: '\\u1700' .. '\\u170c'
                     {
                     matchRange('\u1700','\u170C'); 
 
                     }
                     break;
                 case 193 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2021:9: '\\u170e' .. '\\u1711'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2050:9: '\\u170e' .. '\\u1711'
                     {
                     matchRange('\u170E','\u1711'); 
 
                     }
                     break;
                 case 194 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2022:9: '\\u1720' .. '\\u1731'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2051:9: '\\u1720' .. '\\u1731'
                     {
                     matchRange('\u1720','\u1731'); 
 
                     }
                     break;
                 case 195 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2023:9: '\\u1740' .. '\\u1751'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2052:9: '\\u1740' .. '\\u1751'
                     {
                     matchRange('\u1740','\u1751'); 
 
                     }
                     break;
                 case 196 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2024:9: '\\u1760' .. '\\u176c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2053:9: '\\u1760' .. '\\u176c'
                     {
                     matchRange('\u1760','\u176C'); 
 
                     }
                     break;
                 case 197 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2025:9: '\\u176e' .. '\\u1770'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2054:9: '\\u176e' .. '\\u1770'
                     {
                     matchRange('\u176E','\u1770'); 
 
                     }
                     break;
                 case 198 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2026:9: '\\u1780' .. '\\u17b3'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2055:9: '\\u1780' .. '\\u17b3'
                     {
                     matchRange('\u1780','\u17B3'); 
 
                     }
                     break;
                 case 199 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2027:9: '\\u17d7'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2056:9: '\\u17d7'
                     {
                     match('\u17D7'); 
 
                     }
                     break;
                 case 200 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2028:9: '\\u17db' .. '\\u17dc'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2057:9: '\\u17db' .. '\\u17dc'
                     {
                     matchRange('\u17DB','\u17DC'); 
 
                     }
                     break;
                 case 201 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2029:9: '\\u1820' .. '\\u1877'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2058:9: '\\u1820' .. '\\u1877'
                     {
                     matchRange('\u1820','\u1877'); 
 
                     }
                     break;
                 case 202 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2030:9: '\\u1880' .. '\\u18a8'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2059:9: '\\u1880' .. '\\u18a8'
                     {
                     matchRange('\u1880','\u18A8'); 
 
                     }
                     break;
                 case 203 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2031:9: '\\u1900' .. '\\u191c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2060:9: '\\u1900' .. '\\u191c'
                     {
                     matchRange('\u1900','\u191C'); 
 
                     }
                     break;
                 case 204 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2032:9: '\\u1950' .. '\\u196d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2061:9: '\\u1950' .. '\\u196d'
                     {
                     matchRange('\u1950','\u196D'); 
 
                     }
                     break;
                 case 205 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2033:9: '\\u1970' .. '\\u1974'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2062:9: '\\u1970' .. '\\u1974'
                     {
                     matchRange('\u1970','\u1974'); 
 
                     }
                     break;
                 case 206 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2034:9: '\\u1d00' .. '\\u1d6b'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2063:9: '\\u1d00' .. '\\u1d6b'
                     {
                     matchRange('\u1D00','\u1D6B'); 
 
                     }
                     break;
                 case 207 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2035:9: '\\u1e00' .. '\\u1e9b'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2064:9: '\\u1e00' .. '\\u1e9b'
                     {
                     matchRange('\u1E00','\u1E9B'); 
 
                     }
                     break;
                 case 208 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2036:9: '\\u1ea0' .. '\\u1ef9'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2065:9: '\\u1ea0' .. '\\u1ef9'
                     {
                     matchRange('\u1EA0','\u1EF9'); 
 
                     }
                     break;
                 case 209 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2037:9: '\\u1f00' .. '\\u1f15'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2066:9: '\\u1f00' .. '\\u1f15'
                     {
                     matchRange('\u1F00','\u1F15'); 
 
                     }
                     break;
                 case 210 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2038:9: '\\u1f18' .. '\\u1f1d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2067:9: '\\u1f18' .. '\\u1f1d'
                     {
                     matchRange('\u1F18','\u1F1D'); 
 
                     }
                     break;
                 case 211 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2039:9: '\\u1f20' .. '\\u1f45'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2068:9: '\\u1f20' .. '\\u1f45'
                     {
                     matchRange('\u1F20','\u1F45'); 
 
                     }
                     break;
                 case 212 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2040:9: '\\u1f48' .. '\\u1f4d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2069:9: '\\u1f48' .. '\\u1f4d'
                     {
                     matchRange('\u1F48','\u1F4D'); 
 
                     }
                     break;
                 case 213 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2041:9: '\\u1f50' .. '\\u1f57'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2070:9: '\\u1f50' .. '\\u1f57'
                     {
                     matchRange('\u1F50','\u1F57'); 
 
                     }
                     break;
                 case 214 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2042:9: '\\u1f59'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2071:9: '\\u1f59'
                     {
                     match('\u1F59'); 
 
                     }
                     break;
                 case 215 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2043:9: '\\u1f5b'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2072:9: '\\u1f5b'
                     {
                     match('\u1F5B'); 
 
                     }
                     break;
                 case 216 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2044:9: '\\u1f5d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2073:9: '\\u1f5d'
                     {
                     match('\u1F5D'); 
 
                     }
                     break;
                 case 217 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2045:9: '\\u1f5f' .. '\\u1f7d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2074:9: '\\u1f5f' .. '\\u1f7d'
                     {
                     matchRange('\u1F5F','\u1F7D'); 
 
                     }
                     break;
                 case 218 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2046:9: '\\u1f80' .. '\\u1fb4'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2075:9: '\\u1f80' .. '\\u1fb4'
                     {
                     matchRange('\u1F80','\u1FB4'); 
 
                     }
                     break;
                 case 219 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2047:9: '\\u1fb6' .. '\\u1fbc'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2076:9: '\\u1fb6' .. '\\u1fbc'
                     {
                     matchRange('\u1FB6','\u1FBC'); 
 
                     }
                     break;
                 case 220 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2048:9: '\\u1fbe'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2077:9: '\\u1fbe'
                     {
                     match('\u1FBE'); 
 
                     }
                     break;
                 case 221 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2049:9: '\\u1fc2' .. '\\u1fc4'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2078:9: '\\u1fc2' .. '\\u1fc4'
                     {
                     matchRange('\u1FC2','\u1FC4'); 
 
                     }
                     break;
                 case 222 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2050:9: '\\u1fc6' .. '\\u1fcc'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2079:9: '\\u1fc6' .. '\\u1fcc'
                     {
                     matchRange('\u1FC6','\u1FCC'); 
 
                     }
                     break;
                 case 223 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2051:9: '\\u1fd0' .. '\\u1fd3'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2080:9: '\\u1fd0' .. '\\u1fd3'
                     {
                     matchRange('\u1FD0','\u1FD3'); 
 
                     }
                     break;
                 case 224 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2052:9: '\\u1fd6' .. '\\u1fdb'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2081:9: '\\u1fd6' .. '\\u1fdb'
                     {
                     matchRange('\u1FD6','\u1FDB'); 
 
                     }
                     break;
                 case 225 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2053:9: '\\u1fe0' .. '\\u1fec'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2082:9: '\\u1fe0' .. '\\u1fec'
                     {
                     matchRange('\u1FE0','\u1FEC'); 
 
                     }
                     break;
                 case 226 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2054:9: '\\u1ff2' .. '\\u1ff4'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2083:9: '\\u1ff2' .. '\\u1ff4'
                     {
                     matchRange('\u1FF2','\u1FF4'); 
 
                     }
                     break;
                 case 227 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2055:9: '\\u1ff6' .. '\\u1ffc'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2084:9: '\\u1ff6' .. '\\u1ffc'
                     {
                     matchRange('\u1FF6','\u1FFC'); 
 
                     }
                     break;
                 case 228 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2056:9: '\\u203f' .. '\\u2040'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2085:9: '\\u203f' .. '\\u2040'
                     {
                     matchRange('\u203F','\u2040'); 
 
                     }
                     break;
                 case 229 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2057:9: '\\u2054'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2086:9: '\\u2054'
                     {
                     match('\u2054'); 
 
                     }
                     break;
                 case 230 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2058:9: '\\u2071'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2087:9: '\\u2071'
                     {
                     match('\u2071'); 
 
                     }
                     break;
                 case 231 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2059:9: '\\u207f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2088:9: '\\u207f'
                     {
                     match('\u207F'); 
 
                     }
                     break;
                 case 232 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2060:9: '\\u20a0' .. '\\u20b1'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2089:9: '\\u20a0' .. '\\u20b1'
                     {
                     matchRange('\u20A0','\u20B1'); 
 
                     }
                     break;
                 case 233 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2061:9: '\\u2102'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2090:9: '\\u2102'
                     {
                     match('\u2102'); 
 
                     }
                     break;
                 case 234 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2062:9: '\\u2107'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2091:9: '\\u2107'
                     {
                     match('\u2107'); 
 
                     }
                     break;
                 case 235 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2063:9: '\\u210a' .. '\\u2113'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2092:9: '\\u210a' .. '\\u2113'
                     {
                     matchRange('\u210A','\u2113'); 
 
                     }
                     break;
                 case 236 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2064:9: '\\u2115'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2093:9: '\\u2115'
                     {
                     match('\u2115'); 
 
                     }
                     break;
                 case 237 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2065:9: '\\u2119' .. '\\u211d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2094:9: '\\u2119' .. '\\u211d'
                     {
                     matchRange('\u2119','\u211D'); 
 
                     }
                     break;
                 case 238 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2066:9: '\\u2124'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2095:9: '\\u2124'
                     {
                     match('\u2124'); 
 
                     }
                     break;
                 case 239 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2067:9: '\\u2126'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2096:9: '\\u2126'
                     {
                     match('\u2126'); 
 
                     }
                     break;
                 case 240 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2068:9: '\\u2128'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2097:9: '\\u2128'
                     {
                     match('\u2128'); 
 
                     }
                     break;
                 case 241 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2069:9: '\\u212a' .. '\\u212d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2098:9: '\\u212a' .. '\\u212d'
                     {
                     matchRange('\u212A','\u212D'); 
 
                     }
                     break;
                 case 242 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2070:9: '\\u212f' .. '\\u2131'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2099:9: '\\u212f' .. '\\u2131'
                     {
                     matchRange('\u212F','\u2131'); 
 
                     }
                     break;
                 case 243 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2071:9: '\\u2133' .. '\\u2139'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2100:9: '\\u2133' .. '\\u2139'
                     {
                     matchRange('\u2133','\u2139'); 
 
                     }
                     break;
                 case 244 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2072:9: '\\u213d' .. '\\u213f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2101:9: '\\u213d' .. '\\u213f'
                     {
                     matchRange('\u213D','\u213F'); 
 
                     }
                     break;
                 case 245 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2073:9: '\\u2145' .. '\\u2149'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2102:9: '\\u2145' .. '\\u2149'
                     {
                     matchRange('\u2145','\u2149'); 
 
                     }
                     break;
                 case 246 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2074:9: '\\u2160' .. '\\u2183'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2103:9: '\\u2160' .. '\\u2183'
                     {
                     matchRange('\u2160','\u2183'); 
 
                     }
                     break;
                 case 247 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2075:9: '\\u3005' .. '\\u3007'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2104:9: '\\u3005' .. '\\u3007'
                     {
                     matchRange('\u3005','\u3007'); 
 
                     }
                     break;
                 case 248 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2076:9: '\\u3021' .. '\\u3029'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2105:9: '\\u3021' .. '\\u3029'
                     {
                     matchRange('\u3021','\u3029'); 
 
                     }
                     break;
                 case 249 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2077:9: '\\u3031' .. '\\u3035'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2106:9: '\\u3031' .. '\\u3035'
                     {
                     matchRange('\u3031','\u3035'); 
 
                     }
                     break;
                 case 250 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2078:9: '\\u3038' .. '\\u303c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2107:9: '\\u3038' .. '\\u303c'
                     {
                     matchRange('\u3038','\u303C'); 
 
                     }
                     break;
                 case 251 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2079:9: '\\u3041' .. '\\u3096'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2108:9: '\\u3041' .. '\\u3096'
                     {
                     matchRange('\u3041','\u3096'); 
 
                     }
                     break;
                 case 252 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2080:9: '\\u309d' .. '\\u309f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2109:9: '\\u309d' .. '\\u309f'
                     {
                     matchRange('\u309D','\u309F'); 
 
                     }
                     break;
                 case 253 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2081:9: '\\u30a1' .. '\\u30ff'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2110:9: '\\u30a1' .. '\\u30ff'
                     {
                     matchRange('\u30A1','\u30FF'); 
 
                     }
                     break;
                 case 254 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2082:9: '\\u3105' .. '\\u312c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2111:9: '\\u3105' .. '\\u312c'
                     {
                     matchRange('\u3105','\u312C'); 
 
                     }
                     break;
                 case 255 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2083:9: '\\u3131' .. '\\u318e'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2112:9: '\\u3131' .. '\\u318e'
                     {
                     matchRange('\u3131','\u318E'); 
 
                     }
                     break;
                 case 256 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2084:9: '\\u31a0' .. '\\u31b7'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2113:9: '\\u31a0' .. '\\u31b7'
                     {
                     matchRange('\u31A0','\u31B7'); 
 
                     }
                     break;
                 case 257 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2085:9: '\\u31f0' .. '\\u31ff'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2114:9: '\\u31f0' .. '\\u31ff'
                     {
                     matchRange('\u31F0','\u31FF'); 
 
                     }
                     break;
                 case 258 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2086:9: '\\u3400' .. '\\u4db5'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2115:9: '\\u3400' .. '\\u4db5'
                     {
                     matchRange('\u3400','\u4DB5'); 
 
                     }
                     break;
                 case 259 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2087:9: '\\u4e00' .. '\\u9fa5'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2116:9: '\\u4e00' .. '\\u9fa5'
                     {
                     matchRange('\u4E00','\u9FA5'); 
 
                     }
                     break;
                 case 260 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2088:9: '\\ua000' .. '\\ua48c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2117:9: '\\ua000' .. '\\ua48c'
                     {
                     matchRange('\uA000','\uA48C'); 
 
                     }
                     break;
                 case 261 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2089:9: '\\uac00' .. '\\ud7a3'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2118:9: '\\uac00' .. '\\ud7a3'
                     {
                     matchRange('\uAC00','\uD7A3'); 
 
                     }
                     break;
                 case 262 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2090:9: '\\uf900' .. '\\ufa2d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2119:9: '\\uf900' .. '\\ufa2d'
                     {
                     matchRange('\uF900','\uFA2D'); 
 
                     }
                     break;
                 case 263 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2091:9: '\\ufa30' .. '\\ufa6a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2120:9: '\\ufa30' .. '\\ufa6a'
                     {
                     matchRange('\uFA30','\uFA6A'); 
 
                     }
                     break;
                 case 264 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2092:9: '\\ufb00' .. '\\ufb06'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2121:9: '\\ufb00' .. '\\ufb06'
                     {
                     matchRange('\uFB00','\uFB06'); 
 
                     }
                     break;
                 case 265 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2093:9: '\\ufb13' .. '\\ufb17'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2122:9: '\\ufb13' .. '\\ufb17'
                     {
                     matchRange('\uFB13','\uFB17'); 
 
                     }
                     break;
                 case 266 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2094:9: '\\ufb1d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2123:9: '\\ufb1d'
                     {
                     match('\uFB1D'); 
 
                     }
                     break;
                 case 267 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2095:9: '\\ufb1f' .. '\\ufb28'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2124:9: '\\ufb1f' .. '\\ufb28'
                     {
                     matchRange('\uFB1F','\uFB28'); 
 
                     }
                     break;
                 case 268 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2096:9: '\\ufb2a' .. '\\ufb36'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2125:9: '\\ufb2a' .. '\\ufb36'
                     {
                     matchRange('\uFB2A','\uFB36'); 
 
                     }
                     break;
                 case 269 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2097:9: '\\ufb38' .. '\\ufb3c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2126:9: '\\ufb38' .. '\\ufb3c'
                     {
                     matchRange('\uFB38','\uFB3C'); 
 
                     }
                     break;
                 case 270 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2098:9: '\\ufb3e'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2127:9: '\\ufb3e'
                     {
                     match('\uFB3E'); 
 
                     }
                     break;
                 case 271 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2099:9: '\\ufb40' .. '\\ufb41'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2128:9: '\\ufb40' .. '\\ufb41'
                     {
                     matchRange('\uFB40','\uFB41'); 
 
                     }
                     break;
                 case 272 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2100:9: '\\ufb43' .. '\\ufb44'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2129:9: '\\ufb43' .. '\\ufb44'
                     {
                     matchRange('\uFB43','\uFB44'); 
 
                     }
                     break;
                 case 273 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2101:9: '\\ufb46' .. '\\ufbb1'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2130:9: '\\ufb46' .. '\\ufbb1'
                     {
                     matchRange('\uFB46','\uFBB1'); 
 
                     }
                     break;
                 case 274 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2102:9: '\\ufbd3' .. '\\ufd3d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2131:9: '\\ufbd3' .. '\\ufd3d'
                     {
                     matchRange('\uFBD3','\uFD3D'); 
 
                     }
                     break;
                 case 275 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2103:9: '\\ufd50' .. '\\ufd8f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2132:9: '\\ufd50' .. '\\ufd8f'
                     {
                     matchRange('\uFD50','\uFD8F'); 
 
                     }
                     break;
                 case 276 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2104:9: '\\ufd92' .. '\\ufdc7'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2133:9: '\\ufd92' .. '\\ufdc7'
                     {
                     matchRange('\uFD92','\uFDC7'); 
 
                     }
                     break;
                 case 277 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2105:9: '\\ufdf0' .. '\\ufdfc'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2134:9: '\\ufdf0' .. '\\ufdfc'
                     {
                     matchRange('\uFDF0','\uFDFC'); 
 
                     }
                     break;
                 case 278 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2106:9: '\\ufe33' .. '\\ufe34'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2135:9: '\\ufe33' .. '\\ufe34'
                     {
                     matchRange('\uFE33','\uFE34'); 
 
                     }
                     break;
                 case 279 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2107:9: '\\ufe4d' .. '\\ufe4f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2136:9: '\\ufe4d' .. '\\ufe4f'
                     {
                     matchRange('\uFE4D','\uFE4F'); 
 
                     }
                     break;
                 case 280 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2108:9: '\\ufe69'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2137:9: '\\ufe69'
                     {
                     match('\uFE69'); 
 
                     }
                     break;
                 case 281 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2109:9: '\\ufe70' .. '\\ufe74'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2138:9: '\\ufe70' .. '\\ufe74'
                     {
                     matchRange('\uFE70','\uFE74'); 
 
                     }
                     break;
                 case 282 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2110:9: '\\ufe76' .. '\\ufefc'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2139:9: '\\ufe76' .. '\\ufefc'
                     {
                     matchRange('\uFE76','\uFEFC'); 
 
                     }
                     break;
                 case 283 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2111:9: '\\uff04'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2140:9: '\\uff04'
                     {
                     match('\uFF04'); 
 
                     }
                     break;
                 case 284 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2112:9: '\\uff21' .. '\\uff3a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2141:9: '\\uff21' .. '\\uff3a'
                     {
                     matchRange('\uFF21','\uFF3A'); 
 
                     }
                     break;
                 case 285 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2113:9: '\\uff3f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2142:9: '\\uff3f'
                     {
                     match('\uFF3F'); 
 
                     }
                     break;
                 case 286 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2114:9: '\\uff41' .. '\\uff5a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2143:9: '\\uff41' .. '\\uff5a'
                     {
                     matchRange('\uFF41','\uFF5A'); 
 
                     }
                     break;
                 case 287 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2115:9: '\\uff65' .. '\\uffbe'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2144:9: '\\uff65' .. '\\uffbe'
                     {
                     matchRange('\uFF65','\uFFBE'); 
 
                     }
                     break;
                 case 288 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2116:9: '\\uffc2' .. '\\uffc7'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2145:9: '\\uffc2' .. '\\uffc7'
                     {
                     matchRange('\uFFC2','\uFFC7'); 
 
                     }
                     break;
                 case 289 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2117:9: '\\uffca' .. '\\uffcf'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2146:9: '\\uffca' .. '\\uffcf'
                     {
                     matchRange('\uFFCA','\uFFCF'); 
 
                     }
                     break;
                 case 290 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2118:9: '\\uffd2' .. '\\uffd7'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2147:9: '\\uffd2' .. '\\uffd7'
                     {
                     matchRange('\uFFD2','\uFFD7'); 
 
                     }
                     break;
                 case 291 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2119:9: '\\uffda' .. '\\uffdc'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2148:9: '\\uffda' .. '\\uffdc'
                     {
                     matchRange('\uFFDA','\uFFDC'); 
 
                     }
                     break;
                 case 292 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2120:9: '\\uffe0' .. '\\uffe1'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2149:9: '\\uffe0' .. '\\uffe1'
                     {
                     matchRange('\uFFE0','\uFFE1'); 
 
                     }
                     break;
                 case 293 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2121:9: '\\uffe5' .. '\\uffe6'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2150:9: '\\uffe5' .. '\\uffe6'
                     {
                     matchRange('\uFFE5','\uFFE6'); 
 
                     }
                     break;
                 case 294 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2122:9: ( '\\ud800' .. '\\udbff' ) ( '\\udc00' .. '\\udfff' )
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2151:9: ( '\\ud800' .. '\\udbff' ) ( '\\udc00' .. '\\udfff' )
                     {
                     if ( (input.LA(1) >= '\uD800' && input.LA(1) <= '\uDBFF') ) {
                         input.consume();
@@ -7004,7 +7004,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
     // $ANTLR start "IdentifierPart"
     public final void mIdentifierPart() throws RecognitionException {
         try {
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2127:5: ( '\\u0000' .. '\\u0008' | '\\u000e' .. '\\u001b' | '\\u0024' | '\\u0030' .. '\\u0039' | '\\u0041' .. '\\u005a' | '\\u005f' | '\\u0061' .. '\\u007a' | '\\u007f' .. '\\u009f' | '\\u00a2' .. '\\u00a5' | '\\u00aa' | '\\u00ad' | '\\u00b5' | '\\u00ba' | '\\u00c0' .. '\\u00d6' | '\\u00d8' .. '\\u00f6' | '\\u00f8' .. '\\u0236' | '\\u0250' .. '\\u02c1' | '\\u02c6' .. '\\u02d1' | '\\u02e0' .. '\\u02e4' | '\\u02ee' | '\\u0300' .. '\\u0357' | '\\u035d' .. '\\u036f' | '\\u037a' | '\\u0386' | '\\u0388' .. '\\u038a' | '\\u038c' | '\\u038e' .. '\\u03a1' | '\\u03a3' .. '\\u03ce' | '\\u03d0' .. '\\u03f5' | '\\u03f7' .. '\\u03fb' | '\\u0400' .. '\\u0481' | '\\u0483' .. '\\u0486' | '\\u048a' .. '\\u04ce' | '\\u04d0' .. '\\u04f5' | '\\u04f8' .. '\\u04f9' | '\\u0500' .. '\\u050f' | '\\u0531' .. '\\u0556' | '\\u0559' | '\\u0561' .. '\\u0587' | '\\u0591' .. '\\u05a1' | '\\u05a3' .. '\\u05b9' | '\\u05bb' .. '\\u05bd' | '\\u05bf' | '\\u05c1' .. '\\u05c2' | '\\u05c4' | '\\u05d0' .. '\\u05ea' | '\\u05f0' .. '\\u05f2' | '\\u0600' .. '\\u0603' | '\\u0610' .. '\\u0615' | '\\u0621' .. '\\u063a' | '\\u0640' .. '\\u0658' | '\\u0660' .. '\\u0669' | '\\u066e' .. '\\u06d3' | '\\u06d5' .. '\\u06dd' | '\\u06df' .. '\\u06e8' | '\\u06ea' .. '\\u06fc' | '\\u06ff' | '\\u070f' .. '\\u074a' | '\\u074d' .. '\\u074f' | '\\u0780' .. '\\u07b1' | '\\u0901' .. '\\u0939' | '\\u093c' .. '\\u094d' | '\\u0950' .. '\\u0954' | '\\u0958' .. '\\u0963' | '\\u0966' .. '\\u096f' | '\\u0981' .. '\\u0983' | '\\u0985' .. '\\u098c' | '\\u098f' .. '\\u0990' | '\\u0993' .. '\\u09a8' | '\\u09aa' .. '\\u09b0' | '\\u09b2' | '\\u09b6' .. '\\u09b9' | '\\u09bc' .. '\\u09c4' | '\\u09c7' .. '\\u09c8' | '\\u09cb' .. '\\u09cd' | '\\u09d7' | '\\u09dc' .. '\\u09dd' | '\\u09df' .. '\\u09e3' | '\\u09e6' .. '\\u09f3' | '\\u0a01' .. '\\u0a03' | '\\u0a05' .. '\\u0a0a' | '\\u0a0f' .. '\\u0a10' | '\\u0a13' .. '\\u0a28' | '\\u0a2a' .. '\\u0a30' | '\\u0a32' .. '\\u0a33' | '\\u0a35' .. '\\u0a36' | '\\u0a38' .. '\\u0a39' | '\\u0a3c' | '\\u0a3e' .. '\\u0a42' | '\\u0a47' .. '\\u0a48' | '\\u0a4b' .. '\\u0a4d' | '\\u0a59' .. '\\u0a5c' | '\\u0a5e' | '\\u0a66' .. '\\u0a74' | '\\u0a81' .. '\\u0a83' | '\\u0a85' .. '\\u0a8d' | '\\u0a8f' .. '\\u0a91' | '\\u0a93' .. '\\u0aa8' | '\\u0aaa' .. '\\u0ab0' | '\\u0ab2' .. '\\u0ab3' | '\\u0ab5' .. '\\u0ab9' | '\\u0abc' .. '\\u0ac5' | '\\u0ac7' .. '\\u0ac9' | '\\u0acb' .. '\\u0acd' | '\\u0ad0' | '\\u0ae0' .. '\\u0ae3' | '\\u0ae6' .. '\\u0aef' | '\\u0af1' | '\\u0b01' .. '\\u0b03' | '\\u0b05' .. '\\u0b0c' | '\\u0b0f' .. '\\u0b10' | '\\u0b13' .. '\\u0b28' | '\\u0b2a' .. '\\u0b30' | '\\u0b32' .. '\\u0b33' | '\\u0b35' .. '\\u0b39' | '\\u0b3c' .. '\\u0b43' | '\\u0b47' .. '\\u0b48' | '\\u0b4b' .. '\\u0b4d' | '\\u0b56' .. '\\u0b57' | '\\u0b5c' .. '\\u0b5d' | '\\u0b5f' .. '\\u0b61' | '\\u0b66' .. '\\u0b6f' | '\\u0b71' | '\\u0b82' .. '\\u0b83' | '\\u0b85' .. '\\u0b8a' | '\\u0b8e' .. '\\u0b90' | '\\u0b92' .. '\\u0b95' | '\\u0b99' .. '\\u0b9a' | '\\u0b9c' | '\\u0b9e' .. '\\u0b9f' | '\\u0ba3' .. '\\u0ba4' | '\\u0ba8' .. '\\u0baa' | '\\u0bae' .. '\\u0bb5' | '\\u0bb7' .. '\\u0bb9' | '\\u0bbe' .. '\\u0bc2' | '\\u0bc6' .. '\\u0bc8' | '\\u0bca' .. '\\u0bcd' | '\\u0bd7' | '\\u0be7' .. '\\u0bef' | '\\u0bf9' | '\\u0c01' .. '\\u0c03' | '\\u0c05' .. '\\u0c0c' | '\\u0c0e' .. '\\u0c10' | '\\u0c12' .. '\\u0c28' | '\\u0c2a' .. '\\u0c33' | '\\u0c35' .. '\\u0c39' | '\\u0c3e' .. '\\u0c44' | '\\u0c46' .. '\\u0c48' | '\\u0c4a' .. '\\u0c4d' | '\\u0c55' .. '\\u0c56' | '\\u0c60' .. '\\u0c61' | '\\u0c66' .. '\\u0c6f' | '\\u0c82' .. '\\u0c83' | '\\u0c85' .. '\\u0c8c' | '\\u0c8e' .. '\\u0c90' | '\\u0c92' .. '\\u0ca8' | '\\u0caa' .. '\\u0cb3' | '\\u0cb5' .. '\\u0cb9' | '\\u0cbc' .. '\\u0cc4' | '\\u0cc6' .. '\\u0cc8' | '\\u0cca' .. '\\u0ccd' | '\\u0cd5' .. '\\u0cd6' | '\\u0cde' | '\\u0ce0' .. '\\u0ce1' | '\\u0ce6' .. '\\u0cef' | '\\u0d02' .. '\\u0d03' | '\\u0d05' .. '\\u0d0c' | '\\u0d0e' .. '\\u0d10' | '\\u0d12' .. '\\u0d28' | '\\u0d2a' .. '\\u0d39' | '\\u0d3e' .. '\\u0d43' | '\\u0d46' .. '\\u0d48' | '\\u0d4a' .. '\\u0d4d' | '\\u0d57' | '\\u0d60' .. '\\u0d61' | '\\u0d66' .. '\\u0d6f' | '\\u0d82' .. '\\u0d83' | '\\u0d85' .. '\\u0d96' | '\\u0d9a' .. '\\u0db1' | '\\u0db3' .. '\\u0dbb' | '\\u0dbd' | '\\u0dc0' .. '\\u0dc6' | '\\u0dca' | '\\u0dcf' .. '\\u0dd4' | '\\u0dd6' | '\\u0dd8' .. '\\u0ddf' | '\\u0df2' .. '\\u0df3' | '\\u0e01' .. '\\u0e3a' | '\\u0e3f' .. '\\u0e4e' | '\\u0e50' .. '\\u0e59' | '\\u0e81' .. '\\u0e82' | '\\u0e84' | '\\u0e87' .. '\\u0e88' | '\\u0e8a' | '\\u0e8d' | '\\u0e94' .. '\\u0e97' | '\\u0e99' .. '\\u0e9f' | '\\u0ea1' .. '\\u0ea3' | '\\u0ea5' | '\\u0ea7' | '\\u0eaa' .. '\\u0eab' | '\\u0ead' .. '\\u0eb9' | '\\u0ebb' .. '\\u0ebd' | '\\u0ec0' .. '\\u0ec4' | '\\u0ec6' | '\\u0ec8' .. '\\u0ecd' | '\\u0ed0' .. '\\u0ed9' | '\\u0edc' .. '\\u0edd' | '\\u0f00' | '\\u0f18' .. '\\u0f19' | '\\u0f20' .. '\\u0f29' | '\\u0f35' | '\\u0f37' | '\\u0f39' | '\\u0f3e' .. '\\u0f47' | '\\u0f49' .. '\\u0f6a' | '\\u0f71' .. '\\u0f84' | '\\u0f86' .. '\\u0f8b' | '\\u0f90' .. '\\u0f97' | '\\u0f99' .. '\\u0fbc' | '\\u0fc6' | '\\u1000' .. '\\u1021' | '\\u1023' .. '\\u1027' | '\\u1029' .. '\\u102a' | '\\u102c' .. '\\u1032' | '\\u1036' .. '\\u1039' | '\\u1040' .. '\\u1049' | '\\u1050' .. '\\u1059' | '\\u10a0' .. '\\u10c5' | '\\u10d0' .. '\\u10f8' | '\\u1100' .. '\\u1159' | '\\u115f' .. '\\u11a2' | '\\u11a8' .. '\\u11f9' | '\\u1200' .. '\\u1206' | '\\u1208' .. '\\u1246' | '\\u1248' | '\\u124a' .. '\\u124d' | '\\u1250' .. '\\u1256' | '\\u1258' | '\\u125a' .. '\\u125d' | '\\u1260' .. '\\u1286' | '\\u1288' | '\\u128a' .. '\\u128d' | '\\u1290' .. '\\u12ae' | '\\u12b0' | '\\u12b2' .. '\\u12b5' | '\\u12b8' .. '\\u12be' | '\\u12c0' | '\\u12c2' .. '\\u12c5' | '\\u12c8' .. '\\u12ce' | '\\u12d0' .. '\\u12d6' | '\\u12d8' .. '\\u12ee' | '\\u12f0' .. '\\u130e' | '\\u1310' | '\\u1312' .. '\\u1315' | '\\u1318' .. '\\u131e' | '\\u1320' .. '\\u1346' | '\\u1348' .. '\\u135a' | '\\u1369' .. '\\u1371' | '\\u13a0' .. '\\u13f4' | '\\u1401' .. '\\u166c' | '\\u166f' .. '\\u1676' | '\\u1681' .. '\\u169a' | '\\u16a0' .. '\\u16ea' | '\\u16ee' .. '\\u16f0' | '\\u1700' .. '\\u170c' | '\\u170e' .. '\\u1714' | '\\u1720' .. '\\u1734' | '\\u1740' .. '\\u1753' | '\\u1760' .. '\\u176c' | '\\u176e' .. '\\u1770' | '\\u1772' .. '\\u1773' | '\\u1780' .. '\\u17d3' | '\\u17d7' | '\\u17db' .. '\\u17dd' | '\\u17e0' .. '\\u17e9' | '\\u180b' .. '\\u180d' | '\\u1810' .. '\\u1819' | '\\u1820' .. '\\u1877' | '\\u1880' .. '\\u18a9' | '\\u1900' .. '\\u191c' | '\\u1920' .. '\\u192b' | '\\u1930' .. '\\u193b' | '\\u1946' .. '\\u196d' | '\\u1970' .. '\\u1974' | '\\u1d00' .. '\\u1d6b' | '\\u1e00' .. '\\u1e9b' | '\\u1ea0' .. '\\u1ef9' | '\\u1f00' .. '\\u1f15' | '\\u1f18' .. '\\u1f1d' | '\\u1f20' .. '\\u1f45' | '\\u1f48' .. '\\u1f4d' | '\\u1f50' .. '\\u1f57' | '\\u1f59' | '\\u1f5b' | '\\u1f5d' | '\\u1f5f' .. '\\u1f7d' | '\\u1f80' .. '\\u1fb4' | '\\u1fb6' .. '\\u1fbc' | '\\u1fbe' | '\\u1fc2' .. '\\u1fc4' | '\\u1fc6' .. '\\u1fcc' | '\\u1fd0' .. '\\u1fd3' | '\\u1fd6' .. '\\u1fdb' | '\\u1fe0' .. '\\u1fec' | '\\u1ff2' .. '\\u1ff4' | '\\u1ff6' .. '\\u1ffc' | '\\u200c' .. '\\u200f' | '\\u202a' .. '\\u202e' | '\\u203f' .. '\\u2040' | '\\u2054' | '\\u2060' .. '\\u2063' | '\\u206a' .. '\\u206f' | '\\u2071' | '\\u207f' | '\\u20a0' .. '\\u20b1' | '\\u20d0' .. '\\u20dc' | '\\u20e1' | '\\u20e5' .. '\\u20ea' | '\\u2102' | '\\u2107' | '\\u210a' .. '\\u2113' | '\\u2115' | '\\u2119' .. '\\u211d' | '\\u2124' | '\\u2126' | '\\u2128' | '\\u212a' .. '\\u212d' | '\\u212f' .. '\\u2131' | '\\u2133' .. '\\u2139' | '\\u213d' .. '\\u213f' | '\\u2145' .. '\\u2149' | '\\u2160' .. '\\u2183' | '\\u3005' .. '\\u3007' | '\\u3021' .. '\\u302f' | '\\u3031' .. '\\u3035' | '\\u3038' .. '\\u303c' | '\\u3041' .. '\\u3096' | '\\u3099' .. '\\u309a' | '\\u309d' .. '\\u309f' | '\\u30a1' .. '\\u30ff' | '\\u3105' .. '\\u312c' | '\\u3131' .. '\\u318e' | '\\u31a0' .. '\\u31b7' | '\\u31f0' .. '\\u31ff' | '\\u3400' .. '\\u4db5' | '\\u4e00' .. '\\u9fa5' | '\\ua000' .. '\\ua48c' | '\\uac00' .. '\\ud7a3' | '\\uf900' .. '\\ufa2d' | '\\ufa30' .. '\\ufa6a' | '\\ufb00' .. '\\ufb06' | '\\ufb13' .. '\\ufb17' | '\\ufb1d' .. '\\ufb28' | '\\ufb2a' .. '\\ufb36' | '\\ufb38' .. '\\ufb3c' | '\\ufb3e' | '\\ufb40' .. '\\ufb41' | '\\ufb43' .. '\\ufb44' | '\\ufb46' .. '\\ufbb1' | '\\ufbd3' .. '\\ufd3d' | '\\ufd50' .. '\\ufd8f' | '\\ufd92' .. '\\ufdc7' | '\\ufdf0' .. '\\ufdfc' | '\\ufe00' .. '\\ufe0f' | '\\ufe20' .. '\\ufe23' | '\\ufe33' .. '\\ufe34' | '\\ufe4d' .. '\\ufe4f' | '\\ufe69' | '\\ufe70' .. '\\ufe74' | '\\ufe76' .. '\\ufefc' | '\\ufeff' | '\\uff04' | '\\uff10' .. '\\uff19' | '\\uff21' .. '\\uff3a' | '\\uff3f' | '\\uff41' .. '\\uff5a' | '\\uff65' .. '\\uffbe' | '\\uffc2' .. '\\uffc7' | '\\uffca' .. '\\uffcf' | '\\uffd2' .. '\\uffd7' | '\\uffda' .. '\\uffdc' | '\\uffe0' .. '\\uffe1' | '\\uffe5' .. '\\uffe6' | '\\ufff9' .. '\\ufffb' | ( '\\ud800' .. '\\udbff' ) ( '\\udc00' .. '\\udfff' ) )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2156:5: ( '\\u0000' .. '\\u0008' | '\\u000e' .. '\\u001b' | '\\u0024' | '\\u0030' .. '\\u0039' | '\\u0041' .. '\\u005a' | '\\u005f' | '\\u0061' .. '\\u007a' | '\\u007f' .. '\\u009f' | '\\u00a2' .. '\\u00a5' | '\\u00aa' | '\\u00ad' | '\\u00b5' | '\\u00ba' | '\\u00c0' .. '\\u00d6' | '\\u00d8' .. '\\u00f6' | '\\u00f8' .. '\\u0236' | '\\u0250' .. '\\u02c1' | '\\u02c6' .. '\\u02d1' | '\\u02e0' .. '\\u02e4' | '\\u02ee' | '\\u0300' .. '\\u0357' | '\\u035d' .. '\\u036f' | '\\u037a' | '\\u0386' | '\\u0388' .. '\\u038a' | '\\u038c' | '\\u038e' .. '\\u03a1' | '\\u03a3' .. '\\u03ce' | '\\u03d0' .. '\\u03f5' | '\\u03f7' .. '\\u03fb' | '\\u0400' .. '\\u0481' | '\\u0483' .. '\\u0486' | '\\u048a' .. '\\u04ce' | '\\u04d0' .. '\\u04f5' | '\\u04f8' .. '\\u04f9' | '\\u0500' .. '\\u050f' | '\\u0531' .. '\\u0556' | '\\u0559' | '\\u0561' .. '\\u0587' | '\\u0591' .. '\\u05a1' | '\\u05a3' .. '\\u05b9' | '\\u05bb' .. '\\u05bd' | '\\u05bf' | '\\u05c1' .. '\\u05c2' | '\\u05c4' | '\\u05d0' .. '\\u05ea' | '\\u05f0' .. '\\u05f2' | '\\u0600' .. '\\u0603' | '\\u0610' .. '\\u0615' | '\\u0621' .. '\\u063a' | '\\u0640' .. '\\u0658' | '\\u0660' .. '\\u0669' | '\\u066e' .. '\\u06d3' | '\\u06d5' .. '\\u06dd' | '\\u06df' .. '\\u06e8' | '\\u06ea' .. '\\u06fc' | '\\u06ff' | '\\u070f' .. '\\u074a' | '\\u074d' .. '\\u074f' | '\\u0780' .. '\\u07b1' | '\\u0901' .. '\\u0939' | '\\u093c' .. '\\u094d' | '\\u0950' .. '\\u0954' | '\\u0958' .. '\\u0963' | '\\u0966' .. '\\u096f' | '\\u0981' .. '\\u0983' | '\\u0985' .. '\\u098c' | '\\u098f' .. '\\u0990' | '\\u0993' .. '\\u09a8' | '\\u09aa' .. '\\u09b0' | '\\u09b2' | '\\u09b6' .. '\\u09b9' | '\\u09bc' .. '\\u09c4' | '\\u09c7' .. '\\u09c8' | '\\u09cb' .. '\\u09cd' | '\\u09d7' | '\\u09dc' .. '\\u09dd' | '\\u09df' .. '\\u09e3' | '\\u09e6' .. '\\u09f3' | '\\u0a01' .. '\\u0a03' | '\\u0a05' .. '\\u0a0a' | '\\u0a0f' .. '\\u0a10' | '\\u0a13' .. '\\u0a28' | '\\u0a2a' .. '\\u0a30' | '\\u0a32' .. '\\u0a33' | '\\u0a35' .. '\\u0a36' | '\\u0a38' .. '\\u0a39' | '\\u0a3c' | '\\u0a3e' .. '\\u0a42' | '\\u0a47' .. '\\u0a48' | '\\u0a4b' .. '\\u0a4d' | '\\u0a59' .. '\\u0a5c' | '\\u0a5e' | '\\u0a66' .. '\\u0a74' | '\\u0a81' .. '\\u0a83' | '\\u0a85' .. '\\u0a8d' | '\\u0a8f' .. '\\u0a91' | '\\u0a93' .. '\\u0aa8' | '\\u0aaa' .. '\\u0ab0' | '\\u0ab2' .. '\\u0ab3' | '\\u0ab5' .. '\\u0ab9' | '\\u0abc' .. '\\u0ac5' | '\\u0ac7' .. '\\u0ac9' | '\\u0acb' .. '\\u0acd' | '\\u0ad0' | '\\u0ae0' .. '\\u0ae3' | '\\u0ae6' .. '\\u0aef' | '\\u0af1' | '\\u0b01' .. '\\u0b03' | '\\u0b05' .. '\\u0b0c' | '\\u0b0f' .. '\\u0b10' | '\\u0b13' .. '\\u0b28' | '\\u0b2a' .. '\\u0b30' | '\\u0b32' .. '\\u0b33' | '\\u0b35' .. '\\u0b39' | '\\u0b3c' .. '\\u0b43' | '\\u0b47' .. '\\u0b48' | '\\u0b4b' .. '\\u0b4d' | '\\u0b56' .. '\\u0b57' | '\\u0b5c' .. '\\u0b5d' | '\\u0b5f' .. '\\u0b61' | '\\u0b66' .. '\\u0b6f' | '\\u0b71' | '\\u0b82' .. '\\u0b83' | '\\u0b85' .. '\\u0b8a' | '\\u0b8e' .. '\\u0b90' | '\\u0b92' .. '\\u0b95' | '\\u0b99' .. '\\u0b9a' | '\\u0b9c' | '\\u0b9e' .. '\\u0b9f' | '\\u0ba3' .. '\\u0ba4' | '\\u0ba8' .. '\\u0baa' | '\\u0bae' .. '\\u0bb5' | '\\u0bb7' .. '\\u0bb9' | '\\u0bbe' .. '\\u0bc2' | '\\u0bc6' .. '\\u0bc8' | '\\u0bca' .. '\\u0bcd' | '\\u0bd7' | '\\u0be7' .. '\\u0bef' | '\\u0bf9' | '\\u0c01' .. '\\u0c03' | '\\u0c05' .. '\\u0c0c' | '\\u0c0e' .. '\\u0c10' | '\\u0c12' .. '\\u0c28' | '\\u0c2a' .. '\\u0c33' | '\\u0c35' .. '\\u0c39' | '\\u0c3e' .. '\\u0c44' | '\\u0c46' .. '\\u0c48' | '\\u0c4a' .. '\\u0c4d' | '\\u0c55' .. '\\u0c56' | '\\u0c60' .. '\\u0c61' | '\\u0c66' .. '\\u0c6f' | '\\u0c82' .. '\\u0c83' | '\\u0c85' .. '\\u0c8c' | '\\u0c8e' .. '\\u0c90' | '\\u0c92' .. '\\u0ca8' | '\\u0caa' .. '\\u0cb3' | '\\u0cb5' .. '\\u0cb9' | '\\u0cbc' .. '\\u0cc4' | '\\u0cc6' .. '\\u0cc8' | '\\u0cca' .. '\\u0ccd' | '\\u0cd5' .. '\\u0cd6' | '\\u0cde' | '\\u0ce0' .. '\\u0ce1' | '\\u0ce6' .. '\\u0cef' | '\\u0d02' .. '\\u0d03' | '\\u0d05' .. '\\u0d0c' | '\\u0d0e' .. '\\u0d10' | '\\u0d12' .. '\\u0d28' | '\\u0d2a' .. '\\u0d39' | '\\u0d3e' .. '\\u0d43' | '\\u0d46' .. '\\u0d48' | '\\u0d4a' .. '\\u0d4d' | '\\u0d57' | '\\u0d60' .. '\\u0d61' | '\\u0d66' .. '\\u0d6f' | '\\u0d82' .. '\\u0d83' | '\\u0d85' .. '\\u0d96' | '\\u0d9a' .. '\\u0db1' | '\\u0db3' .. '\\u0dbb' | '\\u0dbd' | '\\u0dc0' .. '\\u0dc6' | '\\u0dca' | '\\u0dcf' .. '\\u0dd4' | '\\u0dd6' | '\\u0dd8' .. '\\u0ddf' | '\\u0df2' .. '\\u0df3' | '\\u0e01' .. '\\u0e3a' | '\\u0e3f' .. '\\u0e4e' | '\\u0e50' .. '\\u0e59' | '\\u0e81' .. '\\u0e82' | '\\u0e84' | '\\u0e87' .. '\\u0e88' | '\\u0e8a' | '\\u0e8d' | '\\u0e94' .. '\\u0e97' | '\\u0e99' .. '\\u0e9f' | '\\u0ea1' .. '\\u0ea3' | '\\u0ea5' | '\\u0ea7' | '\\u0eaa' .. '\\u0eab' | '\\u0ead' .. '\\u0eb9' | '\\u0ebb' .. '\\u0ebd' | '\\u0ec0' .. '\\u0ec4' | '\\u0ec6' | '\\u0ec8' .. '\\u0ecd' | '\\u0ed0' .. '\\u0ed9' | '\\u0edc' .. '\\u0edd' | '\\u0f00' | '\\u0f18' .. '\\u0f19' | '\\u0f20' .. '\\u0f29' | '\\u0f35' | '\\u0f37' | '\\u0f39' | '\\u0f3e' .. '\\u0f47' | '\\u0f49' .. '\\u0f6a' | '\\u0f71' .. '\\u0f84' | '\\u0f86' .. '\\u0f8b' | '\\u0f90' .. '\\u0f97' | '\\u0f99' .. '\\u0fbc' | '\\u0fc6' | '\\u1000' .. '\\u1021' | '\\u1023' .. '\\u1027' | '\\u1029' .. '\\u102a' | '\\u102c' .. '\\u1032' | '\\u1036' .. '\\u1039' | '\\u1040' .. '\\u1049' | '\\u1050' .. '\\u1059' | '\\u10a0' .. '\\u10c5' | '\\u10d0' .. '\\u10f8' | '\\u1100' .. '\\u1159' | '\\u115f' .. '\\u11a2' | '\\u11a8' .. '\\u11f9' | '\\u1200' .. '\\u1206' | '\\u1208' .. '\\u1246' | '\\u1248' | '\\u124a' .. '\\u124d' | '\\u1250' .. '\\u1256' | '\\u1258' | '\\u125a' .. '\\u125d' | '\\u1260' .. '\\u1286' | '\\u1288' | '\\u128a' .. '\\u128d' | '\\u1290' .. '\\u12ae' | '\\u12b0' | '\\u12b2' .. '\\u12b5' | '\\u12b8' .. '\\u12be' | '\\u12c0' | '\\u12c2' .. '\\u12c5' | '\\u12c8' .. '\\u12ce' | '\\u12d0' .. '\\u12d6' | '\\u12d8' .. '\\u12ee' | '\\u12f0' .. '\\u130e' | '\\u1310' | '\\u1312' .. '\\u1315' | '\\u1318' .. '\\u131e' | '\\u1320' .. '\\u1346' | '\\u1348' .. '\\u135a' | '\\u1369' .. '\\u1371' | '\\u13a0' .. '\\u13f4' | '\\u1401' .. '\\u166c' | '\\u166f' .. '\\u1676' | '\\u1681' .. '\\u169a' | '\\u16a0' .. '\\u16ea' | '\\u16ee' .. '\\u16f0' | '\\u1700' .. '\\u170c' | '\\u170e' .. '\\u1714' | '\\u1720' .. '\\u1734' | '\\u1740' .. '\\u1753' | '\\u1760' .. '\\u176c' | '\\u176e' .. '\\u1770' | '\\u1772' .. '\\u1773' | '\\u1780' .. '\\u17d3' | '\\u17d7' | '\\u17db' .. '\\u17dd' | '\\u17e0' .. '\\u17e9' | '\\u180b' .. '\\u180d' | '\\u1810' .. '\\u1819' | '\\u1820' .. '\\u1877' | '\\u1880' .. '\\u18a9' | '\\u1900' .. '\\u191c' | '\\u1920' .. '\\u192b' | '\\u1930' .. '\\u193b' | '\\u1946' .. '\\u196d' | '\\u1970' .. '\\u1974' | '\\u1d00' .. '\\u1d6b' | '\\u1e00' .. '\\u1e9b' | '\\u1ea0' .. '\\u1ef9' | '\\u1f00' .. '\\u1f15' | '\\u1f18' .. '\\u1f1d' | '\\u1f20' .. '\\u1f45' | '\\u1f48' .. '\\u1f4d' | '\\u1f50' .. '\\u1f57' | '\\u1f59' | '\\u1f5b' | '\\u1f5d' | '\\u1f5f' .. '\\u1f7d' | '\\u1f80' .. '\\u1fb4' | '\\u1fb6' .. '\\u1fbc' | '\\u1fbe' | '\\u1fc2' .. '\\u1fc4' | '\\u1fc6' .. '\\u1fcc' | '\\u1fd0' .. '\\u1fd3' | '\\u1fd6' .. '\\u1fdb' | '\\u1fe0' .. '\\u1fec' | '\\u1ff2' .. '\\u1ff4' | '\\u1ff6' .. '\\u1ffc' | '\\u200c' .. '\\u200f' | '\\u202a' .. '\\u202e' | '\\u203f' .. '\\u2040' | '\\u2054' | '\\u2060' .. '\\u2063' | '\\u206a' .. '\\u206f' | '\\u2071' | '\\u207f' | '\\u20a0' .. '\\u20b1' | '\\u20d0' .. '\\u20dc' | '\\u20e1' | '\\u20e5' .. '\\u20ea' | '\\u2102' | '\\u2107' | '\\u210a' .. '\\u2113' | '\\u2115' | '\\u2119' .. '\\u211d' | '\\u2124' | '\\u2126' | '\\u2128' | '\\u212a' .. '\\u212d' | '\\u212f' .. '\\u2131' | '\\u2133' .. '\\u2139' | '\\u213d' .. '\\u213f' | '\\u2145' .. '\\u2149' | '\\u2160' .. '\\u2183' | '\\u3005' .. '\\u3007' | '\\u3021' .. '\\u302f' | '\\u3031' .. '\\u3035' | '\\u3038' .. '\\u303c' | '\\u3041' .. '\\u3096' | '\\u3099' .. '\\u309a' | '\\u309d' .. '\\u309f' | '\\u30a1' .. '\\u30ff' | '\\u3105' .. '\\u312c' | '\\u3131' .. '\\u318e' | '\\u31a0' .. '\\u31b7' | '\\u31f0' .. '\\u31ff' | '\\u3400' .. '\\u4db5' | '\\u4e00' .. '\\u9fa5' | '\\ua000' .. '\\ua48c' | '\\uac00' .. '\\ud7a3' | '\\uf900' .. '\\ufa2d' | '\\ufa30' .. '\\ufa6a' | '\\ufb00' .. '\\ufb06' | '\\ufb13' .. '\\ufb17' | '\\ufb1d' .. '\\ufb28' | '\\ufb2a' .. '\\ufb36' | '\\ufb38' .. '\\ufb3c' | '\\ufb3e' | '\\ufb40' .. '\\ufb41' | '\\ufb43' .. '\\ufb44' | '\\ufb46' .. '\\ufbb1' | '\\ufbd3' .. '\\ufd3d' | '\\ufd50' .. '\\ufd8f' | '\\ufd92' .. '\\ufdc7' | '\\ufdf0' .. '\\ufdfc' | '\\ufe00' .. '\\ufe0f' | '\\ufe20' .. '\\ufe23' | '\\ufe33' .. '\\ufe34' | '\\ufe4d' .. '\\ufe4f' | '\\ufe69' | '\\ufe70' .. '\\ufe74' | '\\ufe76' .. '\\ufefc' | '\\ufeff' | '\\uff04' | '\\uff10' .. '\\uff19' | '\\uff21' .. '\\uff3a' | '\\uff3f' | '\\uff41' .. '\\uff5a' | '\\uff65' .. '\\uffbe' | '\\uffc2' .. '\\uffc7' | '\\uffca' .. '\\uffcf' | '\\uffd2' .. '\\uffd7' | '\\uffda' .. '\\uffdc' | '\\uffe0' .. '\\uffe1' | '\\uffe5' .. '\\uffe6' | '\\ufff9' .. '\\ufffb' | ( '\\ud800' .. '\\udbff' ) ( '\\udc00' .. '\\udfff' ) )
             int alt32=386;
             int LA32_0 = input.LA(1);
 
@@ -8175,2702 +8175,2702 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
             }
             switch (alt32) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2127:9: '\\u0000' .. '\\u0008'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2156:9: '\\u0000' .. '\\u0008'
                     {
                     matchRange('\u0000','\b'); 
 
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2128:9: '\\u000e' .. '\\u001b'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2157:9: '\\u000e' .. '\\u001b'
                     {
                     matchRange('\u000E','\u001B'); 
 
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2129:9: '\\u0024'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2158:9: '\\u0024'
                     {
                     match('$'); 
 
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2130:9: '\\u0030' .. '\\u0039'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2159:9: '\\u0030' .. '\\u0039'
                     {
                     matchRange('0','9'); 
 
                     }
                     break;
                 case 5 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2131:9: '\\u0041' .. '\\u005a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2160:9: '\\u0041' .. '\\u005a'
                     {
                     matchRange('A','Z'); 
 
                     }
                     break;
                 case 6 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2132:9: '\\u005f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2161:9: '\\u005f'
                     {
                     match('_'); 
 
                     }
                     break;
                 case 7 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2133:9: '\\u0061' .. '\\u007a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2162:9: '\\u0061' .. '\\u007a'
                     {
                     matchRange('a','z'); 
 
                     }
                     break;
                 case 8 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2134:9: '\\u007f' .. '\\u009f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2163:9: '\\u007f' .. '\\u009f'
                     {
                     matchRange('\u007F','\u009F'); 
 
                     }
                     break;
                 case 9 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2135:9: '\\u00a2' .. '\\u00a5'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2164:9: '\\u00a2' .. '\\u00a5'
                     {
                     matchRange('\u00A2','\u00A5'); 
 
                     }
                     break;
                 case 10 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2136:9: '\\u00aa'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2165:9: '\\u00aa'
                     {
                     match('\u00AA'); 
 
                     }
                     break;
                 case 11 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2137:9: '\\u00ad'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2166:9: '\\u00ad'
                     {
                     match('\u00AD'); 
 
                     }
                     break;
                 case 12 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2138:9: '\\u00b5'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2167:9: '\\u00b5'
                     {
                     match('\u00B5'); 
 
                     }
                     break;
                 case 13 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2139:9: '\\u00ba'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2168:9: '\\u00ba'
                     {
                     match('\u00BA'); 
 
                     }
                     break;
                 case 14 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2140:9: '\\u00c0' .. '\\u00d6'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2169:9: '\\u00c0' .. '\\u00d6'
                     {
                     matchRange('\u00C0','\u00D6'); 
 
                     }
                     break;
                 case 15 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2141:9: '\\u00d8' .. '\\u00f6'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2170:9: '\\u00d8' .. '\\u00f6'
                     {
                     matchRange('\u00D8','\u00F6'); 
 
                     }
                     break;
                 case 16 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2142:9: '\\u00f8' .. '\\u0236'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2171:9: '\\u00f8' .. '\\u0236'
                     {
                     matchRange('\u00F8','\u0236'); 
 
                     }
                     break;
                 case 17 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2143:9: '\\u0250' .. '\\u02c1'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2172:9: '\\u0250' .. '\\u02c1'
                     {
                     matchRange('\u0250','\u02C1'); 
 
                     }
                     break;
                 case 18 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2144:9: '\\u02c6' .. '\\u02d1'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2173:9: '\\u02c6' .. '\\u02d1'
                     {
                     matchRange('\u02C6','\u02D1'); 
 
                     }
                     break;
                 case 19 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2145:9: '\\u02e0' .. '\\u02e4'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2174:9: '\\u02e0' .. '\\u02e4'
                     {
                     matchRange('\u02E0','\u02E4'); 
 
                     }
                     break;
                 case 20 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2146:9: '\\u02ee'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2175:9: '\\u02ee'
                     {
                     match('\u02EE'); 
 
                     }
                     break;
                 case 21 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2147:9: '\\u0300' .. '\\u0357'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2176:9: '\\u0300' .. '\\u0357'
                     {
                     matchRange('\u0300','\u0357'); 
 
                     }
                     break;
                 case 22 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2148:9: '\\u035d' .. '\\u036f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2177:9: '\\u035d' .. '\\u036f'
                     {
                     matchRange('\u035D','\u036F'); 
 
                     }
                     break;
                 case 23 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2149:9: '\\u037a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2178:9: '\\u037a'
                     {
                     match('\u037A'); 
 
                     }
                     break;
                 case 24 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2150:9: '\\u0386'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2179:9: '\\u0386'
                     {
                     match('\u0386'); 
 
                     }
                     break;
                 case 25 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2151:9: '\\u0388' .. '\\u038a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2180:9: '\\u0388' .. '\\u038a'
                     {
                     matchRange('\u0388','\u038A'); 
 
                     }
                     break;
                 case 26 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2152:9: '\\u038c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2181:9: '\\u038c'
                     {
                     match('\u038C'); 
 
                     }
                     break;
                 case 27 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2153:9: '\\u038e' .. '\\u03a1'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2182:9: '\\u038e' .. '\\u03a1'
                     {
                     matchRange('\u038E','\u03A1'); 
 
                     }
                     break;
                 case 28 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2154:9: '\\u03a3' .. '\\u03ce'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2183:9: '\\u03a3' .. '\\u03ce'
                     {
                     matchRange('\u03A3','\u03CE'); 
 
                     }
                     break;
                 case 29 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2155:9: '\\u03d0' .. '\\u03f5'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2184:9: '\\u03d0' .. '\\u03f5'
                     {
                     matchRange('\u03D0','\u03F5'); 
 
                     }
                     break;
                 case 30 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2156:9: '\\u03f7' .. '\\u03fb'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2185:9: '\\u03f7' .. '\\u03fb'
                     {
                     matchRange('\u03F7','\u03FB'); 
 
                     }
                     break;
                 case 31 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2157:9: '\\u0400' .. '\\u0481'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2186:9: '\\u0400' .. '\\u0481'
                     {
                     matchRange('\u0400','\u0481'); 
 
                     }
                     break;
                 case 32 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2158:9: '\\u0483' .. '\\u0486'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2187:9: '\\u0483' .. '\\u0486'
                     {
                     matchRange('\u0483','\u0486'); 
 
                     }
                     break;
                 case 33 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2159:9: '\\u048a' .. '\\u04ce'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2188:9: '\\u048a' .. '\\u04ce'
                     {
                     matchRange('\u048A','\u04CE'); 
 
                     }
                     break;
                 case 34 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2160:9: '\\u04d0' .. '\\u04f5'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2189:9: '\\u04d0' .. '\\u04f5'
                     {
                     matchRange('\u04D0','\u04F5'); 
 
                     }
                     break;
                 case 35 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2161:9: '\\u04f8' .. '\\u04f9'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2190:9: '\\u04f8' .. '\\u04f9'
                     {
                     matchRange('\u04F8','\u04F9'); 
 
                     }
                     break;
                 case 36 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2162:9: '\\u0500' .. '\\u050f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2191:9: '\\u0500' .. '\\u050f'
                     {
                     matchRange('\u0500','\u050F'); 
 
                     }
                     break;
                 case 37 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2163:9: '\\u0531' .. '\\u0556'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2192:9: '\\u0531' .. '\\u0556'
                     {
                     matchRange('\u0531','\u0556'); 
 
                     }
                     break;
                 case 38 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2164:9: '\\u0559'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2193:9: '\\u0559'
                     {
                     match('\u0559'); 
 
                     }
                     break;
                 case 39 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2165:9: '\\u0561' .. '\\u0587'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2194:9: '\\u0561' .. '\\u0587'
                     {
                     matchRange('\u0561','\u0587'); 
 
                     }
                     break;
                 case 40 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2166:9: '\\u0591' .. '\\u05a1'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2195:9: '\\u0591' .. '\\u05a1'
                     {
                     matchRange('\u0591','\u05A1'); 
 
                     }
                     break;
                 case 41 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2167:9: '\\u05a3' .. '\\u05b9'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2196:9: '\\u05a3' .. '\\u05b9'
                     {
                     matchRange('\u05A3','\u05B9'); 
 
                     }
                     break;
                 case 42 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2168:9: '\\u05bb' .. '\\u05bd'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2197:9: '\\u05bb' .. '\\u05bd'
                     {
                     matchRange('\u05BB','\u05BD'); 
 
                     }
                     break;
                 case 43 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2169:9: '\\u05bf'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2198:9: '\\u05bf'
                     {
                     match('\u05BF'); 
 
                     }
                     break;
                 case 44 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2170:9: '\\u05c1' .. '\\u05c2'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2199:9: '\\u05c1' .. '\\u05c2'
                     {
                     matchRange('\u05C1','\u05C2'); 
 
                     }
                     break;
                 case 45 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2171:9: '\\u05c4'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2200:9: '\\u05c4'
                     {
                     match('\u05C4'); 
 
                     }
                     break;
                 case 46 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2172:9: '\\u05d0' .. '\\u05ea'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2201:9: '\\u05d0' .. '\\u05ea'
                     {
                     matchRange('\u05D0','\u05EA'); 
 
                     }
                     break;
                 case 47 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2173:9: '\\u05f0' .. '\\u05f2'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2202:9: '\\u05f0' .. '\\u05f2'
                     {
                     matchRange('\u05F0','\u05F2'); 
 
                     }
                     break;
                 case 48 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2174:9: '\\u0600' .. '\\u0603'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2203:9: '\\u0600' .. '\\u0603'
                     {
                     matchRange('\u0600','\u0603'); 
 
                     }
                     break;
                 case 49 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2175:9: '\\u0610' .. '\\u0615'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2204:9: '\\u0610' .. '\\u0615'
                     {
                     matchRange('\u0610','\u0615'); 
 
                     }
                     break;
                 case 50 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2176:9: '\\u0621' .. '\\u063a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2205:9: '\\u0621' .. '\\u063a'
                     {
                     matchRange('\u0621','\u063A'); 
 
                     }
                     break;
                 case 51 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2177:9: '\\u0640' .. '\\u0658'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2206:9: '\\u0640' .. '\\u0658'
                     {
                     matchRange('\u0640','\u0658'); 
 
                     }
                     break;
                 case 52 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2178:9: '\\u0660' .. '\\u0669'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2207:9: '\\u0660' .. '\\u0669'
                     {
                     matchRange('\u0660','\u0669'); 
 
                     }
                     break;
                 case 53 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2179:9: '\\u066e' .. '\\u06d3'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2208:9: '\\u066e' .. '\\u06d3'
                     {
                     matchRange('\u066E','\u06D3'); 
 
                     }
                     break;
                 case 54 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2180:9: '\\u06d5' .. '\\u06dd'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2209:9: '\\u06d5' .. '\\u06dd'
                     {
                     matchRange('\u06D5','\u06DD'); 
 
                     }
                     break;
                 case 55 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2181:9: '\\u06df' .. '\\u06e8'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2210:9: '\\u06df' .. '\\u06e8'
                     {
                     matchRange('\u06DF','\u06E8'); 
 
                     }
                     break;
                 case 56 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2182:9: '\\u06ea' .. '\\u06fc'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2211:9: '\\u06ea' .. '\\u06fc'
                     {
                     matchRange('\u06EA','\u06FC'); 
 
                     }
                     break;
                 case 57 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2183:9: '\\u06ff'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2212:9: '\\u06ff'
                     {
                     match('\u06FF'); 
 
                     }
                     break;
                 case 58 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2184:9: '\\u070f' .. '\\u074a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2213:9: '\\u070f' .. '\\u074a'
                     {
                     matchRange('\u070F','\u074A'); 
 
                     }
                     break;
                 case 59 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2185:9: '\\u074d' .. '\\u074f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2214:9: '\\u074d' .. '\\u074f'
                     {
                     matchRange('\u074D','\u074F'); 
 
                     }
                     break;
                 case 60 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2186:9: '\\u0780' .. '\\u07b1'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2215:9: '\\u0780' .. '\\u07b1'
                     {
                     matchRange('\u0780','\u07B1'); 
 
                     }
                     break;
                 case 61 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2187:9: '\\u0901' .. '\\u0939'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2216:9: '\\u0901' .. '\\u0939'
                     {
                     matchRange('\u0901','\u0939'); 
 
                     }
                     break;
                 case 62 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2188:9: '\\u093c' .. '\\u094d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2217:9: '\\u093c' .. '\\u094d'
                     {
                     matchRange('\u093C','\u094D'); 
 
                     }
                     break;
                 case 63 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2189:9: '\\u0950' .. '\\u0954'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2218:9: '\\u0950' .. '\\u0954'
                     {
                     matchRange('\u0950','\u0954'); 
 
                     }
                     break;
                 case 64 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2190:9: '\\u0958' .. '\\u0963'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2219:9: '\\u0958' .. '\\u0963'
                     {
                     matchRange('\u0958','\u0963'); 
 
                     }
                     break;
                 case 65 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2191:9: '\\u0966' .. '\\u096f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2220:9: '\\u0966' .. '\\u096f'
                     {
                     matchRange('\u0966','\u096F'); 
 
                     }
                     break;
                 case 66 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2192:9: '\\u0981' .. '\\u0983'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2221:9: '\\u0981' .. '\\u0983'
                     {
                     matchRange('\u0981','\u0983'); 
 
                     }
                     break;
                 case 67 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2193:9: '\\u0985' .. '\\u098c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2222:9: '\\u0985' .. '\\u098c'
                     {
                     matchRange('\u0985','\u098C'); 
 
                     }
                     break;
                 case 68 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2194:9: '\\u098f' .. '\\u0990'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2223:9: '\\u098f' .. '\\u0990'
                     {
                     matchRange('\u098F','\u0990'); 
 
                     }
                     break;
                 case 69 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2195:9: '\\u0993' .. '\\u09a8'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2224:9: '\\u0993' .. '\\u09a8'
                     {
                     matchRange('\u0993','\u09A8'); 
 
                     }
                     break;
                 case 70 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2196:9: '\\u09aa' .. '\\u09b0'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2225:9: '\\u09aa' .. '\\u09b0'
                     {
                     matchRange('\u09AA','\u09B0'); 
 
                     }
                     break;
                 case 71 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2197:9: '\\u09b2'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2226:9: '\\u09b2'
                     {
                     match('\u09B2'); 
 
                     }
                     break;
                 case 72 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2198:9: '\\u09b6' .. '\\u09b9'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2227:9: '\\u09b6' .. '\\u09b9'
                     {
                     matchRange('\u09B6','\u09B9'); 
 
                     }
                     break;
                 case 73 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2199:9: '\\u09bc' .. '\\u09c4'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2228:9: '\\u09bc' .. '\\u09c4'
                     {
                     matchRange('\u09BC','\u09C4'); 
 
                     }
                     break;
                 case 74 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2200:9: '\\u09c7' .. '\\u09c8'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2229:9: '\\u09c7' .. '\\u09c8'
                     {
                     matchRange('\u09C7','\u09C8'); 
 
                     }
                     break;
                 case 75 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2201:9: '\\u09cb' .. '\\u09cd'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2230:9: '\\u09cb' .. '\\u09cd'
                     {
                     matchRange('\u09CB','\u09CD'); 
 
                     }
                     break;
                 case 76 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2202:9: '\\u09d7'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2231:9: '\\u09d7'
                     {
                     match('\u09D7'); 
 
                     }
                     break;
                 case 77 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2203:9: '\\u09dc' .. '\\u09dd'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2232:9: '\\u09dc' .. '\\u09dd'
                     {
                     matchRange('\u09DC','\u09DD'); 
 
                     }
                     break;
                 case 78 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2204:9: '\\u09df' .. '\\u09e3'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2233:9: '\\u09df' .. '\\u09e3'
                     {
                     matchRange('\u09DF','\u09E3'); 
 
                     }
                     break;
                 case 79 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2205:9: '\\u09e6' .. '\\u09f3'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2234:9: '\\u09e6' .. '\\u09f3'
                     {
                     matchRange('\u09E6','\u09F3'); 
 
                     }
                     break;
                 case 80 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2206:9: '\\u0a01' .. '\\u0a03'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2235:9: '\\u0a01' .. '\\u0a03'
                     {
                     matchRange('\u0A01','\u0A03'); 
 
                     }
                     break;
                 case 81 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2207:9: '\\u0a05' .. '\\u0a0a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2236:9: '\\u0a05' .. '\\u0a0a'
                     {
                     matchRange('\u0A05','\u0A0A'); 
 
                     }
                     break;
                 case 82 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2208:9: '\\u0a0f' .. '\\u0a10'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2237:9: '\\u0a0f' .. '\\u0a10'
                     {
                     matchRange('\u0A0F','\u0A10'); 
 
                     }
                     break;
                 case 83 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2209:9: '\\u0a13' .. '\\u0a28'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2238:9: '\\u0a13' .. '\\u0a28'
                     {
                     matchRange('\u0A13','\u0A28'); 
 
                     }
                     break;
                 case 84 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2210:9: '\\u0a2a' .. '\\u0a30'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2239:9: '\\u0a2a' .. '\\u0a30'
                     {
                     matchRange('\u0A2A','\u0A30'); 
 
                     }
                     break;
                 case 85 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2211:9: '\\u0a32' .. '\\u0a33'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2240:9: '\\u0a32' .. '\\u0a33'
                     {
                     matchRange('\u0A32','\u0A33'); 
 
                     }
                     break;
                 case 86 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2212:9: '\\u0a35' .. '\\u0a36'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2241:9: '\\u0a35' .. '\\u0a36'
                     {
                     matchRange('\u0A35','\u0A36'); 
 
                     }
                     break;
                 case 87 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2213:9: '\\u0a38' .. '\\u0a39'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2242:9: '\\u0a38' .. '\\u0a39'
                     {
                     matchRange('\u0A38','\u0A39'); 
 
                     }
                     break;
                 case 88 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2214:9: '\\u0a3c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2243:9: '\\u0a3c'
                     {
                     match('\u0A3C'); 
 
                     }
                     break;
                 case 89 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2215:9: '\\u0a3e' .. '\\u0a42'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2244:9: '\\u0a3e' .. '\\u0a42'
                     {
                     matchRange('\u0A3E','\u0A42'); 
 
                     }
                     break;
                 case 90 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2216:9: '\\u0a47' .. '\\u0a48'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2245:9: '\\u0a47' .. '\\u0a48'
                     {
                     matchRange('\u0A47','\u0A48'); 
 
                     }
                     break;
                 case 91 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2217:9: '\\u0a4b' .. '\\u0a4d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2246:9: '\\u0a4b' .. '\\u0a4d'
                     {
                     matchRange('\u0A4B','\u0A4D'); 
 
                     }
                     break;
                 case 92 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2218:9: '\\u0a59' .. '\\u0a5c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2247:9: '\\u0a59' .. '\\u0a5c'
                     {
                     matchRange('\u0A59','\u0A5C'); 
 
                     }
                     break;
                 case 93 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2219:9: '\\u0a5e'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2248:9: '\\u0a5e'
                     {
                     match('\u0A5E'); 
 
                     }
                     break;
                 case 94 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2220:9: '\\u0a66' .. '\\u0a74'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2249:9: '\\u0a66' .. '\\u0a74'
                     {
                     matchRange('\u0A66','\u0A74'); 
 
                     }
                     break;
                 case 95 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2221:9: '\\u0a81' .. '\\u0a83'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2250:9: '\\u0a81' .. '\\u0a83'
                     {
                     matchRange('\u0A81','\u0A83'); 
 
                     }
                     break;
                 case 96 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2222:9: '\\u0a85' .. '\\u0a8d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2251:9: '\\u0a85' .. '\\u0a8d'
                     {
                     matchRange('\u0A85','\u0A8D'); 
 
                     }
                     break;
                 case 97 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2223:9: '\\u0a8f' .. '\\u0a91'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2252:9: '\\u0a8f' .. '\\u0a91'
                     {
                     matchRange('\u0A8F','\u0A91'); 
 
                     }
                     break;
                 case 98 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2224:9: '\\u0a93' .. '\\u0aa8'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2253:9: '\\u0a93' .. '\\u0aa8'
                     {
                     matchRange('\u0A93','\u0AA8'); 
 
                     }
                     break;
                 case 99 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2225:9: '\\u0aaa' .. '\\u0ab0'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2254:9: '\\u0aaa' .. '\\u0ab0'
                     {
                     matchRange('\u0AAA','\u0AB0'); 
 
                     }
                     break;
                 case 100 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2226:9: '\\u0ab2' .. '\\u0ab3'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2255:9: '\\u0ab2' .. '\\u0ab3'
                     {
                     matchRange('\u0AB2','\u0AB3'); 
 
                     }
                     break;
                 case 101 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2227:9: '\\u0ab5' .. '\\u0ab9'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2256:9: '\\u0ab5' .. '\\u0ab9'
                     {
                     matchRange('\u0AB5','\u0AB9'); 
 
                     }
                     break;
                 case 102 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2228:9: '\\u0abc' .. '\\u0ac5'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2257:9: '\\u0abc' .. '\\u0ac5'
                     {
                     matchRange('\u0ABC','\u0AC5'); 
 
                     }
                     break;
                 case 103 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2229:9: '\\u0ac7' .. '\\u0ac9'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2258:9: '\\u0ac7' .. '\\u0ac9'
                     {
                     matchRange('\u0AC7','\u0AC9'); 
 
                     }
                     break;
                 case 104 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2230:9: '\\u0acb' .. '\\u0acd'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2259:9: '\\u0acb' .. '\\u0acd'
                     {
                     matchRange('\u0ACB','\u0ACD'); 
 
                     }
                     break;
                 case 105 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2231:9: '\\u0ad0'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2260:9: '\\u0ad0'
                     {
                     match('\u0AD0'); 
 
                     }
                     break;
                 case 106 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2232:9: '\\u0ae0' .. '\\u0ae3'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2261:9: '\\u0ae0' .. '\\u0ae3'
                     {
                     matchRange('\u0AE0','\u0AE3'); 
 
                     }
                     break;
                 case 107 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2233:9: '\\u0ae6' .. '\\u0aef'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2262:9: '\\u0ae6' .. '\\u0aef'
                     {
                     matchRange('\u0AE6','\u0AEF'); 
 
                     }
                     break;
                 case 108 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2234:9: '\\u0af1'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2263:9: '\\u0af1'
                     {
                     match('\u0AF1'); 
 
                     }
                     break;
                 case 109 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2235:9: '\\u0b01' .. '\\u0b03'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2264:9: '\\u0b01' .. '\\u0b03'
                     {
                     matchRange('\u0B01','\u0B03'); 
 
                     }
                     break;
                 case 110 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2236:9: '\\u0b05' .. '\\u0b0c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2265:9: '\\u0b05' .. '\\u0b0c'
                     {
                     matchRange('\u0B05','\u0B0C'); 
 
                     }
                     break;
                 case 111 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2237:9: '\\u0b0f' .. '\\u0b10'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2266:9: '\\u0b0f' .. '\\u0b10'
                     {
                     matchRange('\u0B0F','\u0B10'); 
 
                     }
                     break;
                 case 112 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2238:9: '\\u0b13' .. '\\u0b28'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2267:9: '\\u0b13' .. '\\u0b28'
                     {
                     matchRange('\u0B13','\u0B28'); 
 
                     }
                     break;
                 case 113 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2239:9: '\\u0b2a' .. '\\u0b30'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2268:9: '\\u0b2a' .. '\\u0b30'
                     {
                     matchRange('\u0B2A','\u0B30'); 
 
                     }
                     break;
                 case 114 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2240:9: '\\u0b32' .. '\\u0b33'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2269:9: '\\u0b32' .. '\\u0b33'
                     {
                     matchRange('\u0B32','\u0B33'); 
 
                     }
                     break;
                 case 115 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2241:9: '\\u0b35' .. '\\u0b39'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2270:9: '\\u0b35' .. '\\u0b39'
                     {
                     matchRange('\u0B35','\u0B39'); 
 
                     }
                     break;
                 case 116 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2242:9: '\\u0b3c' .. '\\u0b43'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2271:9: '\\u0b3c' .. '\\u0b43'
                     {
                     matchRange('\u0B3C','\u0B43'); 
 
                     }
                     break;
                 case 117 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2243:9: '\\u0b47' .. '\\u0b48'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2272:9: '\\u0b47' .. '\\u0b48'
                     {
                     matchRange('\u0B47','\u0B48'); 
 
                     }
                     break;
                 case 118 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2244:9: '\\u0b4b' .. '\\u0b4d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2273:9: '\\u0b4b' .. '\\u0b4d'
                     {
                     matchRange('\u0B4B','\u0B4D'); 
 
                     }
                     break;
                 case 119 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2245:9: '\\u0b56' .. '\\u0b57'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2274:9: '\\u0b56' .. '\\u0b57'
                     {
                     matchRange('\u0B56','\u0B57'); 
 
                     }
                     break;
                 case 120 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2246:9: '\\u0b5c' .. '\\u0b5d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2275:9: '\\u0b5c' .. '\\u0b5d'
                     {
                     matchRange('\u0B5C','\u0B5D'); 
 
                     }
                     break;
                 case 121 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2247:9: '\\u0b5f' .. '\\u0b61'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2276:9: '\\u0b5f' .. '\\u0b61'
                     {
                     matchRange('\u0B5F','\u0B61'); 
 
                     }
                     break;
                 case 122 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2248:9: '\\u0b66' .. '\\u0b6f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2277:9: '\\u0b66' .. '\\u0b6f'
                     {
                     matchRange('\u0B66','\u0B6F'); 
 
                     }
                     break;
                 case 123 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2249:9: '\\u0b71'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2278:9: '\\u0b71'
                     {
                     match('\u0B71'); 
 
                     }
                     break;
                 case 124 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2250:9: '\\u0b82' .. '\\u0b83'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2279:9: '\\u0b82' .. '\\u0b83'
                     {
                     matchRange('\u0B82','\u0B83'); 
 
                     }
                     break;
                 case 125 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2251:9: '\\u0b85' .. '\\u0b8a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2280:9: '\\u0b85' .. '\\u0b8a'
                     {
                     matchRange('\u0B85','\u0B8A'); 
 
                     }
                     break;
                 case 126 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2252:9: '\\u0b8e' .. '\\u0b90'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2281:9: '\\u0b8e' .. '\\u0b90'
                     {
                     matchRange('\u0B8E','\u0B90'); 
 
                     }
                     break;
                 case 127 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2253:9: '\\u0b92' .. '\\u0b95'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2282:9: '\\u0b92' .. '\\u0b95'
                     {
                     matchRange('\u0B92','\u0B95'); 
 
                     }
                     break;
                 case 128 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2254:9: '\\u0b99' .. '\\u0b9a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2283:9: '\\u0b99' .. '\\u0b9a'
                     {
                     matchRange('\u0B99','\u0B9A'); 
 
                     }
                     break;
                 case 129 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2255:9: '\\u0b9c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2284:9: '\\u0b9c'
                     {
                     match('\u0B9C'); 
 
                     }
                     break;
                 case 130 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2256:9: '\\u0b9e' .. '\\u0b9f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2285:9: '\\u0b9e' .. '\\u0b9f'
                     {
                     matchRange('\u0B9E','\u0B9F'); 
 
                     }
                     break;
                 case 131 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2257:9: '\\u0ba3' .. '\\u0ba4'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2286:9: '\\u0ba3' .. '\\u0ba4'
                     {
                     matchRange('\u0BA3','\u0BA4'); 
 
                     }
                     break;
                 case 132 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2258:9: '\\u0ba8' .. '\\u0baa'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2287:9: '\\u0ba8' .. '\\u0baa'
                     {
                     matchRange('\u0BA8','\u0BAA'); 
 
                     }
                     break;
                 case 133 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2259:9: '\\u0bae' .. '\\u0bb5'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2288:9: '\\u0bae' .. '\\u0bb5'
                     {
                     matchRange('\u0BAE','\u0BB5'); 
 
                     }
                     break;
                 case 134 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2260:9: '\\u0bb7' .. '\\u0bb9'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2289:9: '\\u0bb7' .. '\\u0bb9'
                     {
                     matchRange('\u0BB7','\u0BB9'); 
 
                     }
                     break;
                 case 135 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2261:9: '\\u0bbe' .. '\\u0bc2'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2290:9: '\\u0bbe' .. '\\u0bc2'
                     {
                     matchRange('\u0BBE','\u0BC2'); 
 
                     }
                     break;
                 case 136 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2262:9: '\\u0bc6' .. '\\u0bc8'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2291:9: '\\u0bc6' .. '\\u0bc8'
                     {
                     matchRange('\u0BC6','\u0BC8'); 
 
                     }
                     break;
                 case 137 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2263:9: '\\u0bca' .. '\\u0bcd'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2292:9: '\\u0bca' .. '\\u0bcd'
                     {
                     matchRange('\u0BCA','\u0BCD'); 
 
                     }
                     break;
                 case 138 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2264:9: '\\u0bd7'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2293:9: '\\u0bd7'
                     {
                     match('\u0BD7'); 
 
                     }
                     break;
                 case 139 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2265:9: '\\u0be7' .. '\\u0bef'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2294:9: '\\u0be7' .. '\\u0bef'
                     {
                     matchRange('\u0BE7','\u0BEF'); 
 
                     }
                     break;
                 case 140 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2266:9: '\\u0bf9'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2295:9: '\\u0bf9'
                     {
                     match('\u0BF9'); 
 
                     }
                     break;
                 case 141 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2267:9: '\\u0c01' .. '\\u0c03'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2296:9: '\\u0c01' .. '\\u0c03'
                     {
                     matchRange('\u0C01','\u0C03'); 
 
                     }
                     break;
                 case 142 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2268:9: '\\u0c05' .. '\\u0c0c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2297:9: '\\u0c05' .. '\\u0c0c'
                     {
                     matchRange('\u0C05','\u0C0C'); 
 
                     }
                     break;
                 case 143 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2269:9: '\\u0c0e' .. '\\u0c10'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2298:9: '\\u0c0e' .. '\\u0c10'
                     {
                     matchRange('\u0C0E','\u0C10'); 
 
                     }
                     break;
                 case 144 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2270:9: '\\u0c12' .. '\\u0c28'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2299:9: '\\u0c12' .. '\\u0c28'
                     {
                     matchRange('\u0C12','\u0C28'); 
 
                     }
                     break;
                 case 145 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2271:9: '\\u0c2a' .. '\\u0c33'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2300:9: '\\u0c2a' .. '\\u0c33'
                     {
                     matchRange('\u0C2A','\u0C33'); 
 
                     }
                     break;
                 case 146 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2272:9: '\\u0c35' .. '\\u0c39'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2301:9: '\\u0c35' .. '\\u0c39'
                     {
                     matchRange('\u0C35','\u0C39'); 
 
                     }
                     break;
                 case 147 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2273:9: '\\u0c3e' .. '\\u0c44'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2302:9: '\\u0c3e' .. '\\u0c44'
                     {
                     matchRange('\u0C3E','\u0C44'); 
 
                     }
                     break;
                 case 148 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2274:9: '\\u0c46' .. '\\u0c48'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2303:9: '\\u0c46' .. '\\u0c48'
                     {
                     matchRange('\u0C46','\u0C48'); 
 
                     }
                     break;
                 case 149 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2275:9: '\\u0c4a' .. '\\u0c4d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2304:9: '\\u0c4a' .. '\\u0c4d'
                     {
                     matchRange('\u0C4A','\u0C4D'); 
 
                     }
                     break;
                 case 150 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2276:9: '\\u0c55' .. '\\u0c56'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2305:9: '\\u0c55' .. '\\u0c56'
                     {
                     matchRange('\u0C55','\u0C56'); 
 
                     }
                     break;
                 case 151 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2277:9: '\\u0c60' .. '\\u0c61'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2306:9: '\\u0c60' .. '\\u0c61'
                     {
                     matchRange('\u0C60','\u0C61'); 
 
                     }
                     break;
                 case 152 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2278:9: '\\u0c66' .. '\\u0c6f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2307:9: '\\u0c66' .. '\\u0c6f'
                     {
                     matchRange('\u0C66','\u0C6F'); 
 
                     }
                     break;
                 case 153 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2279:9: '\\u0c82' .. '\\u0c83'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2308:9: '\\u0c82' .. '\\u0c83'
                     {
                     matchRange('\u0C82','\u0C83'); 
 
                     }
                     break;
                 case 154 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2280:9: '\\u0c85' .. '\\u0c8c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2309:9: '\\u0c85' .. '\\u0c8c'
                     {
                     matchRange('\u0C85','\u0C8C'); 
 
                     }
                     break;
                 case 155 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2281:9: '\\u0c8e' .. '\\u0c90'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2310:9: '\\u0c8e' .. '\\u0c90'
                     {
                     matchRange('\u0C8E','\u0C90'); 
 
                     }
                     break;
                 case 156 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2282:9: '\\u0c92' .. '\\u0ca8'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2311:9: '\\u0c92' .. '\\u0ca8'
                     {
                     matchRange('\u0C92','\u0CA8'); 
 
                     }
                     break;
                 case 157 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2283:9: '\\u0caa' .. '\\u0cb3'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2312:9: '\\u0caa' .. '\\u0cb3'
                     {
                     matchRange('\u0CAA','\u0CB3'); 
 
                     }
                     break;
                 case 158 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2284:9: '\\u0cb5' .. '\\u0cb9'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2313:9: '\\u0cb5' .. '\\u0cb9'
                     {
                     matchRange('\u0CB5','\u0CB9'); 
 
                     }
                     break;
                 case 159 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2285:9: '\\u0cbc' .. '\\u0cc4'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2314:9: '\\u0cbc' .. '\\u0cc4'
                     {
                     matchRange('\u0CBC','\u0CC4'); 
 
                     }
                     break;
                 case 160 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2286:9: '\\u0cc6' .. '\\u0cc8'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2315:9: '\\u0cc6' .. '\\u0cc8'
                     {
                     matchRange('\u0CC6','\u0CC8'); 
 
                     }
                     break;
                 case 161 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2287:9: '\\u0cca' .. '\\u0ccd'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2316:9: '\\u0cca' .. '\\u0ccd'
                     {
                     matchRange('\u0CCA','\u0CCD'); 
 
                     }
                     break;
                 case 162 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2288:9: '\\u0cd5' .. '\\u0cd6'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2317:9: '\\u0cd5' .. '\\u0cd6'
                     {
                     matchRange('\u0CD5','\u0CD6'); 
 
                     }
                     break;
                 case 163 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2289:9: '\\u0cde'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2318:9: '\\u0cde'
                     {
                     match('\u0CDE'); 
 
                     }
                     break;
                 case 164 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2290:9: '\\u0ce0' .. '\\u0ce1'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2319:9: '\\u0ce0' .. '\\u0ce1'
                     {
                     matchRange('\u0CE0','\u0CE1'); 
 
                     }
                     break;
                 case 165 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2291:9: '\\u0ce6' .. '\\u0cef'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2320:9: '\\u0ce6' .. '\\u0cef'
                     {
                     matchRange('\u0CE6','\u0CEF'); 
 
                     }
                     break;
                 case 166 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2292:9: '\\u0d02' .. '\\u0d03'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2321:9: '\\u0d02' .. '\\u0d03'
                     {
                     matchRange('\u0D02','\u0D03'); 
 
                     }
                     break;
                 case 167 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2293:9: '\\u0d05' .. '\\u0d0c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2322:9: '\\u0d05' .. '\\u0d0c'
                     {
                     matchRange('\u0D05','\u0D0C'); 
 
                     }
                     break;
                 case 168 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2294:9: '\\u0d0e' .. '\\u0d10'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2323:9: '\\u0d0e' .. '\\u0d10'
                     {
                     matchRange('\u0D0E','\u0D10'); 
 
                     }
                     break;
                 case 169 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2295:9: '\\u0d12' .. '\\u0d28'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2324:9: '\\u0d12' .. '\\u0d28'
                     {
                     matchRange('\u0D12','\u0D28'); 
 
                     }
                     break;
                 case 170 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2296:9: '\\u0d2a' .. '\\u0d39'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2325:9: '\\u0d2a' .. '\\u0d39'
                     {
                     matchRange('\u0D2A','\u0D39'); 
 
                     }
                     break;
                 case 171 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2297:9: '\\u0d3e' .. '\\u0d43'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2326:9: '\\u0d3e' .. '\\u0d43'
                     {
                     matchRange('\u0D3E','\u0D43'); 
 
                     }
                     break;
                 case 172 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2298:9: '\\u0d46' .. '\\u0d48'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2327:9: '\\u0d46' .. '\\u0d48'
                     {
                     matchRange('\u0D46','\u0D48'); 
 
                     }
                     break;
                 case 173 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2299:9: '\\u0d4a' .. '\\u0d4d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2328:9: '\\u0d4a' .. '\\u0d4d'
                     {
                     matchRange('\u0D4A','\u0D4D'); 
 
                     }
                     break;
                 case 174 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2300:9: '\\u0d57'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2329:9: '\\u0d57'
                     {
                     match('\u0D57'); 
 
                     }
                     break;
                 case 175 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2301:9: '\\u0d60' .. '\\u0d61'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2330:9: '\\u0d60' .. '\\u0d61'
                     {
                     matchRange('\u0D60','\u0D61'); 
 
                     }
                     break;
                 case 176 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2302:9: '\\u0d66' .. '\\u0d6f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2331:9: '\\u0d66' .. '\\u0d6f'
                     {
                     matchRange('\u0D66','\u0D6F'); 
 
                     }
                     break;
                 case 177 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2303:9: '\\u0d82' .. '\\u0d83'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2332:9: '\\u0d82' .. '\\u0d83'
                     {
                     matchRange('\u0D82','\u0D83'); 
 
                     }
                     break;
                 case 178 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2304:9: '\\u0d85' .. '\\u0d96'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2333:9: '\\u0d85' .. '\\u0d96'
                     {
                     matchRange('\u0D85','\u0D96'); 
 
                     }
                     break;
                 case 179 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2305:9: '\\u0d9a' .. '\\u0db1'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2334:9: '\\u0d9a' .. '\\u0db1'
                     {
                     matchRange('\u0D9A','\u0DB1'); 
 
                     }
                     break;
                 case 180 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2306:9: '\\u0db3' .. '\\u0dbb'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2335:9: '\\u0db3' .. '\\u0dbb'
                     {
                     matchRange('\u0DB3','\u0DBB'); 
 
                     }
                     break;
                 case 181 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2307:9: '\\u0dbd'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2336:9: '\\u0dbd'
                     {
                     match('\u0DBD'); 
 
                     }
                     break;
                 case 182 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2308:9: '\\u0dc0' .. '\\u0dc6'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2337:9: '\\u0dc0' .. '\\u0dc6'
                     {
                     matchRange('\u0DC0','\u0DC6'); 
 
                     }
                     break;
                 case 183 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2309:9: '\\u0dca'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2338:9: '\\u0dca'
                     {
                     match('\u0DCA'); 
 
                     }
                     break;
                 case 184 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2310:9: '\\u0dcf' .. '\\u0dd4'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2339:9: '\\u0dcf' .. '\\u0dd4'
                     {
                     matchRange('\u0DCF','\u0DD4'); 
 
                     }
                     break;
                 case 185 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2311:9: '\\u0dd6'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2340:9: '\\u0dd6'
                     {
                     match('\u0DD6'); 
 
                     }
                     break;
                 case 186 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2312:9: '\\u0dd8' .. '\\u0ddf'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2341:9: '\\u0dd8' .. '\\u0ddf'
                     {
                     matchRange('\u0DD8','\u0DDF'); 
 
                     }
                     break;
                 case 187 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2313:9: '\\u0df2' .. '\\u0df3'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2342:9: '\\u0df2' .. '\\u0df3'
                     {
                     matchRange('\u0DF2','\u0DF3'); 
 
                     }
                     break;
                 case 188 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2314:9: '\\u0e01' .. '\\u0e3a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2343:9: '\\u0e01' .. '\\u0e3a'
                     {
                     matchRange('\u0E01','\u0E3A'); 
 
                     }
                     break;
                 case 189 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2315:9: '\\u0e3f' .. '\\u0e4e'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2344:9: '\\u0e3f' .. '\\u0e4e'
                     {
                     matchRange('\u0E3F','\u0E4E'); 
 
                     }
                     break;
                 case 190 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2316:9: '\\u0e50' .. '\\u0e59'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2345:9: '\\u0e50' .. '\\u0e59'
                     {
                     matchRange('\u0E50','\u0E59'); 
 
                     }
                     break;
                 case 191 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2317:9: '\\u0e81' .. '\\u0e82'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2346:9: '\\u0e81' .. '\\u0e82'
                     {
                     matchRange('\u0E81','\u0E82'); 
 
                     }
                     break;
                 case 192 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2318:9: '\\u0e84'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2347:9: '\\u0e84'
                     {
                     match('\u0E84'); 
 
                     }
                     break;
                 case 193 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2319:9: '\\u0e87' .. '\\u0e88'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2348:9: '\\u0e87' .. '\\u0e88'
                     {
                     matchRange('\u0E87','\u0E88'); 
 
                     }
                     break;
                 case 194 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2320:9: '\\u0e8a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2349:9: '\\u0e8a'
                     {
                     match('\u0E8A'); 
 
                     }
                     break;
                 case 195 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2321:9: '\\u0e8d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2350:9: '\\u0e8d'
                     {
                     match('\u0E8D'); 
 
                     }
                     break;
                 case 196 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2322:9: '\\u0e94' .. '\\u0e97'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2351:9: '\\u0e94' .. '\\u0e97'
                     {
                     matchRange('\u0E94','\u0E97'); 
 
                     }
                     break;
                 case 197 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2323:9: '\\u0e99' .. '\\u0e9f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2352:9: '\\u0e99' .. '\\u0e9f'
                     {
                     matchRange('\u0E99','\u0E9F'); 
 
                     }
                     break;
                 case 198 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2324:9: '\\u0ea1' .. '\\u0ea3'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2353:9: '\\u0ea1' .. '\\u0ea3'
                     {
                     matchRange('\u0EA1','\u0EA3'); 
 
                     }
                     break;
                 case 199 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2325:9: '\\u0ea5'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2354:9: '\\u0ea5'
                     {
                     match('\u0EA5'); 
 
                     }
                     break;
                 case 200 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2326:9: '\\u0ea7'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2355:9: '\\u0ea7'
                     {
                     match('\u0EA7'); 
 
                     }
                     break;
                 case 201 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2327:9: '\\u0eaa' .. '\\u0eab'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2356:9: '\\u0eaa' .. '\\u0eab'
                     {
                     matchRange('\u0EAA','\u0EAB'); 
 
                     }
                     break;
                 case 202 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2328:9: '\\u0ead' .. '\\u0eb9'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2357:9: '\\u0ead' .. '\\u0eb9'
                     {
                     matchRange('\u0EAD','\u0EB9'); 
 
                     }
                     break;
                 case 203 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2329:9: '\\u0ebb' .. '\\u0ebd'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2358:9: '\\u0ebb' .. '\\u0ebd'
                     {
                     matchRange('\u0EBB','\u0EBD'); 
 
                     }
                     break;
                 case 204 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2330:9: '\\u0ec0' .. '\\u0ec4'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2359:9: '\\u0ec0' .. '\\u0ec4'
                     {
                     matchRange('\u0EC0','\u0EC4'); 
 
                     }
                     break;
                 case 205 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2331:9: '\\u0ec6'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2360:9: '\\u0ec6'
                     {
                     match('\u0EC6'); 
 
                     }
                     break;
                 case 206 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2332:9: '\\u0ec8' .. '\\u0ecd'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2361:9: '\\u0ec8' .. '\\u0ecd'
                     {
                     matchRange('\u0EC8','\u0ECD'); 
 
                     }
                     break;
                 case 207 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2333:9: '\\u0ed0' .. '\\u0ed9'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2362:9: '\\u0ed0' .. '\\u0ed9'
                     {
                     matchRange('\u0ED0','\u0ED9'); 
 
                     }
                     break;
                 case 208 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2334:9: '\\u0edc' .. '\\u0edd'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2363:9: '\\u0edc' .. '\\u0edd'
                     {
                     matchRange('\u0EDC','\u0EDD'); 
 
                     }
                     break;
                 case 209 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2335:9: '\\u0f00'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2364:9: '\\u0f00'
                     {
                     match('\u0F00'); 
 
                     }
                     break;
                 case 210 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2336:9: '\\u0f18' .. '\\u0f19'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2365:9: '\\u0f18' .. '\\u0f19'
                     {
                     matchRange('\u0F18','\u0F19'); 
 
                     }
                     break;
                 case 211 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2337:9: '\\u0f20' .. '\\u0f29'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2366:9: '\\u0f20' .. '\\u0f29'
                     {
                     matchRange('\u0F20','\u0F29'); 
 
                     }
                     break;
                 case 212 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2338:9: '\\u0f35'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2367:9: '\\u0f35'
                     {
                     match('\u0F35'); 
 
                     }
                     break;
                 case 213 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2339:9: '\\u0f37'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2368:9: '\\u0f37'
                     {
                     match('\u0F37'); 
 
                     }
                     break;
                 case 214 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2340:9: '\\u0f39'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2369:9: '\\u0f39'
                     {
                     match('\u0F39'); 
 
                     }
                     break;
                 case 215 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2341:9: '\\u0f3e' .. '\\u0f47'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2370:9: '\\u0f3e' .. '\\u0f47'
                     {
                     matchRange('\u0F3E','\u0F47'); 
 
                     }
                     break;
                 case 216 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2342:9: '\\u0f49' .. '\\u0f6a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2371:9: '\\u0f49' .. '\\u0f6a'
                     {
                     matchRange('\u0F49','\u0F6A'); 
 
                     }
                     break;
                 case 217 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2343:9: '\\u0f71' .. '\\u0f84'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2372:9: '\\u0f71' .. '\\u0f84'
                     {
                     matchRange('\u0F71','\u0F84'); 
 
                     }
                     break;
                 case 218 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2344:9: '\\u0f86' .. '\\u0f8b'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2373:9: '\\u0f86' .. '\\u0f8b'
                     {
                     matchRange('\u0F86','\u0F8B'); 
 
                     }
                     break;
                 case 219 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2345:9: '\\u0f90' .. '\\u0f97'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2374:9: '\\u0f90' .. '\\u0f97'
                     {
                     matchRange('\u0F90','\u0F97'); 
 
                     }
                     break;
                 case 220 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2346:9: '\\u0f99' .. '\\u0fbc'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2375:9: '\\u0f99' .. '\\u0fbc'
                     {
                     matchRange('\u0F99','\u0FBC'); 
 
                     }
                     break;
                 case 221 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2347:9: '\\u0fc6'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2376:9: '\\u0fc6'
                     {
                     match('\u0FC6'); 
 
                     }
                     break;
                 case 222 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2348:9: '\\u1000' .. '\\u1021'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2377:9: '\\u1000' .. '\\u1021'
                     {
                     matchRange('\u1000','\u1021'); 
 
                     }
                     break;
                 case 223 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2349:9: '\\u1023' .. '\\u1027'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2378:9: '\\u1023' .. '\\u1027'
                     {
                     matchRange('\u1023','\u1027'); 
 
                     }
                     break;
                 case 224 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2350:9: '\\u1029' .. '\\u102a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2379:9: '\\u1029' .. '\\u102a'
                     {
                     matchRange('\u1029','\u102A'); 
 
                     }
                     break;
                 case 225 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2351:9: '\\u102c' .. '\\u1032'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2380:9: '\\u102c' .. '\\u1032'
                     {
                     matchRange('\u102C','\u1032'); 
 
                     }
                     break;
                 case 226 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2352:9: '\\u1036' .. '\\u1039'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2381:9: '\\u1036' .. '\\u1039'
                     {
                     matchRange('\u1036','\u1039'); 
 
                     }
                     break;
                 case 227 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2353:9: '\\u1040' .. '\\u1049'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2382:9: '\\u1040' .. '\\u1049'
                     {
                     matchRange('\u1040','\u1049'); 
 
                     }
                     break;
                 case 228 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2354:9: '\\u1050' .. '\\u1059'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2383:9: '\\u1050' .. '\\u1059'
                     {
                     matchRange('\u1050','\u1059'); 
 
                     }
                     break;
                 case 229 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2355:9: '\\u10a0' .. '\\u10c5'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2384:9: '\\u10a0' .. '\\u10c5'
                     {
                     matchRange('\u10A0','\u10C5'); 
 
                     }
                     break;
                 case 230 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2356:9: '\\u10d0' .. '\\u10f8'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2385:9: '\\u10d0' .. '\\u10f8'
                     {
                     matchRange('\u10D0','\u10F8'); 
 
                     }
                     break;
                 case 231 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2357:9: '\\u1100' .. '\\u1159'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2386:9: '\\u1100' .. '\\u1159'
                     {
                     matchRange('\u1100','\u1159'); 
 
                     }
                     break;
                 case 232 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2358:9: '\\u115f' .. '\\u11a2'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2387:9: '\\u115f' .. '\\u11a2'
                     {
                     matchRange('\u115F','\u11A2'); 
 
                     }
                     break;
                 case 233 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2359:9: '\\u11a8' .. '\\u11f9'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2388:9: '\\u11a8' .. '\\u11f9'
                     {
                     matchRange('\u11A8','\u11F9'); 
 
                     }
                     break;
                 case 234 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2360:9: '\\u1200' .. '\\u1206'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2389:9: '\\u1200' .. '\\u1206'
                     {
                     matchRange('\u1200','\u1206'); 
 
                     }
                     break;
                 case 235 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2361:9: '\\u1208' .. '\\u1246'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2390:9: '\\u1208' .. '\\u1246'
                     {
                     matchRange('\u1208','\u1246'); 
 
                     }
                     break;
                 case 236 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2362:9: '\\u1248'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2391:9: '\\u1248'
                     {
                     match('\u1248'); 
 
                     }
                     break;
                 case 237 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2363:9: '\\u124a' .. '\\u124d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2392:9: '\\u124a' .. '\\u124d'
                     {
                     matchRange('\u124A','\u124D'); 
 
                     }
                     break;
                 case 238 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2364:9: '\\u1250' .. '\\u1256'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2393:9: '\\u1250' .. '\\u1256'
                     {
                     matchRange('\u1250','\u1256'); 
 
                     }
                     break;
                 case 239 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2365:9: '\\u1258'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2394:9: '\\u1258'
                     {
                     match('\u1258'); 
 
                     }
                     break;
                 case 240 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2366:9: '\\u125a' .. '\\u125d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2395:9: '\\u125a' .. '\\u125d'
                     {
                     matchRange('\u125A','\u125D'); 
 
                     }
                     break;
                 case 241 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2367:9: '\\u1260' .. '\\u1286'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2396:9: '\\u1260' .. '\\u1286'
                     {
                     matchRange('\u1260','\u1286'); 
 
                     }
                     break;
                 case 242 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2368:9: '\\u1288'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2397:9: '\\u1288'
                     {
                     match('\u1288'); 
 
                     }
                     break;
                 case 243 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2369:9: '\\u128a' .. '\\u128d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2398:9: '\\u128a' .. '\\u128d'
                     {
                     matchRange('\u128A','\u128D'); 
 
                     }
                     break;
                 case 244 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2370:9: '\\u1290' .. '\\u12ae'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2399:9: '\\u1290' .. '\\u12ae'
                     {
                     matchRange('\u1290','\u12AE'); 
 
                     }
                     break;
                 case 245 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2371:9: '\\u12b0'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2400:9: '\\u12b0'
                     {
                     match('\u12B0'); 
 
                     }
                     break;
                 case 246 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2372:9: '\\u12b2' .. '\\u12b5'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2401:9: '\\u12b2' .. '\\u12b5'
                     {
                     matchRange('\u12B2','\u12B5'); 
 
                     }
                     break;
                 case 247 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2373:9: '\\u12b8' .. '\\u12be'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2402:9: '\\u12b8' .. '\\u12be'
                     {
                     matchRange('\u12B8','\u12BE'); 
 
                     }
                     break;
                 case 248 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2374:9: '\\u12c0'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2403:9: '\\u12c0'
                     {
                     match('\u12C0'); 
 
                     }
                     break;
                 case 249 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2375:9: '\\u12c2' .. '\\u12c5'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2404:9: '\\u12c2' .. '\\u12c5'
                     {
                     matchRange('\u12C2','\u12C5'); 
 
                     }
                     break;
                 case 250 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2376:9: '\\u12c8' .. '\\u12ce'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2405:9: '\\u12c8' .. '\\u12ce'
                     {
                     matchRange('\u12C8','\u12CE'); 
 
                     }
                     break;
                 case 251 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2377:9: '\\u12d0' .. '\\u12d6'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2406:9: '\\u12d0' .. '\\u12d6'
                     {
                     matchRange('\u12D0','\u12D6'); 
 
                     }
                     break;
                 case 252 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2378:9: '\\u12d8' .. '\\u12ee'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2407:9: '\\u12d8' .. '\\u12ee'
                     {
                     matchRange('\u12D8','\u12EE'); 
 
                     }
                     break;
                 case 253 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2379:9: '\\u12f0' .. '\\u130e'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2408:9: '\\u12f0' .. '\\u130e'
                     {
                     matchRange('\u12F0','\u130E'); 
 
                     }
                     break;
                 case 254 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2380:9: '\\u1310'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2409:9: '\\u1310'
                     {
                     match('\u1310'); 
 
                     }
                     break;
                 case 255 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2381:9: '\\u1312' .. '\\u1315'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2410:9: '\\u1312' .. '\\u1315'
                     {
                     matchRange('\u1312','\u1315'); 
 
                     }
                     break;
                 case 256 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2382:9: '\\u1318' .. '\\u131e'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2411:9: '\\u1318' .. '\\u131e'
                     {
                     matchRange('\u1318','\u131E'); 
 
                     }
                     break;
                 case 257 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2383:9: '\\u1320' .. '\\u1346'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2412:9: '\\u1320' .. '\\u1346'
                     {
                     matchRange('\u1320','\u1346'); 
 
                     }
                     break;
                 case 258 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2384:9: '\\u1348' .. '\\u135a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2413:9: '\\u1348' .. '\\u135a'
                     {
                     matchRange('\u1348','\u135A'); 
 
                     }
                     break;
                 case 259 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2385:9: '\\u1369' .. '\\u1371'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2414:9: '\\u1369' .. '\\u1371'
                     {
                     matchRange('\u1369','\u1371'); 
 
                     }
                     break;
                 case 260 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2386:9: '\\u13a0' .. '\\u13f4'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2415:9: '\\u13a0' .. '\\u13f4'
                     {
                     matchRange('\u13A0','\u13F4'); 
 
                     }
                     break;
                 case 261 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2387:9: '\\u1401' .. '\\u166c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2416:9: '\\u1401' .. '\\u166c'
                     {
                     matchRange('\u1401','\u166C'); 
 
                     }
                     break;
                 case 262 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2388:9: '\\u166f' .. '\\u1676'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2417:9: '\\u166f' .. '\\u1676'
                     {
                     matchRange('\u166F','\u1676'); 
 
                     }
                     break;
                 case 263 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2389:9: '\\u1681' .. '\\u169a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2418:9: '\\u1681' .. '\\u169a'
                     {
                     matchRange('\u1681','\u169A'); 
 
                     }
                     break;
                 case 264 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2390:9: '\\u16a0' .. '\\u16ea'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2419:9: '\\u16a0' .. '\\u16ea'
                     {
                     matchRange('\u16A0','\u16EA'); 
 
                     }
                     break;
                 case 265 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2391:9: '\\u16ee' .. '\\u16f0'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2420:9: '\\u16ee' .. '\\u16f0'
                     {
                     matchRange('\u16EE','\u16F0'); 
 
                     }
                     break;
                 case 266 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2392:9: '\\u1700' .. '\\u170c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2421:9: '\\u1700' .. '\\u170c'
                     {
                     matchRange('\u1700','\u170C'); 
 
                     }
                     break;
                 case 267 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2393:9: '\\u170e' .. '\\u1714'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2422:9: '\\u170e' .. '\\u1714'
                     {
                     matchRange('\u170E','\u1714'); 
 
                     }
                     break;
                 case 268 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2394:9: '\\u1720' .. '\\u1734'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2423:9: '\\u1720' .. '\\u1734'
                     {
                     matchRange('\u1720','\u1734'); 
 
                     }
                     break;
                 case 269 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2395:9: '\\u1740' .. '\\u1753'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2424:9: '\\u1740' .. '\\u1753'
                     {
                     matchRange('\u1740','\u1753'); 
 
                     }
                     break;
                 case 270 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2396:9: '\\u1760' .. '\\u176c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2425:9: '\\u1760' .. '\\u176c'
                     {
                     matchRange('\u1760','\u176C'); 
 
                     }
                     break;
                 case 271 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2397:9: '\\u176e' .. '\\u1770'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2426:9: '\\u176e' .. '\\u1770'
                     {
                     matchRange('\u176E','\u1770'); 
 
                     }
                     break;
                 case 272 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2398:9: '\\u1772' .. '\\u1773'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2427:9: '\\u1772' .. '\\u1773'
                     {
                     matchRange('\u1772','\u1773'); 
 
                     }
                     break;
                 case 273 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2399:9: '\\u1780' .. '\\u17d3'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2428:9: '\\u1780' .. '\\u17d3'
                     {
                     matchRange('\u1780','\u17D3'); 
 
                     }
                     break;
                 case 274 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2400:9: '\\u17d7'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2429:9: '\\u17d7'
                     {
                     match('\u17D7'); 
 
                     }
                     break;
                 case 275 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2401:9: '\\u17db' .. '\\u17dd'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2430:9: '\\u17db' .. '\\u17dd'
                     {
                     matchRange('\u17DB','\u17DD'); 
 
                     }
                     break;
                 case 276 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2402:9: '\\u17e0' .. '\\u17e9'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2431:9: '\\u17e0' .. '\\u17e9'
                     {
                     matchRange('\u17E0','\u17E9'); 
 
                     }
                     break;
                 case 277 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2403:9: '\\u180b' .. '\\u180d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2432:9: '\\u180b' .. '\\u180d'
                     {
                     matchRange('\u180B','\u180D'); 
 
                     }
                     break;
                 case 278 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2404:9: '\\u1810' .. '\\u1819'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2433:9: '\\u1810' .. '\\u1819'
                     {
                     matchRange('\u1810','\u1819'); 
 
                     }
                     break;
                 case 279 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2405:9: '\\u1820' .. '\\u1877'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2434:9: '\\u1820' .. '\\u1877'
                     {
                     matchRange('\u1820','\u1877'); 
 
                     }
                     break;
                 case 280 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2406:9: '\\u1880' .. '\\u18a9'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2435:9: '\\u1880' .. '\\u18a9'
                     {
                     matchRange('\u1880','\u18A9'); 
 
                     }
                     break;
                 case 281 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2407:9: '\\u1900' .. '\\u191c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2436:9: '\\u1900' .. '\\u191c'
                     {
                     matchRange('\u1900','\u191C'); 
 
                     }
                     break;
                 case 282 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2408:9: '\\u1920' .. '\\u192b'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2437:9: '\\u1920' .. '\\u192b'
                     {
                     matchRange('\u1920','\u192B'); 
 
                     }
                     break;
                 case 283 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2409:9: '\\u1930' .. '\\u193b'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2438:9: '\\u1930' .. '\\u193b'
                     {
                     matchRange('\u1930','\u193B'); 
 
                     }
                     break;
                 case 284 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2410:9: '\\u1946' .. '\\u196d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2439:9: '\\u1946' .. '\\u196d'
                     {
                     matchRange('\u1946','\u196D'); 
 
                     }
                     break;
                 case 285 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2411:9: '\\u1970' .. '\\u1974'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2440:9: '\\u1970' .. '\\u1974'
                     {
                     matchRange('\u1970','\u1974'); 
 
                     }
                     break;
                 case 286 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2412:9: '\\u1d00' .. '\\u1d6b'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2441:9: '\\u1d00' .. '\\u1d6b'
                     {
                     matchRange('\u1D00','\u1D6B'); 
 
                     }
                     break;
                 case 287 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2413:9: '\\u1e00' .. '\\u1e9b'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2442:9: '\\u1e00' .. '\\u1e9b'
                     {
                     matchRange('\u1E00','\u1E9B'); 
 
                     }
                     break;
                 case 288 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2414:9: '\\u1ea0' .. '\\u1ef9'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2443:9: '\\u1ea0' .. '\\u1ef9'
                     {
                     matchRange('\u1EA0','\u1EF9'); 
 
                     }
                     break;
                 case 289 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2415:9: '\\u1f00' .. '\\u1f15'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2444:9: '\\u1f00' .. '\\u1f15'
                     {
                     matchRange('\u1F00','\u1F15'); 
 
                     }
                     break;
                 case 290 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2416:9: '\\u1f18' .. '\\u1f1d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2445:9: '\\u1f18' .. '\\u1f1d'
                     {
                     matchRange('\u1F18','\u1F1D'); 
 
                     }
                     break;
                 case 291 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2417:9: '\\u1f20' .. '\\u1f45'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2446:9: '\\u1f20' .. '\\u1f45'
                     {
                     matchRange('\u1F20','\u1F45'); 
 
                     }
                     break;
                 case 292 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2418:9: '\\u1f48' .. '\\u1f4d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2447:9: '\\u1f48' .. '\\u1f4d'
                     {
                     matchRange('\u1F48','\u1F4D'); 
 
                     }
                     break;
                 case 293 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2419:9: '\\u1f50' .. '\\u1f57'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2448:9: '\\u1f50' .. '\\u1f57'
                     {
                     matchRange('\u1F50','\u1F57'); 
 
                     }
                     break;
                 case 294 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2420:9: '\\u1f59'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2449:9: '\\u1f59'
                     {
                     match('\u1F59'); 
 
                     }
                     break;
                 case 295 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2421:9: '\\u1f5b'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2450:9: '\\u1f5b'
                     {
                     match('\u1F5B'); 
 
                     }
                     break;
                 case 296 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2422:9: '\\u1f5d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2451:9: '\\u1f5d'
                     {
                     match('\u1F5D'); 
 
                     }
                     break;
                 case 297 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2423:9: '\\u1f5f' .. '\\u1f7d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2452:9: '\\u1f5f' .. '\\u1f7d'
                     {
                     matchRange('\u1F5F','\u1F7D'); 
 
                     }
                     break;
                 case 298 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2424:9: '\\u1f80' .. '\\u1fb4'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2453:9: '\\u1f80' .. '\\u1fb4'
                     {
                     matchRange('\u1F80','\u1FB4'); 
 
                     }
                     break;
                 case 299 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2425:9: '\\u1fb6' .. '\\u1fbc'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2454:9: '\\u1fb6' .. '\\u1fbc'
                     {
                     matchRange('\u1FB6','\u1FBC'); 
 
                     }
                     break;
                 case 300 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2426:9: '\\u1fbe'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2455:9: '\\u1fbe'
                     {
                     match('\u1FBE'); 
 
                     }
                     break;
                 case 301 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2427:9: '\\u1fc2' .. '\\u1fc4'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2456:9: '\\u1fc2' .. '\\u1fc4'
                     {
                     matchRange('\u1FC2','\u1FC4'); 
 
                     }
                     break;
                 case 302 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2428:9: '\\u1fc6' .. '\\u1fcc'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2457:9: '\\u1fc6' .. '\\u1fcc'
                     {
                     matchRange('\u1FC6','\u1FCC'); 
 
                     }
                     break;
                 case 303 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2429:9: '\\u1fd0' .. '\\u1fd3'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2458:9: '\\u1fd0' .. '\\u1fd3'
                     {
                     matchRange('\u1FD0','\u1FD3'); 
 
                     }
                     break;
                 case 304 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2430:9: '\\u1fd6' .. '\\u1fdb'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2459:9: '\\u1fd6' .. '\\u1fdb'
                     {
                     matchRange('\u1FD6','\u1FDB'); 
 
                     }
                     break;
                 case 305 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2431:9: '\\u1fe0' .. '\\u1fec'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2460:9: '\\u1fe0' .. '\\u1fec'
                     {
                     matchRange('\u1FE0','\u1FEC'); 
 
                     }
                     break;
                 case 306 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2432:9: '\\u1ff2' .. '\\u1ff4'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2461:9: '\\u1ff2' .. '\\u1ff4'
                     {
                     matchRange('\u1FF2','\u1FF4'); 
 
                     }
                     break;
                 case 307 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2433:9: '\\u1ff6' .. '\\u1ffc'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2462:9: '\\u1ff6' .. '\\u1ffc'
                     {
                     matchRange('\u1FF6','\u1FFC'); 
 
                     }
                     break;
                 case 308 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2434:9: '\\u200c' .. '\\u200f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2463:9: '\\u200c' .. '\\u200f'
                     {
                     matchRange('\u200C','\u200F'); 
 
                     }
                     break;
                 case 309 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2435:9: '\\u202a' .. '\\u202e'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2464:9: '\\u202a' .. '\\u202e'
                     {
                     matchRange('\u202A','\u202E'); 
 
                     }
                     break;
                 case 310 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2436:9: '\\u203f' .. '\\u2040'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2465:9: '\\u203f' .. '\\u2040'
                     {
                     matchRange('\u203F','\u2040'); 
 
                     }
                     break;
                 case 311 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2437:9: '\\u2054'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2466:9: '\\u2054'
                     {
                     match('\u2054'); 
 
                     }
                     break;
                 case 312 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2438:9: '\\u2060' .. '\\u2063'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2467:9: '\\u2060' .. '\\u2063'
                     {
                     matchRange('\u2060','\u2063'); 
 
                     }
                     break;
                 case 313 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2439:9: '\\u206a' .. '\\u206f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2468:9: '\\u206a' .. '\\u206f'
                     {
                     matchRange('\u206A','\u206F'); 
 
                     }
                     break;
                 case 314 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2440:9: '\\u2071'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2469:9: '\\u2071'
                     {
                     match('\u2071'); 
 
                     }
                     break;
                 case 315 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2441:9: '\\u207f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2470:9: '\\u207f'
                     {
                     match('\u207F'); 
 
                     }
                     break;
                 case 316 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2442:9: '\\u20a0' .. '\\u20b1'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2471:9: '\\u20a0' .. '\\u20b1'
                     {
                     matchRange('\u20A0','\u20B1'); 
 
                     }
                     break;
                 case 317 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2443:9: '\\u20d0' .. '\\u20dc'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2472:9: '\\u20d0' .. '\\u20dc'
                     {
                     matchRange('\u20D0','\u20DC'); 
 
                     }
                     break;
                 case 318 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2444:9: '\\u20e1'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2473:9: '\\u20e1'
                     {
                     match('\u20E1'); 
 
                     }
                     break;
                 case 319 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2445:9: '\\u20e5' .. '\\u20ea'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2474:9: '\\u20e5' .. '\\u20ea'
                     {
                     matchRange('\u20E5','\u20EA'); 
 
                     }
                     break;
                 case 320 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2446:9: '\\u2102'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2475:9: '\\u2102'
                     {
                     match('\u2102'); 
 
                     }
                     break;
                 case 321 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2447:9: '\\u2107'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2476:9: '\\u2107'
                     {
                     match('\u2107'); 
 
                     }
                     break;
                 case 322 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2448:9: '\\u210a' .. '\\u2113'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2477:9: '\\u210a' .. '\\u2113'
                     {
                     matchRange('\u210A','\u2113'); 
 
                     }
                     break;
                 case 323 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2449:9: '\\u2115'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2478:9: '\\u2115'
                     {
                     match('\u2115'); 
 
                     }
                     break;
                 case 324 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2450:9: '\\u2119' .. '\\u211d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2479:9: '\\u2119' .. '\\u211d'
                     {
                     matchRange('\u2119','\u211D'); 
 
                     }
                     break;
                 case 325 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2451:9: '\\u2124'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2480:9: '\\u2124'
                     {
                     match('\u2124'); 
 
                     }
                     break;
                 case 326 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2452:9: '\\u2126'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2481:9: '\\u2126'
                     {
                     match('\u2126'); 
 
                     }
                     break;
                 case 327 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2453:9: '\\u2128'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2482:9: '\\u2128'
                     {
                     match('\u2128'); 
 
                     }
                     break;
                 case 328 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2454:9: '\\u212a' .. '\\u212d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2483:9: '\\u212a' .. '\\u212d'
                     {
                     matchRange('\u212A','\u212D'); 
 
                     }
                     break;
                 case 329 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2455:9: '\\u212f' .. '\\u2131'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2484:9: '\\u212f' .. '\\u2131'
                     {
                     matchRange('\u212F','\u2131'); 
 
                     }
                     break;
                 case 330 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2456:9: '\\u2133' .. '\\u2139'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2485:9: '\\u2133' .. '\\u2139'
                     {
                     matchRange('\u2133','\u2139'); 
 
                     }
                     break;
                 case 331 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2457:9: '\\u213d' .. '\\u213f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2486:9: '\\u213d' .. '\\u213f'
                     {
                     matchRange('\u213D','\u213F'); 
 
                     }
                     break;
                 case 332 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2458:9: '\\u2145' .. '\\u2149'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2487:9: '\\u2145' .. '\\u2149'
                     {
                     matchRange('\u2145','\u2149'); 
 
                     }
                     break;
                 case 333 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2459:9: '\\u2160' .. '\\u2183'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2488:9: '\\u2160' .. '\\u2183'
                     {
                     matchRange('\u2160','\u2183'); 
 
                     }
                     break;
                 case 334 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2460:9: '\\u3005' .. '\\u3007'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2489:9: '\\u3005' .. '\\u3007'
                     {
                     matchRange('\u3005','\u3007'); 
 
                     }
                     break;
                 case 335 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2461:9: '\\u3021' .. '\\u302f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2490:9: '\\u3021' .. '\\u302f'
                     {
                     matchRange('\u3021','\u302F'); 
 
                     }
                     break;
                 case 336 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2462:9: '\\u3031' .. '\\u3035'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2491:9: '\\u3031' .. '\\u3035'
                     {
                     matchRange('\u3031','\u3035'); 
 
                     }
                     break;
                 case 337 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2463:9: '\\u3038' .. '\\u303c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2492:9: '\\u3038' .. '\\u303c'
                     {
                     matchRange('\u3038','\u303C'); 
 
                     }
                     break;
                 case 338 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2464:9: '\\u3041' .. '\\u3096'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2493:9: '\\u3041' .. '\\u3096'
                     {
                     matchRange('\u3041','\u3096'); 
 
                     }
                     break;
                 case 339 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2465:9: '\\u3099' .. '\\u309a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2494:9: '\\u3099' .. '\\u309a'
                     {
                     matchRange('\u3099','\u309A'); 
 
                     }
                     break;
                 case 340 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2466:9: '\\u309d' .. '\\u309f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2495:9: '\\u309d' .. '\\u309f'
                     {
                     matchRange('\u309D','\u309F'); 
 
                     }
                     break;
                 case 341 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2467:9: '\\u30a1' .. '\\u30ff'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2496:9: '\\u30a1' .. '\\u30ff'
                     {
                     matchRange('\u30A1','\u30FF'); 
 
                     }
                     break;
                 case 342 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2468:9: '\\u3105' .. '\\u312c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2497:9: '\\u3105' .. '\\u312c'
                     {
                     matchRange('\u3105','\u312C'); 
 
                     }
                     break;
                 case 343 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2469:9: '\\u3131' .. '\\u318e'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2498:9: '\\u3131' .. '\\u318e'
                     {
                     matchRange('\u3131','\u318E'); 
 
                     }
                     break;
                 case 344 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2470:9: '\\u31a0' .. '\\u31b7'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2499:9: '\\u31a0' .. '\\u31b7'
                     {
                     matchRange('\u31A0','\u31B7'); 
 
                     }
                     break;
                 case 345 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2471:9: '\\u31f0' .. '\\u31ff'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2500:9: '\\u31f0' .. '\\u31ff'
                     {
                     matchRange('\u31F0','\u31FF'); 
 
                     }
                     break;
                 case 346 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2472:9: '\\u3400' .. '\\u4db5'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2501:9: '\\u3400' .. '\\u4db5'
                     {
                     matchRange('\u3400','\u4DB5'); 
 
                     }
                     break;
                 case 347 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2473:9: '\\u4e00' .. '\\u9fa5'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2502:9: '\\u4e00' .. '\\u9fa5'
                     {
                     matchRange('\u4E00','\u9FA5'); 
 
                     }
                     break;
                 case 348 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2474:9: '\\ua000' .. '\\ua48c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2503:9: '\\ua000' .. '\\ua48c'
                     {
                     matchRange('\uA000','\uA48C'); 
 
                     }
                     break;
                 case 349 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2475:9: '\\uac00' .. '\\ud7a3'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2504:9: '\\uac00' .. '\\ud7a3'
                     {
                     matchRange('\uAC00','\uD7A3'); 
 
                     }
                     break;
                 case 350 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2476:9: '\\uf900' .. '\\ufa2d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2505:9: '\\uf900' .. '\\ufa2d'
                     {
                     matchRange('\uF900','\uFA2D'); 
 
                     }
                     break;
                 case 351 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2477:9: '\\ufa30' .. '\\ufa6a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2506:9: '\\ufa30' .. '\\ufa6a'
                     {
                     matchRange('\uFA30','\uFA6A'); 
 
                     }
                     break;
                 case 352 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2478:9: '\\ufb00' .. '\\ufb06'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2507:9: '\\ufb00' .. '\\ufb06'
                     {
                     matchRange('\uFB00','\uFB06'); 
 
                     }
                     break;
                 case 353 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2479:9: '\\ufb13' .. '\\ufb17'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2508:9: '\\ufb13' .. '\\ufb17'
                     {
                     matchRange('\uFB13','\uFB17'); 
 
                     }
                     break;
                 case 354 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2480:9: '\\ufb1d' .. '\\ufb28'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2509:9: '\\ufb1d' .. '\\ufb28'
                     {
                     matchRange('\uFB1D','\uFB28'); 
 
                     }
                     break;
                 case 355 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2481:9: '\\ufb2a' .. '\\ufb36'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2510:9: '\\ufb2a' .. '\\ufb36'
                     {
                     matchRange('\uFB2A','\uFB36'); 
 
                     }
                     break;
                 case 356 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2482:9: '\\ufb38' .. '\\ufb3c'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2511:9: '\\ufb38' .. '\\ufb3c'
                     {
                     matchRange('\uFB38','\uFB3C'); 
 
                     }
                     break;
                 case 357 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2483:9: '\\ufb3e'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2512:9: '\\ufb3e'
                     {
                     match('\uFB3E'); 
 
                     }
                     break;
                 case 358 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2484:9: '\\ufb40' .. '\\ufb41'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2513:9: '\\ufb40' .. '\\ufb41'
                     {
                     matchRange('\uFB40','\uFB41'); 
 
                     }
                     break;
                 case 359 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2485:9: '\\ufb43' .. '\\ufb44'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2514:9: '\\ufb43' .. '\\ufb44'
                     {
                     matchRange('\uFB43','\uFB44'); 
 
                     }
                     break;
                 case 360 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2486:9: '\\ufb46' .. '\\ufbb1'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2515:9: '\\ufb46' .. '\\ufbb1'
                     {
                     matchRange('\uFB46','\uFBB1'); 
 
                     }
                     break;
                 case 361 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2487:9: '\\ufbd3' .. '\\ufd3d'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2516:9: '\\ufbd3' .. '\\ufd3d'
                     {
                     matchRange('\uFBD3','\uFD3D'); 
 
                     }
                     break;
                 case 362 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2488:9: '\\ufd50' .. '\\ufd8f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2517:9: '\\ufd50' .. '\\ufd8f'
                     {
                     matchRange('\uFD50','\uFD8F'); 
 
                     }
                     break;
                 case 363 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2489:9: '\\ufd92' .. '\\ufdc7'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2518:9: '\\ufd92' .. '\\ufdc7'
                     {
                     matchRange('\uFD92','\uFDC7'); 
 
                     }
                     break;
                 case 364 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2490:9: '\\ufdf0' .. '\\ufdfc'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2519:9: '\\ufdf0' .. '\\ufdfc'
                     {
                     matchRange('\uFDF0','\uFDFC'); 
 
                     }
                     break;
                 case 365 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2491:9: '\\ufe00' .. '\\ufe0f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2520:9: '\\ufe00' .. '\\ufe0f'
                     {
                     matchRange('\uFE00','\uFE0F'); 
 
                     }
                     break;
                 case 366 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2492:9: '\\ufe20' .. '\\ufe23'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2521:9: '\\ufe20' .. '\\ufe23'
                     {
                     matchRange('\uFE20','\uFE23'); 
 
                     }
                     break;
                 case 367 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2493:9: '\\ufe33' .. '\\ufe34'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2522:9: '\\ufe33' .. '\\ufe34'
                     {
                     matchRange('\uFE33','\uFE34'); 
 
                     }
                     break;
                 case 368 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2494:9: '\\ufe4d' .. '\\ufe4f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2523:9: '\\ufe4d' .. '\\ufe4f'
                     {
                     matchRange('\uFE4D','\uFE4F'); 
 
                     }
                     break;
                 case 369 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2495:9: '\\ufe69'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2524:9: '\\ufe69'
                     {
                     match('\uFE69'); 
 
                     }
                     break;
                 case 370 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2496:9: '\\ufe70' .. '\\ufe74'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2525:9: '\\ufe70' .. '\\ufe74'
                     {
                     matchRange('\uFE70','\uFE74'); 
 
                     }
                     break;
                 case 371 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2497:9: '\\ufe76' .. '\\ufefc'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2526:9: '\\ufe76' .. '\\ufefc'
                     {
                     matchRange('\uFE76','\uFEFC'); 
 
                     }
                     break;
                 case 372 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2498:9: '\\ufeff'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2527:9: '\\ufeff'
                     {
                     match('\uFEFF'); 
 
                     }
                     break;
                 case 373 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2499:9: '\\uff04'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2528:9: '\\uff04'
                     {
                     match('\uFF04'); 
 
                     }
                     break;
                 case 374 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2500:9: '\\uff10' .. '\\uff19'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2529:9: '\\uff10' .. '\\uff19'
                     {
                     matchRange('\uFF10','\uFF19'); 
 
                     }
                     break;
                 case 375 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2501:9: '\\uff21' .. '\\uff3a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2530:9: '\\uff21' .. '\\uff3a'
                     {
                     matchRange('\uFF21','\uFF3A'); 
 
                     }
                     break;
                 case 376 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2502:9: '\\uff3f'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2531:9: '\\uff3f'
                     {
                     match('\uFF3F'); 
 
                     }
                     break;
                 case 377 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2503:9: '\\uff41' .. '\\uff5a'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2532:9: '\\uff41' .. '\\uff5a'
                     {
                     matchRange('\uFF41','\uFF5A'); 
 
                     }
                     break;
                 case 378 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2504:9: '\\uff65' .. '\\uffbe'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2533:9: '\\uff65' .. '\\uffbe'
                     {
                     matchRange('\uFF65','\uFFBE'); 
 
                     }
                     break;
                 case 379 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2505:9: '\\uffc2' .. '\\uffc7'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2534:9: '\\uffc2' .. '\\uffc7'
                     {
                     matchRange('\uFFC2','\uFFC7'); 
 
                     }
                     break;
                 case 380 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2506:9: '\\uffca' .. '\\uffcf'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2535:9: '\\uffca' .. '\\uffcf'
                     {
                     matchRange('\uFFCA','\uFFCF'); 
 
                     }
                     break;
                 case 381 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2507:9: '\\uffd2' .. '\\uffd7'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2536:9: '\\uffd2' .. '\\uffd7'
                     {
                     matchRange('\uFFD2','\uFFD7'); 
 
                     }
                     break;
                 case 382 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2508:9: '\\uffda' .. '\\uffdc'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2537:9: '\\uffda' .. '\\uffdc'
                     {
                     matchRange('\uFFDA','\uFFDC'); 
 
                     }
                     break;
                 case 383 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2509:9: '\\uffe0' .. '\\uffe1'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2538:9: '\\uffe0' .. '\\uffe1'
                     {
                     matchRange('\uFFE0','\uFFE1'); 
 
                     }
                     break;
                 case 384 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2510:9: '\\uffe5' .. '\\uffe6'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2539:9: '\\uffe5' .. '\\uffe6'
                     {
                     matchRange('\uFFE5','\uFFE6'); 
 
                     }
                     break;
                 case 385 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2511:9: '\\ufff9' .. '\\ufffb'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2540:9: '\\ufff9' .. '\\ufffb'
                     {
                     matchRange('\uFFF9','\uFFFB'); 
 
                     }
                     break;
                 case 386 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2512:9: ( '\\ud800' .. '\\udbff' ) ( '\\udc00' .. '\\udfff' )
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:2541:9: ( '\\ud800' .. '\\udbff' ) ( '\\udc00' .. '\\udfff' )
                     {
                     if ( (input.LA(1) >= '\uD800' && input.LA(1) <= '\uDBFF') ) {
                         input.consume();
@@ -11796,7 +11796,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
             this.transition = DFA18_transition;
         }
         public String getDescription() {
-            return "1327:1: fragment NonIntegerNumber : ( ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( Exponent )? | '.' ( '0' .. '9' )+ ( Exponent )? | ( '0' .. '9' )+ Exponent | ( '0' .. '9' )+ | HexPrefix ( HexDigit )* ( () | ( '.' ( HexDigit )* ) ) ( 'p' | 'P' ) ( '+' | '-' )? ( '0' .. '9' )+ );";
+            return "1356:1: fragment NonIntegerNumber : ( ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( Exponent )? | '.' ( '0' .. '9' )+ ( Exponent )? | ( '0' .. '9' )+ Exponent | ( '0' .. '9' )+ | HexPrefix ( HexDigit )* ( () | ( '.' ( HexDigit )* ) ) ( 'p' | 'P' ) ( '+' | '-' )? ( '0' .. '9' )+ );";
         }
     }
     static final String DFA29_eotS =
@@ -11850,7 +11850,7 @@ public class NoDynamicLoadingANTLRLexer extends Lexer {
             this.transition = DFA29_transition;
         }
         public String getDescription() {
-            return "1434:1: LINE_COMMENT : ( '//' (~ ( '\\n' | '\\r' ) )* ( '\\r\\n' | '\\r' | '\\n' ) | '//' (~ ( '\\n' | '\\r' ) )* );";
+            return "1463:1: LINE_COMMENT : ( '//' (~ ( '\\n' | '\\r' ) )* ( '\\r\\n' | '\\r' | '\\n' ) | '//' (~ ( '\\n' | '\\r' ) )* );";
         }
         public int specialStateTransition(int s, IntStream _input) throws NoViableAltException {
             IntStream input = _input;

@@ -17,6 +17,10 @@ public class RJavaSymTab {
   }
   
   public void foo(Object... objects) {
-      
+      try{
+	  Class a = Class.forName("java.lang.Object");
+      } catch (ClassNotFoundException e) {
+	  e.printStackTrace();
+      }
   }
 }

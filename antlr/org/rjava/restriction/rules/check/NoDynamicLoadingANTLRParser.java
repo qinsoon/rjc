@@ -1,6 +1,11 @@
-// $ANTLR 3.4 /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g 2013-01-03 16:03:03
+// $ANTLR 3.4 /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g 2013-01-04 17:41:14
 
 package org.rjava.restriction.rules.check;
+
+import org.rjava.restriction.rules.NoDynamicLoading_CHECK;
+import org.rjava.compiler.semantics.*;
+import org.rjava.compiler.semantics.representation.*;
+import org.rjava.compiler.semantics.symtab.*;
 
 
 import org.antlr.runtime.*;
@@ -292,19 +297,42 @@ public class NoDynamicLoadingANTLRParser extends Parser {
     public String getGrammarFileName() { return "/Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g"; }
 
 
+      public static final boolean DEBUG = true;
+      
+      public void checkMethodInvocation(List ids) {
+        if (DEBUG)
+          System.out.print("--Checking method invocation:");
+        
+        String receiver = "";
+        String methodName = null;
+        for (int i = 0; i < ids.size(); i++) {
+          Token t = (Token) ids.get(i);
+          if (i != ids.size() - 1) {
+            receiver += t.getText();
+            if (i != ids.size() - 2) receiver += ".";
+          }else {
+            methodName = t.getText();
+          }
+        }
+        
+        if (DEBUG)
+          System.out.println(methodName + " on " + receiver);
+      }
+
+
 
     // $ANTLR start "compilationUnit"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:302:1: compilationUnit : ( ( annotations )? packageDeclaration )? ( importDeclaration )* ( typeDeclaration )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:331:1: compilationUnit : ( ( annotations )? packageDeclaration )? ( importDeclaration )* ( typeDeclaration )* ;
     public final void compilationUnit() throws RecognitionException {
         int compilationUnit_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 1) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:303:5: ( ( ( annotations )? packageDeclaration )? ( importDeclaration )* ( typeDeclaration )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:303:9: ( ( annotations )? packageDeclaration )? ( importDeclaration )* ( typeDeclaration )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:332:5: ( ( ( annotations )? packageDeclaration )? ( importDeclaration )* ( typeDeclaration )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:332:9: ( ( annotations )? packageDeclaration )? ( importDeclaration )* ( typeDeclaration )*
             {
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:303:9: ( ( annotations )? packageDeclaration )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:332:9: ( ( annotations )? packageDeclaration )?
             int alt2=2;
             int LA2_0 = input.LA(1);
 
@@ -320,9 +348,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt2) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:303:13: ( annotations )? packageDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:332:13: ( annotations )? packageDeclaration
                     {
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:303:13: ( annotations )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:332:13: ( annotations )?
                     int alt1=2;
                     int LA1_0 = input.LA(1);
 
@@ -331,9 +359,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt1) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:303:14: annotations
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:332:14: annotations
                             {
-                            pushFollow(FOLLOW_annotations_in_compilationUnit95);
+                            pushFollow(FOLLOW_annotations_in_compilationUnit101);
                             annotations();
 
                             state._fsp--;
@@ -345,7 +373,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
 
 
-                    pushFollow(FOLLOW_packageDeclaration_in_compilationUnit124);
+                    pushFollow(FOLLOW_packageDeclaration_in_compilationUnit130);
                     packageDeclaration();
 
                     state._fsp--;
@@ -357,7 +385,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:307:9: ( importDeclaration )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:336:9: ( importDeclaration )*
             loop3:
             do {
                 int alt3=2;
@@ -370,9 +398,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt3) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:307:10: importDeclaration
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:336:10: importDeclaration
             	    {
-            	    pushFollow(FOLLOW_importDeclaration_in_compilationUnit146);
+            	    pushFollow(FOLLOW_importDeclaration_in_compilationUnit152);
             	    importDeclaration();
 
             	    state._fsp--;
@@ -387,7 +415,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             } while (true);
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:309:9: ( typeDeclaration )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:338:9: ( typeDeclaration )*
             loop4:
             do {
                 int alt4=2;
@@ -400,9 +428,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt4) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:309:10: typeDeclaration
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:338:10: typeDeclaration
             	    {
-            	    pushFollow(FOLLOW_typeDeclaration_in_compilationUnit168);
+            	    pushFollow(FOLLOW_typeDeclaration_in_compilationUnit174);
             	    typeDeclaration();
 
             	    state._fsp--;
@@ -437,25 +465,25 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "packageDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:313:1: packageDeclaration : 'package' qualifiedName ';' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:342:1: packageDeclaration : 'package' qualifiedName ';' ;
     public final void packageDeclaration() throws RecognitionException {
         int packageDeclaration_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 2) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:314:5: ( 'package' qualifiedName ';' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:314:9: 'package' qualifiedName ';'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:343:5: ( 'package' qualifiedName ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:343:9: 'package' qualifiedName ';'
             {
-            match(input,PACKAGE,FOLLOW_PACKAGE_in_packageDeclaration199); if (state.failed) return ;
+            match(input,PACKAGE,FOLLOW_PACKAGE_in_packageDeclaration205); if (state.failed) return ;
 
-            pushFollow(FOLLOW_qualifiedName_in_packageDeclaration201);
+            pushFollow(FOLLOW_qualifiedName_in_packageDeclaration207);
             qualifiedName();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,SEMI,FOLLOW_SEMI_in_packageDeclaration211); if (state.failed) return ;
+            match(input,SEMI,FOLLOW_SEMI_in_packageDeclaration217); if (state.failed) return ;
 
             }
 
@@ -477,14 +505,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "importDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:318:1: importDeclaration : ( 'import' ( 'static' )? IDENTIFIER '.' '*' ';' | 'import' ( 'static' )? IDENTIFIER ( '.' IDENTIFIER )+ ( '.' '*' )? ';' );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:347:1: importDeclaration : ( 'import' ( 'static' )? IDENTIFIER '.' '*' ';' | 'import' ( 'static' )? IDENTIFIER ( '.' IDENTIFIER )+ ( '.' '*' )? ';' );
     public final void importDeclaration() throws RecognitionException {
         int importDeclaration_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 3) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:319:5: ( 'import' ( 'static' )? IDENTIFIER '.' '*' ';' | 'import' ( 'static' )? IDENTIFIER ( '.' IDENTIFIER )+ ( '.' '*' )? ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:348:5: ( 'import' ( 'static' )? IDENTIFIER '.' '*' ';' | 'import' ( 'static' )? IDENTIFIER ( '.' IDENTIFIER )+ ( '.' '*' )? ';' )
             int alt9=2;
             int LA9_0 = input.LA(1);
 
@@ -582,11 +610,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt9) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:319:9: 'import' ( 'static' )? IDENTIFIER '.' '*' ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:348:9: 'import' ( 'static' )? IDENTIFIER '.' '*' ';'
                     {
-                    match(input,IMPORT,FOLLOW_IMPORT_in_importDeclaration232); if (state.failed) return ;
+                    match(input,IMPORT,FOLLOW_IMPORT_in_importDeclaration238); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:320:9: ( 'static' )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:349:9: ( 'static' )?
                     int alt5=2;
                     int LA5_0 = input.LA(1);
 
@@ -595,9 +623,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt5) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:320:10: 'static'
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:349:10: 'static'
                             {
-                            match(input,STATIC,FOLLOW_STATIC_in_importDeclaration244); if (state.failed) return ;
+                            match(input,STATIC,FOLLOW_STATIC_in_importDeclaration250); if (state.failed) return ;
 
                             }
                             break;
@@ -605,22 +633,22 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
 
 
-                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_importDeclaration265); if (state.failed) return ;
+                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_importDeclaration271); if (state.failed) return ;
 
-                    match(input,DOT,FOLLOW_DOT_in_importDeclaration267); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_importDeclaration273); if (state.failed) return ;
 
-                    match(input,STAR,FOLLOW_STAR_in_importDeclaration269); if (state.failed) return ;
+                    match(input,STAR,FOLLOW_STAR_in_importDeclaration275); if (state.failed) return ;
 
-                    match(input,SEMI,FOLLOW_SEMI_in_importDeclaration279); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_importDeclaration285); if (state.failed) return ;
 
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:324:9: 'import' ( 'static' )? IDENTIFIER ( '.' IDENTIFIER )+ ( '.' '*' )? ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:353:9: 'import' ( 'static' )? IDENTIFIER ( '.' IDENTIFIER )+ ( '.' '*' )? ';'
                     {
-                    match(input,IMPORT,FOLLOW_IMPORT_in_importDeclaration296); if (state.failed) return ;
+                    match(input,IMPORT,FOLLOW_IMPORT_in_importDeclaration302); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:325:9: ( 'static' )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:354:9: ( 'static' )?
                     int alt6=2;
                     int LA6_0 = input.LA(1);
 
@@ -629,9 +657,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt6) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:325:10: 'static'
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:354:10: 'static'
                             {
-                            match(input,STATIC,FOLLOW_STATIC_in_importDeclaration308); if (state.failed) return ;
+                            match(input,STATIC,FOLLOW_STATIC_in_importDeclaration314); if (state.failed) return ;
 
                             }
                             break;
@@ -639,9 +667,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
 
 
-                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_importDeclaration329); if (state.failed) return ;
+                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_importDeclaration335); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:328:9: ( '.' IDENTIFIER )+
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:357:9: ( '.' IDENTIFIER )+
                     int cnt7=0;
                     loop7:
                     do {
@@ -661,11 +689,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                         switch (alt7) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:328:10: '.' IDENTIFIER
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:357:10: '.' IDENTIFIER
                     	    {
-                    	    match(input,DOT,FOLLOW_DOT_in_importDeclaration340); if (state.failed) return ;
+                    	    match(input,DOT,FOLLOW_DOT_in_importDeclaration346); if (state.failed) return ;
 
-                    	    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_importDeclaration342); if (state.failed) return ;
+                    	    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_importDeclaration348); if (state.failed) return ;
 
                     	    }
                     	    break;
@@ -681,7 +709,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     } while (true);
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:330:9: ( '.' '*' )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:359:9: ( '.' '*' )?
                     int alt8=2;
                     int LA8_0 = input.LA(1);
 
@@ -690,11 +718,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt8) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:330:10: '.' '*'
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:359:10: '.' '*'
                             {
-                            match(input,DOT,FOLLOW_DOT_in_importDeclaration364); if (state.failed) return ;
+                            match(input,DOT,FOLLOW_DOT_in_importDeclaration370); if (state.failed) return ;
 
-                            match(input,STAR,FOLLOW_STAR_in_importDeclaration366); if (state.failed) return ;
+                            match(input,STAR,FOLLOW_STAR_in_importDeclaration372); if (state.failed) return ;
 
                             }
                             break;
@@ -702,7 +730,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
 
 
-                    match(input,SEMI,FOLLOW_SEMI_in_importDeclaration387); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_importDeclaration393); if (state.failed) return ;
 
                     }
                     break;
@@ -726,19 +754,19 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "qualifiedImportName"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:335:1: qualifiedImportName : IDENTIFIER ( '.' IDENTIFIER )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:364:1: qualifiedImportName : IDENTIFIER ( '.' IDENTIFIER )* ;
     public final void qualifiedImportName() throws RecognitionException {
         int qualifiedImportName_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 4) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:336:5: ( IDENTIFIER ( '.' IDENTIFIER )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:336:9: IDENTIFIER ( '.' IDENTIFIER )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:365:5: ( IDENTIFIER ( '.' IDENTIFIER )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:365:9: IDENTIFIER ( '.' IDENTIFIER )*
             {
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_qualifiedImportName407); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_qualifiedImportName413); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:337:9: ( '.' IDENTIFIER )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:366:9: ( '.' IDENTIFIER )*
             loop10:
             do {
                 int alt10=2;
@@ -751,11 +779,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt10) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:337:10: '.' IDENTIFIER
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:366:10: '.' IDENTIFIER
             	    {
-            	    match(input,DOT,FOLLOW_DOT_in_qualifiedImportName418); if (state.failed) return ;
+            	    match(input,DOT,FOLLOW_DOT_in_qualifiedImportName424); if (state.failed) return ;
 
-            	    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_qualifiedImportName420); if (state.failed) return ;
+            	    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_qualifiedImportName426); if (state.failed) return ;
 
             	    }
             	    break;
@@ -786,14 +814,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "typeDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:341:1: typeDeclaration : ( classOrInterfaceDeclaration | ';' );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:370:1: typeDeclaration : ( classOrInterfaceDeclaration | ';' );
     public final void typeDeclaration() throws RecognitionException {
         int typeDeclaration_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 5) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:342:5: ( classOrInterfaceDeclaration | ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:371:5: ( classOrInterfaceDeclaration | ';' )
             int alt11=2;
             int LA11_0 = input.LA(1);
 
@@ -813,9 +841,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt11) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:342:9: classOrInterfaceDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:371:9: classOrInterfaceDeclaration
                     {
-                    pushFollow(FOLLOW_classOrInterfaceDeclaration_in_typeDeclaration451);
+                    pushFollow(FOLLOW_classOrInterfaceDeclaration_in_typeDeclaration457);
                     classOrInterfaceDeclaration();
 
                     state._fsp--;
@@ -824,9 +852,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:343:9: ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:372:9: ';'
                     {
-                    match(input,SEMI,FOLLOW_SEMI_in_typeDeclaration461); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_typeDeclaration467); if (state.failed) return ;
 
                     }
                     break;
@@ -850,14 +878,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "classOrInterfaceDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:346:1: classOrInterfaceDeclaration : ( classDeclaration | interfaceDeclaration );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:375:1: classOrInterfaceDeclaration : ( classDeclaration | interfaceDeclaration );
     public final void classOrInterfaceDeclaration() throws RecognitionException {
         int classOrInterfaceDeclaration_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 6) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:347:5: ( classDeclaration | interfaceDeclaration )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:376:5: ( classDeclaration | interfaceDeclaration )
             int alt12=2;
             switch ( input.LA(1) ) {
             case MONKEYS_AT:
@@ -1122,9 +1150,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
             switch (alt12) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:347:10: classDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:376:10: classDeclaration
                     {
-                    pushFollow(FOLLOW_classDeclaration_in_classOrInterfaceDeclaration482);
+                    pushFollow(FOLLOW_classDeclaration_in_classOrInterfaceDeclaration488);
                     classDeclaration();
 
                     state._fsp--;
@@ -1133,9 +1161,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:348:9: interfaceDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:377:9: interfaceDeclaration
                     {
-                    pushFollow(FOLLOW_interfaceDeclaration_in_classOrInterfaceDeclaration492);
+                    pushFollow(FOLLOW_interfaceDeclaration_in_classOrInterfaceDeclaration498);
                     interfaceDeclaration();
 
                     state._fsp--;
@@ -1163,17 +1191,17 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "modifiers"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:352:1: modifiers : ( annotation | 'public' | 'protected' | 'private' | 'static' | 'abstract' | 'final' | 'native' | 'synchronized' | 'transient' | 'volatile' | 'strictfp' )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:381:1: modifiers : ( annotation | 'public' | 'protected' | 'private' | 'static' | 'abstract' | 'final' | 'native' | 'synchronized' | 'transient' | 'volatile' | 'strictfp' )* ;
     public final void modifiers() throws RecognitionException {
         int modifiers_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 7) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:353:5: ( ( annotation | 'public' | 'protected' | 'private' | 'static' | 'abstract' | 'final' | 'native' | 'synchronized' | 'transient' | 'volatile' | 'strictfp' )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:354:5: ( annotation | 'public' | 'protected' | 'private' | 'static' | 'abstract' | 'final' | 'native' | 'synchronized' | 'transient' | 'volatile' | 'strictfp' )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:382:5: ( ( annotation | 'public' | 'protected' | 'private' | 'static' | 'abstract' | 'final' | 'native' | 'synchronized' | 'transient' | 'volatile' | 'strictfp' )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:383:5: ( annotation | 'public' | 'protected' | 'private' | 'static' | 'abstract' | 'final' | 'native' | 'synchronized' | 'transient' | 'volatile' | 'strictfp' )*
             {
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:354:5: ( annotation | 'public' | 'protected' | 'private' | 'static' | 'abstract' | 'final' | 'native' | 'synchronized' | 'transient' | 'volatile' | 'strictfp' )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:383:5: ( annotation | 'public' | 'protected' | 'private' | 'static' | 'abstract' | 'final' | 'native' | 'synchronized' | 'transient' | 'volatile' | 'strictfp' )*
             loop13:
             do {
                 int alt13=13;
@@ -1249,9 +1277,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt13) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:354:10: annotation
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:383:10: annotation
             	    {
-            	    pushFollow(FOLLOW_annotation_in_modifiers527);
+            	    pushFollow(FOLLOW_annotation_in_modifiers533);
             	    annotation();
 
             	    state._fsp--;
@@ -1260,79 +1288,79 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             	    }
             	    break;
             	case 2 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:355:9: 'public'
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:384:9: 'public'
             	    {
-            	    match(input,PUBLIC,FOLLOW_PUBLIC_in_modifiers537); if (state.failed) return ;
+            	    match(input,PUBLIC,FOLLOW_PUBLIC_in_modifiers543); if (state.failed) return ;
 
             	    }
             	    break;
             	case 3 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:356:9: 'protected'
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:385:9: 'protected'
             	    {
-            	    match(input,PROTECTED,FOLLOW_PROTECTED_in_modifiers547); if (state.failed) return ;
+            	    match(input,PROTECTED,FOLLOW_PROTECTED_in_modifiers553); if (state.failed) return ;
 
             	    }
             	    break;
             	case 4 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:357:9: 'private'
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:386:9: 'private'
             	    {
-            	    match(input,PRIVATE,FOLLOW_PRIVATE_in_modifiers557); if (state.failed) return ;
+            	    match(input,PRIVATE,FOLLOW_PRIVATE_in_modifiers563); if (state.failed) return ;
 
             	    }
             	    break;
             	case 5 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:358:9: 'static'
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:387:9: 'static'
             	    {
-            	    match(input,STATIC,FOLLOW_STATIC_in_modifiers567); if (state.failed) return ;
+            	    match(input,STATIC,FOLLOW_STATIC_in_modifiers573); if (state.failed) return ;
 
             	    }
             	    break;
             	case 6 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:359:9: 'abstract'
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:388:9: 'abstract'
             	    {
-            	    match(input,ABSTRACT,FOLLOW_ABSTRACT_in_modifiers577); if (state.failed) return ;
+            	    match(input,ABSTRACT,FOLLOW_ABSTRACT_in_modifiers583); if (state.failed) return ;
 
             	    }
             	    break;
             	case 7 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:360:9: 'final'
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:389:9: 'final'
             	    {
-            	    match(input,FINAL,FOLLOW_FINAL_in_modifiers587); if (state.failed) return ;
+            	    match(input,FINAL,FOLLOW_FINAL_in_modifiers593); if (state.failed) return ;
 
             	    }
             	    break;
             	case 8 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:361:9: 'native'
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:390:9: 'native'
             	    {
-            	    match(input,NATIVE,FOLLOW_NATIVE_in_modifiers597); if (state.failed) return ;
+            	    match(input,NATIVE,FOLLOW_NATIVE_in_modifiers603); if (state.failed) return ;
 
             	    }
             	    break;
             	case 9 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:362:9: 'synchronized'
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:391:9: 'synchronized'
             	    {
-            	    match(input,SYNCHRONIZED,FOLLOW_SYNCHRONIZED_in_modifiers607); if (state.failed) return ;
+            	    match(input,SYNCHRONIZED,FOLLOW_SYNCHRONIZED_in_modifiers613); if (state.failed) return ;
 
             	    }
             	    break;
             	case 10 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:363:9: 'transient'
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:392:9: 'transient'
             	    {
-            	    match(input,TRANSIENT,FOLLOW_TRANSIENT_in_modifiers617); if (state.failed) return ;
+            	    match(input,TRANSIENT,FOLLOW_TRANSIENT_in_modifiers623); if (state.failed) return ;
 
             	    }
             	    break;
             	case 11 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:364:9: 'volatile'
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:393:9: 'volatile'
             	    {
-            	    match(input,VOLATILE,FOLLOW_VOLATILE_in_modifiers627); if (state.failed) return ;
+            	    match(input,VOLATILE,FOLLOW_VOLATILE_in_modifiers633); if (state.failed) return ;
 
             	    }
             	    break;
             	case 12 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:365:9: 'strictfp'
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:394:9: 'strictfp'
             	    {
-            	    match(input,STRICTFP,FOLLOW_STRICTFP_in_modifiers637); if (state.failed) return ;
+            	    match(input,STRICTFP,FOLLOW_STRICTFP_in_modifiers643); if (state.failed) return ;
 
             	    }
             	    break;
@@ -1363,17 +1391,17 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "variableModifiers"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:370:1: variableModifiers : ( 'final' | annotation )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:399:1: variableModifiers : ( 'final' | annotation )* ;
     public final void variableModifiers() throws RecognitionException {
         int variableModifiers_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 8) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:371:5: ( ( 'final' | annotation )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:371:9: ( 'final' | annotation )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:400:5: ( ( 'final' | annotation )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:400:9: ( 'final' | annotation )*
             {
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:371:9: ( 'final' | annotation )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:400:9: ( 'final' | annotation )*
             loop14:
             do {
                 int alt14=3;
@@ -1389,16 +1417,16 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt14) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:371:13: 'final'
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:400:13: 'final'
             	    {
-            	    match(input,FINAL,FOLLOW_FINAL_in_variableModifiers669); if (state.failed) return ;
+            	    match(input,FINAL,FOLLOW_FINAL_in_variableModifiers675); if (state.failed) return ;
 
             	    }
             	    break;
             	case 2 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:372:13: annotation
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:401:13: annotation
             	    {
-            	    pushFollow(FOLLOW_annotation_in_variableModifiers683);
+            	    pushFollow(FOLLOW_annotation_in_variableModifiers689);
             	    annotation();
 
             	    state._fsp--;
@@ -1433,14 +1461,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "classDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:377:1: classDeclaration : ( normalClassDeclaration | enumDeclaration );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:406:1: classDeclaration : ( normalClassDeclaration | enumDeclaration );
     public final void classDeclaration() throws RecognitionException {
         int classDeclaration_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 9) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:378:5: ( normalClassDeclaration | enumDeclaration )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:407:5: ( normalClassDeclaration | enumDeclaration )
             int alt15=2;
             switch ( input.LA(1) ) {
             case MONKEYS_AT:
@@ -1704,9 +1732,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
             switch (alt15) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:378:9: normalClassDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:407:9: normalClassDeclaration
                     {
-                    pushFollow(FOLLOW_normalClassDeclaration_in_classDeclaration719);
+                    pushFollow(FOLLOW_normalClassDeclaration_in_classDeclaration725);
                     normalClassDeclaration();
 
                     state._fsp--;
@@ -1715,9 +1743,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:379:9: enumDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:408:9: enumDeclaration
                     {
-                    pushFollow(FOLLOW_enumDeclaration_in_classDeclaration729);
+                    pushFollow(FOLLOW_enumDeclaration_in_classDeclaration735);
                     enumDeclaration();
 
                     state._fsp--;
@@ -1745,27 +1773,27 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "normalClassDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:382:1: normalClassDeclaration : modifiers 'class' IDENTIFIER ( typeParameters )? ( 'extends' type )? ( 'implements' typeList )? classBody ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:411:1: normalClassDeclaration : modifiers 'class' IDENTIFIER ( typeParameters )? ( 'extends' type )? ( 'implements' typeList )? classBody ;
     public final void normalClassDeclaration() throws RecognitionException {
         int normalClassDeclaration_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 10) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:383:5: ( modifiers 'class' IDENTIFIER ( typeParameters )? ( 'extends' type )? ( 'implements' typeList )? classBody )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:383:9: modifiers 'class' IDENTIFIER ( typeParameters )? ( 'extends' type )? ( 'implements' typeList )? classBody
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:412:5: ( modifiers 'class' IDENTIFIER ( typeParameters )? ( 'extends' type )? ( 'implements' typeList )? classBody )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:412:9: modifiers 'class' IDENTIFIER ( typeParameters )? ( 'extends' type )? ( 'implements' typeList )? classBody
             {
-            pushFollow(FOLLOW_modifiers_in_normalClassDeclaration749);
+            pushFollow(FOLLOW_modifiers_in_normalClassDeclaration755);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,CLASS,FOLLOW_CLASS_in_normalClassDeclaration752); if (state.failed) return ;
+            match(input,CLASS,FOLLOW_CLASS_in_normalClassDeclaration758); if (state.failed) return ;
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_normalClassDeclaration754); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_normalClassDeclaration760); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:384:9: ( typeParameters )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:413:9: ( typeParameters )?
             int alt16=2;
             int LA16_0 = input.LA(1);
 
@@ -1774,9 +1802,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt16) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:384:10: typeParameters
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:413:10: typeParameters
                     {
-                    pushFollow(FOLLOW_typeParameters_in_normalClassDeclaration765);
+                    pushFollow(FOLLOW_typeParameters_in_normalClassDeclaration771);
                     typeParameters();
 
                     state._fsp--;
@@ -1788,7 +1816,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:386:9: ( 'extends' type )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:415:9: ( 'extends' type )?
             int alt17=2;
             int LA17_0 = input.LA(1);
 
@@ -1797,11 +1825,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt17) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:386:10: 'extends' type
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:415:10: 'extends' type
                     {
-                    match(input,EXTENDS,FOLLOW_EXTENDS_in_normalClassDeclaration787); if (state.failed) return ;
+                    match(input,EXTENDS,FOLLOW_EXTENDS_in_normalClassDeclaration793); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_type_in_normalClassDeclaration789);
+                    pushFollow(FOLLOW_type_in_normalClassDeclaration795);
                     type();
 
                     state._fsp--;
@@ -1813,7 +1841,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:388:9: ( 'implements' typeList )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:417:9: ( 'implements' typeList )?
             int alt18=2;
             int LA18_0 = input.LA(1);
 
@@ -1822,11 +1850,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt18) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:388:10: 'implements' typeList
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:417:10: 'implements' typeList
                     {
-                    match(input,IMPLEMENTS,FOLLOW_IMPLEMENTS_in_normalClassDeclaration811); if (state.failed) return ;
+                    match(input,IMPLEMENTS,FOLLOW_IMPLEMENTS_in_normalClassDeclaration817); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_typeList_in_normalClassDeclaration813);
+                    pushFollow(FOLLOW_typeList_in_normalClassDeclaration819);
                     typeList();
 
                     state._fsp--;
@@ -1838,7 +1866,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            pushFollow(FOLLOW_classBody_in_normalClassDeclaration846);
+            pushFollow(FOLLOW_classBody_in_normalClassDeclaration852);
             classBody();
 
             state._fsp--;
@@ -1864,25 +1892,25 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "typeParameters"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:394:1: typeParameters : '<' typeParameter ( ',' typeParameter )* '>' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:423:1: typeParameters : '<' typeParameter ( ',' typeParameter )* '>' ;
     public final void typeParameters() throws RecognitionException {
         int typeParameters_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 11) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:395:5: ( '<' typeParameter ( ',' typeParameter )* '>' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:395:9: '<' typeParameter ( ',' typeParameter )* '>'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:424:5: ( '<' typeParameter ( ',' typeParameter )* '>' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:424:9: '<' typeParameter ( ',' typeParameter )* '>'
             {
-            match(input,LT,FOLLOW_LT_in_typeParameters867); if (state.failed) return ;
+            match(input,LT,FOLLOW_LT_in_typeParameters873); if (state.failed) return ;
 
-            pushFollow(FOLLOW_typeParameter_in_typeParameters881);
+            pushFollow(FOLLOW_typeParameter_in_typeParameters887);
             typeParameter();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:397:13: ( ',' typeParameter )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:426:13: ( ',' typeParameter )*
             loop19:
             do {
                 int alt19=2;
@@ -1895,11 +1923,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt19) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:397:14: ',' typeParameter
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:426:14: ',' typeParameter
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_typeParameters896); if (state.failed) return ;
+            	    match(input,COMMA,FOLLOW_COMMA_in_typeParameters902); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_typeParameter_in_typeParameters898);
+            	    pushFollow(FOLLOW_typeParameter_in_typeParameters904);
             	    typeParameter();
 
             	    state._fsp--;
@@ -1914,7 +1942,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             } while (true);
 
 
-            match(input,GT,FOLLOW_GT_in_typeParameters923); if (state.failed) return ;
+            match(input,GT,FOLLOW_GT_in_typeParameters929); if (state.failed) return ;
 
             }
 
@@ -1936,19 +1964,19 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "typeParameter"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:402:1: typeParameter : IDENTIFIER ( 'extends' typeBound )? ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:431:1: typeParameter : IDENTIFIER ( 'extends' typeBound )? ;
     public final void typeParameter() throws RecognitionException {
         int typeParameter_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 12) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:403:5: ( IDENTIFIER ( 'extends' typeBound )? )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:403:9: IDENTIFIER ( 'extends' typeBound )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:432:5: ( IDENTIFIER ( 'extends' typeBound )? )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:432:9: IDENTIFIER ( 'extends' typeBound )?
             {
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_typeParameter943); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_typeParameter949); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:404:9: ( 'extends' typeBound )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:433:9: ( 'extends' typeBound )?
             int alt20=2;
             int LA20_0 = input.LA(1);
 
@@ -1957,11 +1985,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt20) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:404:10: 'extends' typeBound
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:433:10: 'extends' typeBound
                     {
-                    match(input,EXTENDS,FOLLOW_EXTENDS_in_typeParameter954); if (state.failed) return ;
+                    match(input,EXTENDS,FOLLOW_EXTENDS_in_typeParameter960); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_typeBound_in_typeParameter956);
+                    pushFollow(FOLLOW_typeBound_in_typeParameter962);
                     typeBound();
 
                     state._fsp--;
@@ -1993,23 +2021,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "typeBound"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:409:1: typeBound : type ( '&' type )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:438:1: typeBound : type ( '&' type )* ;
     public final void typeBound() throws RecognitionException {
         int typeBound_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 13) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:410:5: ( type ( '&' type )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:410:9: type ( '&' type )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:439:5: ( type ( '&' type )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:439:9: type ( '&' type )*
             {
-            pushFollow(FOLLOW_type_in_typeBound988);
+            pushFollow(FOLLOW_type_in_typeBound994);
             type();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:411:9: ( '&' type )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:440:9: ( '&' type )*
             loop21:
             do {
                 int alt21=2;
@@ -2022,11 +2050,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt21) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:411:10: '&' type
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:440:10: '&' type
             	    {
-            	    match(input,AMP,FOLLOW_AMP_in_typeBound999); if (state.failed) return ;
+            	    match(input,AMP,FOLLOW_AMP_in_typeBound1005); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_type_in_typeBound1001);
+            	    pushFollow(FOLLOW_type_in_typeBound1007);
             	    type();
 
             	    state._fsp--;
@@ -2061,33 +2089,33 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "enumDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:416:1: enumDeclaration : modifiers ( 'enum' ) IDENTIFIER ( 'implements' typeList )? enumBody ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:445:1: enumDeclaration : modifiers ( 'enum' ) IDENTIFIER ( 'implements' typeList )? enumBody ;
     public final void enumDeclaration() throws RecognitionException {
         int enumDeclaration_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 14) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:417:5: ( modifiers ( 'enum' ) IDENTIFIER ( 'implements' typeList )? enumBody )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:417:9: modifiers ( 'enum' ) IDENTIFIER ( 'implements' typeList )? enumBody
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:446:5: ( modifiers ( 'enum' ) IDENTIFIER ( 'implements' typeList )? enumBody )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:446:9: modifiers ( 'enum' ) IDENTIFIER ( 'implements' typeList )? enumBody
             {
-            pushFollow(FOLLOW_modifiers_in_enumDeclaration1033);
+            pushFollow(FOLLOW_modifiers_in_enumDeclaration1039);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:418:9: ( 'enum' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:418:10: 'enum'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:447:9: ( 'enum' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:447:10: 'enum'
             {
-            match(input,ENUM,FOLLOW_ENUM_in_enumDeclaration1045); if (state.failed) return ;
+            match(input,ENUM,FOLLOW_ENUM_in_enumDeclaration1051); if (state.failed) return ;
 
             }
 
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_enumDeclaration1066); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_enumDeclaration1072); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:421:9: ( 'implements' typeList )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:450:9: ( 'implements' typeList )?
             int alt22=2;
             int LA22_0 = input.LA(1);
 
@@ -2096,11 +2124,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt22) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:421:10: 'implements' typeList
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:450:10: 'implements' typeList
                     {
-                    match(input,IMPLEMENTS,FOLLOW_IMPLEMENTS_in_enumDeclaration1077); if (state.failed) return ;
+                    match(input,IMPLEMENTS,FOLLOW_IMPLEMENTS_in_enumDeclaration1083); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_typeList_in_enumDeclaration1079);
+                    pushFollow(FOLLOW_typeList_in_enumDeclaration1085);
                     typeList();
 
                     state._fsp--;
@@ -2112,7 +2140,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            pushFollow(FOLLOW_enumBody_in_enumDeclaration1100);
+            pushFollow(FOLLOW_enumBody_in_enumDeclaration1106);
             enumBody();
 
             state._fsp--;
@@ -2138,19 +2166,19 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "enumBody"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:427:1: enumBody : '{' ( enumConstants )? ( ',' )? ( enumBodyDeclarations )? '}' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:456:1: enumBody : '{' ( enumConstants )? ( ',' )? ( enumBodyDeclarations )? '}' ;
     public final void enumBody() throws RecognitionException {
         int enumBody_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 15) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:428:5: ( '{' ( enumConstants )? ( ',' )? ( enumBodyDeclarations )? '}' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:428:9: '{' ( enumConstants )? ( ',' )? ( enumBodyDeclarations )? '}'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:457:5: ( '{' ( enumConstants )? ( ',' )? ( enumBodyDeclarations )? '}' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:457:9: '{' ( enumConstants )? ( ',' )? ( enumBodyDeclarations )? '}'
             {
-            match(input,LBRACE,FOLLOW_LBRACE_in_enumBody1125); if (state.failed) return ;
+            match(input,LBRACE,FOLLOW_LBRACE_in_enumBody1131); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:429:9: ( enumConstants )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:458:9: ( enumConstants )?
             int alt23=2;
             int LA23_0 = input.LA(1);
 
@@ -2159,9 +2187,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt23) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:429:10: enumConstants
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:458:10: enumConstants
                     {
-                    pushFollow(FOLLOW_enumConstants_in_enumBody1136);
+                    pushFollow(FOLLOW_enumConstants_in_enumBody1142);
                     enumConstants();
 
                     state._fsp--;
@@ -2173,7 +2201,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:431:9: ( ',' )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:460:9: ( ',' )?
             int alt24=2;
             int LA24_0 = input.LA(1);
 
@@ -2182,9 +2210,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt24) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:431:9: ','
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:460:9: ','
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_enumBody1158); if (state.failed) return ;
+                    match(input,COMMA,FOLLOW_COMMA_in_enumBody1164); if (state.failed) return ;
 
                     }
                     break;
@@ -2192,7 +2220,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:432:9: ( enumBodyDeclarations )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:461:9: ( enumBodyDeclarations )?
             int alt25=2;
             int LA25_0 = input.LA(1);
 
@@ -2201,9 +2229,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt25) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:432:10: enumBodyDeclarations
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:461:10: enumBodyDeclarations
                     {
-                    pushFollow(FOLLOW_enumBodyDeclarations_in_enumBody1171);
+                    pushFollow(FOLLOW_enumBodyDeclarations_in_enumBody1177);
                     enumBodyDeclarations();
 
                     state._fsp--;
@@ -2215,7 +2243,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            match(input,RBRACE,FOLLOW_RBRACE_in_enumBody1193); if (state.failed) return ;
+            match(input,RBRACE,FOLLOW_RBRACE_in_enumBody1199); if (state.failed) return ;
 
             }
 
@@ -2237,23 +2265,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "enumConstants"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:437:1: enumConstants : enumConstant ( ',' enumConstant )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:466:1: enumConstants : enumConstant ( ',' enumConstant )* ;
     public final void enumConstants() throws RecognitionException {
         int enumConstants_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 16) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:438:5: ( enumConstant ( ',' enumConstant )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:438:9: enumConstant ( ',' enumConstant )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:467:5: ( enumConstant ( ',' enumConstant )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:467:9: enumConstant ( ',' enumConstant )*
             {
-            pushFollow(FOLLOW_enumConstant_in_enumConstants1213);
+            pushFollow(FOLLOW_enumConstant_in_enumConstants1219);
             enumConstant();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:439:9: ( ',' enumConstant )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:468:9: ( ',' enumConstant )*
             loop26:
             do {
                 int alt26=2;
@@ -2272,11 +2300,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt26) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:439:10: ',' enumConstant
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:468:10: ',' enumConstant
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_enumConstants1224); if (state.failed) return ;
+            	    match(input,COMMA,FOLLOW_COMMA_in_enumConstants1230); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_enumConstant_in_enumConstants1226);
+            	    pushFollow(FOLLOW_enumConstant_in_enumConstants1232);
             	    enumConstant();
 
             	    state._fsp--;
@@ -2311,17 +2339,17 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "enumConstant"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:447:1: enumConstant : ( annotations )? IDENTIFIER ( arguments )? ( classBody )? ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:476:1: enumConstant : ( annotations )? IDENTIFIER ( arguments )? ( classBody )? ;
     public final void enumConstant() throws RecognitionException {
         int enumConstant_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 17) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:448:5: ( ( annotations )? IDENTIFIER ( arguments )? ( classBody )? )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:448:9: ( annotations )? IDENTIFIER ( arguments )? ( classBody )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:477:5: ( ( annotations )? IDENTIFIER ( arguments )? ( classBody )? )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:477:9: ( annotations )? IDENTIFIER ( arguments )? ( classBody )?
             {
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:448:9: ( annotations )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:477:9: ( annotations )?
             int alt27=2;
             int LA27_0 = input.LA(1);
 
@@ -2330,9 +2358,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt27) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:448:10: annotations
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:477:10: annotations
                     {
-                    pushFollow(FOLLOW_annotations_in_enumConstant1260);
+                    pushFollow(FOLLOW_annotations_in_enumConstant1266);
                     annotations();
 
                     state._fsp--;
@@ -2344,9 +2372,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_enumConstant1281); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_enumConstant1287); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:451:9: ( arguments )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:480:9: ( arguments )?
             int alt28=2;
             int LA28_0 = input.LA(1);
 
@@ -2355,9 +2383,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt28) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:451:10: arguments
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:480:10: arguments
                     {
-                    pushFollow(FOLLOW_arguments_in_enumConstant1292);
+                    pushFollow(FOLLOW_arguments_in_enumConstant1298);
                     arguments();
 
                     state._fsp--;
@@ -2369,7 +2397,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:453:9: ( classBody )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:482:9: ( classBody )?
             int alt29=2;
             int LA29_0 = input.LA(1);
 
@@ -2378,9 +2406,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt29) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:453:10: classBody
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:482:10: classBody
                     {
-                    pushFollow(FOLLOW_classBody_in_enumConstant1314);
+                    pushFollow(FOLLOW_classBody_in_enumConstant1320);
                     classBody();
 
                     state._fsp--;
@@ -2412,19 +2440,19 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "enumBodyDeclarations"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:459:1: enumBodyDeclarations : ';' ( classBodyDeclaration )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:488:1: enumBodyDeclarations : ';' ( classBodyDeclaration )* ;
     public final void enumBodyDeclarations() throws RecognitionException {
         int enumBodyDeclarations_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 18) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:460:5: ( ';' ( classBodyDeclaration )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:460:9: ';' ( classBodyDeclaration )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:489:5: ( ';' ( classBodyDeclaration )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:489:9: ';' ( classBodyDeclaration )*
             {
-            match(input,SEMI,FOLLOW_SEMI_in_enumBodyDeclarations1355); if (state.failed) return ;
+            match(input,SEMI,FOLLOW_SEMI_in_enumBodyDeclarations1361); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:461:9: ( classBodyDeclaration )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:490:9: ( classBodyDeclaration )*
             loop30:
             do {
                 int alt30=2;
@@ -2437,9 +2465,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt30) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:461:10: classBodyDeclaration
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:490:10: classBodyDeclaration
             	    {
-            	    pushFollow(FOLLOW_classBodyDeclaration_in_enumBodyDeclarations1367);
+            	    pushFollow(FOLLOW_classBodyDeclaration_in_enumBodyDeclarations1373);
             	    classBodyDeclaration();
 
             	    state._fsp--;
@@ -2474,14 +2502,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "interfaceDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:465:1: interfaceDeclaration : ( normalInterfaceDeclaration | annotationTypeDeclaration );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:494:1: interfaceDeclaration : ( normalInterfaceDeclaration | annotationTypeDeclaration );
     public final void interfaceDeclaration() throws RecognitionException {
         int interfaceDeclaration_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 19) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:466:5: ( normalInterfaceDeclaration | annotationTypeDeclaration )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:495:5: ( normalInterfaceDeclaration | annotationTypeDeclaration )
             int alt31=2;
             switch ( input.LA(1) ) {
             case MONKEYS_AT:
@@ -2740,9 +2768,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
             switch (alt31) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:466:9: normalInterfaceDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:495:9: normalInterfaceDeclaration
                     {
-                    pushFollow(FOLLOW_normalInterfaceDeclaration_in_interfaceDeclaration1398);
+                    pushFollow(FOLLOW_normalInterfaceDeclaration_in_interfaceDeclaration1404);
                     normalInterfaceDeclaration();
 
                     state._fsp--;
@@ -2751,9 +2779,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:467:9: annotationTypeDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:496:9: annotationTypeDeclaration
                     {
-                    pushFollow(FOLLOW_annotationTypeDeclaration_in_interfaceDeclaration1408);
+                    pushFollow(FOLLOW_annotationTypeDeclaration_in_interfaceDeclaration1414);
                     annotationTypeDeclaration();
 
                     state._fsp--;
@@ -2781,27 +2809,27 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "normalInterfaceDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:470:1: normalInterfaceDeclaration : modifiers 'interface' IDENTIFIER ( typeParameters )? ( 'extends' typeList )? interfaceBody ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:499:1: normalInterfaceDeclaration : modifiers 'interface' IDENTIFIER ( typeParameters )? ( 'extends' typeList )? interfaceBody ;
     public final void normalInterfaceDeclaration() throws RecognitionException {
         int normalInterfaceDeclaration_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 20) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:471:5: ( modifiers 'interface' IDENTIFIER ( typeParameters )? ( 'extends' typeList )? interfaceBody )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:471:9: modifiers 'interface' IDENTIFIER ( typeParameters )? ( 'extends' typeList )? interfaceBody
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:500:5: ( modifiers 'interface' IDENTIFIER ( typeParameters )? ( 'extends' typeList )? interfaceBody )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:500:9: modifiers 'interface' IDENTIFIER ( typeParameters )? ( 'extends' typeList )? interfaceBody
             {
-            pushFollow(FOLLOW_modifiers_in_normalInterfaceDeclaration1432);
+            pushFollow(FOLLOW_modifiers_in_normalInterfaceDeclaration1438);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,INTERFACE,FOLLOW_INTERFACE_in_normalInterfaceDeclaration1434); if (state.failed) return ;
+            match(input,INTERFACE,FOLLOW_INTERFACE_in_normalInterfaceDeclaration1440); if (state.failed) return ;
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_normalInterfaceDeclaration1436); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_normalInterfaceDeclaration1442); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:472:9: ( typeParameters )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:501:9: ( typeParameters )?
             int alt32=2;
             int LA32_0 = input.LA(1);
 
@@ -2810,9 +2838,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt32) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:472:10: typeParameters
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:501:10: typeParameters
                     {
-                    pushFollow(FOLLOW_typeParameters_in_normalInterfaceDeclaration1447);
+                    pushFollow(FOLLOW_typeParameters_in_normalInterfaceDeclaration1453);
                     typeParameters();
 
                     state._fsp--;
@@ -2824,7 +2852,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:474:9: ( 'extends' typeList )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:503:9: ( 'extends' typeList )?
             int alt33=2;
             int LA33_0 = input.LA(1);
 
@@ -2833,11 +2861,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt33) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:474:10: 'extends' typeList
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:503:10: 'extends' typeList
                     {
-                    match(input,EXTENDS,FOLLOW_EXTENDS_in_normalInterfaceDeclaration1469); if (state.failed) return ;
+                    match(input,EXTENDS,FOLLOW_EXTENDS_in_normalInterfaceDeclaration1475); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_typeList_in_normalInterfaceDeclaration1471);
+                    pushFollow(FOLLOW_typeList_in_normalInterfaceDeclaration1477);
                     typeList();
 
                     state._fsp--;
@@ -2849,7 +2877,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            pushFollow(FOLLOW_interfaceBody_in_normalInterfaceDeclaration1492);
+            pushFollow(FOLLOW_interfaceBody_in_normalInterfaceDeclaration1498);
             interfaceBody();
 
             state._fsp--;
@@ -2875,23 +2903,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "typeList"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:479:1: typeList : type ( ',' type )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:508:1: typeList : type ( ',' type )* ;
     public final void typeList() throws RecognitionException {
         int typeList_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 21) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:480:5: ( type ( ',' type )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:480:9: type ( ',' type )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:509:5: ( type ( ',' type )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:509:9: type ( ',' type )*
             {
-            pushFollow(FOLLOW_type_in_typeList1512);
+            pushFollow(FOLLOW_type_in_typeList1518);
             type();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:481:9: ( ',' type )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:510:9: ( ',' type )*
             loop34:
             do {
                 int alt34=2;
@@ -2904,11 +2932,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt34) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:481:10: ',' type
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:510:10: ',' type
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_typeList1523); if (state.failed) return ;
+            	    match(input,COMMA,FOLLOW_COMMA_in_typeList1529); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_type_in_typeList1525);
+            	    pushFollow(FOLLOW_type_in_typeList1531);
             	    type();
 
             	    state._fsp--;
@@ -2943,19 +2971,19 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "classBody"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:485:1: classBody : '{' ( classBodyDeclaration )* '}' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:514:1: classBody : '{' ( classBodyDeclaration )* '}' ;
     public final void classBody() throws RecognitionException {
         int classBody_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 22) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:486:5: ( '{' ( classBodyDeclaration )* '}' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:486:9: '{' ( classBodyDeclaration )* '}'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:515:5: ( '{' ( classBodyDeclaration )* '}' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:515:9: '{' ( classBodyDeclaration )* '}'
             {
-            match(input,LBRACE,FOLLOW_LBRACE_in_classBody1556); if (state.failed) return ;
+            match(input,LBRACE,FOLLOW_LBRACE_in_classBody1562); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:487:9: ( classBodyDeclaration )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:516:9: ( classBodyDeclaration )*
             loop35:
             do {
                 int alt35=2;
@@ -2968,9 +2996,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt35) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:487:10: classBodyDeclaration
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:516:10: classBodyDeclaration
             	    {
-            	    pushFollow(FOLLOW_classBodyDeclaration_in_classBody1568);
+            	    pushFollow(FOLLOW_classBodyDeclaration_in_classBody1574);
             	    classBodyDeclaration();
 
             	    state._fsp--;
@@ -2985,7 +3013,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             } while (true);
 
 
-            match(input,RBRACE,FOLLOW_RBRACE_in_classBody1590); if (state.failed) return ;
+            match(input,RBRACE,FOLLOW_RBRACE_in_classBody1596); if (state.failed) return ;
 
             }
 
@@ -3007,19 +3035,19 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "interfaceBody"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:492:1: interfaceBody : '{' ( interfaceBodyDeclaration )* '}' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:521:1: interfaceBody : '{' ( interfaceBodyDeclaration )* '}' ;
     public final void interfaceBody() throws RecognitionException {
         int interfaceBody_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 23) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:493:5: ( '{' ( interfaceBodyDeclaration )* '}' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:493:9: '{' ( interfaceBodyDeclaration )* '}'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:522:5: ( '{' ( interfaceBodyDeclaration )* '}' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:522:9: '{' ( interfaceBodyDeclaration )* '}'
             {
-            match(input,LBRACE,FOLLOW_LBRACE_in_interfaceBody1610); if (state.failed) return ;
+            match(input,LBRACE,FOLLOW_LBRACE_in_interfaceBody1616); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:494:9: ( interfaceBodyDeclaration )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:523:9: ( interfaceBodyDeclaration )*
             loop36:
             do {
                 int alt36=2;
@@ -3032,9 +3060,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt36) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:494:10: interfaceBodyDeclaration
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:523:10: interfaceBodyDeclaration
             	    {
-            	    pushFollow(FOLLOW_interfaceBodyDeclaration_in_interfaceBody1622);
+            	    pushFollow(FOLLOW_interfaceBodyDeclaration_in_interfaceBody1628);
             	    interfaceBodyDeclaration();
 
             	    state._fsp--;
@@ -3049,7 +3077,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             } while (true);
 
 
-            match(input,RBRACE,FOLLOW_RBRACE_in_interfaceBody1644); if (state.failed) return ;
+            match(input,RBRACE,FOLLOW_RBRACE_in_interfaceBody1650); if (state.failed) return ;
 
             }
 
@@ -3071,14 +3099,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "classBodyDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:499:1: classBodyDeclaration : ( ';' | ( 'static' )? block | memberDecl );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:528:1: classBodyDeclaration : ( ';' | ( 'static' )? block | memberDecl );
     public final void classBodyDeclaration() throws RecognitionException {
         int classBodyDeclaration_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 24) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:500:5: ( ';' | ( 'static' )? block | memberDecl )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:529:5: ( ';' | ( 'static' )? block | memberDecl )
             int alt38=3;
             switch ( input.LA(1) ) {
             case SEMI:
@@ -3151,16 +3179,16 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
             switch (alt38) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:500:9: ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:529:9: ';'
                     {
-                    match(input,SEMI,FOLLOW_SEMI_in_classBodyDeclaration1664); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_classBodyDeclaration1670); if (state.failed) return ;
 
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:501:9: ( 'static' )? block
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:530:9: ( 'static' )? block
                     {
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:501:9: ( 'static' )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:530:9: ( 'static' )?
                     int alt37=2;
                     int LA37_0 = input.LA(1);
 
@@ -3169,9 +3197,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt37) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:501:10: 'static'
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:530:10: 'static'
                             {
-                            match(input,STATIC,FOLLOW_STATIC_in_classBodyDeclaration1675); if (state.failed) return ;
+                            match(input,STATIC,FOLLOW_STATIC_in_classBodyDeclaration1681); if (state.failed) return ;
 
                             }
                             break;
@@ -3179,7 +3207,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
 
 
-                    pushFollow(FOLLOW_block_in_classBodyDeclaration1697);
+                    pushFollow(FOLLOW_block_in_classBodyDeclaration1703);
                     block();
 
                     state._fsp--;
@@ -3188,9 +3216,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:504:9: memberDecl
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:533:9: memberDecl
                     {
-                    pushFollow(FOLLOW_memberDecl_in_classBodyDeclaration1707);
+                    pushFollow(FOLLOW_memberDecl_in_classBodyDeclaration1713);
                     memberDecl();
 
                     state._fsp--;
@@ -3218,14 +3246,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "memberDecl"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:507:1: memberDecl : ( fieldDeclaration | methodDeclaration | classDeclaration | interfaceDeclaration );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:536:1: memberDecl : ( fieldDeclaration | methodDeclaration | classDeclaration | interfaceDeclaration );
     public final void memberDecl() throws RecognitionException {
         int memberDecl_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 25) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:508:5: ( fieldDeclaration | methodDeclaration | classDeclaration | interfaceDeclaration )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:537:5: ( fieldDeclaration | methodDeclaration | classDeclaration | interfaceDeclaration )
             int alt39=4;
             switch ( input.LA(1) ) {
             case MONKEYS_AT:
@@ -3615,9 +3643,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
             switch (alt39) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:508:10: fieldDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:537:10: fieldDeclaration
                     {
-                    pushFollow(FOLLOW_fieldDeclaration_in_memberDecl1728);
+                    pushFollow(FOLLOW_fieldDeclaration_in_memberDecl1734);
                     fieldDeclaration();
 
                     state._fsp--;
@@ -3626,9 +3654,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:509:10: methodDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:538:10: methodDeclaration
                     {
-                    pushFollow(FOLLOW_methodDeclaration_in_memberDecl1739);
+                    pushFollow(FOLLOW_methodDeclaration_in_memberDecl1745);
                     methodDeclaration();
 
                     state._fsp--;
@@ -3637,9 +3665,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:510:10: classDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:539:10: classDeclaration
                     {
-                    pushFollow(FOLLOW_classDeclaration_in_memberDecl1750);
+                    pushFollow(FOLLOW_classDeclaration_in_memberDecl1756);
                     classDeclaration();
 
                     state._fsp--;
@@ -3648,9 +3676,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:511:10: interfaceDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:540:10: interfaceDeclaration
                     {
-                    pushFollow(FOLLOW_interfaceDeclaration_in_memberDecl1761);
+                    pushFollow(FOLLOW_interfaceDeclaration_in_memberDecl1767);
                     interfaceDeclaration();
 
                     state._fsp--;
@@ -3678,14 +3706,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "methodDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:515:1: methodDeclaration : ( modifiers ( typeParameters )? IDENTIFIER formalParameters ( 'throws' qualifiedNameList )? '{' ( explicitConstructorInvocation )? ( blockStatement )* '}' | modifiers ( typeParameters )? ( type | 'void' ) IDENTIFIER formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ( block | ';' ) );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:544:1: methodDeclaration : ( modifiers ( typeParameters )? IDENTIFIER formalParameters ( 'throws' qualifiedNameList )? '{' ( explicitConstructorInvocation )? ( blockStatement )* '}' | modifiers ( typeParameters )? ( type | 'void' ) IDENTIFIER formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ( block | ';' ) );
     public final void methodDeclaration() throws RecognitionException {
         int methodDeclaration_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 26) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:516:5: ( modifiers ( typeParameters )? IDENTIFIER formalParameters ( 'throws' qualifiedNameList )? '{' ( explicitConstructorInvocation )? ( blockStatement )* '}' | modifiers ( typeParameters )? ( type | 'void' ) IDENTIFIER formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ( block | ';' ) )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:545:5: ( modifiers ( typeParameters )? IDENTIFIER formalParameters ( 'throws' qualifiedNameList )? '{' ( explicitConstructorInvocation )? ( blockStatement )* '}' | modifiers ( typeParameters )? ( type | 'void' ) IDENTIFIER formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ( block | ';' ) )
             int alt49=2;
             switch ( input.LA(1) ) {
             case MONKEYS_AT:
@@ -3992,15 +4020,15 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
             switch (alt49) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:518:10: modifiers ( typeParameters )? IDENTIFIER formalParameters ( 'throws' qualifiedNameList )? '{' ( explicitConstructorInvocation )? ( blockStatement )* '}'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:547:10: modifiers ( typeParameters )? IDENTIFIER formalParameters ( 'throws' qualifiedNameList )? '{' ( explicitConstructorInvocation )? ( blockStatement )* '}'
                     {
-                    pushFollow(FOLLOW_modifiers_in_methodDeclaration1799);
+                    pushFollow(FOLLOW_modifiers_in_methodDeclaration1805);
                     modifiers();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:519:9: ( typeParameters )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:548:9: ( typeParameters )?
                     int alt40=2;
                     int LA40_0 = input.LA(1);
 
@@ -4009,9 +4037,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt40) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:519:10: typeParameters
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:548:10: typeParameters
                             {
-                            pushFollow(FOLLOW_typeParameters_in_methodDeclaration1810);
+                            pushFollow(FOLLOW_typeParameters_in_methodDeclaration1816);
                             typeParameters();
 
                             state._fsp--;
@@ -4023,15 +4051,15 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
 
 
-                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_methodDeclaration1831); if (state.failed) return ;
+                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_methodDeclaration1837); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_formalParameters_in_methodDeclaration1841);
+                    pushFollow(FOLLOW_formalParameters_in_methodDeclaration1847);
                     formalParameters();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:523:9: ( 'throws' qualifiedNameList )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:552:9: ( 'throws' qualifiedNameList )?
                     int alt41=2;
                     int LA41_0 = input.LA(1);
 
@@ -4040,11 +4068,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt41) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:523:10: 'throws' qualifiedNameList
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:552:10: 'throws' qualifiedNameList
                             {
-                            match(input,THROWS,FOLLOW_THROWS_in_methodDeclaration1852); if (state.failed) return ;
+                            match(input,THROWS,FOLLOW_THROWS_in_methodDeclaration1858); if (state.failed) return ;
 
-                            pushFollow(FOLLOW_qualifiedNameList_in_methodDeclaration1854);
+                            pushFollow(FOLLOW_qualifiedNameList_in_methodDeclaration1860);
                             qualifiedNameList();
 
                             state._fsp--;
@@ -4056,9 +4084,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
 
 
-                    match(input,LBRACE,FOLLOW_LBRACE_in_methodDeclaration1875); if (state.failed) return ;
+                    match(input,LBRACE,FOLLOW_LBRACE_in_methodDeclaration1881); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:526:9: ( explicitConstructorInvocation )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:555:9: ( explicitConstructorInvocation )?
                     int alt42=2;
                     switch ( input.LA(1) ) {
                         case LT:
@@ -4157,9 +4185,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                     switch (alt42) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:526:10: explicitConstructorInvocation
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:555:10: explicitConstructorInvocation
                             {
-                            pushFollow(FOLLOW_explicitConstructorInvocation_in_methodDeclaration1887);
+                            pushFollow(FOLLOW_explicitConstructorInvocation_in_methodDeclaration1893);
                             explicitConstructorInvocation();
 
                             state._fsp--;
@@ -4171,7 +4199,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:528:9: ( blockStatement )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:557:9: ( blockStatement )*
                     loop43:
                     do {
                         int alt43=2;
@@ -4184,9 +4212,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                         switch (alt43) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:528:10: blockStatement
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:557:10: blockStatement
                     	    {
-                    	    pushFollow(FOLLOW_blockStatement_in_methodDeclaration1909);
+                    	    pushFollow(FOLLOW_blockStatement_in_methodDeclaration1915);
                     	    blockStatement();
 
                     	    state._fsp--;
@@ -4201,20 +4229,20 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     } while (true);
 
 
-                    match(input,RBRACE,FOLLOW_RBRACE_in_methodDeclaration1930); if (state.failed) return ;
+                    match(input,RBRACE,FOLLOW_RBRACE_in_methodDeclaration1936); if (state.failed) return ;
 
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:531:9: modifiers ( typeParameters )? ( type | 'void' ) IDENTIFIER formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ( block | ';' )
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:560:9: modifiers ( typeParameters )? ( type | 'void' ) IDENTIFIER formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ( block | ';' )
                     {
-                    pushFollow(FOLLOW_modifiers_in_methodDeclaration1940);
+                    pushFollow(FOLLOW_modifiers_in_methodDeclaration1946);
                     modifiers();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:532:9: ( typeParameters )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:561:9: ( typeParameters )?
                     int alt44=2;
                     int LA44_0 = input.LA(1);
 
@@ -4223,9 +4251,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt44) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:532:10: typeParameters
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:561:10: typeParameters
                             {
-                            pushFollow(FOLLOW_typeParameters_in_methodDeclaration1951);
+                            pushFollow(FOLLOW_typeParameters_in_methodDeclaration1957);
                             typeParameters();
 
                             state._fsp--;
@@ -4237,7 +4265,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:534:9: ( type | 'void' )
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:563:9: ( type | 'void' )
                     int alt45=2;
                     int LA45_0 = input.LA(1);
 
@@ -4257,9 +4285,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt45) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:534:10: type
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:563:10: type
                             {
-                            pushFollow(FOLLOW_type_in_methodDeclaration1973);
+                            pushFollow(FOLLOW_type_in_methodDeclaration1979);
                             type();
 
                             state._fsp--;
@@ -4268,9 +4296,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                             }
                             break;
                         case 2 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:535:13: 'void'
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:564:13: 'void'
                             {
-                            match(input,VOID,FOLLOW_VOID_in_methodDeclaration1987); if (state.failed) return ;
+                            match(input,VOID,FOLLOW_VOID_in_methodDeclaration1993); if (state.failed) return ;
 
                             }
                             break;
@@ -4278,15 +4306,15 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
 
 
-                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_methodDeclaration2007); if (state.failed) return ;
+                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_methodDeclaration2013); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_formalParameters_in_methodDeclaration2017);
+                    pushFollow(FOLLOW_formalParameters_in_methodDeclaration2023);
                     formalParameters();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:539:9: ( '[' ']' )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:568:9: ( '[' ']' )*
                     loop46:
                     do {
                         int alt46=2;
@@ -4299,11 +4327,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                         switch (alt46) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:539:10: '[' ']'
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:568:10: '[' ']'
                     	    {
-                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_methodDeclaration2028); if (state.failed) return ;
+                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_methodDeclaration2034); if (state.failed) return ;
 
-                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_methodDeclaration2030); if (state.failed) return ;
+                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_methodDeclaration2036); if (state.failed) return ;
 
                     	    }
                     	    break;
@@ -4314,7 +4342,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     } while (true);
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:541:9: ( 'throws' qualifiedNameList )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:570:9: ( 'throws' qualifiedNameList )?
                     int alt47=2;
                     int LA47_0 = input.LA(1);
 
@@ -4323,11 +4351,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt47) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:541:10: 'throws' qualifiedNameList
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:570:10: 'throws' qualifiedNameList
                             {
-                            match(input,THROWS,FOLLOW_THROWS_in_methodDeclaration2052); if (state.failed) return ;
+                            match(input,THROWS,FOLLOW_THROWS_in_methodDeclaration2058); if (state.failed) return ;
 
-                            pushFollow(FOLLOW_qualifiedNameList_in_methodDeclaration2054);
+                            pushFollow(FOLLOW_qualifiedNameList_in_methodDeclaration2060);
                             qualifiedNameList();
 
                             state._fsp--;
@@ -4339,7 +4367,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:543:9: ( block | ';' )
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:572:9: ( block | ';' )
                     int alt48=2;
                     int LA48_0 = input.LA(1);
 
@@ -4359,9 +4387,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt48) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:544:13: block
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:573:13: block
                             {
-                            pushFollow(FOLLOW_block_in_methodDeclaration2109);
+                            pushFollow(FOLLOW_block_in_methodDeclaration2115);
                             block();
 
                             state._fsp--;
@@ -4370,9 +4398,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                             }
                             break;
                         case 2 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:545:13: ';'
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:574:13: ';'
                             {
-                            match(input,SEMI,FOLLOW_SEMI_in_methodDeclaration2123); if (state.failed) return ;
+                            match(input,SEMI,FOLLOW_SEMI_in_methodDeclaration2129); if (state.failed) return ;
 
                             }
                             break;
@@ -4402,35 +4430,35 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "fieldDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:550:1: fieldDeclaration : modifiers type variableDeclarator ( ',' variableDeclarator )* ';' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:579:1: fieldDeclaration : modifiers type variableDeclarator ( ',' variableDeclarator )* ';' ;
     public final void fieldDeclaration() throws RecognitionException {
         int fieldDeclaration_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 27) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:551:5: ( modifiers type variableDeclarator ( ',' variableDeclarator )* ';' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:551:9: modifiers type variableDeclarator ( ',' variableDeclarator )* ';'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:580:5: ( modifiers type variableDeclarator ( ',' variableDeclarator )* ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:580:9: modifiers type variableDeclarator ( ',' variableDeclarator )* ';'
             {
-            pushFollow(FOLLOW_modifiers_in_fieldDeclaration2155);
+            pushFollow(FOLLOW_modifiers_in_fieldDeclaration2161);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            pushFollow(FOLLOW_type_in_fieldDeclaration2165);
+            pushFollow(FOLLOW_type_in_fieldDeclaration2171);
             type();
 
             state._fsp--;
             if (state.failed) return ;
 
-            pushFollow(FOLLOW_variableDeclarator_in_fieldDeclaration2175);
+            pushFollow(FOLLOW_variableDeclarator_in_fieldDeclaration2181);
             variableDeclarator();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:554:9: ( ',' variableDeclarator )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:583:9: ( ',' variableDeclarator )*
             loop50:
             do {
                 int alt50=2;
@@ -4443,11 +4471,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt50) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:554:10: ',' variableDeclarator
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:583:10: ',' variableDeclarator
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_fieldDeclaration2186); if (state.failed) return ;
+            	    match(input,COMMA,FOLLOW_COMMA_in_fieldDeclaration2192); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_variableDeclarator_in_fieldDeclaration2188);
+            	    pushFollow(FOLLOW_variableDeclarator_in_fieldDeclaration2194);
             	    variableDeclarator();
 
             	    state._fsp--;
@@ -4462,7 +4490,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             } while (true);
 
 
-            match(input,SEMI,FOLLOW_SEMI_in_fieldDeclaration2209); if (state.failed) return ;
+            match(input,SEMI,FOLLOW_SEMI_in_fieldDeclaration2215); if (state.failed) return ;
 
             }
 
@@ -4484,19 +4512,19 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "variableDeclarator"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:559:1: variableDeclarator : IDENTIFIER ( '[' ']' )* ( '=' variableInitializer )? ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:588:1: variableDeclarator : IDENTIFIER ( '[' ']' )* ( '=' variableInitializer )? ;
     public final void variableDeclarator() throws RecognitionException {
         int variableDeclarator_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 28) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:560:5: ( IDENTIFIER ( '[' ']' )* ( '=' variableInitializer )? )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:560:9: IDENTIFIER ( '[' ']' )* ( '=' variableInitializer )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:589:5: ( IDENTIFIER ( '[' ']' )* ( '=' variableInitializer )? )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:589:9: IDENTIFIER ( '[' ']' )* ( '=' variableInitializer )?
             {
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_variableDeclarator2229); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_variableDeclarator2235); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:561:9: ( '[' ']' )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:590:9: ( '[' ']' )*
             loop51:
             do {
                 int alt51=2;
@@ -4509,11 +4537,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt51) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:561:10: '[' ']'
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:590:10: '[' ']'
             	    {
-            	    match(input,LBRACKET,FOLLOW_LBRACKET_in_variableDeclarator2240); if (state.failed) return ;
+            	    match(input,LBRACKET,FOLLOW_LBRACKET_in_variableDeclarator2246); if (state.failed) return ;
 
-            	    match(input,RBRACKET,FOLLOW_RBRACKET_in_variableDeclarator2242); if (state.failed) return ;
+            	    match(input,RBRACKET,FOLLOW_RBRACKET_in_variableDeclarator2248); if (state.failed) return ;
 
             	    }
             	    break;
@@ -4524,7 +4552,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             } while (true);
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:563:9: ( '=' variableInitializer )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:592:9: ( '=' variableInitializer )?
             int alt52=2;
             int LA52_0 = input.LA(1);
 
@@ -4533,11 +4561,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt52) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:563:10: '=' variableInitializer
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:592:10: '=' variableInitializer
                     {
-                    match(input,EQ,FOLLOW_EQ_in_variableDeclarator2264); if (state.failed) return ;
+                    match(input,EQ,FOLLOW_EQ_in_variableDeclarator2270); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_variableInitializer_in_variableDeclarator2266);
+                    pushFollow(FOLLOW_variableInitializer_in_variableDeclarator2272);
                     variableInitializer();
 
                     state._fsp--;
@@ -4569,14 +4597,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "interfaceBodyDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:570:1: interfaceBodyDeclaration : ( interfaceFieldDeclaration | interfaceMethodDeclaration | interfaceDeclaration | classDeclaration | ';' );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:599:1: interfaceBodyDeclaration : ( interfaceFieldDeclaration | interfaceMethodDeclaration | interfaceDeclaration | classDeclaration | ';' );
     public final void interfaceBodyDeclaration() throws RecognitionException {
         int interfaceBodyDeclaration_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 29) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:571:5: ( interfaceFieldDeclaration | interfaceMethodDeclaration | interfaceDeclaration | classDeclaration | ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:600:5: ( interfaceFieldDeclaration | interfaceMethodDeclaration | interfaceDeclaration | classDeclaration | ';' )
             int alt53=5;
             switch ( input.LA(1) ) {
             case MONKEYS_AT:
@@ -4971,9 +4999,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
             switch (alt53) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:572:9: interfaceFieldDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:601:9: interfaceFieldDeclaration
                     {
-                    pushFollow(FOLLOW_interfaceFieldDeclaration_in_interfaceBodyDeclaration2305);
+                    pushFollow(FOLLOW_interfaceFieldDeclaration_in_interfaceBodyDeclaration2311);
                     interfaceFieldDeclaration();
 
                     state._fsp--;
@@ -4982,9 +5010,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:573:9: interfaceMethodDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:602:9: interfaceMethodDeclaration
                     {
-                    pushFollow(FOLLOW_interfaceMethodDeclaration_in_interfaceBodyDeclaration2315);
+                    pushFollow(FOLLOW_interfaceMethodDeclaration_in_interfaceBodyDeclaration2321);
                     interfaceMethodDeclaration();
 
                     state._fsp--;
@@ -4993,9 +5021,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:574:9: interfaceDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:603:9: interfaceDeclaration
                     {
-                    pushFollow(FOLLOW_interfaceDeclaration_in_interfaceBodyDeclaration2325);
+                    pushFollow(FOLLOW_interfaceDeclaration_in_interfaceBodyDeclaration2331);
                     interfaceDeclaration();
 
                     state._fsp--;
@@ -5004,9 +5032,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:575:9: classDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:604:9: classDeclaration
                     {
-                    pushFollow(FOLLOW_classDeclaration_in_interfaceBodyDeclaration2335);
+                    pushFollow(FOLLOW_classDeclaration_in_interfaceBodyDeclaration2341);
                     classDeclaration();
 
                     state._fsp--;
@@ -5015,9 +5043,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 5 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:576:9: ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:605:9: ';'
                     {
-                    match(input,SEMI,FOLLOW_SEMI_in_interfaceBodyDeclaration2345); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_interfaceBodyDeclaration2351); if (state.failed) return ;
 
                     }
                     break;
@@ -5041,23 +5069,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "interfaceMethodDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:579:1: interfaceMethodDeclaration : modifiers ( typeParameters )? ( type | 'void' ) IDENTIFIER formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ';' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:608:1: interfaceMethodDeclaration : modifiers ( typeParameters )? ( type | 'void' ) IDENTIFIER formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ';' ;
     public final void interfaceMethodDeclaration() throws RecognitionException {
         int interfaceMethodDeclaration_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 30) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:580:5: ( modifiers ( typeParameters )? ( type | 'void' ) IDENTIFIER formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ';' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:580:9: modifiers ( typeParameters )? ( type | 'void' ) IDENTIFIER formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ';'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:609:5: ( modifiers ( typeParameters )? ( type | 'void' ) IDENTIFIER formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:609:9: modifiers ( typeParameters )? ( type | 'void' ) IDENTIFIER formalParameters ( '[' ']' )* ( 'throws' qualifiedNameList )? ';'
             {
-            pushFollow(FOLLOW_modifiers_in_interfaceMethodDeclaration2365);
+            pushFollow(FOLLOW_modifiers_in_interfaceMethodDeclaration2371);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:581:9: ( typeParameters )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:610:9: ( typeParameters )?
             int alt54=2;
             int LA54_0 = input.LA(1);
 
@@ -5066,9 +5094,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt54) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:581:10: typeParameters
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:610:10: typeParameters
                     {
-                    pushFollow(FOLLOW_typeParameters_in_interfaceMethodDeclaration2376);
+                    pushFollow(FOLLOW_typeParameters_in_interfaceMethodDeclaration2382);
                     typeParameters();
 
                     state._fsp--;
@@ -5080,7 +5108,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:583:9: ( type | 'void' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:612:9: ( type | 'void' )
             int alt55=2;
             int LA55_0 = input.LA(1);
 
@@ -5100,9 +5128,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt55) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:583:10: type
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:612:10: type
                     {
-                    pushFollow(FOLLOW_type_in_interfaceMethodDeclaration2398);
+                    pushFollow(FOLLOW_type_in_interfaceMethodDeclaration2404);
                     type();
 
                     state._fsp--;
@@ -5111,9 +5139,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:584:10: 'void'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:613:10: 'void'
                     {
-                    match(input,VOID,FOLLOW_VOID_in_interfaceMethodDeclaration2409); if (state.failed) return ;
+                    match(input,VOID,FOLLOW_VOID_in_interfaceMethodDeclaration2415); if (state.failed) return ;
 
                     }
                     break;
@@ -5121,15 +5149,15 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_interfaceMethodDeclaration2429); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_interfaceMethodDeclaration2435); if (state.failed) return ;
 
-            pushFollow(FOLLOW_formalParameters_in_interfaceMethodDeclaration2439);
+            pushFollow(FOLLOW_formalParameters_in_interfaceMethodDeclaration2445);
             formalParameters();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:588:9: ( '[' ']' )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:617:9: ( '[' ']' )*
             loop56:
             do {
                 int alt56=2;
@@ -5142,11 +5170,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt56) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:588:10: '[' ']'
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:617:10: '[' ']'
             	    {
-            	    match(input,LBRACKET,FOLLOW_LBRACKET_in_interfaceMethodDeclaration2450); if (state.failed) return ;
+            	    match(input,LBRACKET,FOLLOW_LBRACKET_in_interfaceMethodDeclaration2456); if (state.failed) return ;
 
-            	    match(input,RBRACKET,FOLLOW_RBRACKET_in_interfaceMethodDeclaration2452); if (state.failed) return ;
+            	    match(input,RBRACKET,FOLLOW_RBRACKET_in_interfaceMethodDeclaration2458); if (state.failed) return ;
 
             	    }
             	    break;
@@ -5157,7 +5185,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             } while (true);
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:590:9: ( 'throws' qualifiedNameList )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:619:9: ( 'throws' qualifiedNameList )?
             int alt57=2;
             int LA57_0 = input.LA(1);
 
@@ -5166,11 +5194,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt57) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:590:10: 'throws' qualifiedNameList
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:619:10: 'throws' qualifiedNameList
                     {
-                    match(input,THROWS,FOLLOW_THROWS_in_interfaceMethodDeclaration2474); if (state.failed) return ;
+                    match(input,THROWS,FOLLOW_THROWS_in_interfaceMethodDeclaration2480); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_qualifiedNameList_in_interfaceMethodDeclaration2476);
+                    pushFollow(FOLLOW_qualifiedNameList_in_interfaceMethodDeclaration2482);
                     qualifiedNameList();
 
                     state._fsp--;
@@ -5182,7 +5210,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            match(input,SEMI,FOLLOW_SEMI_in_interfaceMethodDeclaration2489); if (state.failed) return ;
+            match(input,SEMI,FOLLOW_SEMI_in_interfaceMethodDeclaration2495); if (state.failed) return ;
 
             }
 
@@ -5204,35 +5232,35 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "interfaceFieldDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:599:1: interfaceFieldDeclaration : modifiers type variableDeclarator ( ',' variableDeclarator )* ';' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:628:1: interfaceFieldDeclaration : modifiers type variableDeclarator ( ',' variableDeclarator )* ';' ;
     public final void interfaceFieldDeclaration() throws RecognitionException {
         int interfaceFieldDeclaration_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 31) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:600:5: ( modifiers type variableDeclarator ( ',' variableDeclarator )* ';' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:600:9: modifiers type variableDeclarator ( ',' variableDeclarator )* ';'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:629:5: ( modifiers type variableDeclarator ( ',' variableDeclarator )* ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:629:9: modifiers type variableDeclarator ( ',' variableDeclarator )* ';'
             {
-            pushFollow(FOLLOW_modifiers_in_interfaceFieldDeclaration2511);
+            pushFollow(FOLLOW_modifiers_in_interfaceFieldDeclaration2517);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            pushFollow(FOLLOW_type_in_interfaceFieldDeclaration2513);
+            pushFollow(FOLLOW_type_in_interfaceFieldDeclaration2519);
             type();
 
             state._fsp--;
             if (state.failed) return ;
 
-            pushFollow(FOLLOW_variableDeclarator_in_interfaceFieldDeclaration2515);
+            pushFollow(FOLLOW_variableDeclarator_in_interfaceFieldDeclaration2521);
             variableDeclarator();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:601:9: ( ',' variableDeclarator )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:630:9: ( ',' variableDeclarator )*
             loop58:
             do {
                 int alt58=2;
@@ -5245,11 +5273,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt58) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:601:10: ',' variableDeclarator
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:630:10: ',' variableDeclarator
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_interfaceFieldDeclaration2526); if (state.failed) return ;
+            	    match(input,COMMA,FOLLOW_COMMA_in_interfaceFieldDeclaration2532); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_variableDeclarator_in_interfaceFieldDeclaration2528);
+            	    pushFollow(FOLLOW_variableDeclarator_in_interfaceFieldDeclaration2534);
             	    variableDeclarator();
 
             	    state._fsp--;
@@ -5264,7 +5292,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             } while (true);
 
 
-            match(input,SEMI,FOLLOW_SEMI_in_interfaceFieldDeclaration2549); if (state.failed) return ;
+            match(input,SEMI,FOLLOW_SEMI_in_interfaceFieldDeclaration2555); if (state.failed) return ;
 
             }
 
@@ -5286,14 +5314,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "type"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:607:1: type : ( classOrInterfaceType ( '[' ']' )* | primitiveType ( '[' ']' )* );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:636:1: type : ( classOrInterfaceType ( '[' ']' )* | primitiveType ( '[' ']' )* );
     public final void type() throws RecognitionException {
         int type_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 32) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:608:5: ( classOrInterfaceType ( '[' ']' )* | primitiveType ( '[' ']' )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:637:5: ( classOrInterfaceType ( '[' ']' )* | primitiveType ( '[' ']' )* )
             int alt61=2;
             int LA61_0 = input.LA(1);
 
@@ -5313,15 +5341,15 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt61) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:608:9: classOrInterfaceType ( '[' ']' )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:637:9: classOrInterfaceType ( '[' ']' )*
                     {
-                    pushFollow(FOLLOW_classOrInterfaceType_in_type2570);
+                    pushFollow(FOLLOW_classOrInterfaceType_in_type2576);
                     classOrInterfaceType();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:609:9: ( '[' ']' )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:638:9: ( '[' ']' )*
                     loop59:
                     do {
                         int alt59=2;
@@ -5334,11 +5362,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                         switch (alt59) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:609:10: '[' ']'
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:638:10: '[' ']'
                     	    {
-                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_type2581); if (state.failed) return ;
+                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_type2587); if (state.failed) return ;
 
-                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_type2583); if (state.failed) return ;
+                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_type2589); if (state.failed) return ;
 
                     	    }
                     	    break;
@@ -5352,15 +5380,15 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:611:9: primitiveType ( '[' ']' )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:640:9: primitiveType ( '[' ']' )*
                     {
-                    pushFollow(FOLLOW_primitiveType_in_type2604);
+                    pushFollow(FOLLOW_primitiveType_in_type2610);
                     primitiveType();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:612:9: ( '[' ']' )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:641:9: ( '[' ']' )*
                     loop60:
                     do {
                         int alt60=2;
@@ -5373,11 +5401,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                         switch (alt60) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:612:10: '[' ']'
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:641:10: '[' ']'
                     	    {
-                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_type2615); if (state.failed) return ;
+                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_type2621); if (state.failed) return ;
 
-                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_type2617); if (state.failed) return ;
+                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_type2623); if (state.failed) return ;
 
                     	    }
                     	    break;
@@ -5410,19 +5438,19 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "classOrInterfaceType"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:617:1: classOrInterfaceType : IDENTIFIER ( typeArguments )? ( '.' IDENTIFIER ( typeArguments )? )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:646:1: classOrInterfaceType : IDENTIFIER ( typeArguments )? ( '.' IDENTIFIER ( typeArguments )? )* ;
     public final void classOrInterfaceType() throws RecognitionException {
         int classOrInterfaceType_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 33) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:618:5: ( IDENTIFIER ( typeArguments )? ( '.' IDENTIFIER ( typeArguments )? )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:618:9: IDENTIFIER ( typeArguments )? ( '.' IDENTIFIER ( typeArguments )? )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:647:5: ( IDENTIFIER ( typeArguments )? ( '.' IDENTIFIER ( typeArguments )? )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:647:9: IDENTIFIER ( typeArguments )? ( '.' IDENTIFIER ( typeArguments )? )*
             {
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_classOrInterfaceType2649); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_classOrInterfaceType2655); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:619:9: ( typeArguments )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:648:9: ( typeArguments )?
             int alt62=2;
             int LA62_0 = input.LA(1);
 
@@ -5435,9 +5463,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt62) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:619:10: typeArguments
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:648:10: typeArguments
                     {
-                    pushFollow(FOLLOW_typeArguments_in_classOrInterfaceType2660);
+                    pushFollow(FOLLOW_typeArguments_in_classOrInterfaceType2666);
                     typeArguments();
 
                     state._fsp--;
@@ -5449,7 +5477,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:621:9: ( '.' IDENTIFIER ( typeArguments )? )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:650:9: ( '.' IDENTIFIER ( typeArguments )? )*
             loop64:
             do {
                 int alt64=2;
@@ -5462,13 +5490,13 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt64) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:621:10: '.' IDENTIFIER ( typeArguments )?
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:650:10: '.' IDENTIFIER ( typeArguments )?
             	    {
-            	    match(input,DOT,FOLLOW_DOT_in_classOrInterfaceType2682); if (state.failed) return ;
+            	    match(input,DOT,FOLLOW_DOT_in_classOrInterfaceType2688); if (state.failed) return ;
 
-            	    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_classOrInterfaceType2684); if (state.failed) return ;
+            	    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_classOrInterfaceType2690); if (state.failed) return ;
 
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:622:13: ( typeArguments )?
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:651:13: ( typeArguments )?
             	    int alt63=2;
             	    int LA63_0 = input.LA(1);
 
@@ -5481,9 +5509,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             	    }
             	    switch (alt63) {
             	        case 1 :
-            	            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:622:14: typeArguments
+            	            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:651:14: typeArguments
             	            {
-            	            pushFollow(FOLLOW_typeArguments_in_classOrInterfaceType2699);
+            	            pushFollow(FOLLOW_typeArguments_in_classOrInterfaceType2705);
             	            typeArguments();
 
             	            state._fsp--;
@@ -5524,14 +5552,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "primitiveType"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:627:1: primitiveType : ( 'boolean' | 'char' | 'byte' | 'short' | 'int' | 'long' | 'float' | 'double' );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:656:1: primitiveType : ( 'boolean' | 'char' | 'byte' | 'short' | 'int' | 'long' | 'float' | 'double' );
     public final void primitiveType() throws RecognitionException {
         int primitiveType_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 34) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:628:5: ( 'boolean' | 'char' | 'byte' | 'short' | 'int' | 'long' | 'float' | 'double' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:657:5: ( 'boolean' | 'char' | 'byte' | 'short' | 'int' | 'long' | 'float' | 'double' )
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:
             {
             if ( input.LA(1)==BOOLEAN||input.LA(1)==BYTE||input.LA(1)==CHAR||input.LA(1)==DOUBLE||input.LA(1)==FLOAT||input.LA(1)==INT||input.LA(1)==LONG||input.LA(1)==SHORT ) {
@@ -5566,25 +5594,25 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "typeArguments"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:638:1: typeArguments : '<' typeArgument ( ',' typeArgument )* '>' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:667:1: typeArguments : '<' typeArgument ( ',' typeArgument )* '>' ;
     public final void typeArguments() throws RecognitionException {
         int typeArguments_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 35) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:639:5: ( '<' typeArgument ( ',' typeArgument )* '>' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:639:9: '<' typeArgument ( ',' typeArgument )* '>'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:668:5: ( '<' typeArgument ( ',' typeArgument )* '>' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:668:9: '<' typeArgument ( ',' typeArgument )* '>'
             {
-            match(input,LT,FOLLOW_LT_in_typeArguments2836); if (state.failed) return ;
+            match(input,LT,FOLLOW_LT_in_typeArguments2842); if (state.failed) return ;
 
-            pushFollow(FOLLOW_typeArgument_in_typeArguments2838);
+            pushFollow(FOLLOW_typeArgument_in_typeArguments2844);
             typeArgument();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:640:9: ( ',' typeArgument )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:669:9: ( ',' typeArgument )*
             loop65:
             do {
                 int alt65=2;
@@ -5597,11 +5625,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt65) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:640:10: ',' typeArgument
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:669:10: ',' typeArgument
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_typeArguments2849); if (state.failed) return ;
+            	    match(input,COMMA,FOLLOW_COMMA_in_typeArguments2855); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_typeArgument_in_typeArguments2851);
+            	    pushFollow(FOLLOW_typeArgument_in_typeArguments2857);
             	    typeArgument();
 
             	    state._fsp--;
@@ -5616,7 +5644,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             } while (true);
 
 
-            match(input,GT,FOLLOW_GT_in_typeArguments2873); if (state.failed) return ;
+            match(input,GT,FOLLOW_GT_in_typeArguments2879); if (state.failed) return ;
 
             }
 
@@ -5638,14 +5666,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "typeArgument"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:645:1: typeArgument : ( type | '?' ( ( 'extends' | 'super' ) type )? );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:674:1: typeArgument : ( type | '?' ( ( 'extends' | 'super' ) type )? );
     public final void typeArgument() throws RecognitionException {
         int typeArgument_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 36) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:646:5: ( type | '?' ( ( 'extends' | 'super' ) type )? )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:675:5: ( type | '?' ( ( 'extends' | 'super' ) type )? )
             int alt67=2;
             int LA67_0 = input.LA(1);
 
@@ -5665,9 +5693,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt67) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:646:9: type
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:675:9: type
                     {
-                    pushFollow(FOLLOW_type_in_typeArgument2893);
+                    pushFollow(FOLLOW_type_in_typeArgument2899);
                     type();
 
                     state._fsp--;
@@ -5676,11 +5704,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:647:9: '?' ( ( 'extends' | 'super' ) type )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:676:9: '?' ( ( 'extends' | 'super' ) type )?
                     {
-                    match(input,QUES,FOLLOW_QUES_in_typeArgument2903); if (state.failed) return ;
+                    match(input,QUES,FOLLOW_QUES_in_typeArgument2909); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:648:9: ( ( 'extends' | 'super' ) type )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:677:9: ( ( 'extends' | 'super' ) type )?
                     int alt66=2;
                     int LA66_0 = input.LA(1);
 
@@ -5689,7 +5717,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt66) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:649:13: ( 'extends' | 'super' ) type
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:678:13: ( 'extends' | 'super' ) type
                             {
                             if ( input.LA(1)==EXTENDS||input.LA(1)==SUPER ) {
                                 input.consume();
@@ -5703,7 +5731,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                             }
 
 
-                            pushFollow(FOLLOW_type_in_typeArgument2971);
+                            pushFollow(FOLLOW_type_in_typeArgument2977);
                             type();
 
                             state._fsp--;
@@ -5737,23 +5765,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "qualifiedNameList"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:656:1: qualifiedNameList : qualifiedName ( ',' qualifiedName )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:685:1: qualifiedNameList : qualifiedName ( ',' qualifiedName )* ;
     public final void qualifiedNameList() throws RecognitionException {
         int qualifiedNameList_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 37) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:657:5: ( qualifiedName ( ',' qualifiedName )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:657:9: qualifiedName ( ',' qualifiedName )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:686:5: ( qualifiedName ( ',' qualifiedName )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:686:9: qualifiedName ( ',' qualifiedName )*
             {
-            pushFollow(FOLLOW_qualifiedName_in_qualifiedNameList3002);
+            pushFollow(FOLLOW_qualifiedName_in_qualifiedNameList3008);
             qualifiedName();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:658:9: ( ',' qualifiedName )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:687:9: ( ',' qualifiedName )*
             loop68:
             do {
                 int alt68=2;
@@ -5766,11 +5794,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt68) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:658:10: ',' qualifiedName
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:687:10: ',' qualifiedName
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_qualifiedNameList3013); if (state.failed) return ;
+            	    match(input,COMMA,FOLLOW_COMMA_in_qualifiedNameList3019); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_qualifiedName_in_qualifiedNameList3015);
+            	    pushFollow(FOLLOW_qualifiedName_in_qualifiedNameList3021);
             	    qualifiedName();
 
             	    state._fsp--;
@@ -5805,19 +5833,19 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "formalParameters"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:662:1: formalParameters : '(' ( formalParameterDecls )? ')' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:691:1: formalParameters : '(' ( formalParameterDecls )? ')' ;
     public final void formalParameters() throws RecognitionException {
         int formalParameters_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 38) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:663:5: ( '(' ( formalParameterDecls )? ')' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:663:9: '(' ( formalParameterDecls )? ')'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:692:5: ( '(' ( formalParameterDecls )? ')' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:692:9: '(' ( formalParameterDecls )? ')'
             {
-            match(input,LPAREN,FOLLOW_LPAREN_in_formalParameters3046); if (state.failed) return ;
+            match(input,LPAREN,FOLLOW_LPAREN_in_formalParameters3052); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:664:9: ( formalParameterDecls )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:693:9: ( formalParameterDecls )?
             int alt69=2;
             int LA69_0 = input.LA(1);
 
@@ -5826,9 +5854,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt69) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:664:10: formalParameterDecls
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:693:10: formalParameterDecls
                     {
-                    pushFollow(FOLLOW_formalParameterDecls_in_formalParameters3057);
+                    pushFollow(FOLLOW_formalParameterDecls_in_formalParameters3063);
                     formalParameterDecls();
 
                     state._fsp--;
@@ -5840,7 +5868,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_formalParameters3079); if (state.failed) return ;
+            match(input,RPAREN,FOLLOW_RPAREN_in_formalParameters3085); if (state.failed) return ;
 
             }
 
@@ -5862,14 +5890,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "formalParameterDecls"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:669:1: formalParameterDecls : ( ellipsisParameterDecl | normalParameterDecl ( ',' normalParameterDecl )* | ( normalParameterDecl ',' )+ ellipsisParameterDecl );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:698:1: formalParameterDecls : ( ellipsisParameterDecl | normalParameterDecl ( ',' normalParameterDecl )* | ( normalParameterDecl ',' )+ ellipsisParameterDecl );
     public final void formalParameterDecls() throws RecognitionException {
         int formalParameterDecls_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 39) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:670:5: ( ellipsisParameterDecl | normalParameterDecl ( ',' normalParameterDecl )* | ( normalParameterDecl ',' )+ ellipsisParameterDecl )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:699:5: ( ellipsisParameterDecl | normalParameterDecl ( ',' normalParameterDecl )* | ( normalParameterDecl ',' )+ ellipsisParameterDecl )
             int alt72=3;
             switch ( input.LA(1) ) {
             case FINAL:
@@ -5982,9 +6010,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
             switch (alt72) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:670:9: ellipsisParameterDecl
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:699:9: ellipsisParameterDecl
                     {
-                    pushFollow(FOLLOW_ellipsisParameterDecl_in_formalParameterDecls3099);
+                    pushFollow(FOLLOW_ellipsisParameterDecl_in_formalParameterDecls3105);
                     ellipsisParameterDecl();
 
                     state._fsp--;
@@ -5993,15 +6021,15 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:671:9: normalParameterDecl ( ',' normalParameterDecl )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:700:9: normalParameterDecl ( ',' normalParameterDecl )*
                     {
-                    pushFollow(FOLLOW_normalParameterDecl_in_formalParameterDecls3109);
+                    pushFollow(FOLLOW_normalParameterDecl_in_formalParameterDecls3115);
                     normalParameterDecl();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:672:9: ( ',' normalParameterDecl )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:701:9: ( ',' normalParameterDecl )*
                     loop70:
                     do {
                         int alt70=2;
@@ -6014,11 +6042,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                         switch (alt70) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:672:10: ',' normalParameterDecl
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:701:10: ',' normalParameterDecl
                     	    {
-                    	    match(input,COMMA,FOLLOW_COMMA_in_formalParameterDecls3120); if (state.failed) return ;
+                    	    match(input,COMMA,FOLLOW_COMMA_in_formalParameterDecls3126); if (state.failed) return ;
 
-                    	    pushFollow(FOLLOW_normalParameterDecl_in_formalParameterDecls3122);
+                    	    pushFollow(FOLLOW_normalParameterDecl_in_formalParameterDecls3128);
                     	    normalParameterDecl();
 
                     	    state._fsp--;
@@ -6036,9 +6064,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:674:9: ( normalParameterDecl ',' )+ ellipsisParameterDecl
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:703:9: ( normalParameterDecl ',' )+ ellipsisParameterDecl
                     {
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:674:9: ( normalParameterDecl ',' )+
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:703:9: ( normalParameterDecl ',' )+
                     int cnt71=0;
                     loop71:
                     do {
@@ -6100,15 +6128,15 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                         switch (alt71) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:674:10: normalParameterDecl ','
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:703:10: normalParameterDecl ','
                     	    {
-                    	    pushFollow(FOLLOW_normalParameterDecl_in_formalParameterDecls3144);
+                    	    pushFollow(FOLLOW_normalParameterDecl_in_formalParameterDecls3150);
                     	    normalParameterDecl();
 
                     	    state._fsp--;
                     	    if (state.failed) return ;
 
-                    	    match(input,COMMA,FOLLOW_COMMA_in_formalParameterDecls3154); if (state.failed) return ;
+                    	    match(input,COMMA,FOLLOW_COMMA_in_formalParameterDecls3160); if (state.failed) return ;
 
                     	    }
                     	    break;
@@ -6124,7 +6152,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     } while (true);
 
 
-                    pushFollow(FOLLOW_ellipsisParameterDecl_in_formalParameterDecls3176);
+                    pushFollow(FOLLOW_ellipsisParameterDecl_in_formalParameterDecls3182);
                     ellipsisParameterDecl();
 
                     state._fsp--;
@@ -6152,31 +6180,31 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "normalParameterDecl"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:680:1: normalParameterDecl : variableModifiers type IDENTIFIER ( '[' ']' )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:709:1: normalParameterDecl : variableModifiers type IDENTIFIER ( '[' ']' )* ;
     public final void normalParameterDecl() throws RecognitionException {
         int normalParameterDecl_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 40) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:681:5: ( variableModifiers type IDENTIFIER ( '[' ']' )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:681:9: variableModifiers type IDENTIFIER ( '[' ']' )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:710:5: ( variableModifiers type IDENTIFIER ( '[' ']' )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:710:9: variableModifiers type IDENTIFIER ( '[' ']' )*
             {
-            pushFollow(FOLLOW_variableModifiers_in_normalParameterDecl3196);
+            pushFollow(FOLLOW_variableModifiers_in_normalParameterDecl3202);
             variableModifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            pushFollow(FOLLOW_type_in_normalParameterDecl3198);
+            pushFollow(FOLLOW_type_in_normalParameterDecl3204);
             type();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_normalParameterDecl3200); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_normalParameterDecl3206); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:682:9: ( '[' ']' )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:711:9: ( '[' ']' )*
             loop73:
             do {
                 int alt73=2;
@@ -6189,11 +6217,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt73) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:682:10: '[' ']'
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:711:10: '[' ']'
             	    {
-            	    match(input,LBRACKET,FOLLOW_LBRACKET_in_normalParameterDecl3211); if (state.failed) return ;
+            	    match(input,LBRACKET,FOLLOW_LBRACKET_in_normalParameterDecl3217); if (state.failed) return ;
 
-            	    match(input,RBRACKET,FOLLOW_RBRACKET_in_normalParameterDecl3213); if (state.failed) return ;
+            	    match(input,RBRACKET,FOLLOW_RBRACKET_in_normalParameterDecl3219); if (state.failed) return ;
 
             	    }
             	    break;
@@ -6224,31 +6252,31 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "ellipsisParameterDecl"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:686:1: ellipsisParameterDecl : variableModifiers type '...' IDENTIFIER ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:715:1: ellipsisParameterDecl : variableModifiers type '...' IDENTIFIER ;
     public final void ellipsisParameterDecl() throws RecognitionException {
         int ellipsisParameterDecl_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 41) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:687:5: ( variableModifiers type '...' IDENTIFIER )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:687:9: variableModifiers type '...' IDENTIFIER
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:716:5: ( variableModifiers type '...' IDENTIFIER )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:716:9: variableModifiers type '...' IDENTIFIER
             {
-            pushFollow(FOLLOW_variableModifiers_in_ellipsisParameterDecl3244);
+            pushFollow(FOLLOW_variableModifiers_in_ellipsisParameterDecl3250);
             variableModifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            pushFollow(FOLLOW_type_in_ellipsisParameterDecl3254);
+            pushFollow(FOLLOW_type_in_ellipsisParameterDecl3260);
             type();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,ELLIPSIS,FOLLOW_ELLIPSIS_in_ellipsisParameterDecl3257); if (state.failed) return ;
+            match(input,ELLIPSIS,FOLLOW_ELLIPSIS_in_ellipsisParameterDecl3263); if (state.failed) return ;
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_ellipsisParameterDecl3267); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_ellipsisParameterDecl3273); if (state.failed) return ;
 
             }
 
@@ -6270,14 +6298,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "explicitConstructorInvocation"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:693:1: explicitConstructorInvocation : ( ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';' | primary '.' ( nonWildcardTypeArguments )? 'super' arguments ';' );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:722:1: explicitConstructorInvocation : ( ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';' | primary '.' ( nonWildcardTypeArguments )? 'super' arguments ';' );
     public final void explicitConstructorInvocation() throws RecognitionException {
         int explicitConstructorInvocation_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 42) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:694:5: ( ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';' | primary '.' ( nonWildcardTypeArguments )? 'super' arguments ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:723:5: ( ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';' | primary '.' ( nonWildcardTypeArguments )? 'super' arguments ';' )
             int alt76=2;
             switch ( input.LA(1) ) {
             case LT:
@@ -6361,9 +6389,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
             switch (alt76) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:694:9: ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:723:9: ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';'
                     {
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:694:9: ( nonWildcardTypeArguments )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:723:9: ( nonWildcardTypeArguments )?
                     int alt74=2;
                     int LA74_0 = input.LA(1);
 
@@ -6372,9 +6400,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt74) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:694:10: nonWildcardTypeArguments
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:723:10: nonWildcardTypeArguments
                             {
-                            pushFollow(FOLLOW_nonWildcardTypeArguments_in_explicitConstructorInvocation3289);
+                            pushFollow(FOLLOW_nonWildcardTypeArguments_in_explicitConstructorInvocation3295);
                             nonWildcardTypeArguments();
 
                             state._fsp--;
@@ -6398,28 +6426,28 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
 
 
-                    pushFollow(FOLLOW_arguments_in_explicitConstructorInvocation3347);
+                    pushFollow(FOLLOW_arguments_in_explicitConstructorInvocation3353);
                     arguments();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,SEMI,FOLLOW_SEMI_in_explicitConstructorInvocation3349); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_explicitConstructorInvocation3355); if (state.failed) return ;
 
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:701:9: primary '.' ( nonWildcardTypeArguments )? 'super' arguments ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:730:9: primary '.' ( nonWildcardTypeArguments )? 'super' arguments ';'
                     {
-                    pushFollow(FOLLOW_primary_in_explicitConstructorInvocation3360);
+                    pushFollow(FOLLOW_primary_in_explicitConstructorInvocation3366);
                     primary();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,DOT,FOLLOW_DOT_in_explicitConstructorInvocation3370); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_explicitConstructorInvocation3376); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:703:9: ( nonWildcardTypeArguments )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:732:9: ( nonWildcardTypeArguments )?
                     int alt75=2;
                     int LA75_0 = input.LA(1);
 
@@ -6428,9 +6456,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt75) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:703:10: nonWildcardTypeArguments
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:732:10: nonWildcardTypeArguments
                             {
-                            pushFollow(FOLLOW_nonWildcardTypeArguments_in_explicitConstructorInvocation3381);
+                            pushFollow(FOLLOW_nonWildcardTypeArguments_in_explicitConstructorInvocation3387);
                             nonWildcardTypeArguments();
 
                             state._fsp--;
@@ -6442,15 +6470,15 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
 
 
-                    match(input,SUPER,FOLLOW_SUPER_in_explicitConstructorInvocation3402); if (state.failed) return ;
+                    match(input,SUPER,FOLLOW_SUPER_in_explicitConstructorInvocation3408); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_arguments_in_explicitConstructorInvocation3412);
+                    pushFollow(FOLLOW_arguments_in_explicitConstructorInvocation3418);
                     arguments();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,SEMI,FOLLOW_SEMI_in_explicitConstructorInvocation3414); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_explicitConstructorInvocation3420); if (state.failed) return ;
 
                     }
                     break;
@@ -6474,19 +6502,19 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "qualifiedName"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:709:1: qualifiedName : IDENTIFIER ( '.' IDENTIFIER )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:738:1: qualifiedName : IDENTIFIER ( '.' IDENTIFIER )* ;
     public final void qualifiedName() throws RecognitionException {
         int qualifiedName_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 43) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:710:5: ( IDENTIFIER ( '.' IDENTIFIER )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:710:9: IDENTIFIER ( '.' IDENTIFIER )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:739:5: ( IDENTIFIER ( '.' IDENTIFIER )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:739:9: IDENTIFIER ( '.' IDENTIFIER )*
             {
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_qualifiedName3434); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_qualifiedName3440); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:711:9: ( '.' IDENTIFIER )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:740:9: ( '.' IDENTIFIER )*
             loop77:
             do {
                 int alt77=2;
@@ -6499,11 +6527,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt77) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:711:10: '.' IDENTIFIER
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:740:10: '.' IDENTIFIER
             	    {
-            	    match(input,DOT,FOLLOW_DOT_in_qualifiedName3445); if (state.failed) return ;
+            	    match(input,DOT,FOLLOW_DOT_in_qualifiedName3451); if (state.failed) return ;
 
-            	    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_qualifiedName3447); if (state.failed) return ;
+            	    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_qualifiedName3453); if (state.failed) return ;
 
             	    }
             	    break;
@@ -6534,17 +6562,17 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "annotations"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:715:1: annotations : ( annotation )+ ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:744:1: annotations : ( annotation )+ ;
     public final void annotations() throws RecognitionException {
         int annotations_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 44) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:716:5: ( ( annotation )+ )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:716:9: ( annotation )+
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:745:5: ( ( annotation )+ )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:745:9: ( annotation )+
             {
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:716:9: ( annotation )+
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:745:9: ( annotation )+
             int cnt78=0;
             loop78:
             do {
@@ -6558,9 +6586,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt78) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:716:10: annotation
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:745:10: annotation
             	    {
-            	    pushFollow(FOLLOW_annotation_in_annotations3479);
+            	    pushFollow(FOLLOW_annotation_in_annotations3485);
             	    annotation();
 
             	    state._fsp--;
@@ -6600,25 +6628,25 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "annotation"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:724:1: annotation : '@' qualifiedName ( '(' ( elementValuePairs | elementValue )? ')' )? ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:753:1: annotation : '@' qualifiedName ( '(' ( elementValuePairs | elementValue )? ')' )? ;
     public final void annotation() throws RecognitionException {
         int annotation_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 45) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:725:5: ( '@' qualifiedName ( '(' ( elementValuePairs | elementValue )? ')' )? )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:725:9: '@' qualifiedName ( '(' ( elementValuePairs | elementValue )? ')' )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:754:5: ( '@' qualifiedName ( '(' ( elementValuePairs | elementValue )? ')' )? )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:754:9: '@' qualifiedName ( '(' ( elementValuePairs | elementValue )? ')' )?
             {
-            match(input,MONKEYS_AT,FOLLOW_MONKEYS_AT_in_annotation3512); if (state.failed) return ;
+            match(input,MONKEYS_AT,FOLLOW_MONKEYS_AT_in_annotation3518); if (state.failed) return ;
 
-            pushFollow(FOLLOW_qualifiedName_in_annotation3514);
+            pushFollow(FOLLOW_qualifiedName_in_annotation3520);
             qualifiedName();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:726:9: ( '(' ( elementValuePairs | elementValue )? ')' )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:755:9: ( '(' ( elementValuePairs | elementValue )? ')' )?
             int alt80=2;
             int LA80_0 = input.LA(1);
 
@@ -6627,11 +6655,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt80) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:726:13: '(' ( elementValuePairs | elementValue )? ')'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:755:13: '(' ( elementValuePairs | elementValue )? ')'
                     {
-                    match(input,LPAREN,FOLLOW_LPAREN_in_annotation3528); if (state.failed) return ;
+                    match(input,LPAREN,FOLLOW_LPAREN_in_annotation3534); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:727:19: ( elementValuePairs | elementValue )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:756:19: ( elementValuePairs | elementValue )?
                     int alt79=3;
                     int LA79_0 = input.LA(1);
 
@@ -6650,9 +6678,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt79) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:727:23: elementValuePairs
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:756:23: elementValuePairs
                             {
-                            pushFollow(FOLLOW_elementValuePairs_in_annotation3555);
+                            pushFollow(FOLLOW_elementValuePairs_in_annotation3561);
                             elementValuePairs();
 
                             state._fsp--;
@@ -6661,9 +6689,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                             }
                             break;
                         case 2 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:728:23: elementValue
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:757:23: elementValue
                             {
-                            pushFollow(FOLLOW_elementValue_in_annotation3579);
+                            pushFollow(FOLLOW_elementValue_in_annotation3585);
                             elementValue();
 
                             state._fsp--;
@@ -6675,7 +6703,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
 
 
-                    match(input,RPAREN,FOLLOW_RPAREN_in_annotation3615); if (state.failed) return ;
+                    match(input,RPAREN,FOLLOW_RPAREN_in_annotation3621); if (state.failed) return ;
 
                     }
                     break;
@@ -6703,23 +6731,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "elementValuePairs"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:734:1: elementValuePairs : elementValuePair ( ',' elementValuePair )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:763:1: elementValuePairs : elementValuePair ( ',' elementValuePair )* ;
     public final void elementValuePairs() throws RecognitionException {
         int elementValuePairs_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 46) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:735:5: ( elementValuePair ( ',' elementValuePair )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:735:9: elementValuePair ( ',' elementValuePair )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:764:5: ( elementValuePair ( ',' elementValuePair )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:764:9: elementValuePair ( ',' elementValuePair )*
             {
-            pushFollow(FOLLOW_elementValuePair_in_elementValuePairs3647);
+            pushFollow(FOLLOW_elementValuePair_in_elementValuePairs3653);
             elementValuePair();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:736:9: ( ',' elementValuePair )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:765:9: ( ',' elementValuePair )*
             loop81:
             do {
                 int alt81=2;
@@ -6732,11 +6760,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt81) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:736:10: ',' elementValuePair
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:765:10: ',' elementValuePair
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_elementValuePairs3658); if (state.failed) return ;
+            	    match(input,COMMA,FOLLOW_COMMA_in_elementValuePairs3664); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_elementValuePair_in_elementValuePairs3660);
+            	    pushFollow(FOLLOW_elementValuePair_in_elementValuePairs3666);
             	    elementValuePair();
 
             	    state._fsp--;
@@ -6771,21 +6799,21 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "elementValuePair"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:740:1: elementValuePair : IDENTIFIER '=' elementValue ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:769:1: elementValuePair : IDENTIFIER '=' elementValue ;
     public final void elementValuePair() throws RecognitionException {
         int elementValuePair_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 47) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:741:5: ( IDENTIFIER '=' elementValue )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:741:9: IDENTIFIER '=' elementValue
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:770:5: ( IDENTIFIER '=' elementValue )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:770:9: IDENTIFIER '=' elementValue
             {
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_elementValuePair3691); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_elementValuePair3697); if (state.failed) return ;
 
-            match(input,EQ,FOLLOW_EQ_in_elementValuePair3693); if (state.failed) return ;
+            match(input,EQ,FOLLOW_EQ_in_elementValuePair3699); if (state.failed) return ;
 
-            pushFollow(FOLLOW_elementValue_in_elementValuePair3695);
+            pushFollow(FOLLOW_elementValue_in_elementValuePair3701);
             elementValue();
 
             state._fsp--;
@@ -6811,14 +6839,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "elementValue"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:744:1: elementValue : ( conditionalExpression | annotation | elementValueArrayInitializer );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:773:1: elementValue : ( conditionalExpression | annotation | elementValueArrayInitializer );
     public final void elementValue() throws RecognitionException {
         int elementValue_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 48) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:745:5: ( conditionalExpression | annotation | elementValueArrayInitializer )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:774:5: ( conditionalExpression | annotation | elementValueArrayInitializer )
             int alt82=3;
             switch ( input.LA(1) ) {
             case BANG:
@@ -6875,9 +6903,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
             switch (alt82) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:745:9: conditionalExpression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:774:9: conditionalExpression
                     {
-                    pushFollow(FOLLOW_conditionalExpression_in_elementValue3715);
+                    pushFollow(FOLLOW_conditionalExpression_in_elementValue3721);
                     conditionalExpression();
 
                     state._fsp--;
@@ -6886,9 +6914,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:746:9: annotation
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:775:9: annotation
                     {
-                    pushFollow(FOLLOW_annotation_in_elementValue3725);
+                    pushFollow(FOLLOW_annotation_in_elementValue3731);
                     annotation();
 
                     state._fsp--;
@@ -6897,9 +6925,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:747:9: elementValueArrayInitializer
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:776:9: elementValueArrayInitializer
                     {
-                    pushFollow(FOLLOW_elementValueArrayInitializer_in_elementValue3735);
+                    pushFollow(FOLLOW_elementValueArrayInitializer_in_elementValue3741);
                     elementValueArrayInitializer();
 
                     state._fsp--;
@@ -6927,19 +6955,19 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "elementValueArrayInitializer"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:750:1: elementValueArrayInitializer : '{' ( elementValue ( ',' elementValue )* )? ( ',' )? '}' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:779:1: elementValueArrayInitializer : '{' ( elementValue ( ',' elementValue )* )? ( ',' )? '}' ;
     public final void elementValueArrayInitializer() throws RecognitionException {
         int elementValueArrayInitializer_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 49) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:751:5: ( '{' ( elementValue ( ',' elementValue )* )? ( ',' )? '}' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:751:9: '{' ( elementValue ( ',' elementValue )* )? ( ',' )? '}'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:780:5: ( '{' ( elementValue ( ',' elementValue )* )? ( ',' )? '}' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:780:9: '{' ( elementValue ( ',' elementValue )* )? ( ',' )? '}'
             {
-            match(input,LBRACE,FOLLOW_LBRACE_in_elementValueArrayInitializer3755); if (state.failed) return ;
+            match(input,LBRACE,FOLLOW_LBRACE_in_elementValueArrayInitializer3761); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:752:9: ( elementValue ( ',' elementValue )* )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:781:9: ( elementValue ( ',' elementValue )* )?
             int alt84=2;
             int LA84_0 = input.LA(1);
 
@@ -6948,15 +6976,15 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt84) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:752:10: elementValue ( ',' elementValue )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:781:10: elementValue ( ',' elementValue )*
                     {
-                    pushFollow(FOLLOW_elementValue_in_elementValueArrayInitializer3766);
+                    pushFollow(FOLLOW_elementValue_in_elementValueArrayInitializer3772);
                     elementValue();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:753:13: ( ',' elementValue )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:782:13: ( ',' elementValue )*
                     loop83:
                     do {
                         int alt83=2;
@@ -6975,11 +7003,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                         switch (alt83) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:753:14: ',' elementValue
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:782:14: ',' elementValue
                     	    {
-                    	    match(input,COMMA,FOLLOW_COMMA_in_elementValueArrayInitializer3781); if (state.failed) return ;
+                    	    match(input,COMMA,FOLLOW_COMMA_in_elementValueArrayInitializer3787); if (state.failed) return ;
 
-                    	    pushFollow(FOLLOW_elementValue_in_elementValueArrayInitializer3783);
+                    	    pushFollow(FOLLOW_elementValue_in_elementValueArrayInitializer3789);
                     	    elementValue();
 
                     	    state._fsp--;
@@ -7000,7 +7028,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:755:12: ( ',' )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:784:12: ( ',' )?
             int alt85=2;
             int LA85_0 = input.LA(1);
 
@@ -7009,9 +7037,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt85) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:755:13: ','
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:784:13: ','
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_elementValueArrayInitializer3812); if (state.failed) return ;
+                    match(input,COMMA,FOLLOW_COMMA_in_elementValueArrayInitializer3818); if (state.failed) return ;
 
                     }
                     break;
@@ -7019,7 +7047,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            match(input,RBRACE,FOLLOW_RBRACE_in_elementValueArrayInitializer3816); if (state.failed) return ;
+            match(input,RBRACE,FOLLOW_RBRACE_in_elementValueArrayInitializer3822); if (state.failed) return ;
 
             }
 
@@ -7041,29 +7069,29 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "annotationTypeDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:762:1: annotationTypeDeclaration : modifiers '@' 'interface' IDENTIFIER annotationTypeBody ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:791:1: annotationTypeDeclaration : modifiers '@' 'interface' IDENTIFIER annotationTypeBody ;
     public final void annotationTypeDeclaration() throws RecognitionException {
         int annotationTypeDeclaration_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 50) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:763:5: ( modifiers '@' 'interface' IDENTIFIER annotationTypeBody )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:763:9: modifiers '@' 'interface' IDENTIFIER annotationTypeBody
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:792:5: ( modifiers '@' 'interface' IDENTIFIER annotationTypeBody )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:792:9: modifiers '@' 'interface' IDENTIFIER annotationTypeBody
             {
-            pushFollow(FOLLOW_modifiers_in_annotationTypeDeclaration3839);
+            pushFollow(FOLLOW_modifiers_in_annotationTypeDeclaration3845);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,MONKEYS_AT,FOLLOW_MONKEYS_AT_in_annotationTypeDeclaration3841); if (state.failed) return ;
+            match(input,MONKEYS_AT,FOLLOW_MONKEYS_AT_in_annotationTypeDeclaration3847); if (state.failed) return ;
 
-            match(input,INTERFACE,FOLLOW_INTERFACE_in_annotationTypeDeclaration3851); if (state.failed) return ;
+            match(input,INTERFACE,FOLLOW_INTERFACE_in_annotationTypeDeclaration3857); if (state.failed) return ;
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_annotationTypeDeclaration3861); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_annotationTypeDeclaration3867); if (state.failed) return ;
 
-            pushFollow(FOLLOW_annotationTypeBody_in_annotationTypeDeclaration3871);
+            pushFollow(FOLLOW_annotationTypeBody_in_annotationTypeDeclaration3877);
             annotationTypeBody();
 
             state._fsp--;
@@ -7089,19 +7117,19 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "annotationTypeBody"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:770:1: annotationTypeBody : '{' ( annotationTypeElementDeclaration )* '}' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:799:1: annotationTypeBody : '{' ( annotationTypeElementDeclaration )* '}' ;
     public final void annotationTypeBody() throws RecognitionException {
         int annotationTypeBody_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 51) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:771:5: ( '{' ( annotationTypeElementDeclaration )* '}' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:771:9: '{' ( annotationTypeElementDeclaration )* '}'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:800:5: ( '{' ( annotationTypeElementDeclaration )* '}' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:800:9: '{' ( annotationTypeElementDeclaration )* '}'
             {
-            match(input,LBRACE,FOLLOW_LBRACE_in_annotationTypeBody3892); if (state.failed) return ;
+            match(input,LBRACE,FOLLOW_LBRACE_in_annotationTypeBody3898); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:772:9: ( annotationTypeElementDeclaration )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:801:9: ( annotationTypeElementDeclaration )*
             loop86:
             do {
                 int alt86=2;
@@ -7114,9 +7142,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt86) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:772:10: annotationTypeElementDeclaration
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:801:10: annotationTypeElementDeclaration
             	    {
-            	    pushFollow(FOLLOW_annotationTypeElementDeclaration_in_annotationTypeBody3904);
+            	    pushFollow(FOLLOW_annotationTypeElementDeclaration_in_annotationTypeBody3910);
             	    annotationTypeElementDeclaration();
 
             	    state._fsp--;
@@ -7131,7 +7159,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             } while (true);
 
 
-            match(input,RBRACE,FOLLOW_RBRACE_in_annotationTypeBody3926); if (state.failed) return ;
+            match(input,RBRACE,FOLLOW_RBRACE_in_annotationTypeBody3932); if (state.failed) return ;
 
             }
 
@@ -7153,14 +7181,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "annotationTypeElementDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:780:1: annotationTypeElementDeclaration : ( annotationMethodDeclaration | interfaceFieldDeclaration | normalClassDeclaration | normalInterfaceDeclaration | enumDeclaration | annotationTypeDeclaration | ';' );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:809:1: annotationTypeElementDeclaration : ( annotationMethodDeclaration | interfaceFieldDeclaration | normalClassDeclaration | normalInterfaceDeclaration | enumDeclaration | annotationTypeDeclaration | ';' );
     public final void annotationTypeElementDeclaration() throws RecognitionException {
         int annotationTypeElementDeclaration_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 52) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:781:5: ( annotationMethodDeclaration | interfaceFieldDeclaration | normalClassDeclaration | normalInterfaceDeclaration | enumDeclaration | annotationTypeDeclaration | ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:810:5: ( annotationMethodDeclaration | interfaceFieldDeclaration | normalClassDeclaration | normalInterfaceDeclaration | enumDeclaration | annotationTypeDeclaration | ';' )
             int alt87=7;
             switch ( input.LA(1) ) {
             case MONKEYS_AT:
@@ -7625,9 +7653,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
             switch (alt87) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:781:9: annotationMethodDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:810:9: annotationMethodDeclaration
                     {
-                    pushFollow(FOLLOW_annotationMethodDeclaration_in_annotationTypeElementDeclaration3948);
+                    pushFollow(FOLLOW_annotationMethodDeclaration_in_annotationTypeElementDeclaration3954);
                     annotationMethodDeclaration();
 
                     state._fsp--;
@@ -7636,9 +7664,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:782:9: interfaceFieldDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:811:9: interfaceFieldDeclaration
                     {
-                    pushFollow(FOLLOW_interfaceFieldDeclaration_in_annotationTypeElementDeclaration3958);
+                    pushFollow(FOLLOW_interfaceFieldDeclaration_in_annotationTypeElementDeclaration3964);
                     interfaceFieldDeclaration();
 
                     state._fsp--;
@@ -7647,9 +7675,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:783:9: normalClassDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:812:9: normalClassDeclaration
                     {
-                    pushFollow(FOLLOW_normalClassDeclaration_in_annotationTypeElementDeclaration3968);
+                    pushFollow(FOLLOW_normalClassDeclaration_in_annotationTypeElementDeclaration3974);
                     normalClassDeclaration();
 
                     state._fsp--;
@@ -7658,9 +7686,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:784:9: normalInterfaceDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:813:9: normalInterfaceDeclaration
                     {
-                    pushFollow(FOLLOW_normalInterfaceDeclaration_in_annotationTypeElementDeclaration3978);
+                    pushFollow(FOLLOW_normalInterfaceDeclaration_in_annotationTypeElementDeclaration3984);
                     normalInterfaceDeclaration();
 
                     state._fsp--;
@@ -7669,9 +7697,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 5 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:785:9: enumDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:814:9: enumDeclaration
                     {
-                    pushFollow(FOLLOW_enumDeclaration_in_annotationTypeElementDeclaration3988);
+                    pushFollow(FOLLOW_enumDeclaration_in_annotationTypeElementDeclaration3994);
                     enumDeclaration();
 
                     state._fsp--;
@@ -7680,9 +7708,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 6 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:786:9: annotationTypeDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:815:9: annotationTypeDeclaration
                     {
-                    pushFollow(FOLLOW_annotationTypeDeclaration_in_annotationTypeElementDeclaration3998);
+                    pushFollow(FOLLOW_annotationTypeDeclaration_in_annotationTypeElementDeclaration4004);
                     annotationTypeDeclaration();
 
                     state._fsp--;
@@ -7691,9 +7719,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 7 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:787:9: ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:816:9: ';'
                     {
-                    match(input,SEMI,FOLLOW_SEMI_in_annotationTypeElementDeclaration4008); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_annotationTypeElementDeclaration4014); if (state.failed) return ;
 
                     }
                     break;
@@ -7717,35 +7745,35 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "annotationMethodDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:790:1: annotationMethodDeclaration : modifiers type IDENTIFIER '(' ')' ( 'default' elementValue )? ';' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:819:1: annotationMethodDeclaration : modifiers type IDENTIFIER '(' ')' ( 'default' elementValue )? ';' ;
     public final void annotationMethodDeclaration() throws RecognitionException {
         int annotationMethodDeclaration_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 53) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:791:5: ( modifiers type IDENTIFIER '(' ')' ( 'default' elementValue )? ';' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:791:9: modifiers type IDENTIFIER '(' ')' ( 'default' elementValue )? ';'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:820:5: ( modifiers type IDENTIFIER '(' ')' ( 'default' elementValue )? ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:820:9: modifiers type IDENTIFIER '(' ')' ( 'default' elementValue )? ';'
             {
-            pushFollow(FOLLOW_modifiers_in_annotationMethodDeclaration4028);
+            pushFollow(FOLLOW_modifiers_in_annotationMethodDeclaration4034);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            pushFollow(FOLLOW_type_in_annotationMethodDeclaration4030);
+            pushFollow(FOLLOW_type_in_annotationMethodDeclaration4036);
             type();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_annotationMethodDeclaration4032); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_annotationMethodDeclaration4038); if (state.failed) return ;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_annotationMethodDeclaration4042); if (state.failed) return ;
+            match(input,LPAREN,FOLLOW_LPAREN_in_annotationMethodDeclaration4048); if (state.failed) return ;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_annotationMethodDeclaration4044); if (state.failed) return ;
+            match(input,RPAREN,FOLLOW_RPAREN_in_annotationMethodDeclaration4050); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:792:17: ( 'default' elementValue )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:821:17: ( 'default' elementValue )?
             int alt88=2;
             int LA88_0 = input.LA(1);
 
@@ -7754,11 +7782,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt88) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:792:18: 'default' elementValue
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:821:18: 'default' elementValue
                     {
-                    match(input,DEFAULT,FOLLOW_DEFAULT_in_annotationMethodDeclaration4047); if (state.failed) return ;
+                    match(input,DEFAULT,FOLLOW_DEFAULT_in_annotationMethodDeclaration4053); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_elementValue_in_annotationMethodDeclaration4049);
+                    pushFollow(FOLLOW_elementValue_in_annotationMethodDeclaration4055);
                     elementValue();
 
                     state._fsp--;
@@ -7770,7 +7798,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            match(input,SEMI,FOLLOW_SEMI_in_annotationMethodDeclaration4078); if (state.failed) return ;
+            match(input,SEMI,FOLLOW_SEMI_in_annotationMethodDeclaration4084); if (state.failed) return ;
 
             }
 
@@ -7792,19 +7820,19 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "block"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:797:1: block : '{' ( blockStatement )* '}' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:826:1: block : '{' ( blockStatement )* '}' ;
     public final void block() throws RecognitionException {
         int block_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 54) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:798:5: ( '{' ( blockStatement )* '}' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:798:9: '{' ( blockStatement )* '}'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:827:5: ( '{' ( blockStatement )* '}' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:827:9: '{' ( blockStatement )* '}'
             {
-            match(input,LBRACE,FOLLOW_LBRACE_in_block4102); if (state.failed) return ;
+            match(input,LBRACE,FOLLOW_LBRACE_in_block4108); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:799:9: ( blockStatement )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:828:9: ( blockStatement )*
             loop89:
             do {
                 int alt89=2;
@@ -7817,9 +7845,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt89) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:799:10: blockStatement
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:828:10: blockStatement
             	    {
-            	    pushFollow(FOLLOW_blockStatement_in_block4113);
+            	    pushFollow(FOLLOW_blockStatement_in_block4119);
             	    blockStatement();
 
             	    state._fsp--;
@@ -7834,7 +7862,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             } while (true);
 
 
-            match(input,RBRACE,FOLLOW_RBRACE_in_block4134); if (state.failed) return ;
+            match(input,RBRACE,FOLLOW_RBRACE_in_block4140); if (state.failed) return ;
 
             }
 
@@ -7856,14 +7884,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "blockStatement"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:828:1: blockStatement : ( localVariableDeclarationStatement | classOrInterfaceDeclaration | statement );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:857:1: blockStatement : ( localVariableDeclarationStatement | classOrInterfaceDeclaration | statement );
     public final void blockStatement() throws RecognitionException {
         int blockStatement_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 55) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:829:5: ( localVariableDeclarationStatement | classOrInterfaceDeclaration | statement )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:858:5: ( localVariableDeclarationStatement | classOrInterfaceDeclaration | statement )
             int alt90=3;
             switch ( input.LA(1) ) {
             case FINAL:
@@ -8037,9 +8065,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
             switch (alt90) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:829:9: localVariableDeclarationStatement
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:858:9: localVariableDeclarationStatement
                     {
-                    pushFollow(FOLLOW_localVariableDeclarationStatement_in_blockStatement4156);
+                    pushFollow(FOLLOW_localVariableDeclarationStatement_in_blockStatement4162);
                     localVariableDeclarationStatement();
 
                     state._fsp--;
@@ -8048,9 +8076,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:830:9: classOrInterfaceDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:859:9: classOrInterfaceDeclaration
                     {
-                    pushFollow(FOLLOW_classOrInterfaceDeclaration_in_blockStatement4166);
+                    pushFollow(FOLLOW_classOrInterfaceDeclaration_in_blockStatement4172);
                     classOrInterfaceDeclaration();
 
                     state._fsp--;
@@ -8059,9 +8087,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:831:9: statement
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:860:9: statement
                     {
-                    pushFollow(FOLLOW_statement_in_blockStatement4176);
+                    pushFollow(FOLLOW_statement_in_blockStatement4182);
                     statement();
 
                     state._fsp--;
@@ -8089,23 +8117,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "localVariableDeclarationStatement"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:835:1: localVariableDeclarationStatement : localVariableDeclaration ';' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:864:1: localVariableDeclarationStatement : localVariableDeclaration ';' ;
     public final void localVariableDeclarationStatement() throws RecognitionException {
         int localVariableDeclarationStatement_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 56) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:836:5: ( localVariableDeclaration ';' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:836:9: localVariableDeclaration ';'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:865:5: ( localVariableDeclaration ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:865:9: localVariableDeclaration ';'
             {
-            pushFollow(FOLLOW_localVariableDeclaration_in_localVariableDeclarationStatement4197);
+            pushFollow(FOLLOW_localVariableDeclaration_in_localVariableDeclarationStatement4203);
             localVariableDeclaration();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,SEMI,FOLLOW_SEMI_in_localVariableDeclarationStatement4207); if (state.failed) return ;
+            match(input,SEMI,FOLLOW_SEMI_in_localVariableDeclarationStatement4213); if (state.failed) return ;
 
             }
 
@@ -8127,35 +8155,35 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "localVariableDeclaration"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:840:1: localVariableDeclaration : variableModifiers type variableDeclarator ( ',' variableDeclarator )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:869:1: localVariableDeclaration : variableModifiers type variableDeclarator ( ',' variableDeclarator )* ;
     public final void localVariableDeclaration() throws RecognitionException {
         int localVariableDeclaration_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 57) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:841:5: ( variableModifiers type variableDeclarator ( ',' variableDeclarator )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:841:9: variableModifiers type variableDeclarator ( ',' variableDeclarator )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:870:5: ( variableModifiers type variableDeclarator ( ',' variableDeclarator )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:870:9: variableModifiers type variableDeclarator ( ',' variableDeclarator )*
             {
-            pushFollow(FOLLOW_variableModifiers_in_localVariableDeclaration4227);
+            pushFollow(FOLLOW_variableModifiers_in_localVariableDeclaration4233);
             variableModifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            pushFollow(FOLLOW_type_in_localVariableDeclaration4229);
+            pushFollow(FOLLOW_type_in_localVariableDeclaration4235);
             type();
 
             state._fsp--;
             if (state.failed) return ;
 
-            pushFollow(FOLLOW_variableDeclarator_in_localVariableDeclaration4239);
+            pushFollow(FOLLOW_variableDeclarator_in_localVariableDeclaration4245);
             variableDeclarator();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:843:9: ( ',' variableDeclarator )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:872:9: ( ',' variableDeclarator )*
             loop91:
             do {
                 int alt91=2;
@@ -8168,11 +8196,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt91) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:843:10: ',' variableDeclarator
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:872:10: ',' variableDeclarator
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_localVariableDeclaration4250); if (state.failed) return ;
+            	    match(input,COMMA,FOLLOW_COMMA_in_localVariableDeclaration4256); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_variableDeclarator_in_localVariableDeclaration4252);
+            	    pushFollow(FOLLOW_variableDeclarator_in_localVariableDeclaration4258);
             	    variableDeclarator();
 
             	    state._fsp--;
@@ -8207,14 +8235,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "statement"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:847:1: statement : ( block | ( 'assert' ) expression ( ':' expression )? ';' | 'assert' expression ( ':' expression )? ';' | 'if' parExpression statement ( 'else' statement )? | forstatement | 'while' parExpression statement | 'do' statement 'while' parExpression ';' | trystatement | 'switch' parExpression '{' switchBlockStatementGroups '}' | 'synchronized' parExpression block | 'return' ( expression )? ';' | 'throw' expression ';' | 'break' ( IDENTIFIER )? ';' | 'continue' ( IDENTIFIER )? ';' | expression ';' | IDENTIFIER ':' statement | ';' );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:876:1: statement : ( block | ( 'assert' ) expression ( ':' expression )? ';' | 'assert' expression ( ':' expression )? ';' | 'if' parExpression statement ( 'else' statement )? | forstatement | 'while' parExpression statement | 'do' statement 'while' parExpression ';' | trystatement | 'switch' parExpression '{' switchBlockStatementGroups '}' | 'synchronized' parExpression block | 'return' ( expression )? ';' | 'throw' expression ';' | 'break' ( IDENTIFIER )? ';' | 'continue' ( IDENTIFIER )? ';' | expression ';' | IDENTIFIER ':' statement | ';' );
     public final void statement() throws RecognitionException {
         int statement_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 58) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:848:5: ( block | ( 'assert' ) expression ( ':' expression )? ';' | 'assert' expression ( ':' expression )? ';' | 'if' parExpression statement ( 'else' statement )? | forstatement | 'while' parExpression statement | 'do' statement 'while' parExpression ';' | trystatement | 'switch' parExpression '{' switchBlockStatementGroups '}' | 'synchronized' parExpression block | 'return' ( expression )? ';' | 'throw' expression ';' | 'break' ( IDENTIFIER )? ';' | 'continue' ( IDENTIFIER )? ';' | expression ';' | IDENTIFIER ':' statement | ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:877:5: ( block | ( 'assert' ) expression ( ':' expression )? ';' | 'assert' expression ( ':' expression )? ';' | 'if' parExpression statement ( 'else' statement )? | forstatement | 'while' parExpression statement | 'do' statement 'while' parExpression ';' | trystatement | 'switch' parExpression '{' switchBlockStatementGroups '}' | 'synchronized' parExpression block | 'return' ( expression )? ';' | 'throw' expression ';' | 'break' ( IDENTIFIER )? ';' | 'continue' ( IDENTIFIER )? ';' | expression ';' | IDENTIFIER ':' statement | ';' )
             int alt98=17;
             switch ( input.LA(1) ) {
             case LBRACE:
@@ -8365,9 +8393,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
             switch (alt98) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:848:9: block
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:877:9: block
                     {
-                    pushFollow(FOLLOW_block_in_statement4283);
+                    pushFollow(FOLLOW_block_in_statement4289);
                     block();
 
                     state._fsp--;
@@ -8376,23 +8404,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:850:9: ( 'assert' ) expression ( ':' expression )? ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:879:9: ( 'assert' ) expression ( ':' expression )? ';'
                     {
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:850:9: ( 'assert' )
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:850:10: 'assert'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:879:9: ( 'assert' )
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:879:10: 'assert'
                     {
-                    match(input,ASSERT,FOLLOW_ASSERT_in_statement4307); if (state.failed) return ;
+                    match(input,ASSERT,FOLLOW_ASSERT_in_statement4313); if (state.failed) return ;
 
                     }
 
 
-                    pushFollow(FOLLOW_expression_in_statement4327);
+                    pushFollow(FOLLOW_expression_in_statement4333);
                     expression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:852:20: ( ':' expression )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:881:20: ( ':' expression )?
                     int alt92=2;
                     int LA92_0 = input.LA(1);
 
@@ -8401,11 +8429,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt92) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:852:21: ':' expression
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:881:21: ':' expression
                             {
-                            match(input,COLON,FOLLOW_COLON_in_statement4330); if (state.failed) return ;
+                            match(input,COLON,FOLLOW_COLON_in_statement4336); if (state.failed) return ;
 
-                            pushFollow(FOLLOW_expression_in_statement4332);
+                            pushFollow(FOLLOW_expression_in_statement4338);
                             expression();
 
                             state._fsp--;
@@ -8417,22 +8445,22 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
 
 
-                    match(input,SEMI,FOLLOW_SEMI_in_statement4336); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_statement4342); if (state.failed) return ;
 
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:853:9: 'assert' expression ( ':' expression )? ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:882:9: 'assert' expression ( ':' expression )? ';'
                     {
-                    match(input,ASSERT,FOLLOW_ASSERT_in_statement4346); if (state.failed) return ;
+                    match(input,ASSERT,FOLLOW_ASSERT_in_statement4352); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_expression_in_statement4349);
+                    pushFollow(FOLLOW_expression_in_statement4355);
                     expression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:853:30: ( ':' expression )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:882:30: ( ':' expression )?
                     int alt93=2;
                     int LA93_0 = input.LA(1);
 
@@ -8441,11 +8469,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt93) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:853:31: ':' expression
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:882:31: ':' expression
                             {
-                            match(input,COLON,FOLLOW_COLON_in_statement4352); if (state.failed) return ;
+                            match(input,COLON,FOLLOW_COLON_in_statement4358); if (state.failed) return ;
 
-                            pushFollow(FOLLOW_expression_in_statement4354);
+                            pushFollow(FOLLOW_expression_in_statement4360);
                             expression();
 
                             state._fsp--;
@@ -8457,28 +8485,28 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
 
 
-                    match(input,SEMI,FOLLOW_SEMI_in_statement4358); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_statement4364); if (state.failed) return ;
 
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:854:9: 'if' parExpression statement ( 'else' statement )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:883:9: 'if' parExpression statement ( 'else' statement )?
                     {
-                    match(input,IF,FOLLOW_IF_in_statement4380); if (state.failed) return ;
+                    match(input,IF,FOLLOW_IF_in_statement4386); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_parExpression_in_statement4382);
+                    pushFollow(FOLLOW_parExpression_in_statement4388);
                     parExpression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    pushFollow(FOLLOW_statement_in_statement4384);
+                    pushFollow(FOLLOW_statement_in_statement4390);
                     statement();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:854:38: ( 'else' statement )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:883:38: ( 'else' statement )?
                     int alt94=2;
                     int LA94_0 = input.LA(1);
 
@@ -8491,11 +8519,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt94) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:854:39: 'else' statement
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:883:39: 'else' statement
                             {
-                            match(input,ELSE,FOLLOW_ELSE_in_statement4387); if (state.failed) return ;
+                            match(input,ELSE,FOLLOW_ELSE_in_statement4393); if (state.failed) return ;
 
-                            pushFollow(FOLLOW_statement_in_statement4389);
+                            pushFollow(FOLLOW_statement_in_statement4395);
                             statement();
 
                             state._fsp--;
@@ -8510,9 +8538,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 5 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:855:9: forstatement
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:884:9: forstatement
                     {
-                    pushFollow(FOLLOW_forstatement_in_statement4411);
+                    pushFollow(FOLLOW_forstatement_in_statement4417);
                     forstatement();
 
                     state._fsp--;
@@ -8521,17 +8549,17 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 6 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:856:9: 'while' parExpression statement
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:885:9: 'while' parExpression statement
                     {
-                    match(input,WHILE,FOLLOW_WHILE_in_statement4421); if (state.failed) return ;
+                    match(input,WHILE,FOLLOW_WHILE_in_statement4427); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_parExpression_in_statement4423);
+                    pushFollow(FOLLOW_parExpression_in_statement4429);
                     parExpression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    pushFollow(FOLLOW_statement_in_statement4425);
+                    pushFollow(FOLLOW_statement_in_statement4431);
                     statement();
 
                     state._fsp--;
@@ -8540,32 +8568,32 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 7 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:857:9: 'do' statement 'while' parExpression ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:886:9: 'do' statement 'while' parExpression ';'
                     {
-                    match(input,DO,FOLLOW_DO_in_statement4435); if (state.failed) return ;
+                    match(input,DO,FOLLOW_DO_in_statement4441); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_statement_in_statement4437);
+                    pushFollow(FOLLOW_statement_in_statement4443);
                     statement();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,WHILE,FOLLOW_WHILE_in_statement4439); if (state.failed) return ;
+                    match(input,WHILE,FOLLOW_WHILE_in_statement4445); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_parExpression_in_statement4441);
+                    pushFollow(FOLLOW_parExpression_in_statement4447);
                     parExpression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,SEMI,FOLLOW_SEMI_in_statement4443); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_statement4449); if (state.failed) return ;
 
                     }
                     break;
                 case 8 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:858:9: trystatement
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:887:9: trystatement
                     {
-                    pushFollow(FOLLOW_trystatement_in_statement4453);
+                    pushFollow(FOLLOW_trystatement_in_statement4459);
                     trystatement();
 
                     state._fsp--;
@@ -8574,40 +8602,40 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 9 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:859:9: 'switch' parExpression '{' switchBlockStatementGroups '}'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:888:9: 'switch' parExpression '{' switchBlockStatementGroups '}'
                     {
-                    match(input,SWITCH,FOLLOW_SWITCH_in_statement4463); if (state.failed) return ;
+                    match(input,SWITCH,FOLLOW_SWITCH_in_statement4469); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_parExpression_in_statement4465);
+                    pushFollow(FOLLOW_parExpression_in_statement4471);
                     parExpression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,LBRACE,FOLLOW_LBRACE_in_statement4467); if (state.failed) return ;
+                    match(input,LBRACE,FOLLOW_LBRACE_in_statement4473); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_switchBlockStatementGroups_in_statement4469);
+                    pushFollow(FOLLOW_switchBlockStatementGroups_in_statement4475);
                     switchBlockStatementGroups();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,RBRACE,FOLLOW_RBRACE_in_statement4471); if (state.failed) return ;
+                    match(input,RBRACE,FOLLOW_RBRACE_in_statement4477); if (state.failed) return ;
 
                     }
                     break;
                 case 10 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:860:9: 'synchronized' parExpression block
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:889:9: 'synchronized' parExpression block
                     {
-                    match(input,SYNCHRONIZED,FOLLOW_SYNCHRONIZED_in_statement4481); if (state.failed) return ;
+                    match(input,SYNCHRONIZED,FOLLOW_SYNCHRONIZED_in_statement4487); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_parExpression_in_statement4483);
+                    pushFollow(FOLLOW_parExpression_in_statement4489);
                     parExpression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    pushFollow(FOLLOW_block_in_statement4485);
+                    pushFollow(FOLLOW_block_in_statement4491);
                     block();
 
                     state._fsp--;
@@ -8616,11 +8644,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 11 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:861:9: 'return' ( expression )? ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:890:9: 'return' ( expression )? ';'
                     {
-                    match(input,RETURN,FOLLOW_RETURN_in_statement4495); if (state.failed) return ;
+                    match(input,RETURN,FOLLOW_RETURN_in_statement4501); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:861:18: ( expression )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:890:18: ( expression )?
                     int alt95=2;
                     int LA95_0 = input.LA(1);
 
@@ -8629,9 +8657,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt95) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:861:19: expression
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:890:19: expression
                             {
-                            pushFollow(FOLLOW_expression_in_statement4498);
+                            pushFollow(FOLLOW_expression_in_statement4504);
                             expression();
 
                             state._fsp--;
@@ -8643,31 +8671,31 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
 
 
-                    match(input,SEMI,FOLLOW_SEMI_in_statement4503); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_statement4509); if (state.failed) return ;
 
                     }
                     break;
                 case 12 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:862:9: 'throw' expression ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:891:9: 'throw' expression ';'
                     {
-                    match(input,THROW,FOLLOW_THROW_in_statement4513); if (state.failed) return ;
+                    match(input,THROW,FOLLOW_THROW_in_statement4519); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_expression_in_statement4515);
+                    pushFollow(FOLLOW_expression_in_statement4521);
                     expression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,SEMI,FOLLOW_SEMI_in_statement4517); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_statement4523); if (state.failed) return ;
 
                     }
                     break;
                 case 13 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:863:9: 'break' ( IDENTIFIER )? ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:892:9: 'break' ( IDENTIFIER )? ';'
                     {
-                    match(input,BREAK,FOLLOW_BREAK_in_statement4527); if (state.failed) return ;
+                    match(input,BREAK,FOLLOW_BREAK_in_statement4533); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:864:13: ( IDENTIFIER )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:893:13: ( IDENTIFIER )?
                     int alt96=2;
                     int LA96_0 = input.LA(1);
 
@@ -8676,9 +8704,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt96) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:864:14: IDENTIFIER
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:893:14: IDENTIFIER
                             {
-                            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_statement4542); if (state.failed) return ;
+                            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_statement4548); if (state.failed) return ;
 
                             }
                             break;
@@ -8686,16 +8714,16 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
 
 
-                    match(input,SEMI,FOLLOW_SEMI_in_statement4559); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_statement4565); if (state.failed) return ;
 
                     }
                     break;
                 case 14 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:866:9: 'continue' ( IDENTIFIER )? ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:895:9: 'continue' ( IDENTIFIER )? ';'
                     {
-                    match(input,CONTINUE,FOLLOW_CONTINUE_in_statement4569); if (state.failed) return ;
+                    match(input,CONTINUE,FOLLOW_CONTINUE_in_statement4575); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:867:13: ( IDENTIFIER )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:896:13: ( IDENTIFIER )?
                     int alt97=2;
                     int LA97_0 = input.LA(1);
 
@@ -8704,9 +8732,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt97) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:867:14: IDENTIFIER
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:896:14: IDENTIFIER
                             {
-                            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_statement4584); if (state.failed) return ;
+                            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_statement4590); if (state.failed) return ;
 
                             }
                             break;
@@ -8714,31 +8742,31 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
 
 
-                    match(input,SEMI,FOLLOW_SEMI_in_statement4601); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_statement4607); if (state.failed) return ;
 
                     }
                     break;
                 case 15 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:869:9: expression ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:898:9: expression ';'
                     {
-                    pushFollow(FOLLOW_expression_in_statement4611);
+                    pushFollow(FOLLOW_expression_in_statement4617);
                     expression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,SEMI,FOLLOW_SEMI_in_statement4614); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_statement4620); if (state.failed) return ;
 
                     }
                     break;
                 case 16 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:870:9: IDENTIFIER ':' statement
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:899:9: IDENTIFIER ':' statement
                     {
-                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_statement4629); if (state.failed) return ;
+                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_statement4635); if (state.failed) return ;
 
-                    match(input,COLON,FOLLOW_COLON_in_statement4631); if (state.failed) return ;
+                    match(input,COLON,FOLLOW_COLON_in_statement4637); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_statement_in_statement4633);
+                    pushFollow(FOLLOW_statement_in_statement4639);
                     statement();
 
                     state._fsp--;
@@ -8747,9 +8775,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 17 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:871:9: ';'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:900:9: ';'
                     {
-                    match(input,SEMI,FOLLOW_SEMI_in_statement4643); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_statement4649); if (state.failed) return ;
 
                     }
                     break;
@@ -8773,17 +8801,17 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "switchBlockStatementGroups"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:875:1: switchBlockStatementGroups : ( switchBlockStatementGroup )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:904:1: switchBlockStatementGroups : ( switchBlockStatementGroup )* ;
     public final void switchBlockStatementGroups() throws RecognitionException {
         int switchBlockStatementGroups_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 59) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:876:5: ( ( switchBlockStatementGroup )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:876:9: ( switchBlockStatementGroup )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:905:5: ( ( switchBlockStatementGroup )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:905:9: ( switchBlockStatementGroup )*
             {
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:876:9: ( switchBlockStatementGroup )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:905:9: ( switchBlockStatementGroup )*
             loop99:
             do {
                 int alt99=2;
@@ -8796,9 +8824,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt99) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:876:10: switchBlockStatementGroup
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:905:10: switchBlockStatementGroup
             	    {
-            	    pushFollow(FOLLOW_switchBlockStatementGroup_in_switchBlockStatementGroups4665);
+            	    pushFollow(FOLLOW_switchBlockStatementGroup_in_switchBlockStatementGroups4671);
             	    switchBlockStatementGroup();
 
             	    state._fsp--;
@@ -8833,23 +8861,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "switchBlockStatementGroup"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:879:1: switchBlockStatementGroup : switchLabel ( blockStatement )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:908:1: switchBlockStatementGroup : switchLabel ( blockStatement )* ;
     public final void switchBlockStatementGroup() throws RecognitionException {
         int switchBlockStatementGroup_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 60) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:880:5: ( switchLabel ( blockStatement )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:881:9: switchLabel ( blockStatement )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:909:5: ( switchLabel ( blockStatement )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:910:9: switchLabel ( blockStatement )*
             {
-            pushFollow(FOLLOW_switchLabel_in_switchBlockStatementGroup4694);
+            pushFollow(FOLLOW_switchLabel_in_switchBlockStatementGroup4700);
             switchLabel();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:882:9: ( blockStatement )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:911:9: ( blockStatement )*
             loop100:
             do {
                 int alt100=2;
@@ -8862,9 +8890,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt100) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:882:10: blockStatement
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:911:10: blockStatement
             	    {
-            	    pushFollow(FOLLOW_blockStatement_in_switchBlockStatementGroup4705);
+            	    pushFollow(FOLLOW_blockStatement_in_switchBlockStatementGroup4711);
             	    blockStatement();
 
             	    state._fsp--;
@@ -8899,14 +8927,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "switchLabel"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:886:1: switchLabel : ( 'case' expression ':' | 'default' ':' );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:915:1: switchLabel : ( 'case' expression ':' | 'default' ':' );
     public final void switchLabel() throws RecognitionException {
         int switchLabel_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 61) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:887:5: ( 'case' expression ':' | 'default' ':' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:916:5: ( 'case' expression ':' | 'default' ':' )
             int alt101=2;
             int LA101_0 = input.LA(1);
 
@@ -8926,26 +8954,26 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt101) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:887:9: 'case' expression ':'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:916:9: 'case' expression ':'
                     {
-                    match(input,CASE,FOLLOW_CASE_in_switchLabel4736); if (state.failed) return ;
+                    match(input,CASE,FOLLOW_CASE_in_switchLabel4742); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_expression_in_switchLabel4738);
+                    pushFollow(FOLLOW_expression_in_switchLabel4744);
                     expression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,COLON,FOLLOW_COLON_in_switchLabel4740); if (state.failed) return ;
+                    match(input,COLON,FOLLOW_COLON_in_switchLabel4746); if (state.failed) return ;
 
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:888:9: 'default' ':'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:917:9: 'default' ':'
                     {
-                    match(input,DEFAULT,FOLLOW_DEFAULT_in_switchLabel4750); if (state.failed) return ;
+                    match(input,DEFAULT,FOLLOW_DEFAULT_in_switchLabel4756); if (state.failed) return ;
 
-                    match(input,COLON,FOLLOW_COLON_in_switchLabel4752); if (state.failed) return ;
+                    match(input,COLON,FOLLOW_COLON_in_switchLabel4758); if (state.failed) return ;
 
                     }
                     break;
@@ -8969,25 +8997,25 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "trystatement"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:892:1: trystatement : 'try' block ( catches 'finally' block | catches | 'finally' block ) ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:921:1: trystatement : 'try' block ( catches 'finally' block | catches | 'finally' block ) ;
     public final void trystatement() throws RecognitionException {
         int trystatement_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 62) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:893:5: ( 'try' block ( catches 'finally' block | catches | 'finally' block ) )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:893:9: 'try' block ( catches 'finally' block | catches | 'finally' block )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:922:5: ( 'try' block ( catches 'finally' block | catches | 'finally' block ) )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:922:9: 'try' block ( catches 'finally' block | catches | 'finally' block )
             {
-            match(input,TRY,FOLLOW_TRY_in_trystatement4773); if (state.failed) return ;
+            match(input,TRY,FOLLOW_TRY_in_trystatement4779); if (state.failed) return ;
 
-            pushFollow(FOLLOW_block_in_trystatement4775);
+            pushFollow(FOLLOW_block_in_trystatement4781);
             block();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:894:9: ( catches 'finally' block | catches | 'finally' block )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:923:9: ( catches 'finally' block | catches | 'finally' block )
             int alt102=3;
             int LA102_0 = input.LA(1);
 
@@ -9022,17 +9050,17 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt102) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:894:13: catches 'finally' block
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:923:13: catches 'finally' block
                     {
-                    pushFollow(FOLLOW_catches_in_trystatement4789);
+                    pushFollow(FOLLOW_catches_in_trystatement4795);
                     catches();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,FINALLY,FOLLOW_FINALLY_in_trystatement4791); if (state.failed) return ;
+                    match(input,FINALLY,FOLLOW_FINALLY_in_trystatement4797); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_block_in_trystatement4793);
+                    pushFollow(FOLLOW_block_in_trystatement4799);
                     block();
 
                     state._fsp--;
@@ -9041,9 +9069,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:895:13: catches
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:924:13: catches
                     {
-                    pushFollow(FOLLOW_catches_in_trystatement4807);
+                    pushFollow(FOLLOW_catches_in_trystatement4813);
                     catches();
 
                     state._fsp--;
@@ -9052,11 +9080,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:896:13: 'finally' block
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:925:13: 'finally' block
                     {
-                    match(input,FINALLY,FOLLOW_FINALLY_in_trystatement4821); if (state.failed) return ;
+                    match(input,FINALLY,FOLLOW_FINALLY_in_trystatement4827); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_block_in_trystatement4823);
+                    pushFollow(FOLLOW_block_in_trystatement4829);
                     block();
 
                     state._fsp--;
@@ -9088,23 +9116,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "catches"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:900:1: catches : catchClause ( catchClause )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:929:1: catches : catchClause ( catchClause )* ;
     public final void catches() throws RecognitionException {
         int catches_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 63) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:901:5: ( catchClause ( catchClause )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:901:9: catchClause ( catchClause )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:930:5: ( catchClause ( catchClause )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:930:9: catchClause ( catchClause )*
             {
-            pushFollow(FOLLOW_catchClause_in_catches4854);
+            pushFollow(FOLLOW_catchClause_in_catches4860);
             catchClause();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:902:9: ( catchClause )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:931:9: ( catchClause )*
             loop103:
             do {
                 int alt103=2;
@@ -9117,9 +9145,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt103) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:902:10: catchClause
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:931:10: catchClause
             	    {
-            	    pushFollow(FOLLOW_catchClause_in_catches4865);
+            	    pushFollow(FOLLOW_catchClause_in_catches4871);
             	    catchClause();
 
             	    state._fsp--;
@@ -9154,29 +9182,29 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "catchClause"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:906:1: catchClause : 'catch' '(' formalParameter ')' block ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:935:1: catchClause : 'catch' '(' formalParameter ')' block ;
     public final void catchClause() throws RecognitionException {
         int catchClause_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 64) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:907:5: ( 'catch' '(' formalParameter ')' block )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:907:9: 'catch' '(' formalParameter ')' block
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:936:5: ( 'catch' '(' formalParameter ')' block )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:936:9: 'catch' '(' formalParameter ')' block
             {
-            match(input,CATCH,FOLLOW_CATCH_in_catchClause4896); if (state.failed) return ;
+            match(input,CATCH,FOLLOW_CATCH_in_catchClause4902); if (state.failed) return ;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_catchClause4898); if (state.failed) return ;
+            match(input,LPAREN,FOLLOW_LPAREN_in_catchClause4904); if (state.failed) return ;
 
-            pushFollow(FOLLOW_formalParameter_in_catchClause4900);
+            pushFollow(FOLLOW_formalParameter_in_catchClause4906);
             formalParameter();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_catchClause4910); if (state.failed) return ;
+            match(input,RPAREN,FOLLOW_RPAREN_in_catchClause4916); if (state.failed) return ;
 
-            pushFollow(FOLLOW_block_in_catchClause4912);
+            pushFollow(FOLLOW_block_in_catchClause4918);
             block();
 
             state._fsp--;
@@ -9202,31 +9230,31 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "formalParameter"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:911:1: formalParameter : variableModifiers type IDENTIFIER ( '[' ']' )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:940:1: formalParameter : variableModifiers type IDENTIFIER ( '[' ']' )* ;
     public final void formalParameter() throws RecognitionException {
         int formalParameter_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 65) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:912:5: ( variableModifiers type IDENTIFIER ( '[' ']' )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:912:9: variableModifiers type IDENTIFIER ( '[' ']' )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:941:5: ( variableModifiers type IDENTIFIER ( '[' ']' )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:941:9: variableModifiers type IDENTIFIER ( '[' ']' )*
             {
-            pushFollow(FOLLOW_variableModifiers_in_formalParameter4933);
+            pushFollow(FOLLOW_variableModifiers_in_formalParameter4939);
             variableModifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            pushFollow(FOLLOW_type_in_formalParameter4935);
+            pushFollow(FOLLOW_type_in_formalParameter4941);
             type();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_formalParameter4937); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_formalParameter4943); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:913:9: ( '[' ']' )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:942:9: ( '[' ']' )*
             loop104:
             do {
                 int alt104=2;
@@ -9239,11 +9267,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt104) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:913:10: '[' ']'
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:942:10: '[' ']'
             	    {
-            	    match(input,LBRACKET,FOLLOW_LBRACKET_in_formalParameter4948); if (state.failed) return ;
+            	    match(input,LBRACKET,FOLLOW_LBRACKET_in_formalParameter4954); if (state.failed) return ;
 
-            	    match(input,RBRACKET,FOLLOW_RBRACKET_in_formalParameter4950); if (state.failed) return ;
+            	    match(input,RBRACKET,FOLLOW_RBRACKET_in_formalParameter4956); if (state.failed) return ;
 
             	    }
             	    break;
@@ -9274,14 +9302,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "forstatement"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:917:1: forstatement : ( 'for' '(' variableModifiers type IDENTIFIER ':' expression ')' statement | 'for' '(' ( forInit )? ';' ( expression )? ';' ( expressionList )? ')' statement );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:946:1: forstatement : ( 'for' '(' variableModifiers type IDENTIFIER ':' expression ')' statement | 'for' '(' ( forInit )? ';' ( expression )? ';' ( expressionList )? ')' statement );
     public final void forstatement() throws RecognitionException {
         int forstatement_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 66) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:918:5: ( 'for' '(' variableModifiers type IDENTIFIER ':' expression ')' statement | 'for' '(' ( forInit )? ';' ( expression )? ';' ( expressionList )? ')' statement )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:947:5: ( 'for' '(' variableModifiers type IDENTIFIER ':' expression ')' statement | 'for' '(' ( forInit )? ';' ( expression )? ';' ( expressionList )? ')' statement )
             int alt108=2;
             int LA108_0 = input.LA(1);
 
@@ -9313,37 +9341,37 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt108) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:920:9: 'for' '(' variableModifiers type IDENTIFIER ':' expression ')' statement
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:949:9: 'for' '(' variableModifiers type IDENTIFIER ':' expression ')' statement
                     {
-                    match(input,FOR,FOLLOW_FOR_in_forstatement4999); if (state.failed) return ;
+                    match(input,FOR,FOLLOW_FOR_in_forstatement5005); if (state.failed) return ;
 
-                    match(input,LPAREN,FOLLOW_LPAREN_in_forstatement5001); if (state.failed) return ;
+                    match(input,LPAREN,FOLLOW_LPAREN_in_forstatement5007); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_variableModifiers_in_forstatement5003);
+                    pushFollow(FOLLOW_variableModifiers_in_forstatement5009);
                     variableModifiers();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    pushFollow(FOLLOW_type_in_forstatement5005);
+                    pushFollow(FOLLOW_type_in_forstatement5011);
                     type();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_forstatement5007); if (state.failed) return ;
+                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_forstatement5013); if (state.failed) return ;
 
-                    match(input,COLON,FOLLOW_COLON_in_forstatement5009); if (state.failed) return ;
+                    match(input,COLON,FOLLOW_COLON_in_forstatement5015); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_expression_in_forstatement5020);
+                    pushFollow(FOLLOW_expression_in_forstatement5026);
                     expression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,RPAREN,FOLLOW_RPAREN_in_forstatement5022); if (state.failed) return ;
+                    match(input,RPAREN,FOLLOW_RPAREN_in_forstatement5028); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_statement_in_forstatement5024);
+                    pushFollow(FOLLOW_statement_in_forstatement5030);
                     statement();
 
                     state._fsp--;
@@ -9352,13 +9380,13 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:924:9: 'for' '(' ( forInit )? ';' ( expression )? ';' ( expressionList )? ')' statement
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:953:9: 'for' '(' ( forInit )? ';' ( expression )? ';' ( expressionList )? ')' statement
                     {
-                    match(input,FOR,FOLLOW_FOR_in_forstatement5056); if (state.failed) return ;
+                    match(input,FOR,FOLLOW_FOR_in_forstatement5062); if (state.failed) return ;
 
-                    match(input,LPAREN,FOLLOW_LPAREN_in_forstatement5058); if (state.failed) return ;
+                    match(input,LPAREN,FOLLOW_LPAREN_in_forstatement5064); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:925:17: ( forInit )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:954:17: ( forInit )?
                     int alt105=2;
                     int LA105_0 = input.LA(1);
 
@@ -9367,9 +9395,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt105) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:925:18: forInit
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:954:18: forInit
                             {
-                            pushFollow(FOLLOW_forInit_in_forstatement5078);
+                            pushFollow(FOLLOW_forInit_in_forstatement5084);
                             forInit();
 
                             state._fsp--;
@@ -9381,9 +9409,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
 
 
-                    match(input,SEMI,FOLLOW_SEMI_in_forstatement5099); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_forstatement5105); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:927:17: ( expression )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:956:17: ( expression )?
                     int alt106=2;
                     int LA106_0 = input.LA(1);
 
@@ -9392,9 +9420,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt106) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:927:18: expression
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:956:18: expression
                             {
-                            pushFollow(FOLLOW_expression_in_forstatement5119);
+                            pushFollow(FOLLOW_expression_in_forstatement5125);
                             expression();
 
                             state._fsp--;
@@ -9406,9 +9434,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
 
 
-                    match(input,SEMI,FOLLOW_SEMI_in_forstatement5140); if (state.failed) return ;
+                    match(input,SEMI,FOLLOW_SEMI_in_forstatement5146); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:929:17: ( expressionList )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:958:17: ( expressionList )?
                     int alt107=2;
                     int LA107_0 = input.LA(1);
 
@@ -9417,9 +9445,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt107) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:929:18: expressionList
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:958:18: expressionList
                             {
-                            pushFollow(FOLLOW_expressionList_in_forstatement5160);
+                            pushFollow(FOLLOW_expressionList_in_forstatement5166);
                             expressionList();
 
                             state._fsp--;
@@ -9431,9 +9459,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
 
 
-                    match(input,RPAREN,FOLLOW_RPAREN_in_forstatement5181); if (state.failed) return ;
+                    match(input,RPAREN,FOLLOW_RPAREN_in_forstatement5187); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_statement_in_forstatement5183);
+                    pushFollow(FOLLOW_statement_in_forstatement5189);
                     statement();
 
                     state._fsp--;
@@ -9461,14 +9489,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "forInit"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:933:1: forInit : ( localVariableDeclaration | expressionList );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:962:1: forInit : ( localVariableDeclaration | expressionList );
     public final void forInit() throws RecognitionException {
         int forInit_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 67) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:934:5: ( localVariableDeclaration | expressionList )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:963:5: ( localVariableDeclaration | expressionList )
             int alt109=2;
             switch ( input.LA(1) ) {
             case FINAL:
@@ -9559,9 +9587,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
             switch (alt109) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:934:9: localVariableDeclaration
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:963:9: localVariableDeclaration
                     {
-                    pushFollow(FOLLOW_localVariableDeclaration_in_forInit5203);
+                    pushFollow(FOLLOW_localVariableDeclaration_in_forInit5209);
                     localVariableDeclaration();
 
                     state._fsp--;
@@ -9570,9 +9598,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:935:9: expressionList
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:964:9: expressionList
                     {
-                    pushFollow(FOLLOW_expressionList_in_forInit5213);
+                    pushFollow(FOLLOW_expressionList_in_forInit5219);
                     expressionList();
 
                     state._fsp--;
@@ -9600,25 +9628,25 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "parExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:938:1: parExpression : '(' expression ')' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:967:1: parExpression : '(' expression ')' ;
     public final void parExpression() throws RecognitionException {
         int parExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 68) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:939:5: ( '(' expression ')' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:939:9: '(' expression ')'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:968:5: ( '(' expression ')' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:968:9: '(' expression ')'
             {
-            match(input,LPAREN,FOLLOW_LPAREN_in_parExpression5233); if (state.failed) return ;
+            match(input,LPAREN,FOLLOW_LPAREN_in_parExpression5239); if (state.failed) return ;
 
-            pushFollow(FOLLOW_expression_in_parExpression5235);
+            pushFollow(FOLLOW_expression_in_parExpression5241);
             expression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_parExpression5237); if (state.failed) return ;
+            match(input,RPAREN,FOLLOW_RPAREN_in_parExpression5243); if (state.failed) return ;
 
             }
 
@@ -9640,23 +9668,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "expressionList"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:942:1: expressionList : expression ( ',' expression )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:971:1: expressionList : expression ( ',' expression )* ;
     public final void expressionList() throws RecognitionException {
         int expressionList_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 69) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:943:5: ( expression ( ',' expression )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:943:9: expression ( ',' expression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:972:5: ( expression ( ',' expression )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:972:9: expression ( ',' expression )*
             {
-            pushFollow(FOLLOW_expression_in_expressionList5257);
+            pushFollow(FOLLOW_expression_in_expressionList5263);
             expression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:944:9: ( ',' expression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:973:9: ( ',' expression )*
             loop110:
             do {
                 int alt110=2;
@@ -9669,11 +9697,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt110) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:944:10: ',' expression
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:973:10: ',' expression
             	    {
-            	    match(input,COMMA,FOLLOW_COMMA_in_expressionList5268); if (state.failed) return ;
+            	    match(input,COMMA,FOLLOW_COMMA_in_expressionList5274); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_expression_in_expressionList5270);
+            	    pushFollow(FOLLOW_expression_in_expressionList5276);
             	    expression();
 
             	    state._fsp--;
@@ -9708,23 +9736,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "expression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:949:1: expression : conditionalExpression ( assignmentOperator expression )? ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:978:1: expression : conditionalExpression ( assignmentOperator expression )? ;
     public final void expression() throws RecognitionException {
         int expression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 70) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:950:5: ( conditionalExpression ( assignmentOperator expression )? )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:950:9: conditionalExpression ( assignmentOperator expression )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:979:5: ( conditionalExpression ( assignmentOperator expression )? )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:979:9: conditionalExpression ( assignmentOperator expression )?
             {
-            pushFollow(FOLLOW_conditionalExpression_in_expression5302);
+            pushFollow(FOLLOW_conditionalExpression_in_expression5308);
             conditionalExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:951:9: ( assignmentOperator expression )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:980:9: ( assignmentOperator expression )?
             int alt111=2;
             int LA111_0 = input.LA(1);
 
@@ -9733,15 +9761,15 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt111) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:951:10: assignmentOperator expression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:980:10: assignmentOperator expression
                     {
-                    pushFollow(FOLLOW_assignmentOperator_in_expression5313);
+                    pushFollow(FOLLOW_assignmentOperator_in_expression5319);
                     assignmentOperator();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    pushFollow(FOLLOW_expression_in_expression5315);
+                    pushFollow(FOLLOW_expression_in_expression5321);
                     expression();
 
                     state._fsp--;
@@ -9773,14 +9801,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "assignmentOperator"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:956:1: assignmentOperator : ( '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '%=' | '<' '<' '=' | '>' '>' '>' '=' | '>' '>' '=' );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:985:1: assignmentOperator : ( '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '%=' | '<' '<' '=' | '>' '>' '>' '=' | '>' '>' '=' );
     public final void assignmentOperator() throws RecognitionException {
         int assignmentOperator_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 71) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:957:5: ( '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '%=' | '<' '<' '=' | '>' '>' '>' '=' | '>' '>' '=' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:986:5: ( '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^=' | '%=' | '<' '<' '=' | '>' '>' '>' '=' | '>' '>' '=' )
             int alt112=12;
             switch ( input.LA(1) ) {
             case EQ:
@@ -9876,100 +9904,100 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
             switch (alt112) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:957:9: '='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:986:9: '='
                     {
-                    match(input,EQ,FOLLOW_EQ_in_assignmentOperator5347); if (state.failed) return ;
+                    match(input,EQ,FOLLOW_EQ_in_assignmentOperator5353); if (state.failed) return ;
 
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:958:9: '+='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:987:9: '+='
                     {
-                    match(input,PLUSEQ,FOLLOW_PLUSEQ_in_assignmentOperator5357); if (state.failed) return ;
+                    match(input,PLUSEQ,FOLLOW_PLUSEQ_in_assignmentOperator5363); if (state.failed) return ;
 
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:959:9: '-='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:988:9: '-='
                     {
-                    match(input,SUBEQ,FOLLOW_SUBEQ_in_assignmentOperator5367); if (state.failed) return ;
+                    match(input,SUBEQ,FOLLOW_SUBEQ_in_assignmentOperator5373); if (state.failed) return ;
 
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:960:9: '*='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:989:9: '*='
                     {
-                    match(input,STAREQ,FOLLOW_STAREQ_in_assignmentOperator5377); if (state.failed) return ;
+                    match(input,STAREQ,FOLLOW_STAREQ_in_assignmentOperator5383); if (state.failed) return ;
 
                     }
                     break;
                 case 5 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:961:9: '/='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:990:9: '/='
                     {
-                    match(input,SLASHEQ,FOLLOW_SLASHEQ_in_assignmentOperator5387); if (state.failed) return ;
+                    match(input,SLASHEQ,FOLLOW_SLASHEQ_in_assignmentOperator5393); if (state.failed) return ;
 
                     }
                     break;
                 case 6 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:962:9: '&='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:991:9: '&='
                     {
-                    match(input,AMPEQ,FOLLOW_AMPEQ_in_assignmentOperator5397); if (state.failed) return ;
+                    match(input,AMPEQ,FOLLOW_AMPEQ_in_assignmentOperator5403); if (state.failed) return ;
 
                     }
                     break;
                 case 7 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:963:9: '|='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:992:9: '|='
                     {
-                    match(input,BAREQ,FOLLOW_BAREQ_in_assignmentOperator5407); if (state.failed) return ;
+                    match(input,BAREQ,FOLLOW_BAREQ_in_assignmentOperator5413); if (state.failed) return ;
 
                     }
                     break;
                 case 8 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:964:9: '^='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:993:9: '^='
                     {
-                    match(input,CARETEQ,FOLLOW_CARETEQ_in_assignmentOperator5417); if (state.failed) return ;
+                    match(input,CARETEQ,FOLLOW_CARETEQ_in_assignmentOperator5423); if (state.failed) return ;
 
                     }
                     break;
                 case 9 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:965:9: '%='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:994:9: '%='
                     {
-                    match(input,PERCENTEQ,FOLLOW_PERCENTEQ_in_assignmentOperator5427); if (state.failed) return ;
+                    match(input,PERCENTEQ,FOLLOW_PERCENTEQ_in_assignmentOperator5433); if (state.failed) return ;
 
                     }
                     break;
                 case 10 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:966:10: '<' '<' '='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:995:10: '<' '<' '='
                     {
-                    match(input,LT,FOLLOW_LT_in_assignmentOperator5438); if (state.failed) return ;
+                    match(input,LT,FOLLOW_LT_in_assignmentOperator5444); if (state.failed) return ;
 
-                    match(input,LT,FOLLOW_LT_in_assignmentOperator5440); if (state.failed) return ;
+                    match(input,LT,FOLLOW_LT_in_assignmentOperator5446); if (state.failed) return ;
 
-                    match(input,EQ,FOLLOW_EQ_in_assignmentOperator5442); if (state.failed) return ;
+                    match(input,EQ,FOLLOW_EQ_in_assignmentOperator5448); if (state.failed) return ;
 
                     }
                     break;
                 case 11 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:967:10: '>' '>' '>' '='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:996:10: '>' '>' '>' '='
                     {
-                    match(input,GT,FOLLOW_GT_in_assignmentOperator5453); if (state.failed) return ;
+                    match(input,GT,FOLLOW_GT_in_assignmentOperator5459); if (state.failed) return ;
 
-                    match(input,GT,FOLLOW_GT_in_assignmentOperator5455); if (state.failed) return ;
+                    match(input,GT,FOLLOW_GT_in_assignmentOperator5461); if (state.failed) return ;
 
-                    match(input,GT,FOLLOW_GT_in_assignmentOperator5457); if (state.failed) return ;
+                    match(input,GT,FOLLOW_GT_in_assignmentOperator5463); if (state.failed) return ;
 
-                    match(input,EQ,FOLLOW_EQ_in_assignmentOperator5459); if (state.failed) return ;
+                    match(input,EQ,FOLLOW_EQ_in_assignmentOperator5465); if (state.failed) return ;
 
                     }
                     break;
                 case 12 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:968:10: '>' '>' '='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:997:10: '>' '>' '='
                     {
-                    match(input,GT,FOLLOW_GT_in_assignmentOperator5470); if (state.failed) return ;
+                    match(input,GT,FOLLOW_GT_in_assignmentOperator5476); if (state.failed) return ;
 
-                    match(input,GT,FOLLOW_GT_in_assignmentOperator5472); if (state.failed) return ;
+                    match(input,GT,FOLLOW_GT_in_assignmentOperator5478); if (state.failed) return ;
 
-                    match(input,EQ,FOLLOW_EQ_in_assignmentOperator5474); if (state.failed) return ;
+                    match(input,EQ,FOLLOW_EQ_in_assignmentOperator5480); if (state.failed) return ;
 
                     }
                     break;
@@ -9993,23 +10021,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "conditionalExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:972:1: conditionalExpression : conditionalOrExpression ( '?' expression ':' conditionalExpression )? ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1001:1: conditionalExpression : conditionalOrExpression ( '?' expression ':' conditionalExpression )? ;
     public final void conditionalExpression() throws RecognitionException {
         int conditionalExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 72) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:973:5: ( conditionalOrExpression ( '?' expression ':' conditionalExpression )? )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:973:9: conditionalOrExpression ( '?' expression ':' conditionalExpression )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1002:5: ( conditionalOrExpression ( '?' expression ':' conditionalExpression )? )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1002:9: conditionalOrExpression ( '?' expression ':' conditionalExpression )?
             {
-            pushFollow(FOLLOW_conditionalOrExpression_in_conditionalExpression5495);
+            pushFollow(FOLLOW_conditionalOrExpression_in_conditionalExpression5501);
             conditionalOrExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:974:9: ( '?' expression ':' conditionalExpression )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1003:9: ( '?' expression ':' conditionalExpression )?
             int alt113=2;
             int LA113_0 = input.LA(1);
 
@@ -10018,19 +10046,19 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt113) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:974:10: '?' expression ':' conditionalExpression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1003:10: '?' expression ':' conditionalExpression
                     {
-                    match(input,QUES,FOLLOW_QUES_in_conditionalExpression5506); if (state.failed) return ;
+                    match(input,QUES,FOLLOW_QUES_in_conditionalExpression5512); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_expression_in_conditionalExpression5508);
+                    pushFollow(FOLLOW_expression_in_conditionalExpression5514);
                     expression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,COLON,FOLLOW_COLON_in_conditionalExpression5510); if (state.failed) return ;
+                    match(input,COLON,FOLLOW_COLON_in_conditionalExpression5516); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_conditionalExpression_in_conditionalExpression5512);
+                    pushFollow(FOLLOW_conditionalExpression_in_conditionalExpression5518);
                     conditionalExpression();
 
                     state._fsp--;
@@ -10062,23 +10090,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "conditionalOrExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:978:1: conditionalOrExpression : conditionalAndExpression ( '||' conditionalAndExpression )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1007:1: conditionalOrExpression : conditionalAndExpression ( '||' conditionalAndExpression )* ;
     public final void conditionalOrExpression() throws RecognitionException {
         int conditionalOrExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 73) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:979:5: ( conditionalAndExpression ( '||' conditionalAndExpression )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:979:9: conditionalAndExpression ( '||' conditionalAndExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1008:5: ( conditionalAndExpression ( '||' conditionalAndExpression )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1008:9: conditionalAndExpression ( '||' conditionalAndExpression )*
             {
-            pushFollow(FOLLOW_conditionalAndExpression_in_conditionalOrExpression5543);
+            pushFollow(FOLLOW_conditionalAndExpression_in_conditionalOrExpression5549);
             conditionalAndExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:980:9: ( '||' conditionalAndExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1009:9: ( '||' conditionalAndExpression )*
             loop114:
             do {
                 int alt114=2;
@@ -10091,11 +10119,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt114) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:980:10: '||' conditionalAndExpression
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1009:10: '||' conditionalAndExpression
             	    {
-            	    match(input,BARBAR,FOLLOW_BARBAR_in_conditionalOrExpression5554); if (state.failed) return ;
+            	    match(input,BARBAR,FOLLOW_BARBAR_in_conditionalOrExpression5560); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_conditionalAndExpression_in_conditionalOrExpression5556);
+            	    pushFollow(FOLLOW_conditionalAndExpression_in_conditionalOrExpression5562);
             	    conditionalAndExpression();
 
             	    state._fsp--;
@@ -10130,23 +10158,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "conditionalAndExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:984:1: conditionalAndExpression : inclusiveOrExpression ( '&&' inclusiveOrExpression )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1013:1: conditionalAndExpression : inclusiveOrExpression ( '&&' inclusiveOrExpression )* ;
     public final void conditionalAndExpression() throws RecognitionException {
         int conditionalAndExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 74) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:985:5: ( inclusiveOrExpression ( '&&' inclusiveOrExpression )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:985:9: inclusiveOrExpression ( '&&' inclusiveOrExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1014:5: ( inclusiveOrExpression ( '&&' inclusiveOrExpression )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1014:9: inclusiveOrExpression ( '&&' inclusiveOrExpression )*
             {
-            pushFollow(FOLLOW_inclusiveOrExpression_in_conditionalAndExpression5587);
+            pushFollow(FOLLOW_inclusiveOrExpression_in_conditionalAndExpression5593);
             inclusiveOrExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:986:9: ( '&&' inclusiveOrExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1015:9: ( '&&' inclusiveOrExpression )*
             loop115:
             do {
                 int alt115=2;
@@ -10159,11 +10187,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt115) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:986:10: '&&' inclusiveOrExpression
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1015:10: '&&' inclusiveOrExpression
             	    {
-            	    match(input,AMPAMP,FOLLOW_AMPAMP_in_conditionalAndExpression5598); if (state.failed) return ;
+            	    match(input,AMPAMP,FOLLOW_AMPAMP_in_conditionalAndExpression5604); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_inclusiveOrExpression_in_conditionalAndExpression5600);
+            	    pushFollow(FOLLOW_inclusiveOrExpression_in_conditionalAndExpression5606);
             	    inclusiveOrExpression();
 
             	    state._fsp--;
@@ -10198,23 +10226,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "inclusiveOrExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:990:1: inclusiveOrExpression : exclusiveOrExpression ( '|' exclusiveOrExpression )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1019:1: inclusiveOrExpression : exclusiveOrExpression ( '|' exclusiveOrExpression )* ;
     public final void inclusiveOrExpression() throws RecognitionException {
         int inclusiveOrExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 75) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:991:5: ( exclusiveOrExpression ( '|' exclusiveOrExpression )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:991:9: exclusiveOrExpression ( '|' exclusiveOrExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1020:5: ( exclusiveOrExpression ( '|' exclusiveOrExpression )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1020:9: exclusiveOrExpression ( '|' exclusiveOrExpression )*
             {
-            pushFollow(FOLLOW_exclusiveOrExpression_in_inclusiveOrExpression5631);
+            pushFollow(FOLLOW_exclusiveOrExpression_in_inclusiveOrExpression5637);
             exclusiveOrExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:992:9: ( '|' exclusiveOrExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1021:9: ( '|' exclusiveOrExpression )*
             loop116:
             do {
                 int alt116=2;
@@ -10227,11 +10255,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt116) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:992:10: '|' exclusiveOrExpression
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1021:10: '|' exclusiveOrExpression
             	    {
-            	    match(input,BAR,FOLLOW_BAR_in_inclusiveOrExpression5642); if (state.failed) return ;
+            	    match(input,BAR,FOLLOW_BAR_in_inclusiveOrExpression5648); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_exclusiveOrExpression_in_inclusiveOrExpression5644);
+            	    pushFollow(FOLLOW_exclusiveOrExpression_in_inclusiveOrExpression5650);
             	    exclusiveOrExpression();
 
             	    state._fsp--;
@@ -10266,23 +10294,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "exclusiveOrExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:996:1: exclusiveOrExpression : andExpression ( '^' andExpression )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1025:1: exclusiveOrExpression : andExpression ( '^' andExpression )* ;
     public final void exclusiveOrExpression() throws RecognitionException {
         int exclusiveOrExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 76) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:997:5: ( andExpression ( '^' andExpression )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:997:9: andExpression ( '^' andExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1026:5: ( andExpression ( '^' andExpression )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1026:9: andExpression ( '^' andExpression )*
             {
-            pushFollow(FOLLOW_andExpression_in_exclusiveOrExpression5675);
+            pushFollow(FOLLOW_andExpression_in_exclusiveOrExpression5681);
             andExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:998:9: ( '^' andExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1027:9: ( '^' andExpression )*
             loop117:
             do {
                 int alt117=2;
@@ -10295,11 +10323,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt117) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:998:10: '^' andExpression
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1027:10: '^' andExpression
             	    {
-            	    match(input,CARET,FOLLOW_CARET_in_exclusiveOrExpression5686); if (state.failed) return ;
+            	    match(input,CARET,FOLLOW_CARET_in_exclusiveOrExpression5692); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_andExpression_in_exclusiveOrExpression5688);
+            	    pushFollow(FOLLOW_andExpression_in_exclusiveOrExpression5694);
             	    andExpression();
 
             	    state._fsp--;
@@ -10334,23 +10362,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "andExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1002:1: andExpression : equalityExpression ( '&' equalityExpression )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1031:1: andExpression : equalityExpression ( '&' equalityExpression )* ;
     public final void andExpression() throws RecognitionException {
         int andExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 77) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1003:5: ( equalityExpression ( '&' equalityExpression )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1003:9: equalityExpression ( '&' equalityExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1032:5: ( equalityExpression ( '&' equalityExpression )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1032:9: equalityExpression ( '&' equalityExpression )*
             {
-            pushFollow(FOLLOW_equalityExpression_in_andExpression5719);
+            pushFollow(FOLLOW_equalityExpression_in_andExpression5725);
             equalityExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1004:9: ( '&' equalityExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1033:9: ( '&' equalityExpression )*
             loop118:
             do {
                 int alt118=2;
@@ -10363,11 +10391,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt118) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1004:10: '&' equalityExpression
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1033:10: '&' equalityExpression
             	    {
-            	    match(input,AMP,FOLLOW_AMP_in_andExpression5730); if (state.failed) return ;
+            	    match(input,AMP,FOLLOW_AMP_in_andExpression5736); if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_equalityExpression_in_andExpression5732);
+            	    pushFollow(FOLLOW_equalityExpression_in_andExpression5738);
             	    equalityExpression();
 
             	    state._fsp--;
@@ -10402,23 +10430,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "equalityExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1008:1: equalityExpression : instanceOfExpression ( ( '==' | '!=' ) instanceOfExpression )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1037:1: equalityExpression : instanceOfExpression ( ( '==' | '!=' ) instanceOfExpression )* ;
     public final void equalityExpression() throws RecognitionException {
         int equalityExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 78) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1009:5: ( instanceOfExpression ( ( '==' | '!=' ) instanceOfExpression )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1009:9: instanceOfExpression ( ( '==' | '!=' ) instanceOfExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1038:5: ( instanceOfExpression ( ( '==' | '!=' ) instanceOfExpression )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1038:9: instanceOfExpression ( ( '==' | '!=' ) instanceOfExpression )*
             {
-            pushFollow(FOLLOW_instanceOfExpression_in_equalityExpression5763);
+            pushFollow(FOLLOW_instanceOfExpression_in_equalityExpression5769);
             instanceOfExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1010:9: ( ( '==' | '!=' ) instanceOfExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1039:9: ( ( '==' | '!=' ) instanceOfExpression )*
             loop119:
             do {
                 int alt119=2;
@@ -10431,7 +10459,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt119) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1011:13: ( '==' | '!=' ) instanceOfExpression
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1040:13: ( '==' | '!=' ) instanceOfExpression
             	    {
             	    if ( input.LA(1)==BANGEQ||input.LA(1)==EQEQ ) {
             	        input.consume();
@@ -10445,7 +10473,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             	    }
 
 
-            	    pushFollow(FOLLOW_instanceOfExpression_in_equalityExpression5840);
+            	    pushFollow(FOLLOW_instanceOfExpression_in_equalityExpression5846);
             	    instanceOfExpression();
 
             	    state._fsp--;
@@ -10480,23 +10508,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "instanceOfExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1018:1: instanceOfExpression : relationalExpression ( 'instanceof' type )? ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1047:1: instanceOfExpression : relationalExpression ( 'instanceof' type )? ;
     public final void instanceOfExpression() throws RecognitionException {
         int instanceOfExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 79) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1019:5: ( relationalExpression ( 'instanceof' type )? )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1019:9: relationalExpression ( 'instanceof' type )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1048:5: ( relationalExpression ( 'instanceof' type )? )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1048:9: relationalExpression ( 'instanceof' type )?
             {
-            pushFollow(FOLLOW_relationalExpression_in_instanceOfExpression5871);
+            pushFollow(FOLLOW_relationalExpression_in_instanceOfExpression5877);
             relationalExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1020:9: ( 'instanceof' type )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1049:9: ( 'instanceof' type )?
             int alt120=2;
             int LA120_0 = input.LA(1);
 
@@ -10505,11 +10533,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt120) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1020:10: 'instanceof' type
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1049:10: 'instanceof' type
                     {
-                    match(input,INSTANCEOF,FOLLOW_INSTANCEOF_in_instanceOfExpression5882); if (state.failed) return ;
+                    match(input,INSTANCEOF,FOLLOW_INSTANCEOF_in_instanceOfExpression5888); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_type_in_instanceOfExpression5884);
+                    pushFollow(FOLLOW_type_in_instanceOfExpression5890);
                     type();
 
                     state._fsp--;
@@ -10541,23 +10569,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "relationalExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1024:1: relationalExpression : shiftExpression ( relationalOp shiftExpression )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1053:1: relationalExpression : shiftExpression ( relationalOp shiftExpression )* ;
     public final void relationalExpression() throws RecognitionException {
         int relationalExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 80) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1025:5: ( shiftExpression ( relationalOp shiftExpression )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1025:9: shiftExpression ( relationalOp shiftExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1054:5: ( shiftExpression ( relationalOp shiftExpression )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1054:9: shiftExpression ( relationalOp shiftExpression )*
             {
-            pushFollow(FOLLOW_shiftExpression_in_relationalExpression5915);
+            pushFollow(FOLLOW_shiftExpression_in_relationalExpression5921);
             shiftExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1026:9: ( relationalOp shiftExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1055:9: ( relationalOp shiftExpression )*
             loop121:
             do {
                 int alt121=2;
@@ -10585,15 +10613,15 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt121) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1026:10: relationalOp shiftExpression
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1055:10: relationalOp shiftExpression
             	    {
-            	    pushFollow(FOLLOW_relationalOp_in_relationalExpression5926);
+            	    pushFollow(FOLLOW_relationalOp_in_relationalExpression5932);
             	    relationalOp();
 
             	    state._fsp--;
             	    if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_shiftExpression_in_relationalExpression5928);
+            	    pushFollow(FOLLOW_shiftExpression_in_relationalExpression5934);
             	    shiftExpression();
 
             	    state._fsp--;
@@ -10628,14 +10656,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "relationalOp"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1030:1: relationalOp : ( '<' '=' | '>' '=' | '<' | '>' );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1059:1: relationalOp : ( '<' '=' | '>' '=' | '<' | '>' );
     public final void relationalOp() throws RecognitionException {
         int relationalOp_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 81) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1031:5: ( '<' '=' | '>' '=' | '<' | '>' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1060:5: ( '<' '=' | '>' '=' | '<' | '>' )
             int alt122=4;
             int LA122_0 = input.LA(1);
 
@@ -10685,34 +10713,34 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt122) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1031:10: '<' '='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1060:10: '<' '='
                     {
-                    match(input,LT,FOLLOW_LT_in_relationalOp5960); if (state.failed) return ;
+                    match(input,LT,FOLLOW_LT_in_relationalOp5966); if (state.failed) return ;
 
-                    match(input,EQ,FOLLOW_EQ_in_relationalOp5962); if (state.failed) return ;
+                    match(input,EQ,FOLLOW_EQ_in_relationalOp5968); if (state.failed) return ;
 
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1032:10: '>' '='
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1061:10: '>' '='
                     {
-                    match(input,GT,FOLLOW_GT_in_relationalOp5973); if (state.failed) return ;
+                    match(input,GT,FOLLOW_GT_in_relationalOp5979); if (state.failed) return ;
 
-                    match(input,EQ,FOLLOW_EQ_in_relationalOp5975); if (state.failed) return ;
+                    match(input,EQ,FOLLOW_EQ_in_relationalOp5981); if (state.failed) return ;
 
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1033:9: '<'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1062:9: '<'
                     {
-                    match(input,LT,FOLLOW_LT_in_relationalOp5985); if (state.failed) return ;
+                    match(input,LT,FOLLOW_LT_in_relationalOp5991); if (state.failed) return ;
 
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1034:9: '>'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1063:9: '>'
                     {
-                    match(input,GT,FOLLOW_GT_in_relationalOp5995); if (state.failed) return ;
+                    match(input,GT,FOLLOW_GT_in_relationalOp6001); if (state.failed) return ;
 
                     }
                     break;
@@ -10736,23 +10764,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "shiftExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1037:1: shiftExpression : additiveExpression ( shiftOp additiveExpression )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1066:1: shiftExpression : additiveExpression ( shiftOp additiveExpression )* ;
     public final void shiftExpression() throws RecognitionException {
         int shiftExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 82) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1038:5: ( additiveExpression ( shiftOp additiveExpression )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1038:9: additiveExpression ( shiftOp additiveExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1067:5: ( additiveExpression ( shiftOp additiveExpression )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1067:9: additiveExpression ( shiftOp additiveExpression )*
             {
-            pushFollow(FOLLOW_additiveExpression_in_shiftExpression6015);
+            pushFollow(FOLLOW_additiveExpression_in_shiftExpression6021);
             additiveExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1039:9: ( shiftOp additiveExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1068:9: ( shiftOp additiveExpression )*
             loop123:
             do {
                 int alt123=2;
@@ -10801,15 +10829,15 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt123) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1039:10: shiftOp additiveExpression
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1068:10: shiftOp additiveExpression
             	    {
-            	    pushFollow(FOLLOW_shiftOp_in_shiftExpression6026);
+            	    pushFollow(FOLLOW_shiftOp_in_shiftExpression6032);
             	    shiftOp();
 
             	    state._fsp--;
             	    if (state.failed) return ;
 
-            	    pushFollow(FOLLOW_additiveExpression_in_shiftExpression6028);
+            	    pushFollow(FOLLOW_additiveExpression_in_shiftExpression6034);
             	    additiveExpression();
 
             	    state._fsp--;
@@ -10844,14 +10872,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "shiftOp"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1044:1: shiftOp : ( '<' '<' | '>' '>' '>' | '>' '>' );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1073:1: shiftOp : ( '<' '<' | '>' '>' '>' | '>' '>' );
     public final void shiftOp() throws RecognitionException {
         int shiftOp_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 83) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1045:5: ( '<' '<' | '>' '>' '>' | '>' '>' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1074:5: ( '<' '<' | '>' '>' '>' | '>' '>' )
             int alt124=3;
             int LA124_0 = input.LA(1);
 
@@ -10898,31 +10926,31 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt124) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1045:10: '<' '<'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1074:10: '<' '<'
                     {
-                    match(input,LT,FOLLOW_LT_in_shiftOp6061); if (state.failed) return ;
+                    match(input,LT,FOLLOW_LT_in_shiftOp6067); if (state.failed) return ;
 
-                    match(input,LT,FOLLOW_LT_in_shiftOp6063); if (state.failed) return ;
+                    match(input,LT,FOLLOW_LT_in_shiftOp6069); if (state.failed) return ;
 
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1046:10: '>' '>' '>'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1075:10: '>' '>' '>'
                     {
-                    match(input,GT,FOLLOW_GT_in_shiftOp6074); if (state.failed) return ;
+                    match(input,GT,FOLLOW_GT_in_shiftOp6080); if (state.failed) return ;
 
-                    match(input,GT,FOLLOW_GT_in_shiftOp6076); if (state.failed) return ;
+                    match(input,GT,FOLLOW_GT_in_shiftOp6082); if (state.failed) return ;
 
-                    match(input,GT,FOLLOW_GT_in_shiftOp6078); if (state.failed) return ;
+                    match(input,GT,FOLLOW_GT_in_shiftOp6084); if (state.failed) return ;
 
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1047:10: '>' '>'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1076:10: '>' '>'
                     {
-                    match(input,GT,FOLLOW_GT_in_shiftOp6089); if (state.failed) return ;
+                    match(input,GT,FOLLOW_GT_in_shiftOp6095); if (state.failed) return ;
 
-                    match(input,GT,FOLLOW_GT_in_shiftOp6091); if (state.failed) return ;
+                    match(input,GT,FOLLOW_GT_in_shiftOp6097); if (state.failed) return ;
 
                     }
                     break;
@@ -10946,23 +10974,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "additiveExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1051:1: additiveExpression : multiplicativeExpression ( ( '+' | '-' ) multiplicativeExpression )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1080:1: additiveExpression : multiplicativeExpression ( ( '+' | '-' ) multiplicativeExpression )* ;
     public final void additiveExpression() throws RecognitionException {
         int additiveExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 84) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1052:5: ( multiplicativeExpression ( ( '+' | '-' ) multiplicativeExpression )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1052:9: multiplicativeExpression ( ( '+' | '-' ) multiplicativeExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1081:5: ( multiplicativeExpression ( ( '+' | '-' ) multiplicativeExpression )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1081:9: multiplicativeExpression ( ( '+' | '-' ) multiplicativeExpression )*
             {
-            pushFollow(FOLLOW_multiplicativeExpression_in_additiveExpression6112);
+            pushFollow(FOLLOW_multiplicativeExpression_in_additiveExpression6118);
             multiplicativeExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1053:9: ( ( '+' | '-' ) multiplicativeExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1082:9: ( ( '+' | '-' ) multiplicativeExpression )*
             loop125:
             do {
                 int alt125=2;
@@ -10975,7 +11003,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt125) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1054:13: ( '+' | '-' ) multiplicativeExpression
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1083:13: ( '+' | '-' ) multiplicativeExpression
             	    {
             	    if ( input.LA(1)==PLUS||input.LA(1)==SUB ) {
             	        input.consume();
@@ -10989,7 +11017,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             	    }
 
 
-            	    pushFollow(FOLLOW_multiplicativeExpression_in_additiveExpression6189);
+            	    pushFollow(FOLLOW_multiplicativeExpression_in_additiveExpression6195);
             	    multiplicativeExpression();
 
             	    state._fsp--;
@@ -11024,23 +11052,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "multiplicativeExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1061:1: multiplicativeExpression : unaryExpression ( ( '*' | '/' | '%' ) unaryExpression )* ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1090:1: multiplicativeExpression : unaryExpression ( ( '*' | '/' | '%' ) unaryExpression )* ;
     public final void multiplicativeExpression() throws RecognitionException {
         int multiplicativeExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 85) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1062:5: ( unaryExpression ( ( '*' | '/' | '%' ) unaryExpression )* )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1063:9: unaryExpression ( ( '*' | '/' | '%' ) unaryExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1091:5: ( unaryExpression ( ( '*' | '/' | '%' ) unaryExpression )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1092:9: unaryExpression ( ( '*' | '/' | '%' ) unaryExpression )*
             {
-            pushFollow(FOLLOW_unaryExpression_in_multiplicativeExpression6227);
+            pushFollow(FOLLOW_unaryExpression_in_multiplicativeExpression6233);
             unaryExpression();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1064:9: ( ( '*' | '/' | '%' ) unaryExpression )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1093:9: ( ( '*' | '/' | '%' ) unaryExpression )*
             loop126:
             do {
                 int alt126=2;
@@ -11053,7 +11081,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt126) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1065:13: ( '*' | '/' | '%' ) unaryExpression
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1094:13: ( '*' | '/' | '%' ) unaryExpression
             	    {
             	    if ( input.LA(1)==PERCENT||input.LA(1)==SLASH||input.LA(1)==STAR ) {
             	        input.consume();
@@ -11067,7 +11095,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             	    }
 
 
-            	    pushFollow(FOLLOW_unaryExpression_in_multiplicativeExpression6322);
+            	    pushFollow(FOLLOW_unaryExpression_in_multiplicativeExpression6328);
             	    unaryExpression();
 
             	    state._fsp--;
@@ -11102,14 +11130,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "unaryExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1077:1: unaryExpression : ( '+' unaryExpression | '-' unaryExpression | '++' unaryExpression | '--' unaryExpression | unaryExpressionNotPlusMinus );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1106:1: unaryExpression : ( '+' unaryExpression | '-' unaryExpression | '++' unaryExpression | '--' unaryExpression | unaryExpressionNotPlusMinus );
     public final void unaryExpression() throws RecognitionException {
         int unaryExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 86) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1078:5: ( '+' unaryExpression | '-' unaryExpression | '++' unaryExpression | '--' unaryExpression | unaryExpressionNotPlusMinus )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1107:5: ( '+' unaryExpression | '-' unaryExpression | '++' unaryExpression | '--' unaryExpression | unaryExpressionNotPlusMinus )
             int alt127=5;
             switch ( input.LA(1) ) {
             case PLUS:
@@ -11172,11 +11200,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
             switch (alt127) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1078:9: '+' unaryExpression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1107:9: '+' unaryExpression
                     {
-                    match(input,PLUS,FOLLOW_PLUS_in_unaryExpression6355); if (state.failed) return ;
+                    match(input,PLUS,FOLLOW_PLUS_in_unaryExpression6361); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_unaryExpression_in_unaryExpression6358);
+                    pushFollow(FOLLOW_unaryExpression_in_unaryExpression6364);
                     unaryExpression();
 
                     state._fsp--;
@@ -11185,11 +11213,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1079:9: '-' unaryExpression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1108:9: '-' unaryExpression
                     {
-                    match(input,SUB,FOLLOW_SUB_in_unaryExpression6368); if (state.failed) return ;
+                    match(input,SUB,FOLLOW_SUB_in_unaryExpression6374); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_unaryExpression_in_unaryExpression6370);
+                    pushFollow(FOLLOW_unaryExpression_in_unaryExpression6376);
                     unaryExpression();
 
                     state._fsp--;
@@ -11198,11 +11226,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1080:9: '++' unaryExpression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1109:9: '++' unaryExpression
                     {
-                    match(input,PLUSPLUS,FOLLOW_PLUSPLUS_in_unaryExpression6380); if (state.failed) return ;
+                    match(input,PLUSPLUS,FOLLOW_PLUSPLUS_in_unaryExpression6386); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_unaryExpression_in_unaryExpression6382);
+                    pushFollow(FOLLOW_unaryExpression_in_unaryExpression6388);
                     unaryExpression();
 
                     state._fsp--;
@@ -11211,11 +11239,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1081:9: '--' unaryExpression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1110:9: '--' unaryExpression
                     {
-                    match(input,SUBSUB,FOLLOW_SUBSUB_in_unaryExpression6392); if (state.failed) return ;
+                    match(input,SUBSUB,FOLLOW_SUBSUB_in_unaryExpression6398); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_unaryExpression_in_unaryExpression6394);
+                    pushFollow(FOLLOW_unaryExpression_in_unaryExpression6400);
                     unaryExpression();
 
                     state._fsp--;
@@ -11224,9 +11252,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 5 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1082:9: unaryExpressionNotPlusMinus
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1111:9: unaryExpressionNotPlusMinus
                     {
-                    pushFollow(FOLLOW_unaryExpressionNotPlusMinus_in_unaryExpression6404);
+                    pushFollow(FOLLOW_unaryExpressionNotPlusMinus_in_unaryExpression6410);
                     unaryExpressionNotPlusMinus();
 
                     state._fsp--;
@@ -11254,14 +11282,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "unaryExpressionNotPlusMinus"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1085:1: unaryExpressionNotPlusMinus : ( '~' unaryExpression | '!' unaryExpression | castExpression | primary ( selector )* ( '++' | '--' )? );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1114:1: unaryExpressionNotPlusMinus : ( '~' unaryExpression | '!' unaryExpression | castExpression | primary ( selector )* ( '++' | '--' )? );
     public final void unaryExpressionNotPlusMinus() throws RecognitionException {
         int unaryExpressionNotPlusMinus_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 87) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1086:5: ( '~' unaryExpression | '!' unaryExpression | castExpression | primary ( selector )* ( '++' | '--' )? )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1115:5: ( '~' unaryExpression | '!' unaryExpression | castExpression | primary ( selector )* ( '++' | '--' )? )
             int alt130=4;
             switch ( input.LA(1) ) {
             case TILDE:
@@ -11331,11 +11359,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
             switch (alt130) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1086:9: '~' unaryExpression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1115:9: '~' unaryExpression
                     {
-                    match(input,TILDE,FOLLOW_TILDE_in_unaryExpressionNotPlusMinus6424); if (state.failed) return ;
+                    match(input,TILDE,FOLLOW_TILDE_in_unaryExpressionNotPlusMinus6430); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_unaryExpression_in_unaryExpressionNotPlusMinus6426);
+                    pushFollow(FOLLOW_unaryExpression_in_unaryExpressionNotPlusMinus6432);
                     unaryExpression();
 
                     state._fsp--;
@@ -11344,11 +11372,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1087:9: '!' unaryExpression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1116:9: '!' unaryExpression
                     {
-                    match(input,BANG,FOLLOW_BANG_in_unaryExpressionNotPlusMinus6436); if (state.failed) return ;
+                    match(input,BANG,FOLLOW_BANG_in_unaryExpressionNotPlusMinus6442); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_unaryExpression_in_unaryExpressionNotPlusMinus6438);
+                    pushFollow(FOLLOW_unaryExpression_in_unaryExpressionNotPlusMinus6444);
                     unaryExpression();
 
                     state._fsp--;
@@ -11357,9 +11385,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1088:9: castExpression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1117:9: castExpression
                     {
-                    pushFollow(FOLLOW_castExpression_in_unaryExpressionNotPlusMinus6448);
+                    pushFollow(FOLLOW_castExpression_in_unaryExpressionNotPlusMinus6454);
                     castExpression();
 
                     state._fsp--;
@@ -11368,15 +11396,15 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1089:9: primary ( selector )* ( '++' | '--' )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1118:9: primary ( selector )* ( '++' | '--' )?
                     {
-                    pushFollow(FOLLOW_primary_in_unaryExpressionNotPlusMinus6458);
+                    pushFollow(FOLLOW_primary_in_unaryExpressionNotPlusMinus6464);
                     primary();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1090:9: ( selector )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1119:9: ( selector )*
                     loop128:
                     do {
                         int alt128=2;
@@ -11389,9 +11417,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                         switch (alt128) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1090:10: selector
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1119:10: selector
                     	    {
-                    	    pushFollow(FOLLOW_selector_in_unaryExpressionNotPlusMinus6469);
+                    	    pushFollow(FOLLOW_selector_in_unaryExpressionNotPlusMinus6475);
                     	    selector();
 
                     	    state._fsp--;
@@ -11406,7 +11434,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     } while (true);
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1092:9: ( '++' | '--' )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1121:9: ( '++' | '--' )?
                     int alt129=2;
                     int LA129_0 = input.LA(1);
 
@@ -11457,14 +11485,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "castExpression"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1097:1: castExpression : ( '(' primitiveType ')' unaryExpression | '(' type ')' unaryExpressionNotPlusMinus );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1126:1: castExpression : ( '(' primitiveType ')' unaryExpression | '(' type ')' unaryExpressionNotPlusMinus );
     public final void castExpression() throws RecognitionException {
         int castExpression_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 88) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1098:5: ( '(' primitiveType ')' unaryExpression | '(' type ')' unaryExpressionNotPlusMinus )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1127:5: ( '(' primitiveType ')' unaryExpression | '(' type ')' unaryExpressionNotPlusMinus )
             int alt131=2;
             int LA131_0 = input.LA(1);
 
@@ -11496,19 +11524,19 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt131) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1098:9: '(' primitiveType ')' unaryExpression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1127:9: '(' primitiveType ')' unaryExpression
                     {
-                    match(input,LPAREN,FOLLOW_LPAREN_in_castExpression6539); if (state.failed) return ;
+                    match(input,LPAREN,FOLLOW_LPAREN_in_castExpression6545); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_primitiveType_in_castExpression6541);
+                    pushFollow(FOLLOW_primitiveType_in_castExpression6547);
                     primitiveType();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,RPAREN,FOLLOW_RPAREN_in_castExpression6543); if (state.failed) return ;
+                    match(input,RPAREN,FOLLOW_RPAREN_in_castExpression6549); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_unaryExpression_in_castExpression6545);
+                    pushFollow(FOLLOW_unaryExpression_in_castExpression6551);
                     unaryExpression();
 
                     state._fsp--;
@@ -11517,19 +11545,19 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1099:9: '(' type ')' unaryExpressionNotPlusMinus
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1128:9: '(' type ')' unaryExpressionNotPlusMinus
                     {
-                    match(input,LPAREN,FOLLOW_LPAREN_in_castExpression6555); if (state.failed) return ;
+                    match(input,LPAREN,FOLLOW_LPAREN_in_castExpression6561); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_type_in_castExpression6557);
+                    pushFollow(FOLLOW_type_in_castExpression6563);
                     type();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,RPAREN,FOLLOW_RPAREN_in_castExpression6559); if (state.failed) return ;
+                    match(input,RPAREN,FOLLOW_RPAREN_in_castExpression6565); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_unaryExpressionNotPlusMinus_in_castExpression6561);
+                    pushFollow(FOLLOW_unaryExpressionNotPlusMinus_in_castExpression6567);
                     unaryExpressionNotPlusMinus();
 
                     state._fsp--;
@@ -11557,14 +11585,17 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "primary"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1105:1: primary : ( parExpression | 'this' ( '.' IDENTIFIER )* ( identifierSuffix )? | IDENTIFIER ( '.' IDENTIFIER )* ( identifierSuffix )? | 'super' superSuffix | literal | creator | primitiveType ( '[' ']' )* '.' 'class' | 'void' '.' 'class' );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1134:1: primary : ( parExpression |ids+= 'this' ( '.' ids+= IDENTIFIER )* ( identifierSuffix )? |ids+= IDENTIFIER ( '.' ids+= IDENTIFIER )* ( identifierSuffix )? | 'super' superSuffix | literal | creator | primitiveType ( '[' ']' )* '.' 'class' | 'void' '.' 'class' );
     public final void primary() throws RecognitionException {
         int primary_StartIndex = input.index();
+
+        Token ids=null;
+        List list_ids=null;
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 89) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1106:5: ( parExpression | 'this' ( '.' IDENTIFIER )* ( identifierSuffix )? | IDENTIFIER ( '.' IDENTIFIER )* ( identifierSuffix )? | 'super' superSuffix | literal | creator | primitiveType ( '[' ']' )* '.' 'class' | 'void' '.' 'class' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1135:5: ( parExpression |ids+= 'this' ( '.' ids+= IDENTIFIER )* ( identifierSuffix )? |ids+= IDENTIFIER ( '.' ids+= IDENTIFIER )* ( identifierSuffix )? | 'super' superSuffix | literal | creator | primitiveType ( '[' ']' )* '.' 'class' | 'void' '.' 'class' )
             int alt137=8;
             switch ( input.LA(1) ) {
             case LPAREN:
@@ -11633,9 +11664,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
             switch (alt137) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1106:9: parExpression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1135:9: parExpression
                     {
-                    pushFollow(FOLLOW_parExpression_in_primary6583);
+                    pushFollow(FOLLOW_parExpression_in_primary6589);
                     parExpression();
 
                     state._fsp--;
@@ -11644,11 +11675,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1107:9: 'this' ( '.' IDENTIFIER )* ( identifierSuffix )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1136:9: ids+= 'this' ( '.' ids+= IDENTIFIER )* ( identifierSuffix )?
                     {
-                    match(input,THIS,FOLLOW_THIS_in_primary6605); if (state.failed) return ;
+                    ids=(Token)match(input,THIS,FOLLOW_THIS_in_primary6615); if (state.failed) return ;
+                    if (list_ids==null) list_ids=new ArrayList();
+                    list_ids.add(ids);
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1108:9: ( '.' IDENTIFIER )*
+
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1137:9: ( '.' ids+= IDENTIFIER )*
                     loop132:
                     do {
                         int alt132=2;
@@ -11673,11 +11707,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                         switch (alt132) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1108:10: '.' IDENTIFIER
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1137:10: '.' ids+= IDENTIFIER
                     	    {
-                    	    match(input,DOT,FOLLOW_DOT_in_primary6616); if (state.failed) return ;
+                    	    match(input,DOT,FOLLOW_DOT_in_primary6626); if (state.failed) return ;
 
-                    	    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_primary6618); if (state.failed) return ;
+                    	    ids=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_primary6632); if (state.failed) return ;
+                    	    if (list_ids==null) list_ids=new ArrayList();
+                    	    list_ids.add(ids);
+
 
                     	    }
                     	    break;
@@ -11688,7 +11725,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     } while (true);
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1110:9: ( identifierSuffix )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1139:9: ( identifierSuffix )?
                     int alt133=2;
                     switch ( input.LA(1) ) {
                         case LBRACKET:
@@ -11718,13 +11755,15 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                     switch (alt133) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1110:10: identifierSuffix
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1139:10: identifierSuffix
                             {
-                            pushFollow(FOLLOW_identifierSuffix_in_primary6640);
+                            pushFollow(FOLLOW_identifierSuffix_in_primary6654);
                             identifierSuffix();
 
                             state._fsp--;
                             if (state.failed) return ;
+
+                            if ( state.backtracking==0 ) {checkMethodInvocation(list_ids);}
 
                             }
                             break;
@@ -11735,11 +11774,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1112:9: IDENTIFIER ( '.' IDENTIFIER )* ( identifierSuffix )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1141:9: ids+= IDENTIFIER ( '.' ids+= IDENTIFIER )* ( identifierSuffix )?
                     {
-                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_primary6661); if (state.failed) return ;
+                    ids=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_primary6681); if (state.failed) return ;
+                    if (list_ids==null) list_ids=new ArrayList();
+                    list_ids.add(ids);
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1113:9: ( '.' IDENTIFIER )*
+
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1142:9: ( '.' ids+= IDENTIFIER )*
                     loop134:
                     do {
                         int alt134=2;
@@ -11764,11 +11806,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                         switch (alt134) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1113:10: '.' IDENTIFIER
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1142:10: '.' ids+= IDENTIFIER
                     	    {
-                    	    match(input,DOT,FOLLOW_DOT_in_primary6672); if (state.failed) return ;
+                    	    match(input,DOT,FOLLOW_DOT_in_primary6692); if (state.failed) return ;
 
-                    	    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_primary6674); if (state.failed) return ;
+                    	    ids=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_primary6698); if (state.failed) return ;
+                    	    if (list_ids==null) list_ids=new ArrayList();
+                    	    list_ids.add(ids);
+
 
                     	    }
                     	    break;
@@ -11779,7 +11824,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     } while (true);
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1115:9: ( identifierSuffix )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1144:9: ( identifierSuffix )?
                     int alt135=2;
                     switch ( input.LA(1) ) {
                         case LBRACKET:
@@ -11809,13 +11854,15 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                     switch (alt135) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1115:10: identifierSuffix
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1144:10: identifierSuffix
                             {
-                            pushFollow(FOLLOW_identifierSuffix_in_primary6696);
+                            pushFollow(FOLLOW_identifierSuffix_in_primary6720);
                             identifierSuffix();
 
                             state._fsp--;
                             if (state.failed) return ;
+
+                            if ( state.backtracking==0 ) {checkMethodInvocation(list_ids);}
 
                             }
                             break;
@@ -11826,11 +11873,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1117:9: 'super' superSuffix
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1146:9: 'super' superSuffix
                     {
-                    match(input,SUPER,FOLLOW_SUPER_in_primary6717); if (state.failed) return ;
+                    match(input,SUPER,FOLLOW_SUPER_in_primary6743); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_superSuffix_in_primary6727);
+                    pushFollow(FOLLOW_superSuffix_in_primary6753);
                     superSuffix();
 
                     state._fsp--;
@@ -11839,9 +11886,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 5 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1119:9: literal
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1148:9: literal
                     {
-                    pushFollow(FOLLOW_literal_in_primary6737);
+                    pushFollow(FOLLOW_literal_in_primary6763);
                     literal();
 
                     state._fsp--;
@@ -11850,9 +11897,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 6 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1120:9: creator
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1149:9: creator
                     {
-                    pushFollow(FOLLOW_creator_in_primary6747);
+                    pushFollow(FOLLOW_creator_in_primary6773);
                     creator();
 
                     state._fsp--;
@@ -11861,15 +11908,15 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 7 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1121:9: primitiveType ( '[' ']' )* '.' 'class'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1150:9: primitiveType ( '[' ']' )* '.' 'class'
                     {
-                    pushFollow(FOLLOW_primitiveType_in_primary6757);
+                    pushFollow(FOLLOW_primitiveType_in_primary6783);
                     primitiveType();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1122:9: ( '[' ']' )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1151:9: ( '[' ']' )*
                     loop136:
                     do {
                         int alt136=2;
@@ -11882,11 +11929,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                         switch (alt136) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1122:10: '[' ']'
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1151:10: '[' ']'
                     	    {
-                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_primary6768); if (state.failed) return ;
+                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_primary6794); if (state.failed) return ;
 
-                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_primary6770); if (state.failed) return ;
+                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_primary6796); if (state.failed) return ;
 
                     	    }
                     	    break;
@@ -11897,20 +11944,20 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     } while (true);
 
 
-                    match(input,DOT,FOLLOW_DOT_in_primary6791); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_primary6817); if (state.failed) return ;
 
-                    match(input,CLASS,FOLLOW_CLASS_in_primary6793); if (state.failed) return ;
+                    match(input,CLASS,FOLLOW_CLASS_in_primary6819); if (state.failed) return ;
 
                     }
                     break;
                 case 8 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1125:9: 'void' '.' 'class'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1154:9: 'void' '.' 'class'
                     {
-                    match(input,VOID,FOLLOW_VOID_in_primary6803); if (state.failed) return ;
+                    match(input,VOID,FOLLOW_VOID_in_primary6829); if (state.failed) return ;
 
-                    match(input,DOT,FOLLOW_DOT_in_primary6805); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_primary6831); if (state.failed) return ;
 
-                    match(input,CLASS,FOLLOW_CLASS_in_primary6807); if (state.failed) return ;
+                    match(input,CLASS,FOLLOW_CLASS_in_primary6833); if (state.failed) return ;
 
                     }
                     break;
@@ -11934,14 +11981,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "superSuffix"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1129:1: superSuffix : ( arguments | '.' ( typeArguments )? IDENTIFIER ( arguments )? );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1158:1: superSuffix : ( arguments | '.' ( typeArguments )? IDENTIFIER ( arguments )? );
     public final void superSuffix() throws RecognitionException {
         int superSuffix_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 90) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1130:5: ( arguments | '.' ( typeArguments )? IDENTIFIER ( arguments )? )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1159:5: ( arguments | '.' ( typeArguments )? IDENTIFIER ( arguments )? )
             int alt140=2;
             int LA140_0 = input.LA(1);
 
@@ -11961,9 +12008,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt140) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1130:9: arguments
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1159:9: arguments
                     {
-                    pushFollow(FOLLOW_arguments_in_superSuffix6833);
+                    pushFollow(FOLLOW_arguments_in_superSuffix6859);
                     arguments();
 
                     state._fsp--;
@@ -11972,11 +12019,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1131:9: '.' ( typeArguments )? IDENTIFIER ( arguments )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1160:9: '.' ( typeArguments )? IDENTIFIER ( arguments )?
                     {
-                    match(input,DOT,FOLLOW_DOT_in_superSuffix6843); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_superSuffix6869); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1131:13: ( typeArguments )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1160:13: ( typeArguments )?
                     int alt138=2;
                     int LA138_0 = input.LA(1);
 
@@ -11985,9 +12032,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt138) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1131:14: typeArguments
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1160:14: typeArguments
                             {
-                            pushFollow(FOLLOW_typeArguments_in_superSuffix6846);
+                            pushFollow(FOLLOW_typeArguments_in_superSuffix6872);
                             typeArguments();
 
                             state._fsp--;
@@ -11999,9 +12046,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
 
 
-                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_superSuffix6867); if (state.failed) return ;
+                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_superSuffix6893); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1134:9: ( arguments )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1163:9: ( arguments )?
                     int alt139=2;
                     int LA139_0 = input.LA(1);
 
@@ -12010,9 +12057,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt139) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1134:10: arguments
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1163:10: arguments
                             {
-                            pushFollow(FOLLOW_arguments_in_superSuffix6878);
+                            pushFollow(FOLLOW_arguments_in_superSuffix6904);
                             arguments();
 
                             state._fsp--;
@@ -12046,14 +12093,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "identifierSuffix"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1139:1: identifierSuffix : ( ( '[' ']' )+ '.' 'class' | ( '[' expression ']' )+ | arguments | '.' 'class' | '.' nonWildcardTypeArguments IDENTIFIER arguments | '.' 'this' | '.' 'super' arguments | innerCreator );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1168:1: identifierSuffix : ( ( '[' ']' )+ '.' 'class' | ( '[' expression ']' )+ | arguments | '.' 'class' | '.' nonWildcardTypeArguments IDENTIFIER arguments | '.' 'this' | '.' 'super' arguments | innerCreator );
     public final void identifierSuffix() throws RecognitionException {
         int identifierSuffix_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 91) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1140:5: ( ( '[' ']' )+ '.' 'class' | ( '[' expression ']' )+ | arguments | '.' 'class' | '.' nonWildcardTypeArguments IDENTIFIER arguments | '.' 'this' | '.' 'super' arguments | innerCreator )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1169:5: ( ( '[' ']' )+ '.' 'class' | ( '[' expression ']' )+ | arguments | '.' 'class' | '.' nonWildcardTypeArguments IDENTIFIER arguments | '.' 'this' | '.' 'super' arguments | innerCreator )
             int alt143=8;
             switch ( input.LA(1) ) {
             case LBRACKET:
@@ -12131,9 +12178,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
             switch (alt143) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1140:9: ( '[' ']' )+ '.' 'class'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1169:9: ( '[' ']' )+ '.' 'class'
                     {
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1140:9: ( '[' ']' )+
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1169:9: ( '[' ']' )+
                     int cnt141=0;
                     loop141:
                     do {
@@ -12147,11 +12194,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                         switch (alt141) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1140:10: '[' ']'
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1169:10: '[' ']'
                     	    {
-                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_identifierSuffix6911); if (state.failed) return ;
+                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_identifierSuffix6936); if (state.failed) return ;
 
-                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_identifierSuffix6913); if (state.failed) return ;
+                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_identifierSuffix6938); if (state.failed) return ;
 
                     	    }
                     	    break;
@@ -12167,16 +12214,16 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     } while (true);
 
 
-                    match(input,DOT,FOLLOW_DOT_in_identifierSuffix6934); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_identifierSuffix6959); if (state.failed) return ;
 
-                    match(input,CLASS,FOLLOW_CLASS_in_identifierSuffix6936); if (state.failed) return ;
+                    match(input,CLASS,FOLLOW_CLASS_in_identifierSuffix6961); if (state.failed) return ;
 
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1143:9: ( '[' expression ']' )+
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1172:9: ( '[' expression ']' )+
                     {
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1143:9: ( '[' expression ']' )+
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1172:9: ( '[' expression ']' )+
                     int cnt142=0;
                     loop142:
                     do {
@@ -12196,17 +12243,17 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                         switch (alt142) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1143:10: '[' expression ']'
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1172:10: '[' expression ']'
                     	    {
-                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_identifierSuffix6947); if (state.failed) return ;
+                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_identifierSuffix6972); if (state.failed) return ;
 
-                    	    pushFollow(FOLLOW_expression_in_identifierSuffix6949);
+                    	    pushFollow(FOLLOW_expression_in_identifierSuffix6974);
                     	    expression();
 
                     	    state._fsp--;
                     	    if (state.failed) return ;
 
-                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_identifierSuffix6951); if (state.failed) return ;
+                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_identifierSuffix6976); if (state.failed) return ;
 
                     	    }
                     	    break;
@@ -12225,9 +12272,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1145:9: arguments
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1174:9: arguments
                     {
-                    pushFollow(FOLLOW_arguments_in_identifierSuffix6972);
+                    pushFollow(FOLLOW_arguments_in_identifierSuffix6997);
                     arguments();
 
                     state._fsp--;
@@ -12236,28 +12283,28 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1146:9: '.' 'class'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1175:9: '.' 'class'
                     {
-                    match(input,DOT,FOLLOW_DOT_in_identifierSuffix6982); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_identifierSuffix7007); if (state.failed) return ;
 
-                    match(input,CLASS,FOLLOW_CLASS_in_identifierSuffix6984); if (state.failed) return ;
+                    match(input,CLASS,FOLLOW_CLASS_in_identifierSuffix7009); if (state.failed) return ;
 
                     }
                     break;
                 case 5 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1147:9: '.' nonWildcardTypeArguments IDENTIFIER arguments
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1176:9: '.' nonWildcardTypeArguments IDENTIFIER arguments
                     {
-                    match(input,DOT,FOLLOW_DOT_in_identifierSuffix6994); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_identifierSuffix7019); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_nonWildcardTypeArguments_in_identifierSuffix6996);
+                    pushFollow(FOLLOW_nonWildcardTypeArguments_in_identifierSuffix7021);
                     nonWildcardTypeArguments();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_identifierSuffix6998); if (state.failed) return ;
+                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_identifierSuffix7023); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_arguments_in_identifierSuffix7000);
+                    pushFollow(FOLLOW_arguments_in_identifierSuffix7025);
                     arguments();
 
                     state._fsp--;
@@ -12266,22 +12313,22 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 6 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1148:9: '.' 'this'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1177:9: '.' 'this'
                     {
-                    match(input,DOT,FOLLOW_DOT_in_identifierSuffix7010); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_identifierSuffix7035); if (state.failed) return ;
 
-                    match(input,THIS,FOLLOW_THIS_in_identifierSuffix7012); if (state.failed) return ;
+                    match(input,THIS,FOLLOW_THIS_in_identifierSuffix7037); if (state.failed) return ;
 
                     }
                     break;
                 case 7 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1149:9: '.' 'super' arguments
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1178:9: '.' 'super' arguments
                     {
-                    match(input,DOT,FOLLOW_DOT_in_identifierSuffix7022); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_identifierSuffix7047); if (state.failed) return ;
 
-                    match(input,SUPER,FOLLOW_SUPER_in_identifierSuffix7024); if (state.failed) return ;
+                    match(input,SUPER,FOLLOW_SUPER_in_identifierSuffix7049); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_arguments_in_identifierSuffix7026);
+                    pushFollow(FOLLOW_arguments_in_identifierSuffix7051);
                     arguments();
 
                     state._fsp--;
@@ -12290,9 +12337,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 8 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1150:9: innerCreator
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1179:9: innerCreator
                     {
-                    pushFollow(FOLLOW_innerCreator_in_identifierSuffix7036);
+                    pushFollow(FOLLOW_innerCreator_in_identifierSuffix7061);
                     innerCreator();
 
                     state._fsp--;
@@ -12320,14 +12367,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "selector"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1154:1: selector : ( '.' IDENTIFIER ( arguments )? | '.' 'this' | '.' 'super' superSuffix | innerCreator | '[' expression ']' );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1183:1: selector : ( '.' IDENTIFIER ( arguments )? | '.' 'this' | '.' 'super' superSuffix | innerCreator | '[' expression ']' );
     public final void selector() throws RecognitionException {
         int selector_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 92) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1155:5: ( '.' IDENTIFIER ( arguments )? | '.' 'this' | '.' 'super' superSuffix | innerCreator | '[' expression ']' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1184:5: ( '.' IDENTIFIER ( arguments )? | '.' 'this' | '.' 'super' superSuffix | innerCreator | '[' expression ']' )
             int alt145=5;
             int LA145_0 = input.LA(1);
 
@@ -12376,13 +12423,13 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt145) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1155:9: '.' IDENTIFIER ( arguments )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1184:9: '.' IDENTIFIER ( arguments )?
                     {
-                    match(input,DOT,FOLLOW_DOT_in_selector7058); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_selector7083); if (state.failed) return ;
 
-                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_selector7060); if (state.failed) return ;
+                    match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_selector7085); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1156:9: ( arguments )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1185:9: ( arguments )?
                     int alt144=2;
                     int LA144_0 = input.LA(1);
 
@@ -12391,9 +12438,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt144) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1156:10: arguments
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1185:10: arguments
                             {
-                            pushFollow(FOLLOW_arguments_in_selector7071);
+                            pushFollow(FOLLOW_arguments_in_selector7096);
                             arguments();
 
                             state._fsp--;
@@ -12408,22 +12455,22 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1158:9: '.' 'this'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1187:9: '.' 'this'
                     {
-                    match(input,DOT,FOLLOW_DOT_in_selector7092); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_selector7117); if (state.failed) return ;
 
-                    match(input,THIS,FOLLOW_THIS_in_selector7094); if (state.failed) return ;
+                    match(input,THIS,FOLLOW_THIS_in_selector7119); if (state.failed) return ;
 
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1159:9: '.' 'super' superSuffix
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1188:9: '.' 'super' superSuffix
                     {
-                    match(input,DOT,FOLLOW_DOT_in_selector7104); if (state.failed) return ;
+                    match(input,DOT,FOLLOW_DOT_in_selector7129); if (state.failed) return ;
 
-                    match(input,SUPER,FOLLOW_SUPER_in_selector7106); if (state.failed) return ;
+                    match(input,SUPER,FOLLOW_SUPER_in_selector7131); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_superSuffix_in_selector7116);
+                    pushFollow(FOLLOW_superSuffix_in_selector7141);
                     superSuffix();
 
                     state._fsp--;
@@ -12432,9 +12479,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 4 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1161:9: innerCreator
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1190:9: innerCreator
                     {
-                    pushFollow(FOLLOW_innerCreator_in_selector7126);
+                    pushFollow(FOLLOW_innerCreator_in_selector7151);
                     innerCreator();
 
                     state._fsp--;
@@ -12443,17 +12490,17 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 5 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1162:9: '[' expression ']'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1191:9: '[' expression ']'
                     {
-                    match(input,LBRACKET,FOLLOW_LBRACKET_in_selector7136); if (state.failed) return ;
+                    match(input,LBRACKET,FOLLOW_LBRACKET_in_selector7161); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_expression_in_selector7138);
+                    pushFollow(FOLLOW_expression_in_selector7163);
                     expression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,RBRACKET,FOLLOW_RBRACKET_in_selector7140); if (state.failed) return ;
+                    match(input,RBRACKET,FOLLOW_RBRACKET_in_selector7165); if (state.failed) return ;
 
                     }
                     break;
@@ -12477,14 +12524,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "creator"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1165:1: creator : ( 'new' nonWildcardTypeArguments classOrInterfaceType classCreatorRest | 'new' classOrInterfaceType classCreatorRest | arrayCreator );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1194:1: creator : ( 'new' nonWildcardTypeArguments classOrInterfaceType classCreatorRest | 'new' classOrInterfaceType classCreatorRest | arrayCreator );
     public final void creator() throws RecognitionException {
         int creator_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 93) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1166:5: ( 'new' nonWildcardTypeArguments classOrInterfaceType classCreatorRest | 'new' classOrInterfaceType classCreatorRest | arrayCreator )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1195:5: ( 'new' nonWildcardTypeArguments classOrInterfaceType classCreatorRest | 'new' classOrInterfaceType classCreatorRest | arrayCreator )
             int alt146=3;
             int LA146_0 = input.LA(1);
 
@@ -12519,23 +12566,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt146) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1166:9: 'new' nonWildcardTypeArguments classOrInterfaceType classCreatorRest
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1195:9: 'new' nonWildcardTypeArguments classOrInterfaceType classCreatorRest
                     {
-                    match(input,NEW,FOLLOW_NEW_in_creator7160); if (state.failed) return ;
+                    match(input,NEW,FOLLOW_NEW_in_creator7185); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_nonWildcardTypeArguments_in_creator7162);
+                    pushFollow(FOLLOW_nonWildcardTypeArguments_in_creator7187);
                     nonWildcardTypeArguments();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    pushFollow(FOLLOW_classOrInterfaceType_in_creator7164);
+                    pushFollow(FOLLOW_classOrInterfaceType_in_creator7189);
                     classOrInterfaceType();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    pushFollow(FOLLOW_classCreatorRest_in_creator7166);
+                    pushFollow(FOLLOW_classCreatorRest_in_creator7191);
                     classCreatorRest();
 
                     state._fsp--;
@@ -12544,17 +12591,17 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1167:9: 'new' classOrInterfaceType classCreatorRest
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1196:9: 'new' classOrInterfaceType classCreatorRest
                     {
-                    match(input,NEW,FOLLOW_NEW_in_creator7176); if (state.failed) return ;
+                    match(input,NEW,FOLLOW_NEW_in_creator7201); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_classOrInterfaceType_in_creator7178);
+                    pushFollow(FOLLOW_classOrInterfaceType_in_creator7203);
                     classOrInterfaceType();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    pushFollow(FOLLOW_classCreatorRest_in_creator7180);
+                    pushFollow(FOLLOW_classCreatorRest_in_creator7205);
                     classCreatorRest();
 
                     state._fsp--;
@@ -12563,9 +12610,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1168:9: arrayCreator
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1197:9: arrayCreator
                     {
-                    pushFollow(FOLLOW_arrayCreator_in_creator7190);
+                    pushFollow(FOLLOW_arrayCreator_in_creator7215);
                     arrayCreator();
 
                     state._fsp--;
@@ -12593,14 +12640,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "arrayCreator"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1171:1: arrayCreator : ( 'new' createdName '[' ']' ( '[' ']' )* arrayInitializer | 'new' createdName '[' expression ']' ( '[' expression ']' )* ( '[' ']' )* );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1200:1: arrayCreator : ( 'new' createdName '[' ']' ( '[' ']' )* arrayInitializer | 'new' createdName '[' expression ']' ( '[' expression ']' )* ( '[' ']' )* );
     public final void arrayCreator() throws RecognitionException {
         int arrayCreator_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 94) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1172:5: ( 'new' createdName '[' ']' ( '[' ']' )* arrayInitializer | 'new' createdName '[' expression ']' ( '[' expression ']' )* ( '[' ']' )* )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1201:5: ( 'new' createdName '[' ']' ( '[' ']' )* arrayInitializer | 'new' createdName '[' expression ']' ( '[' expression ']' )* ( '[' ']' )* )
             int alt150=2;
             int LA150_0 = input.LA(1);
 
@@ -12632,21 +12679,21 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt150) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1172:9: 'new' createdName '[' ']' ( '[' ']' )* arrayInitializer
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1201:9: 'new' createdName '[' ']' ( '[' ']' )* arrayInitializer
                     {
-                    match(input,NEW,FOLLOW_NEW_in_arrayCreator7210); if (state.failed) return ;
+                    match(input,NEW,FOLLOW_NEW_in_arrayCreator7235); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_createdName_in_arrayCreator7212);
+                    pushFollow(FOLLOW_createdName_in_arrayCreator7237);
                     createdName();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,LBRACKET,FOLLOW_LBRACKET_in_arrayCreator7222); if (state.failed) return ;
+                    match(input,LBRACKET,FOLLOW_LBRACKET_in_arrayCreator7247); if (state.failed) return ;
 
-                    match(input,RBRACKET,FOLLOW_RBRACKET_in_arrayCreator7224); if (state.failed) return ;
+                    match(input,RBRACKET,FOLLOW_RBRACKET_in_arrayCreator7249); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1174:9: ( '[' ']' )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1203:9: ( '[' ']' )*
                     loop147:
                     do {
                         int alt147=2;
@@ -12659,11 +12706,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                         switch (alt147) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1174:10: '[' ']'
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1203:10: '[' ']'
                     	    {
-                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_arrayCreator7235); if (state.failed) return ;
+                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_arrayCreator7260); if (state.failed) return ;
 
-                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_arrayCreator7237); if (state.failed) return ;
+                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_arrayCreator7262); if (state.failed) return ;
 
                     	    }
                     	    break;
@@ -12674,7 +12721,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     } while (true);
 
 
-                    pushFollow(FOLLOW_arrayInitializer_in_arrayCreator7258);
+                    pushFollow(FOLLOW_arrayInitializer_in_arrayCreator7283);
                     arrayInitializer();
 
                     state._fsp--;
@@ -12683,27 +12730,27 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1178:9: 'new' createdName '[' expression ']' ( '[' expression ']' )* ( '[' ']' )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1207:9: 'new' createdName '[' expression ']' ( '[' expression ']' )* ( '[' ']' )*
                     {
-                    match(input,NEW,FOLLOW_NEW_in_arrayCreator7269); if (state.failed) return ;
+                    match(input,NEW,FOLLOW_NEW_in_arrayCreator7294); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_createdName_in_arrayCreator7271);
+                    pushFollow(FOLLOW_createdName_in_arrayCreator7296);
                     createdName();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,LBRACKET,FOLLOW_LBRACKET_in_arrayCreator7281); if (state.failed) return ;
+                    match(input,LBRACKET,FOLLOW_LBRACKET_in_arrayCreator7306); if (state.failed) return ;
 
-                    pushFollow(FOLLOW_expression_in_arrayCreator7283);
+                    pushFollow(FOLLOW_expression_in_arrayCreator7308);
                     expression();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    match(input,RBRACKET,FOLLOW_RBRACKET_in_arrayCreator7293); if (state.failed) return ;
+                    match(input,RBRACKET,FOLLOW_RBRACKET_in_arrayCreator7318); if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1181:9: ( '[' expression ']' )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1210:9: ( '[' expression ']' )*
                     loop148:
                     do {
                         int alt148=2;
@@ -12722,17 +12769,17 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                         switch (alt148) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1181:13: '[' expression ']'
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1210:13: '[' expression ']'
                     	    {
-                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_arrayCreator7307); if (state.failed) return ;
+                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_arrayCreator7332); if (state.failed) return ;
 
-                    	    pushFollow(FOLLOW_expression_in_arrayCreator7309);
+                    	    pushFollow(FOLLOW_expression_in_arrayCreator7334);
                     	    expression();
 
                     	    state._fsp--;
                     	    if (state.failed) return ;
 
-                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_arrayCreator7323); if (state.failed) return ;
+                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_arrayCreator7348); if (state.failed) return ;
 
                     	    }
                     	    break;
@@ -12743,7 +12790,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     } while (true);
 
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1184:9: ( '[' ']' )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1213:9: ( '[' ']' )*
                     loop149:
                     do {
                         int alt149=2;
@@ -12762,11 +12809,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                         switch (alt149) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1184:10: '[' ']'
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1213:10: '[' ']'
                     	    {
-                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_arrayCreator7345); if (state.failed) return ;
+                    	    match(input,LBRACKET,FOLLOW_LBRACKET_in_arrayCreator7370); if (state.failed) return ;
 
-                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_arrayCreator7347); if (state.failed) return ;
+                    	    match(input,RBRACKET,FOLLOW_RBRACKET_in_arrayCreator7372); if (state.failed) return ;
 
                     	    }
                     	    break;
@@ -12799,14 +12846,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "variableInitializer"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1188:1: variableInitializer : ( arrayInitializer | expression );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1217:1: variableInitializer : ( arrayInitializer | expression );
     public final void variableInitializer() throws RecognitionException {
         int variableInitializer_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 95) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1189:5: ( arrayInitializer | expression )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1218:5: ( arrayInitializer | expression )
             int alt151=2;
             int LA151_0 = input.LA(1);
 
@@ -12826,9 +12873,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt151) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1189:9: arrayInitializer
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1218:9: arrayInitializer
                     {
-                    pushFollow(FOLLOW_arrayInitializer_in_variableInitializer7378);
+                    pushFollow(FOLLOW_arrayInitializer_in_variableInitializer7403);
                     arrayInitializer();
 
                     state._fsp--;
@@ -12837,9 +12884,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1190:9: expression
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1219:9: expression
                     {
-                    pushFollow(FOLLOW_expression_in_variableInitializer7388);
+                    pushFollow(FOLLOW_expression_in_variableInitializer7413);
                     expression();
 
                     state._fsp--;
@@ -12867,19 +12914,19 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "arrayInitializer"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1193:1: arrayInitializer : '{' ( variableInitializer ( ',' variableInitializer )* )? ( ',' )? '}' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1222:1: arrayInitializer : '{' ( variableInitializer ( ',' variableInitializer )* )? ( ',' )? '}' ;
     public final void arrayInitializer() throws RecognitionException {
         int arrayInitializer_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 96) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1194:5: ( '{' ( variableInitializer ( ',' variableInitializer )* )? ( ',' )? '}' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1194:9: '{' ( variableInitializer ( ',' variableInitializer )* )? ( ',' )? '}'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1223:5: ( '{' ( variableInitializer ( ',' variableInitializer )* )? ( ',' )? '}' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1223:9: '{' ( variableInitializer ( ',' variableInitializer )* )? ( ',' )? '}'
             {
-            match(input,LBRACE,FOLLOW_LBRACE_in_arrayInitializer7408); if (state.failed) return ;
+            match(input,LBRACE,FOLLOW_LBRACE_in_arrayInitializer7433); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1195:13: ( variableInitializer ( ',' variableInitializer )* )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1224:13: ( variableInitializer ( ',' variableInitializer )* )?
             int alt153=2;
             int LA153_0 = input.LA(1);
 
@@ -12888,15 +12935,15 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt153) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1195:14: variableInitializer ( ',' variableInitializer )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1224:14: variableInitializer ( ',' variableInitializer )*
                     {
-                    pushFollow(FOLLOW_variableInitializer_in_arrayInitializer7424);
+                    pushFollow(FOLLOW_variableInitializer_in_arrayInitializer7449);
                     variableInitializer();
 
                     state._fsp--;
                     if (state.failed) return ;
 
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1196:17: ( ',' variableInitializer )*
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1225:17: ( ',' variableInitializer )*
                     loop152:
                     do {
                         int alt152=2;
@@ -12915,11 +12962,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                         switch (alt152) {
                     	case 1 :
-                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1196:18: ',' variableInitializer
+                    	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1225:18: ',' variableInitializer
                     	    {
-                    	    match(input,COMMA,FOLLOW_COMMA_in_arrayInitializer7443); if (state.failed) return ;
+                    	    match(input,COMMA,FOLLOW_COMMA_in_arrayInitializer7468); if (state.failed) return ;
 
-                    	    pushFollow(FOLLOW_variableInitializer_in_arrayInitializer7445);
+                    	    pushFollow(FOLLOW_variableInitializer_in_arrayInitializer7470);
                     	    variableInitializer();
 
                     	    state._fsp--;
@@ -12940,7 +12987,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1199:13: ( ',' )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1228:13: ( ',' )?
             int alt154=2;
             int LA154_0 = input.LA(1);
 
@@ -12949,9 +12996,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt154) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1199:14: ','
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1228:14: ','
                     {
-                    match(input,COMMA,FOLLOW_COMMA_in_arrayInitializer7495); if (state.failed) return ;
+                    match(input,COMMA,FOLLOW_COMMA_in_arrayInitializer7520); if (state.failed) return ;
 
                     }
                     break;
@@ -12959,7 +13006,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            match(input,RBRACE,FOLLOW_RBRACE_in_arrayInitializer7508); if (state.failed) return ;
+            match(input,RBRACE,FOLLOW_RBRACE_in_arrayInitializer7533); if (state.failed) return ;
 
             }
 
@@ -12981,14 +13028,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "createdName"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1204:1: createdName : ( classOrInterfaceType | primitiveType );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1233:1: createdName : ( classOrInterfaceType | primitiveType );
     public final void createdName() throws RecognitionException {
         int createdName_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 97) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1205:5: ( classOrInterfaceType | primitiveType )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1234:5: ( classOrInterfaceType | primitiveType )
             int alt155=2;
             int LA155_0 = input.LA(1);
 
@@ -13008,9 +13055,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt155) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1205:9: classOrInterfaceType
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1234:9: classOrInterfaceType
                     {
-                    pushFollow(FOLLOW_classOrInterfaceType_in_createdName7542);
+                    pushFollow(FOLLOW_classOrInterfaceType_in_createdName7567);
                     classOrInterfaceType();
 
                     state._fsp--;
@@ -13019,9 +13066,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1206:9: primitiveType
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1235:9: primitiveType
                     {
-                    pushFollow(FOLLOW_primitiveType_in_createdName7552);
+                    pushFollow(FOLLOW_primitiveType_in_createdName7577);
                     primitiveType();
 
                     state._fsp--;
@@ -13049,21 +13096,21 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "innerCreator"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1209:1: innerCreator : '.' 'new' ( nonWildcardTypeArguments )? IDENTIFIER ( typeArguments )? classCreatorRest ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1238:1: innerCreator : '.' 'new' ( nonWildcardTypeArguments )? IDENTIFIER ( typeArguments )? classCreatorRest ;
     public final void innerCreator() throws RecognitionException {
         int innerCreator_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 98) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1210:5: ( '.' 'new' ( nonWildcardTypeArguments )? IDENTIFIER ( typeArguments )? classCreatorRest )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1210:9: '.' 'new' ( nonWildcardTypeArguments )? IDENTIFIER ( typeArguments )? classCreatorRest
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1239:5: ( '.' 'new' ( nonWildcardTypeArguments )? IDENTIFIER ( typeArguments )? classCreatorRest )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1239:9: '.' 'new' ( nonWildcardTypeArguments )? IDENTIFIER ( typeArguments )? classCreatorRest
             {
-            match(input,DOT,FOLLOW_DOT_in_innerCreator7573); if (state.failed) return ;
+            match(input,DOT,FOLLOW_DOT_in_innerCreator7598); if (state.failed) return ;
 
-            match(input,NEW,FOLLOW_NEW_in_innerCreator7575); if (state.failed) return ;
+            match(input,NEW,FOLLOW_NEW_in_innerCreator7600); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1211:9: ( nonWildcardTypeArguments )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1240:9: ( nonWildcardTypeArguments )?
             int alt156=2;
             int LA156_0 = input.LA(1);
 
@@ -13072,9 +13119,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt156) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1211:10: nonWildcardTypeArguments
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1240:10: nonWildcardTypeArguments
                     {
-                    pushFollow(FOLLOW_nonWildcardTypeArguments_in_innerCreator7586);
+                    pushFollow(FOLLOW_nonWildcardTypeArguments_in_innerCreator7611);
                     nonWildcardTypeArguments();
 
                     state._fsp--;
@@ -13086,9 +13133,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_innerCreator7607); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_innerCreator7632); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1214:9: ( typeArguments )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1243:9: ( typeArguments )?
             int alt157=2;
             int LA157_0 = input.LA(1);
 
@@ -13097,9 +13144,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt157) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1214:10: typeArguments
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1243:10: typeArguments
                     {
-                    pushFollow(FOLLOW_typeArguments_in_innerCreator7618);
+                    pushFollow(FOLLOW_typeArguments_in_innerCreator7643);
                     typeArguments();
 
                     state._fsp--;
@@ -13111,7 +13158,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            pushFollow(FOLLOW_classCreatorRest_in_innerCreator7639);
+            pushFollow(FOLLOW_classCreatorRest_in_innerCreator7664);
             classCreatorRest();
 
             state._fsp--;
@@ -13137,23 +13184,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "classCreatorRest"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1220:1: classCreatorRest : arguments ( classBody )? ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1249:1: classCreatorRest : arguments ( classBody )? ;
     public final void classCreatorRest() throws RecognitionException {
         int classCreatorRest_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 99) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1221:5: ( arguments ( classBody )? )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1221:9: arguments ( classBody )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1250:5: ( arguments ( classBody )? )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1250:9: arguments ( classBody )?
             {
-            pushFollow(FOLLOW_arguments_in_classCreatorRest7660);
+            pushFollow(FOLLOW_arguments_in_classCreatorRest7685);
             arguments();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1222:9: ( classBody )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1251:9: ( classBody )?
             int alt158=2;
             int LA158_0 = input.LA(1);
 
@@ -13162,9 +13209,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt158) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1222:10: classBody
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1251:10: classBody
                     {
-                    pushFollow(FOLLOW_classBody_in_classCreatorRest7671);
+                    pushFollow(FOLLOW_classBody_in_classCreatorRest7696);
                     classBody();
 
                     state._fsp--;
@@ -13196,25 +13243,25 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "nonWildcardTypeArguments"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1227:1: nonWildcardTypeArguments : '<' typeList '>' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1256:1: nonWildcardTypeArguments : '<' typeList '>' ;
     public final void nonWildcardTypeArguments() throws RecognitionException {
         int nonWildcardTypeArguments_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 100) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1228:5: ( '<' typeList '>' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1228:9: '<' typeList '>'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1257:5: ( '<' typeList '>' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1257:9: '<' typeList '>'
             {
-            match(input,LT,FOLLOW_LT_in_nonWildcardTypeArguments7703); if (state.failed) return ;
+            match(input,LT,FOLLOW_LT_in_nonWildcardTypeArguments7728); if (state.failed) return ;
 
-            pushFollow(FOLLOW_typeList_in_nonWildcardTypeArguments7705);
+            pushFollow(FOLLOW_typeList_in_nonWildcardTypeArguments7730);
             typeList();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,GT,FOLLOW_GT_in_nonWildcardTypeArguments7715); if (state.failed) return ;
+            match(input,GT,FOLLOW_GT_in_nonWildcardTypeArguments7740); if (state.failed) return ;
 
             }
 
@@ -13236,19 +13283,19 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "arguments"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1232:1: arguments : '(' ( expressionList )? ')' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1261:1: arguments : '(' ( expressionList )? ')' ;
     public final void arguments() throws RecognitionException {
         int arguments_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 101) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1233:5: ( '(' ( expressionList )? ')' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1233:9: '(' ( expressionList )? ')'
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1262:5: ( '(' ( expressionList )? ')' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1262:9: '(' ( expressionList )? ')'
             {
-            match(input,LPAREN,FOLLOW_LPAREN_in_arguments7735); if (state.failed) return ;
+            match(input,LPAREN,FOLLOW_LPAREN_in_arguments7760); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1233:13: ( expressionList )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1262:13: ( expressionList )?
             int alt159=2;
             int LA159_0 = input.LA(1);
 
@@ -13257,9 +13304,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt159) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1233:14: expressionList
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1262:14: expressionList
                     {
-                    pushFollow(FOLLOW_expressionList_in_arguments7738);
+                    pushFollow(FOLLOW_expressionList_in_arguments7763);
                     expressionList();
 
                     state._fsp--;
@@ -13271,7 +13318,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            match(input,RPAREN,FOLLOW_RPAREN_in_arguments7751); if (state.failed) return ;
+            match(input,RPAREN,FOLLOW_RPAREN_in_arguments7776); if (state.failed) return ;
 
             }
 
@@ -13293,14 +13340,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "literal"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1237:1: literal : ( INTLITERAL | LONGLITERAL | FLOATLITERAL | DOUBLELITERAL | CHARLITERAL | STRINGLITERAL | TRUE | FALSE | NULL );
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1266:1: literal : ( INTLITERAL | LONGLITERAL | FLOATLITERAL | DOUBLELITERAL | CHARLITERAL | STRINGLITERAL | TRUE | FALSE | NULL );
     public final void literal() throws RecognitionException {
         int literal_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 102) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1238:5: ( INTLITERAL | LONGLITERAL | FLOATLITERAL | DOUBLELITERAL | CHARLITERAL | STRINGLITERAL | TRUE | FALSE | NULL )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1267:5: ( INTLITERAL | LONGLITERAL | FLOATLITERAL | DOUBLELITERAL | CHARLITERAL | STRINGLITERAL | TRUE | FALSE | NULL )
             // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:
             {
             if ( input.LA(1)==CHARLITERAL||input.LA(1)==DOUBLELITERAL||input.LA(1)==FALSE||input.LA(1)==FLOATLITERAL||input.LA(1)==INTLITERAL||input.LA(1)==LONGLITERAL||input.LA(1)==NULL||input.LA(1)==STRINGLITERAL||input.LA(1)==TRUE ) {
@@ -13335,25 +13382,25 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "classHeader"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1253:1: classHeader : modifiers 'class' IDENTIFIER ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1282:1: classHeader : modifiers 'class' IDENTIFIER ;
     public final void classHeader() throws RecognitionException {
         int classHeader_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 103) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1254:5: ( modifiers 'class' IDENTIFIER )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1254:9: modifiers 'class' IDENTIFIER
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1283:5: ( modifiers 'class' IDENTIFIER )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1283:9: modifiers 'class' IDENTIFIER
             {
-            pushFollow(FOLLOW_modifiers_in_classHeader7875);
+            pushFollow(FOLLOW_modifiers_in_classHeader7900);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,CLASS,FOLLOW_CLASS_in_classHeader7877); if (state.failed) return ;
+            match(input,CLASS,FOLLOW_CLASS_in_classHeader7902); if (state.failed) return ;
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_classHeader7879); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_classHeader7904); if (state.failed) return ;
 
             }
 
@@ -13375,17 +13422,17 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "enumHeader"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1257:1: enumHeader : modifiers ( 'enum' | IDENTIFIER ) IDENTIFIER ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1286:1: enumHeader : modifiers ( 'enum' | IDENTIFIER ) IDENTIFIER ;
     public final void enumHeader() throws RecognitionException {
         int enumHeader_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 104) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1258:5: ( modifiers ( 'enum' | IDENTIFIER ) IDENTIFIER )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1258:9: modifiers ( 'enum' | IDENTIFIER ) IDENTIFIER
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1287:5: ( modifiers ( 'enum' | IDENTIFIER ) IDENTIFIER )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1287:9: modifiers ( 'enum' | IDENTIFIER ) IDENTIFIER
             {
-            pushFollow(FOLLOW_modifiers_in_enumHeader7899);
+            pushFollow(FOLLOW_modifiers_in_enumHeader7924);
             modifiers();
 
             state._fsp--;
@@ -13403,7 +13450,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_enumHeader7907); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_enumHeader7932); if (state.failed) return ;
 
             }
 
@@ -13425,25 +13472,25 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "interfaceHeader"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1261:1: interfaceHeader : modifiers 'interface' IDENTIFIER ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1290:1: interfaceHeader : modifiers 'interface' IDENTIFIER ;
     public final void interfaceHeader() throws RecognitionException {
         int interfaceHeader_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 105) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1262:5: ( modifiers 'interface' IDENTIFIER )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1262:9: modifiers 'interface' IDENTIFIER
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1291:5: ( modifiers 'interface' IDENTIFIER )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1291:9: modifiers 'interface' IDENTIFIER
             {
-            pushFollow(FOLLOW_modifiers_in_interfaceHeader7927);
+            pushFollow(FOLLOW_modifiers_in_interfaceHeader7952);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,INTERFACE,FOLLOW_INTERFACE_in_interfaceHeader7929); if (state.failed) return ;
+            match(input,INTERFACE,FOLLOW_INTERFACE_in_interfaceHeader7954); if (state.failed) return ;
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_interfaceHeader7931); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_interfaceHeader7956); if (state.failed) return ;
 
             }
 
@@ -13465,27 +13512,27 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "annotationHeader"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1265:1: annotationHeader : modifiers '@' 'interface' IDENTIFIER ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1294:1: annotationHeader : modifiers '@' 'interface' IDENTIFIER ;
     public final void annotationHeader() throws RecognitionException {
         int annotationHeader_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 106) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1266:5: ( modifiers '@' 'interface' IDENTIFIER )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1266:9: modifiers '@' 'interface' IDENTIFIER
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1295:5: ( modifiers '@' 'interface' IDENTIFIER )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1295:9: modifiers '@' 'interface' IDENTIFIER
             {
-            pushFollow(FOLLOW_modifiers_in_annotationHeader7951);
+            pushFollow(FOLLOW_modifiers_in_annotationHeader7976);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,MONKEYS_AT,FOLLOW_MONKEYS_AT_in_annotationHeader7953); if (state.failed) return ;
+            match(input,MONKEYS_AT,FOLLOW_MONKEYS_AT_in_annotationHeader7978); if (state.failed) return ;
 
-            match(input,INTERFACE,FOLLOW_INTERFACE_in_annotationHeader7955); if (state.failed) return ;
+            match(input,INTERFACE,FOLLOW_INTERFACE_in_annotationHeader7980); if (state.failed) return ;
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_annotationHeader7957); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_annotationHeader7982); if (state.failed) return ;
 
             }
 
@@ -13507,23 +13554,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "typeHeader"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1269:1: typeHeader : modifiers ( 'class' | 'enum' | ( ( '@' )? 'interface' ) ) IDENTIFIER ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1298:1: typeHeader : modifiers ( 'class' | 'enum' | ( ( '@' )? 'interface' ) ) IDENTIFIER ;
     public final void typeHeader() throws RecognitionException {
         int typeHeader_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 107) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1270:5: ( modifiers ( 'class' | 'enum' | ( ( '@' )? 'interface' ) ) IDENTIFIER )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1270:9: modifiers ( 'class' | 'enum' | ( ( '@' )? 'interface' ) ) IDENTIFIER
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1299:5: ( modifiers ( 'class' | 'enum' | ( ( '@' )? 'interface' ) ) IDENTIFIER )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1299:9: modifiers ( 'class' | 'enum' | ( ( '@' )? 'interface' ) ) IDENTIFIER
             {
-            pushFollow(FOLLOW_modifiers_in_typeHeader7977);
+            pushFollow(FOLLOW_modifiers_in_typeHeader8002);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1270:19: ( 'class' | 'enum' | ( ( '@' )? 'interface' ) )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1299:19: ( 'class' | 'enum' | ( ( '@' )? 'interface' ) )
             int alt161=3;
             switch ( input.LA(1) ) {
             case CLASS:
@@ -13553,26 +13600,26 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
             switch (alt161) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1270:20: 'class'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1299:20: 'class'
                     {
-                    match(input,CLASS,FOLLOW_CLASS_in_typeHeader7980); if (state.failed) return ;
+                    match(input,CLASS,FOLLOW_CLASS_in_typeHeader8005); if (state.failed) return ;
 
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1270:28: 'enum'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1299:28: 'enum'
                     {
-                    match(input,ENUM,FOLLOW_ENUM_in_typeHeader7982); if (state.failed) return ;
+                    match(input,ENUM,FOLLOW_ENUM_in_typeHeader8007); if (state.failed) return ;
 
                     }
                     break;
                 case 3 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1270:35: ( ( '@' )? 'interface' )
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1299:35: ( ( '@' )? 'interface' )
                     {
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1270:35: ( ( '@' )? 'interface' )
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1270:36: ( '@' )? 'interface'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1299:35: ( ( '@' )? 'interface' )
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1299:36: ( '@' )? 'interface'
                     {
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1270:36: ( '@' )?
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1299:36: ( '@' )?
                     int alt160=2;
                     int LA160_0 = input.LA(1);
 
@@ -13581,9 +13628,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     switch (alt160) {
                         case 1 :
-                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1270:36: '@'
+                            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1299:36: '@'
                             {
-                            match(input,MONKEYS_AT,FOLLOW_MONKEYS_AT_in_typeHeader7985); if (state.failed) return ;
+                            match(input,MONKEYS_AT,FOLLOW_MONKEYS_AT_in_typeHeader8010); if (state.failed) return ;
 
                             }
                             break;
@@ -13591,7 +13638,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
 
 
-                    match(input,INTERFACE,FOLLOW_INTERFACE_in_typeHeader7989); if (state.failed) return ;
+                    match(input,INTERFACE,FOLLOW_INTERFACE_in_typeHeader8014); if (state.failed) return ;
 
                     }
 
@@ -13602,7 +13649,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_typeHeader7993); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_typeHeader8018); if (state.failed) return ;
 
             }
 
@@ -13624,23 +13671,23 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "methodHeader"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1273:1: methodHeader : modifiers ( typeParameters )? ( type | 'void' )? IDENTIFIER '(' ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1302:1: methodHeader : modifiers ( typeParameters )? ( type | 'void' )? IDENTIFIER '(' ;
     public final void methodHeader() throws RecognitionException {
         int methodHeader_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 108) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1274:5: ( modifiers ( typeParameters )? ( type | 'void' )? IDENTIFIER '(' )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1274:9: modifiers ( typeParameters )? ( type | 'void' )? IDENTIFIER '('
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1303:5: ( modifiers ( typeParameters )? ( type | 'void' )? IDENTIFIER '(' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1303:9: modifiers ( typeParameters )? ( type | 'void' )? IDENTIFIER '('
             {
-            pushFollow(FOLLOW_modifiers_in_methodHeader8013);
+            pushFollow(FOLLOW_modifiers_in_methodHeader8038);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1274:19: ( typeParameters )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1303:19: ( typeParameters )?
             int alt162=2;
             int LA162_0 = input.LA(1);
 
@@ -13649,9 +13696,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
             switch (alt162) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1274:19: typeParameters
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1303:19: typeParameters
                     {
-                    pushFollow(FOLLOW_typeParameters_in_methodHeader8015);
+                    pushFollow(FOLLOW_typeParameters_in_methodHeader8040);
                     typeParameters();
 
                     state._fsp--;
@@ -13663,7 +13710,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1274:35: ( type | 'void' )?
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1303:35: ( type | 'void' )?
             int alt163=3;
             switch ( input.LA(1) ) {
                 case IDENTIFIER:
@@ -13696,9 +13743,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
             switch (alt163) {
                 case 1 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1274:36: type
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1303:36: type
                     {
-                    pushFollow(FOLLOW_type_in_methodHeader8019);
+                    pushFollow(FOLLOW_type_in_methodHeader8044);
                     type();
 
                     state._fsp--;
@@ -13707,9 +13754,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1274:41: 'void'
+                    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1303:41: 'void'
                     {
-                    match(input,VOID,FOLLOW_VOID_in_methodHeader8021); if (state.failed) return ;
+                    match(input,VOID,FOLLOW_VOID_in_methodHeader8046); if (state.failed) return ;
 
                     }
                     break;
@@ -13717,9 +13764,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
             }
 
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_methodHeader8025); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_methodHeader8050); if (state.failed) return ;
 
-            match(input,LPAREN,FOLLOW_LPAREN_in_methodHeader8027); if (state.failed) return ;
+            match(input,LPAREN,FOLLOW_LPAREN_in_methodHeader8052); if (state.failed) return ;
 
             }
 
@@ -13741,31 +13788,31 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "fieldHeader"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1277:1: fieldHeader : modifiers type IDENTIFIER ( '[' ']' )* ( '=' | ',' | ';' ) ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1306:1: fieldHeader : modifiers type IDENTIFIER ( '[' ']' )* ( '=' | ',' | ';' ) ;
     public final void fieldHeader() throws RecognitionException {
         int fieldHeader_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 109) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1278:5: ( modifiers type IDENTIFIER ( '[' ']' )* ( '=' | ',' | ';' ) )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1278:9: modifiers type IDENTIFIER ( '[' ']' )* ( '=' | ',' | ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1307:5: ( modifiers type IDENTIFIER ( '[' ']' )* ( '=' | ',' | ';' ) )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1307:9: modifiers type IDENTIFIER ( '[' ']' )* ( '=' | ',' | ';' )
             {
-            pushFollow(FOLLOW_modifiers_in_fieldHeader8047);
+            pushFollow(FOLLOW_modifiers_in_fieldHeader8072);
             modifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            pushFollow(FOLLOW_type_in_fieldHeader8049);
+            pushFollow(FOLLOW_type_in_fieldHeader8074);
             type();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_fieldHeader8051); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_fieldHeader8076); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1278:35: ( '[' ']' )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1307:35: ( '[' ']' )*
             loop164:
             do {
                 int alt164=2;
@@ -13778,11 +13825,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt164) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1278:36: '[' ']'
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1307:36: '[' ']'
             	    {
-            	    match(input,LBRACKET,FOLLOW_LBRACKET_in_fieldHeader8054); if (state.failed) return ;
+            	    match(input,LBRACKET,FOLLOW_LBRACKET_in_fieldHeader8079); if (state.failed) return ;
 
-            	    match(input,RBRACKET,FOLLOW_RBRACKET_in_fieldHeader8055); if (state.failed) return ;
+            	    match(input,RBRACKET,FOLLOW_RBRACKET_in_fieldHeader8080); if (state.failed) return ;
 
             	    }
             	    break;
@@ -13825,31 +13872,31 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
 
     // $ANTLR start "localVariableHeader"
-    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1281:1: localVariableHeader : variableModifiers type IDENTIFIER ( '[' ']' )* ( '=' | ',' | ';' ) ;
+    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1310:1: localVariableHeader : variableModifiers type IDENTIFIER ( '[' ']' )* ( '=' | ',' | ';' ) ;
     public final void localVariableHeader() throws RecognitionException {
         int localVariableHeader_StartIndex = input.index();
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 110) ) { return ; }
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1282:5: ( variableModifiers type IDENTIFIER ( '[' ']' )* ( '=' | ',' | ';' ) )
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1282:9: variableModifiers type IDENTIFIER ( '[' ']' )* ( '=' | ',' | ';' )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1311:5: ( variableModifiers type IDENTIFIER ( '[' ']' )* ( '=' | ',' | ';' ) )
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1311:9: variableModifiers type IDENTIFIER ( '[' ']' )* ( '=' | ',' | ';' )
             {
-            pushFollow(FOLLOW_variableModifiers_in_localVariableHeader8085);
+            pushFollow(FOLLOW_variableModifiers_in_localVariableHeader8110);
             variableModifiers();
 
             state._fsp--;
             if (state.failed) return ;
 
-            pushFollow(FOLLOW_type_in_localVariableHeader8087);
+            pushFollow(FOLLOW_type_in_localVariableHeader8112);
             type();
 
             state._fsp--;
             if (state.failed) return ;
 
-            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_localVariableHeader8089); if (state.failed) return ;
+            match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_localVariableHeader8114); if (state.failed) return ;
 
-            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1282:43: ( '[' ']' )*
+            // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1311:43: ( '[' ']' )*
             loop165:
             do {
                 int alt165=2;
@@ -13862,11 +13909,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
                 switch (alt165) {
             	case 1 :
-            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1282:44: '[' ']'
+            	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1311:44: '[' ']'
             	    {
-            	    match(input,LBRACKET,FOLLOW_LBRACKET_in_localVariableHeader8092); if (state.failed) return ;
+            	    match(input,LBRACKET,FOLLOW_LBRACKET_in_localVariableHeader8117); if (state.failed) return ;
 
-            	    match(input,RBRACKET,FOLLOW_RBRACKET_in_localVariableHeader8093); if (state.failed) return ;
+            	    match(input,RBRACKET,FOLLOW_RBRACKET_in_localVariableHeader8118); if (state.failed) return ;
 
             	    }
             	    break;
@@ -13908,10 +13955,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred2_NoDynamicLoadingANTLR
     public final void synpred2_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:303:13: ( ( annotations )? packageDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:303:13: ( annotations )? packageDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:332:13: ( ( annotations )? packageDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:332:13: ( annotations )? packageDeclaration
         {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:303:13: ( annotations )?
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:332:13: ( annotations )?
         int alt166=2;
         int LA166_0 = input.LA(1);
 
@@ -13920,9 +13967,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
         }
         switch (alt166) {
             case 1 :
-                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:303:14: annotations
+                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:332:14: annotations
                 {
-                pushFollow(FOLLOW_annotations_in_synpred2_NoDynamicLoadingANTLR95);
+                pushFollow(FOLLOW_annotations_in_synpred2_NoDynamicLoadingANTLR101);
                 annotations();
 
                 state._fsp--;
@@ -13934,7 +13981,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
         }
 
 
-        pushFollow(FOLLOW_packageDeclaration_in_synpred2_NoDynamicLoadingANTLR124);
+        pushFollow(FOLLOW_packageDeclaration_in_synpred2_NoDynamicLoadingANTLR130);
         packageDeclaration();
 
         state._fsp--;
@@ -13947,10 +13994,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred12_NoDynamicLoadingANTLR
     public final void synpred12_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:347:10: ( classDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:347:10: classDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:376:10: ( classDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:376:10: classDeclaration
         {
-        pushFollow(FOLLOW_classDeclaration_in_synpred12_NoDynamicLoadingANTLR482);
+        pushFollow(FOLLOW_classDeclaration_in_synpred12_NoDynamicLoadingANTLR488);
         classDeclaration();
 
         state._fsp--;
@@ -13963,10 +14010,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred27_NoDynamicLoadingANTLR
     public final void synpred27_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:378:9: ( normalClassDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:378:9: normalClassDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:407:9: ( normalClassDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:407:9: normalClassDeclaration
         {
-        pushFollow(FOLLOW_normalClassDeclaration_in_synpred27_NoDynamicLoadingANTLR719);
+        pushFollow(FOLLOW_normalClassDeclaration_in_synpred27_NoDynamicLoadingANTLR725);
         normalClassDeclaration();
 
         state._fsp--;
@@ -13979,10 +14026,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred43_NoDynamicLoadingANTLR
     public final void synpred43_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:466:9: ( normalInterfaceDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:466:9: normalInterfaceDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:495:9: ( normalInterfaceDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:495:9: normalInterfaceDeclaration
         {
-        pushFollow(FOLLOW_normalInterfaceDeclaration_in_synpred43_NoDynamicLoadingANTLR1398);
+        pushFollow(FOLLOW_normalInterfaceDeclaration_in_synpred43_NoDynamicLoadingANTLR1404);
         normalInterfaceDeclaration();
 
         state._fsp--;
@@ -13995,10 +14042,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred52_NoDynamicLoadingANTLR
     public final void synpred52_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:508:10: ( fieldDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:508:10: fieldDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:537:10: ( fieldDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:537:10: fieldDeclaration
         {
-        pushFollow(FOLLOW_fieldDeclaration_in_synpred52_NoDynamicLoadingANTLR1728);
+        pushFollow(FOLLOW_fieldDeclaration_in_synpred52_NoDynamicLoadingANTLR1734);
         fieldDeclaration();
 
         state._fsp--;
@@ -14011,10 +14058,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred53_NoDynamicLoadingANTLR
     public final void synpred53_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:509:10: ( methodDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:509:10: methodDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:538:10: ( methodDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:538:10: methodDeclaration
         {
-        pushFollow(FOLLOW_methodDeclaration_in_synpred53_NoDynamicLoadingANTLR1739);
+        pushFollow(FOLLOW_methodDeclaration_in_synpred53_NoDynamicLoadingANTLR1745);
         methodDeclaration();
 
         state._fsp--;
@@ -14027,10 +14074,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred54_NoDynamicLoadingANTLR
     public final void synpred54_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:510:10: ( classDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:510:10: classDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:539:10: ( classDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:539:10: classDeclaration
         {
-        pushFollow(FOLLOW_classDeclaration_in_synpred54_NoDynamicLoadingANTLR1750);
+        pushFollow(FOLLOW_classDeclaration_in_synpred54_NoDynamicLoadingANTLR1756);
         classDeclaration();
 
         state._fsp--;
@@ -14043,10 +14090,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred57_NoDynamicLoadingANTLR
     public final void synpred57_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:526:10: ( explicitConstructorInvocation )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:526:10: explicitConstructorInvocation
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:555:10: ( explicitConstructorInvocation )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:555:10: explicitConstructorInvocation
         {
-        pushFollow(FOLLOW_explicitConstructorInvocation_in_synpred57_NoDynamicLoadingANTLR1887);
+        pushFollow(FOLLOW_explicitConstructorInvocation_in_synpred57_NoDynamicLoadingANTLR1893);
         explicitConstructorInvocation();
 
         state._fsp--;
@@ -14059,16 +14106,16 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred59_NoDynamicLoadingANTLR
     public final void synpred59_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:518:10: ( modifiers ( typeParameters )? IDENTIFIER formalParameters ( 'throws' qualifiedNameList )? '{' ( explicitConstructorInvocation )? ( blockStatement )* '}' )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:518:10: modifiers ( typeParameters )? IDENTIFIER formalParameters ( 'throws' qualifiedNameList )? '{' ( explicitConstructorInvocation )? ( blockStatement )* '}'
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:547:10: ( modifiers ( typeParameters )? IDENTIFIER formalParameters ( 'throws' qualifiedNameList )? '{' ( explicitConstructorInvocation )? ( blockStatement )* '}' )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:547:10: modifiers ( typeParameters )? IDENTIFIER formalParameters ( 'throws' qualifiedNameList )? '{' ( explicitConstructorInvocation )? ( blockStatement )* '}'
         {
-        pushFollow(FOLLOW_modifiers_in_synpred59_NoDynamicLoadingANTLR1799);
+        pushFollow(FOLLOW_modifiers_in_synpred59_NoDynamicLoadingANTLR1805);
         modifiers();
 
         state._fsp--;
         if (state.failed) return ;
 
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:519:9: ( typeParameters )?
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:548:9: ( typeParameters )?
         int alt169=2;
         int LA169_0 = input.LA(1);
 
@@ -14077,9 +14124,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
         }
         switch (alt169) {
             case 1 :
-                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:519:10: typeParameters
+                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:548:10: typeParameters
                 {
-                pushFollow(FOLLOW_typeParameters_in_synpred59_NoDynamicLoadingANTLR1810);
+                pushFollow(FOLLOW_typeParameters_in_synpred59_NoDynamicLoadingANTLR1816);
                 typeParameters();
 
                 state._fsp--;
@@ -14091,15 +14138,15 @@ public class NoDynamicLoadingANTLRParser extends Parser {
         }
 
 
-        match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_synpred59_NoDynamicLoadingANTLR1831); if (state.failed) return ;
+        match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_synpred59_NoDynamicLoadingANTLR1837); if (state.failed) return ;
 
-        pushFollow(FOLLOW_formalParameters_in_synpred59_NoDynamicLoadingANTLR1841);
+        pushFollow(FOLLOW_formalParameters_in_synpred59_NoDynamicLoadingANTLR1847);
         formalParameters();
 
         state._fsp--;
         if (state.failed) return ;
 
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:523:9: ( 'throws' qualifiedNameList )?
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:552:9: ( 'throws' qualifiedNameList )?
         int alt170=2;
         int LA170_0 = input.LA(1);
 
@@ -14108,11 +14155,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
         }
         switch (alt170) {
             case 1 :
-                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:523:10: 'throws' qualifiedNameList
+                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:552:10: 'throws' qualifiedNameList
                 {
-                match(input,THROWS,FOLLOW_THROWS_in_synpred59_NoDynamicLoadingANTLR1852); if (state.failed) return ;
+                match(input,THROWS,FOLLOW_THROWS_in_synpred59_NoDynamicLoadingANTLR1858); if (state.failed) return ;
 
-                pushFollow(FOLLOW_qualifiedNameList_in_synpred59_NoDynamicLoadingANTLR1854);
+                pushFollow(FOLLOW_qualifiedNameList_in_synpred59_NoDynamicLoadingANTLR1860);
                 qualifiedNameList();
 
                 state._fsp--;
@@ -14124,9 +14171,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
         }
 
 
-        match(input,LBRACE,FOLLOW_LBRACE_in_synpred59_NoDynamicLoadingANTLR1875); if (state.failed) return ;
+        match(input,LBRACE,FOLLOW_LBRACE_in_synpred59_NoDynamicLoadingANTLR1881); if (state.failed) return ;
 
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:526:9: ( explicitConstructorInvocation )?
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:555:9: ( explicitConstructorInvocation )?
         int alt171=2;
         switch ( input.LA(1) ) {
             case LT:
@@ -14225,9 +14272,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
         switch (alt171) {
             case 1 :
-                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:526:10: explicitConstructorInvocation
+                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:555:10: explicitConstructorInvocation
                 {
-                pushFollow(FOLLOW_explicitConstructorInvocation_in_synpred59_NoDynamicLoadingANTLR1887);
+                pushFollow(FOLLOW_explicitConstructorInvocation_in_synpred59_NoDynamicLoadingANTLR1893);
                 explicitConstructorInvocation();
 
                 state._fsp--;
@@ -14239,7 +14286,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
         }
 
 
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:528:9: ( blockStatement )*
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:557:9: ( blockStatement )*
         loop172:
         do {
             int alt172=2;
@@ -14252,9 +14299,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
             switch (alt172) {
         	case 1 :
-        	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:528:10: blockStatement
+        	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:557:10: blockStatement
         	    {
-        	    pushFollow(FOLLOW_blockStatement_in_synpred59_NoDynamicLoadingANTLR1909);
+        	    pushFollow(FOLLOW_blockStatement_in_synpred59_NoDynamicLoadingANTLR1915);
         	    blockStatement();
 
         	    state._fsp--;
@@ -14269,7 +14316,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
         } while (true);
 
 
-        match(input,RBRACE,FOLLOW_RBRACE_in_synpred59_NoDynamicLoadingANTLR1930); if (state.failed) return ;
+        match(input,RBRACE,FOLLOW_RBRACE_in_synpred59_NoDynamicLoadingANTLR1936); if (state.failed) return ;
 
         }
 
@@ -14278,10 +14325,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred68_NoDynamicLoadingANTLR
     public final void synpred68_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:572:9: ( interfaceFieldDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:572:9: interfaceFieldDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:601:9: ( interfaceFieldDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:601:9: interfaceFieldDeclaration
         {
-        pushFollow(FOLLOW_interfaceFieldDeclaration_in_synpred68_NoDynamicLoadingANTLR2305);
+        pushFollow(FOLLOW_interfaceFieldDeclaration_in_synpred68_NoDynamicLoadingANTLR2311);
         interfaceFieldDeclaration();
 
         state._fsp--;
@@ -14294,10 +14341,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred69_NoDynamicLoadingANTLR
     public final void synpred69_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:573:9: ( interfaceMethodDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:573:9: interfaceMethodDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:602:9: ( interfaceMethodDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:602:9: interfaceMethodDeclaration
         {
-        pushFollow(FOLLOW_interfaceMethodDeclaration_in_synpred69_NoDynamicLoadingANTLR2315);
+        pushFollow(FOLLOW_interfaceMethodDeclaration_in_synpred69_NoDynamicLoadingANTLR2321);
         interfaceMethodDeclaration();
 
         state._fsp--;
@@ -14310,10 +14357,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred70_NoDynamicLoadingANTLR
     public final void synpred70_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:574:9: ( interfaceDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:574:9: interfaceDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:603:9: ( interfaceDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:603:9: interfaceDeclaration
         {
-        pushFollow(FOLLOW_interfaceDeclaration_in_synpred70_NoDynamicLoadingANTLR2325);
+        pushFollow(FOLLOW_interfaceDeclaration_in_synpred70_NoDynamicLoadingANTLR2331);
         interfaceDeclaration();
 
         state._fsp--;
@@ -14326,10 +14373,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred71_NoDynamicLoadingANTLR
     public final void synpred71_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:575:9: ( classDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:575:9: classDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:604:9: ( classDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:604:9: classDeclaration
         {
-        pushFollow(FOLLOW_classDeclaration_in_synpred71_NoDynamicLoadingANTLR2335);
+        pushFollow(FOLLOW_classDeclaration_in_synpred71_NoDynamicLoadingANTLR2341);
         classDeclaration();
 
         state._fsp--;
@@ -14342,10 +14389,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred96_NoDynamicLoadingANTLR
     public final void synpred96_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:670:9: ( ellipsisParameterDecl )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:670:9: ellipsisParameterDecl
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:699:9: ( ellipsisParameterDecl )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:699:9: ellipsisParameterDecl
         {
-        pushFollow(FOLLOW_ellipsisParameterDecl_in_synpred96_NoDynamicLoadingANTLR3099);
+        pushFollow(FOLLOW_ellipsisParameterDecl_in_synpred96_NoDynamicLoadingANTLR3105);
         ellipsisParameterDecl();
 
         state._fsp--;
@@ -14358,16 +14405,16 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred98_NoDynamicLoadingANTLR
     public final void synpred98_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:671:9: ( normalParameterDecl ( ',' normalParameterDecl )* )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:671:9: normalParameterDecl ( ',' normalParameterDecl )*
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:700:9: ( normalParameterDecl ( ',' normalParameterDecl )* )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:700:9: normalParameterDecl ( ',' normalParameterDecl )*
         {
-        pushFollow(FOLLOW_normalParameterDecl_in_synpred98_NoDynamicLoadingANTLR3109);
+        pushFollow(FOLLOW_normalParameterDecl_in_synpred98_NoDynamicLoadingANTLR3115);
         normalParameterDecl();
 
         state._fsp--;
         if (state.failed) return ;
 
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:672:9: ( ',' normalParameterDecl )*
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:701:9: ( ',' normalParameterDecl )*
         loop175:
         do {
             int alt175=2;
@@ -14380,11 +14427,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
             switch (alt175) {
         	case 1 :
-        	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:672:10: ',' normalParameterDecl
+        	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:701:10: ',' normalParameterDecl
         	    {
-        	    match(input,COMMA,FOLLOW_COMMA_in_synpred98_NoDynamicLoadingANTLR3120); if (state.failed) return ;
+        	    match(input,COMMA,FOLLOW_COMMA_in_synpred98_NoDynamicLoadingANTLR3126); if (state.failed) return ;
 
-        	    pushFollow(FOLLOW_normalParameterDecl_in_synpred98_NoDynamicLoadingANTLR3122);
+        	    pushFollow(FOLLOW_normalParameterDecl_in_synpred98_NoDynamicLoadingANTLR3128);
         	    normalParameterDecl();
 
         	    state._fsp--;
@@ -14406,16 +14453,16 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred99_NoDynamicLoadingANTLR
     public final void synpred99_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:674:10: ( normalParameterDecl ',' )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:674:10: normalParameterDecl ','
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:703:10: ( normalParameterDecl ',' )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:703:10: normalParameterDecl ','
         {
-        pushFollow(FOLLOW_normalParameterDecl_in_synpred99_NoDynamicLoadingANTLR3144);
+        pushFollow(FOLLOW_normalParameterDecl_in_synpred99_NoDynamicLoadingANTLR3150);
         normalParameterDecl();
 
         state._fsp--;
         if (state.failed) return ;
 
-        match(input,COMMA,FOLLOW_COMMA_in_synpred99_NoDynamicLoadingANTLR3154); if (state.failed) return ;
+        match(input,COMMA,FOLLOW_COMMA_in_synpred99_NoDynamicLoadingANTLR3160); if (state.failed) return ;
 
         }
 
@@ -14424,10 +14471,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred103_NoDynamicLoadingANTLR
     public final void synpred103_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:694:9: ( ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';' )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:694:9: ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';'
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:723:9: ( ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';' )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:723:9: ( nonWildcardTypeArguments )? ( 'this' | 'super' ) arguments ';'
         {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:694:9: ( nonWildcardTypeArguments )?
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:723:9: ( nonWildcardTypeArguments )?
         int alt176=2;
         int LA176_0 = input.LA(1);
 
@@ -14436,9 +14483,9 @@ public class NoDynamicLoadingANTLRParser extends Parser {
         }
         switch (alt176) {
             case 1 :
-                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:694:10: nonWildcardTypeArguments
+                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:723:10: nonWildcardTypeArguments
                 {
-                pushFollow(FOLLOW_nonWildcardTypeArguments_in_synpred103_NoDynamicLoadingANTLR3289);
+                pushFollow(FOLLOW_nonWildcardTypeArguments_in_synpred103_NoDynamicLoadingANTLR3295);
                 nonWildcardTypeArguments();
 
                 state._fsp--;
@@ -14462,13 +14509,13 @@ public class NoDynamicLoadingANTLRParser extends Parser {
         }
 
 
-        pushFollow(FOLLOW_arguments_in_synpred103_NoDynamicLoadingANTLR3347);
+        pushFollow(FOLLOW_arguments_in_synpred103_NoDynamicLoadingANTLR3353);
         arguments();
 
         state._fsp--;
         if (state.failed) return ;
 
-        match(input,SEMI,FOLLOW_SEMI_in_synpred103_NoDynamicLoadingANTLR3349); if (state.failed) return ;
+        match(input,SEMI,FOLLOW_SEMI_in_synpred103_NoDynamicLoadingANTLR3355); if (state.failed) return ;
 
         }
 
@@ -14477,10 +14524,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred117_NoDynamicLoadingANTLR
     public final void synpred117_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:781:9: ( annotationMethodDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:781:9: annotationMethodDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:810:9: ( annotationMethodDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:810:9: annotationMethodDeclaration
         {
-        pushFollow(FOLLOW_annotationMethodDeclaration_in_synpred117_NoDynamicLoadingANTLR3948);
+        pushFollow(FOLLOW_annotationMethodDeclaration_in_synpred117_NoDynamicLoadingANTLR3954);
         annotationMethodDeclaration();
 
         state._fsp--;
@@ -14493,10 +14540,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred118_NoDynamicLoadingANTLR
     public final void synpred118_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:782:9: ( interfaceFieldDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:782:9: interfaceFieldDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:811:9: ( interfaceFieldDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:811:9: interfaceFieldDeclaration
         {
-        pushFollow(FOLLOW_interfaceFieldDeclaration_in_synpred118_NoDynamicLoadingANTLR3958);
+        pushFollow(FOLLOW_interfaceFieldDeclaration_in_synpred118_NoDynamicLoadingANTLR3964);
         interfaceFieldDeclaration();
 
         state._fsp--;
@@ -14509,10 +14556,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred119_NoDynamicLoadingANTLR
     public final void synpred119_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:783:9: ( normalClassDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:783:9: normalClassDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:812:9: ( normalClassDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:812:9: normalClassDeclaration
         {
-        pushFollow(FOLLOW_normalClassDeclaration_in_synpred119_NoDynamicLoadingANTLR3968);
+        pushFollow(FOLLOW_normalClassDeclaration_in_synpred119_NoDynamicLoadingANTLR3974);
         normalClassDeclaration();
 
         state._fsp--;
@@ -14525,10 +14572,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred120_NoDynamicLoadingANTLR
     public final void synpred120_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:784:9: ( normalInterfaceDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:784:9: normalInterfaceDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:813:9: ( normalInterfaceDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:813:9: normalInterfaceDeclaration
         {
-        pushFollow(FOLLOW_normalInterfaceDeclaration_in_synpred120_NoDynamicLoadingANTLR3978);
+        pushFollow(FOLLOW_normalInterfaceDeclaration_in_synpred120_NoDynamicLoadingANTLR3984);
         normalInterfaceDeclaration();
 
         state._fsp--;
@@ -14541,10 +14588,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred121_NoDynamicLoadingANTLR
     public final void synpred121_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:785:9: ( enumDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:785:9: enumDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:814:9: ( enumDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:814:9: enumDeclaration
         {
-        pushFollow(FOLLOW_enumDeclaration_in_synpred121_NoDynamicLoadingANTLR3988);
+        pushFollow(FOLLOW_enumDeclaration_in_synpred121_NoDynamicLoadingANTLR3994);
         enumDeclaration();
 
         state._fsp--;
@@ -14557,10 +14604,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred122_NoDynamicLoadingANTLR
     public final void synpred122_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:786:9: ( annotationTypeDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:786:9: annotationTypeDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:815:9: ( annotationTypeDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:815:9: annotationTypeDeclaration
         {
-        pushFollow(FOLLOW_annotationTypeDeclaration_in_synpred122_NoDynamicLoadingANTLR3998);
+        pushFollow(FOLLOW_annotationTypeDeclaration_in_synpred122_NoDynamicLoadingANTLR4004);
         annotationTypeDeclaration();
 
         state._fsp--;
@@ -14573,10 +14620,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred125_NoDynamicLoadingANTLR
     public final void synpred125_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:829:9: ( localVariableDeclarationStatement )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:829:9: localVariableDeclarationStatement
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:858:9: ( localVariableDeclarationStatement )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:858:9: localVariableDeclarationStatement
         {
-        pushFollow(FOLLOW_localVariableDeclarationStatement_in_synpred125_NoDynamicLoadingANTLR4156);
+        pushFollow(FOLLOW_localVariableDeclarationStatement_in_synpred125_NoDynamicLoadingANTLR4162);
         localVariableDeclarationStatement();
 
         state._fsp--;
@@ -14589,10 +14636,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred126_NoDynamicLoadingANTLR
     public final void synpred126_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:830:9: ( classOrInterfaceDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:830:9: classOrInterfaceDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:859:9: ( classOrInterfaceDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:859:9: classOrInterfaceDeclaration
         {
-        pushFollow(FOLLOW_classOrInterfaceDeclaration_in_synpred126_NoDynamicLoadingANTLR4166);
+        pushFollow(FOLLOW_classOrInterfaceDeclaration_in_synpred126_NoDynamicLoadingANTLR4172);
         classOrInterfaceDeclaration();
 
         state._fsp--;
@@ -14605,24 +14652,24 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred130_NoDynamicLoadingANTLR
     public final void synpred130_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:850:9: ( ( 'assert' ) expression ( ':' expression )? ';' )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:850:9: ( 'assert' ) expression ( ':' expression )? ';'
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:879:9: ( ( 'assert' ) expression ( ':' expression )? ';' )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:879:9: ( 'assert' ) expression ( ':' expression )? ';'
         {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:850:9: ( 'assert' )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:850:10: 'assert'
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:879:9: ( 'assert' )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:879:10: 'assert'
         {
-        match(input,ASSERT,FOLLOW_ASSERT_in_synpred130_NoDynamicLoadingANTLR4307); if (state.failed) return ;
+        match(input,ASSERT,FOLLOW_ASSERT_in_synpred130_NoDynamicLoadingANTLR4313); if (state.failed) return ;
 
         }
 
 
-        pushFollow(FOLLOW_expression_in_synpred130_NoDynamicLoadingANTLR4327);
+        pushFollow(FOLLOW_expression_in_synpred130_NoDynamicLoadingANTLR4333);
         expression();
 
         state._fsp--;
         if (state.failed) return ;
 
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:852:20: ( ':' expression )?
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:881:20: ( ':' expression )?
         int alt179=2;
         int LA179_0 = input.LA(1);
 
@@ -14631,11 +14678,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
         }
         switch (alt179) {
             case 1 :
-                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:852:21: ':' expression
+                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:881:21: ':' expression
                 {
-                match(input,COLON,FOLLOW_COLON_in_synpred130_NoDynamicLoadingANTLR4330); if (state.failed) return ;
+                match(input,COLON,FOLLOW_COLON_in_synpred130_NoDynamicLoadingANTLR4336); if (state.failed) return ;
 
-                pushFollow(FOLLOW_expression_in_synpred130_NoDynamicLoadingANTLR4332);
+                pushFollow(FOLLOW_expression_in_synpred130_NoDynamicLoadingANTLR4338);
                 expression();
 
                 state._fsp--;
@@ -14647,7 +14694,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
         }
 
 
-        match(input,SEMI,FOLLOW_SEMI_in_synpred130_NoDynamicLoadingANTLR4336); if (state.failed) return ;
+        match(input,SEMI,FOLLOW_SEMI_in_synpred130_NoDynamicLoadingANTLR4342); if (state.failed) return ;
 
         }
 
@@ -14656,18 +14703,18 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred132_NoDynamicLoadingANTLR
     public final void synpred132_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:853:9: ( 'assert' expression ( ':' expression )? ';' )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:853:9: 'assert' expression ( ':' expression )? ';'
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:882:9: ( 'assert' expression ( ':' expression )? ';' )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:882:9: 'assert' expression ( ':' expression )? ';'
         {
-        match(input,ASSERT,FOLLOW_ASSERT_in_synpred132_NoDynamicLoadingANTLR4346); if (state.failed) return ;
+        match(input,ASSERT,FOLLOW_ASSERT_in_synpred132_NoDynamicLoadingANTLR4352); if (state.failed) return ;
 
-        pushFollow(FOLLOW_expression_in_synpred132_NoDynamicLoadingANTLR4349);
+        pushFollow(FOLLOW_expression_in_synpred132_NoDynamicLoadingANTLR4355);
         expression();
 
         state._fsp--;
         if (state.failed) return ;
 
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:853:30: ( ':' expression )?
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:882:30: ( ':' expression )?
         int alt180=2;
         int LA180_0 = input.LA(1);
 
@@ -14676,11 +14723,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
         }
         switch (alt180) {
             case 1 :
-                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:853:31: ':' expression
+                // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:882:31: ':' expression
                 {
-                match(input,COLON,FOLLOW_COLON_in_synpred132_NoDynamicLoadingANTLR4352); if (state.failed) return ;
+                match(input,COLON,FOLLOW_COLON_in_synpred132_NoDynamicLoadingANTLR4358); if (state.failed) return ;
 
-                pushFollow(FOLLOW_expression_in_synpred132_NoDynamicLoadingANTLR4354);
+                pushFollow(FOLLOW_expression_in_synpred132_NoDynamicLoadingANTLR4360);
                 expression();
 
                 state._fsp--;
@@ -14692,7 +14739,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
         }
 
 
-        match(input,SEMI,FOLLOW_SEMI_in_synpred132_NoDynamicLoadingANTLR4358); if (state.failed) return ;
+        match(input,SEMI,FOLLOW_SEMI_in_synpred132_NoDynamicLoadingANTLR4364); if (state.failed) return ;
 
         }
 
@@ -14701,12 +14748,12 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred133_NoDynamicLoadingANTLR
     public final void synpred133_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:854:39: ( 'else' statement )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:854:39: 'else' statement
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:883:39: ( 'else' statement )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:883:39: 'else' statement
         {
-        match(input,ELSE,FOLLOW_ELSE_in_synpred133_NoDynamicLoadingANTLR4387); if (state.failed) return ;
+        match(input,ELSE,FOLLOW_ELSE_in_synpred133_NoDynamicLoadingANTLR4393); if (state.failed) return ;
 
-        pushFollow(FOLLOW_statement_in_synpred133_NoDynamicLoadingANTLR4389);
+        pushFollow(FOLLOW_statement_in_synpred133_NoDynamicLoadingANTLR4395);
         statement();
 
         state._fsp--;
@@ -14719,16 +14766,16 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred148_NoDynamicLoadingANTLR
     public final void synpred148_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:869:9: ( expression ';' )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:869:9: expression ';'
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:898:9: ( expression ';' )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:898:9: expression ';'
         {
-        pushFollow(FOLLOW_expression_in_synpred148_NoDynamicLoadingANTLR4611);
+        pushFollow(FOLLOW_expression_in_synpred148_NoDynamicLoadingANTLR4617);
         expression();
 
         state._fsp--;
         if (state.failed) return ;
 
-        match(input,SEMI,FOLLOW_SEMI_in_synpred148_NoDynamicLoadingANTLR4614); if (state.failed) return ;
+        match(input,SEMI,FOLLOW_SEMI_in_synpred148_NoDynamicLoadingANTLR4620); if (state.failed) return ;
 
         }
 
@@ -14737,14 +14784,14 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred149_NoDynamicLoadingANTLR
     public final void synpred149_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:870:9: ( IDENTIFIER ':' statement )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:870:9: IDENTIFIER ':' statement
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:899:9: ( IDENTIFIER ':' statement )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:899:9: IDENTIFIER ':' statement
         {
-        match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_synpred149_NoDynamicLoadingANTLR4629); if (state.failed) return ;
+        match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_synpred149_NoDynamicLoadingANTLR4635); if (state.failed) return ;
 
-        match(input,COLON,FOLLOW_COLON_in_synpred149_NoDynamicLoadingANTLR4631); if (state.failed) return ;
+        match(input,COLON,FOLLOW_COLON_in_synpred149_NoDynamicLoadingANTLR4637); if (state.failed) return ;
 
-        pushFollow(FOLLOW_statement_in_synpred149_NoDynamicLoadingANTLR4633);
+        pushFollow(FOLLOW_statement_in_synpred149_NoDynamicLoadingANTLR4639);
         statement();
 
         state._fsp--;
@@ -14757,18 +14804,18 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred153_NoDynamicLoadingANTLR
     public final void synpred153_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:894:13: ( catches 'finally' block )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:894:13: catches 'finally' block
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:923:13: ( catches 'finally' block )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:923:13: catches 'finally' block
         {
-        pushFollow(FOLLOW_catches_in_synpred153_NoDynamicLoadingANTLR4789);
+        pushFollow(FOLLOW_catches_in_synpred153_NoDynamicLoadingANTLR4795);
         catches();
 
         state._fsp--;
         if (state.failed) return ;
 
-        match(input,FINALLY,FOLLOW_FINALLY_in_synpred153_NoDynamicLoadingANTLR4791); if (state.failed) return ;
+        match(input,FINALLY,FOLLOW_FINALLY_in_synpred153_NoDynamicLoadingANTLR4797); if (state.failed) return ;
 
-        pushFollow(FOLLOW_block_in_synpred153_NoDynamicLoadingANTLR4793);
+        pushFollow(FOLLOW_block_in_synpred153_NoDynamicLoadingANTLR4799);
         block();
 
         state._fsp--;
@@ -14781,10 +14828,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred154_NoDynamicLoadingANTLR
     public final void synpred154_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:895:13: ( catches )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:895:13: catches
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:924:13: ( catches )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:924:13: catches
         {
-        pushFollow(FOLLOW_catches_in_synpred154_NoDynamicLoadingANTLR4807);
+        pushFollow(FOLLOW_catches_in_synpred154_NoDynamicLoadingANTLR4813);
         catches();
 
         state._fsp--;
@@ -14797,38 +14844,38 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred157_NoDynamicLoadingANTLR
     public final void synpred157_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:920:9: ( 'for' '(' variableModifiers type IDENTIFIER ':' expression ')' statement )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:920:9: 'for' '(' variableModifiers type IDENTIFIER ':' expression ')' statement
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:949:9: ( 'for' '(' variableModifiers type IDENTIFIER ':' expression ')' statement )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:949:9: 'for' '(' variableModifiers type IDENTIFIER ':' expression ')' statement
         {
-        match(input,FOR,FOLLOW_FOR_in_synpred157_NoDynamicLoadingANTLR4999); if (state.failed) return ;
+        match(input,FOR,FOLLOW_FOR_in_synpred157_NoDynamicLoadingANTLR5005); if (state.failed) return ;
 
-        match(input,LPAREN,FOLLOW_LPAREN_in_synpred157_NoDynamicLoadingANTLR5001); if (state.failed) return ;
+        match(input,LPAREN,FOLLOW_LPAREN_in_synpred157_NoDynamicLoadingANTLR5007); if (state.failed) return ;
 
-        pushFollow(FOLLOW_variableModifiers_in_synpred157_NoDynamicLoadingANTLR5003);
+        pushFollow(FOLLOW_variableModifiers_in_synpred157_NoDynamicLoadingANTLR5009);
         variableModifiers();
 
         state._fsp--;
         if (state.failed) return ;
 
-        pushFollow(FOLLOW_type_in_synpred157_NoDynamicLoadingANTLR5005);
+        pushFollow(FOLLOW_type_in_synpred157_NoDynamicLoadingANTLR5011);
         type();
 
         state._fsp--;
         if (state.failed) return ;
 
-        match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_synpred157_NoDynamicLoadingANTLR5007); if (state.failed) return ;
+        match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_synpred157_NoDynamicLoadingANTLR5013); if (state.failed) return ;
 
-        match(input,COLON,FOLLOW_COLON_in_synpred157_NoDynamicLoadingANTLR5009); if (state.failed) return ;
+        match(input,COLON,FOLLOW_COLON_in_synpred157_NoDynamicLoadingANTLR5015); if (state.failed) return ;
 
-        pushFollow(FOLLOW_expression_in_synpred157_NoDynamicLoadingANTLR5020);
+        pushFollow(FOLLOW_expression_in_synpred157_NoDynamicLoadingANTLR5026);
         expression();
 
         state._fsp--;
         if (state.failed) return ;
 
-        match(input,RPAREN,FOLLOW_RPAREN_in_synpred157_NoDynamicLoadingANTLR5022); if (state.failed) return ;
+        match(input,RPAREN,FOLLOW_RPAREN_in_synpred157_NoDynamicLoadingANTLR5028); if (state.failed) return ;
 
-        pushFollow(FOLLOW_statement_in_synpred157_NoDynamicLoadingANTLR5024);
+        pushFollow(FOLLOW_statement_in_synpred157_NoDynamicLoadingANTLR5030);
         statement();
 
         state._fsp--;
@@ -14841,10 +14888,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred161_NoDynamicLoadingANTLR
     public final void synpred161_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:934:9: ( localVariableDeclaration )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:934:9: localVariableDeclaration
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:963:9: ( localVariableDeclaration )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:963:9: localVariableDeclaration
         {
-        pushFollow(FOLLOW_localVariableDeclaration_in_synpred161_NoDynamicLoadingANTLR5203);
+        pushFollow(FOLLOW_localVariableDeclaration_in_synpred161_NoDynamicLoadingANTLR5209);
         localVariableDeclaration();
 
         state._fsp--;
@@ -14857,10 +14904,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred202_NoDynamicLoadingANTLR
     public final void synpred202_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1088:9: ( castExpression )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1088:9: castExpression
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1117:9: ( castExpression )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1117:9: castExpression
         {
-        pushFollow(FOLLOW_castExpression_in_synpred202_NoDynamicLoadingANTLR6448);
+        pushFollow(FOLLOW_castExpression_in_synpred202_NoDynamicLoadingANTLR6454);
         castExpression();
 
         state._fsp--;
@@ -14873,20 +14920,20 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred206_NoDynamicLoadingANTLR
     public final void synpred206_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1098:9: ( '(' primitiveType ')' unaryExpression )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1098:9: '(' primitiveType ')' unaryExpression
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1127:9: ( '(' primitiveType ')' unaryExpression )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1127:9: '(' primitiveType ')' unaryExpression
         {
-        match(input,LPAREN,FOLLOW_LPAREN_in_synpred206_NoDynamicLoadingANTLR6539); if (state.failed) return ;
+        match(input,LPAREN,FOLLOW_LPAREN_in_synpred206_NoDynamicLoadingANTLR6545); if (state.failed) return ;
 
-        pushFollow(FOLLOW_primitiveType_in_synpred206_NoDynamicLoadingANTLR6541);
+        pushFollow(FOLLOW_primitiveType_in_synpred206_NoDynamicLoadingANTLR6547);
         primitiveType();
 
         state._fsp--;
         if (state.failed) return ;
 
-        match(input,RPAREN,FOLLOW_RPAREN_in_synpred206_NoDynamicLoadingANTLR6543); if (state.failed) return ;
+        match(input,RPAREN,FOLLOW_RPAREN_in_synpred206_NoDynamicLoadingANTLR6549); if (state.failed) return ;
 
-        pushFollow(FOLLOW_unaryExpression_in_synpred206_NoDynamicLoadingANTLR6545);
+        pushFollow(FOLLOW_unaryExpression_in_synpred206_NoDynamicLoadingANTLR6551);
         unaryExpression();
 
         state._fsp--;
@@ -14899,12 +14946,18 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred208_NoDynamicLoadingANTLR
     public final void synpred208_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1108:10: ( '.' IDENTIFIER )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1108:10: '.' IDENTIFIER
-        {
-        match(input,DOT,FOLLOW_DOT_in_synpred208_NoDynamicLoadingANTLR6616); if (state.failed) return ;
+        Token ids=null;
+        List list_ids=null;
 
-        match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_synpred208_NoDynamicLoadingANTLR6618); if (state.failed) return ;
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1137:10: ( '.' ids+= IDENTIFIER )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1137:10: '.' ids+= IDENTIFIER
+        {
+        match(input,DOT,FOLLOW_DOT_in_synpred208_NoDynamicLoadingANTLR6626); if (state.failed) return ;
+
+        ids=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_synpred208_NoDynamicLoadingANTLR6632); if (state.failed) return ;
+        if (list_ids==null) list_ids=new ArrayList();
+        list_ids.add(ids);
+
 
         }
 
@@ -14913,10 +14966,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred209_NoDynamicLoadingANTLR
     public final void synpred209_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1110:10: ( identifierSuffix )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1110:10: identifierSuffix
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1139:10: ( identifierSuffix )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1139:10: identifierSuffix
         {
-        pushFollow(FOLLOW_identifierSuffix_in_synpred209_NoDynamicLoadingANTLR6640);
+        pushFollow(FOLLOW_identifierSuffix_in_synpred209_NoDynamicLoadingANTLR6654);
         identifierSuffix();
 
         state._fsp--;
@@ -14929,12 +14982,18 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred211_NoDynamicLoadingANTLR
     public final void synpred211_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1113:10: ( '.' IDENTIFIER )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1113:10: '.' IDENTIFIER
-        {
-        match(input,DOT,FOLLOW_DOT_in_synpred211_NoDynamicLoadingANTLR6672); if (state.failed) return ;
+        Token ids=null;
+        List list_ids=null;
 
-        match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_synpred211_NoDynamicLoadingANTLR6674); if (state.failed) return ;
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1142:10: ( '.' ids+= IDENTIFIER )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1142:10: '.' ids+= IDENTIFIER
+        {
+        match(input,DOT,FOLLOW_DOT_in_synpred211_NoDynamicLoadingANTLR6692); if (state.failed) return ;
+
+        ids=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_synpred211_NoDynamicLoadingANTLR6698); if (state.failed) return ;
+        if (list_ids==null) list_ids=new ArrayList();
+        list_ids.add(ids);
+
 
         }
 
@@ -14943,10 +15002,10 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred212_NoDynamicLoadingANTLR
     public final void synpred212_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1115:10: ( identifierSuffix )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1115:10: identifierSuffix
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1144:10: ( identifierSuffix )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1144:10: identifierSuffix
         {
-        pushFollow(FOLLOW_identifierSuffix_in_synpred212_NoDynamicLoadingANTLR6696);
+        pushFollow(FOLLOW_identifierSuffix_in_synpred212_NoDynamicLoadingANTLR6720);
         identifierSuffix();
 
         state._fsp--;
@@ -14959,18 +15018,18 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred224_NoDynamicLoadingANTLR
     public final void synpred224_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1143:10: ( '[' expression ']' )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1143:10: '[' expression ']'
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1172:10: ( '[' expression ']' )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1172:10: '[' expression ']'
         {
-        match(input,LBRACKET,FOLLOW_LBRACKET_in_synpred224_NoDynamicLoadingANTLR6947); if (state.failed) return ;
+        match(input,LBRACKET,FOLLOW_LBRACKET_in_synpred224_NoDynamicLoadingANTLR6972); if (state.failed) return ;
 
-        pushFollow(FOLLOW_expression_in_synpred224_NoDynamicLoadingANTLR6949);
+        pushFollow(FOLLOW_expression_in_synpred224_NoDynamicLoadingANTLR6974);
         expression();
 
         state._fsp--;
         if (state.failed) return ;
 
-        match(input,RBRACKET,FOLLOW_RBRACKET_in_synpred224_NoDynamicLoadingANTLR6951); if (state.failed) return ;
+        match(input,RBRACKET,FOLLOW_RBRACKET_in_synpred224_NoDynamicLoadingANTLR6976); if (state.failed) return ;
 
         }
 
@@ -14979,24 +15038,24 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred236_NoDynamicLoadingANTLR
     public final void synpred236_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1166:9: ( 'new' nonWildcardTypeArguments classOrInterfaceType classCreatorRest )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1166:9: 'new' nonWildcardTypeArguments classOrInterfaceType classCreatorRest
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1195:9: ( 'new' nonWildcardTypeArguments classOrInterfaceType classCreatorRest )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1195:9: 'new' nonWildcardTypeArguments classOrInterfaceType classCreatorRest
         {
-        match(input,NEW,FOLLOW_NEW_in_synpred236_NoDynamicLoadingANTLR7160); if (state.failed) return ;
+        match(input,NEW,FOLLOW_NEW_in_synpred236_NoDynamicLoadingANTLR7185); if (state.failed) return ;
 
-        pushFollow(FOLLOW_nonWildcardTypeArguments_in_synpred236_NoDynamicLoadingANTLR7162);
+        pushFollow(FOLLOW_nonWildcardTypeArguments_in_synpred236_NoDynamicLoadingANTLR7187);
         nonWildcardTypeArguments();
 
         state._fsp--;
         if (state.failed) return ;
 
-        pushFollow(FOLLOW_classOrInterfaceType_in_synpred236_NoDynamicLoadingANTLR7164);
+        pushFollow(FOLLOW_classOrInterfaceType_in_synpred236_NoDynamicLoadingANTLR7189);
         classOrInterfaceType();
 
         state._fsp--;
         if (state.failed) return ;
 
-        pushFollow(FOLLOW_classCreatorRest_in_synpred236_NoDynamicLoadingANTLR7166);
+        pushFollow(FOLLOW_classCreatorRest_in_synpred236_NoDynamicLoadingANTLR7191);
         classCreatorRest();
 
         state._fsp--;
@@ -15009,18 +15068,18 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred237_NoDynamicLoadingANTLR
     public final void synpred237_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1167:9: ( 'new' classOrInterfaceType classCreatorRest )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1167:9: 'new' classOrInterfaceType classCreatorRest
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1196:9: ( 'new' classOrInterfaceType classCreatorRest )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1196:9: 'new' classOrInterfaceType classCreatorRest
         {
-        match(input,NEW,FOLLOW_NEW_in_synpred237_NoDynamicLoadingANTLR7176); if (state.failed) return ;
+        match(input,NEW,FOLLOW_NEW_in_synpred237_NoDynamicLoadingANTLR7201); if (state.failed) return ;
 
-        pushFollow(FOLLOW_classOrInterfaceType_in_synpred237_NoDynamicLoadingANTLR7178);
+        pushFollow(FOLLOW_classOrInterfaceType_in_synpred237_NoDynamicLoadingANTLR7203);
         classOrInterfaceType();
 
         state._fsp--;
         if (state.failed) return ;
 
-        pushFollow(FOLLOW_classCreatorRest_in_synpred237_NoDynamicLoadingANTLR7180);
+        pushFollow(FOLLOW_classCreatorRest_in_synpred237_NoDynamicLoadingANTLR7205);
         classCreatorRest();
 
         state._fsp--;
@@ -15033,22 +15092,22 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred239_NoDynamicLoadingANTLR
     public final void synpred239_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1172:9: ( 'new' createdName '[' ']' ( '[' ']' )* arrayInitializer )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1172:9: 'new' createdName '[' ']' ( '[' ']' )* arrayInitializer
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1201:9: ( 'new' createdName '[' ']' ( '[' ']' )* arrayInitializer )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1201:9: 'new' createdName '[' ']' ( '[' ']' )* arrayInitializer
         {
-        match(input,NEW,FOLLOW_NEW_in_synpred239_NoDynamicLoadingANTLR7210); if (state.failed) return ;
+        match(input,NEW,FOLLOW_NEW_in_synpred239_NoDynamicLoadingANTLR7235); if (state.failed) return ;
 
-        pushFollow(FOLLOW_createdName_in_synpred239_NoDynamicLoadingANTLR7212);
+        pushFollow(FOLLOW_createdName_in_synpred239_NoDynamicLoadingANTLR7237);
         createdName();
 
         state._fsp--;
         if (state.failed) return ;
 
-        match(input,LBRACKET,FOLLOW_LBRACKET_in_synpred239_NoDynamicLoadingANTLR7222); if (state.failed) return ;
+        match(input,LBRACKET,FOLLOW_LBRACKET_in_synpred239_NoDynamicLoadingANTLR7247); if (state.failed) return ;
 
-        match(input,RBRACKET,FOLLOW_RBRACKET_in_synpred239_NoDynamicLoadingANTLR7224); if (state.failed) return ;
+        match(input,RBRACKET,FOLLOW_RBRACKET_in_synpred239_NoDynamicLoadingANTLR7249); if (state.failed) return ;
 
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1174:9: ( '[' ']' )*
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1203:9: ( '[' ']' )*
         loop193:
         do {
             int alt193=2;
@@ -15061,11 +15120,11 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
             switch (alt193) {
         	case 1 :
-        	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1174:10: '[' ']'
+        	    // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1203:10: '[' ']'
         	    {
-        	    match(input,LBRACKET,FOLLOW_LBRACKET_in_synpred239_NoDynamicLoadingANTLR7235); if (state.failed) return ;
+        	    match(input,LBRACKET,FOLLOW_LBRACKET_in_synpred239_NoDynamicLoadingANTLR7260); if (state.failed) return ;
 
-        	    match(input,RBRACKET,FOLLOW_RBRACKET_in_synpred239_NoDynamicLoadingANTLR7237); if (state.failed) return ;
+        	    match(input,RBRACKET,FOLLOW_RBRACKET_in_synpred239_NoDynamicLoadingANTLR7262); if (state.failed) return ;
 
         	    }
         	    break;
@@ -15076,7 +15135,7 @@ public class NoDynamicLoadingANTLRParser extends Parser {
         } while (true);
 
 
-        pushFollow(FOLLOW_arrayInitializer_in_synpred239_NoDynamicLoadingANTLR7258);
+        pushFollow(FOLLOW_arrayInitializer_in_synpred239_NoDynamicLoadingANTLR7283);
         arrayInitializer();
 
         state._fsp--;
@@ -15089,18 +15148,18 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
     // $ANTLR start synpred240_NoDynamicLoadingANTLR
     public final void synpred240_NoDynamicLoadingANTLR_fragment() throws RecognitionException {
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1181:13: ( '[' expression ']' )
-        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1181:13: '[' expression ']'
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1210:13: ( '[' expression ']' )
+        // /Users/apple/Documents/workspace_research/RJava_Prototype/antlr/org/rjava/restriction/rules/check/NoDynamicLoadingANTLR.g:1210:13: '[' expression ']'
         {
-        match(input,LBRACKET,FOLLOW_LBRACKET_in_synpred240_NoDynamicLoadingANTLR7307); if (state.failed) return ;
+        match(input,LBRACKET,FOLLOW_LBRACKET_in_synpred240_NoDynamicLoadingANTLR7332); if (state.failed) return ;
 
-        pushFollow(FOLLOW_expression_in_synpred240_NoDynamicLoadingANTLR7309);
+        pushFollow(FOLLOW_expression_in_synpred240_NoDynamicLoadingANTLR7334);
         expression();
 
         state._fsp--;
         if (state.failed) return ;
 
-        match(input,RBRACKET,FOLLOW_RBRACKET_in_synpred240_NoDynamicLoadingANTLR7323); if (state.failed) return ;
+        match(input,RBRACKET,FOLLOW_RBRACKET_in_synpred240_NoDynamicLoadingANTLR7348); if (state.failed) return ;
 
         }
 
@@ -15743,733 +15802,733 @@ public class NoDynamicLoadingANTLRParser extends Parser {
 
  
 
-    public static final BitSet FOLLOW_annotations_in_compilationUnit95 = new BitSet(new long[]{0x0000000000000000L,0x0000000000004000L});
-    public static final BitSet FOLLOW_packageDeclaration_in_compilationUnit124 = new BitSet(new long[]{0x1200102000800012L,0x0011040C10700600L});
-    public static final BitSet FOLLOW_importDeclaration_in_compilationUnit146 = new BitSet(new long[]{0x1200102000800012L,0x0011040C10700600L});
-    public static final BitSet FOLLOW_typeDeclaration_in_compilationUnit168 = new BitSet(new long[]{0x1000102000800012L,0x0011040C10700600L});
-    public static final BitSet FOLLOW_PACKAGE_in_packageDeclaration199 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_qualifiedName_in_packageDeclaration201 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_packageDeclaration211 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IMPORT_in_importDeclaration232 = new BitSet(new long[]{0x0040000000000000L,0x0000000400000000L});
-    public static final BitSet FOLLOW_STATIC_in_importDeclaration244 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_importDeclaration265 = new BitSet(new long[]{0x0000000080000000L});
-    public static final BitSet FOLLOW_DOT_in_importDeclaration267 = new BitSet(new long[]{0x0000000000000000L,0x0000000100000000L});
-    public static final BitSet FOLLOW_STAR_in_importDeclaration269 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_importDeclaration279 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IMPORT_in_importDeclaration296 = new BitSet(new long[]{0x0040000000000000L,0x0000000400000000L});
-    public static final BitSet FOLLOW_STATIC_in_importDeclaration308 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_importDeclaration329 = new BitSet(new long[]{0x0000000080000000L});
-    public static final BitSet FOLLOW_DOT_in_importDeclaration340 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_importDeclaration342 = new BitSet(new long[]{0x0000000080000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_DOT_in_importDeclaration364 = new BitSet(new long[]{0x0000000000000000L,0x0000000100000000L});
-    public static final BitSet FOLLOW_STAR_in_importDeclaration366 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_importDeclaration387 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_qualifiedImportName407 = new BitSet(new long[]{0x0000000080000002L});
-    public static final BitSet FOLLOW_DOT_in_qualifiedImportName418 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_qualifiedImportName420 = new BitSet(new long[]{0x0000000080000002L});
-    public static final BitSet FOLLOW_classOrInterfaceDeclaration_in_typeDeclaration451 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SEMI_in_typeDeclaration461 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classDeclaration_in_classOrInterfaceDeclaration482 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceDeclaration_in_classOrInterfaceDeclaration492 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_annotation_in_modifiers527 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
-    public static final BitSet FOLLOW_PUBLIC_in_modifiers537 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
-    public static final BitSet FOLLOW_PROTECTED_in_modifiers547 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
-    public static final BitSet FOLLOW_PRIVATE_in_modifiers557 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
-    public static final BitSet FOLLOW_STATIC_in_modifiers567 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
-    public static final BitSet FOLLOW_ABSTRACT_in_modifiers577 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
-    public static final BitSet FOLLOW_FINAL_in_modifiers587 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
-    public static final BitSet FOLLOW_NATIVE_in_modifiers597 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
-    public static final BitSet FOLLOW_SYNCHRONIZED_in_modifiers607 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
-    public static final BitSet FOLLOW_TRANSIENT_in_modifiers617 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
-    public static final BitSet FOLLOW_VOLATILE_in_modifiers627 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
-    public static final BitSet FOLLOW_STRICTFP_in_modifiers637 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
-    public static final BitSet FOLLOW_FINAL_in_variableModifiers669 = new BitSet(new long[]{0x0000100000000002L,0x0000000000000200L});
-    public static final BitSet FOLLOW_annotation_in_variableModifiers683 = new BitSet(new long[]{0x0000100000000002L,0x0000000000000200L});
-    public static final BitSet FOLLOW_normalClassDeclaration_in_classDeclaration719 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_enumDeclaration_in_classDeclaration729 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_normalClassDeclaration749 = new BitSet(new long[]{0x0000000000800000L});
-    public static final BitSet FOLLOW_CLASS_in_normalClassDeclaration752 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_normalClassDeclaration754 = new BitSet(new long[]{0x0100010000000000L,0x0000000000000082L});
-    public static final BitSet FOLLOW_typeParameters_in_normalClassDeclaration765 = new BitSet(new long[]{0x0100010000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_EXTENDS_in_normalClassDeclaration787 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_normalClassDeclaration789 = new BitSet(new long[]{0x0100000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_IMPLEMENTS_in_normalClassDeclaration811 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_typeList_in_normalClassDeclaration813 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_classBody_in_normalClassDeclaration846 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LT_in_typeParameters867 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_typeParameter_in_typeParameters881 = new BitSet(new long[]{0x0008000002000000L});
-    public static final BitSet FOLLOW_COMMA_in_typeParameters896 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_typeParameter_in_typeParameters898 = new BitSet(new long[]{0x0008000002000000L});
-    public static final BitSet FOLLOW_GT_in_typeParameters923 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_typeParameter943 = new BitSet(new long[]{0x0000010000000002L});
-    public static final BitSet FOLLOW_EXTENDS_in_typeParameter954 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_typeBound_in_typeParameter956 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_type_in_typeBound988 = new BitSet(new long[]{0x0000000000000022L});
-    public static final BitSet FOLLOW_AMP_in_typeBound999 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_typeBound1001 = new BitSet(new long[]{0x0000000000000022L});
-    public static final BitSet FOLLOW_modifiers_in_enumDeclaration1033 = new BitSet(new long[]{0x0000002000000000L});
-    public static final BitSet FOLLOW_ENUM_in_enumDeclaration1045 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_enumDeclaration1066 = new BitSet(new long[]{0x0100000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_IMPLEMENTS_in_enumDeclaration1077 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_typeList_in_enumDeclaration1079 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_enumBody_in_enumDeclaration1100 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACE_in_enumBody1125 = new BitSet(new long[]{0x0040000002000000L,0x0000000011000200L});
-    public static final BitSet FOLLOW_enumConstants_in_enumBody1136 = new BitSet(new long[]{0x0000000002000000L,0x0000000011000000L});
-    public static final BitSet FOLLOW_COMMA_in_enumBody1158 = new BitSet(new long[]{0x0000000000000000L,0x0000000011000000L});
-    public static final BitSet FOLLOW_enumBodyDeclarations_in_enumBody1171 = new BitSet(new long[]{0x0000000000000000L,0x0000000001000000L});
-    public static final BitSet FOLLOW_RBRACE_in_enumBody1193 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_enumConstant_in_enumConstants1213 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_COMMA_in_enumConstants1224 = new BitSet(new long[]{0x0040000000000000L,0x0000000000000200L});
-    public static final BitSet FOLLOW_enumConstant_in_enumConstants1226 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_annotations_in_enumConstant1260 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_enumConstant1281 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000042L});
-    public static final BitSet FOLLOW_arguments_in_enumConstant1292 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000002L});
-    public static final BitSet FOLLOW_classBody_in_enumConstant1314 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SEMI_in_enumBodyDeclarations1355 = new BitSet(new long[]{0x1840502100A14012L,0x0019040C30700692L});
-    public static final BitSet FOLLOW_classBodyDeclaration_in_enumBodyDeclarations1367 = new BitSet(new long[]{0x1840502100A14012L,0x0019040C30700692L});
-    public static final BitSet FOLLOW_normalInterfaceDeclaration_in_interfaceDeclaration1398 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_annotationTypeDeclaration_in_interfaceDeclaration1408 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_normalInterfaceDeclaration1432 = new BitSet(new long[]{0x1000000000000000L});
-    public static final BitSet FOLLOW_INTERFACE_in_normalInterfaceDeclaration1434 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_normalInterfaceDeclaration1436 = new BitSet(new long[]{0x0000010000000000L,0x0000000000000082L});
-    public static final BitSet FOLLOW_typeParameters_in_normalInterfaceDeclaration1447 = new BitSet(new long[]{0x0000010000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_EXTENDS_in_normalInterfaceDeclaration1469 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_typeList_in_normalInterfaceDeclaration1471 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceBody_in_normalInterfaceDeclaration1492 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_type_in_typeList1512 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_COMMA_in_typeList1523 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_typeList1525 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_LBRACE_in_classBody1556 = new BitSet(new long[]{0x1840502100A14010L,0x0019040C31700692L});
-    public static final BitSet FOLLOW_classBodyDeclaration_in_classBody1568 = new BitSet(new long[]{0x1840502100A14010L,0x0019040C31700692L});
-    public static final BitSet FOLLOW_RBRACE_in_classBody1590 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACE_in_interfaceBody1610 = new BitSet(new long[]{0x1840502100A14010L,0x0019040C31700690L});
-    public static final BitSet FOLLOW_interfaceBodyDeclaration_in_interfaceBody1622 = new BitSet(new long[]{0x1840502100A14010L,0x0019040C31700690L});
-    public static final BitSet FOLLOW_RBRACE_in_interfaceBody1644 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SEMI_in_classBodyDeclaration1664 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_STATIC_in_classBodyDeclaration1675 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_block_in_classBodyDeclaration1697 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_memberDecl_in_classBodyDeclaration1707 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_fieldDeclaration_in_memberDecl1728 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_methodDeclaration_in_memberDecl1739 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classDeclaration_in_memberDecl1750 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceDeclaration_in_memberDecl1761 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_methodDeclaration1799 = new BitSet(new long[]{0x0040000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_typeParameters_in_methodDeclaration1810 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_methodDeclaration1831 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_formalParameters_in_methodDeclaration1841 = new BitSet(new long[]{0x0000000000000000L,0x0000400000000002L});
-    public static final BitSet FOLLOW_THROWS_in_methodDeclaration1852 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_qualifiedNameList_in_methodDeclaration1854 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACE_in_methodDeclaration1875 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1EF2L});
-    public static final BitSet FOLLOW_explicitConstructorInvocation_in_methodDeclaration1887 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1E72L});
-    public static final BitSet FOLLOW_blockStatement_in_methodDeclaration1909 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1E72L});
-    public static final BitSet FOLLOW_RBRACE_in_methodDeclaration1930 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_methodDeclaration1940 = new BitSet(new long[]{0x0840400100214000L,0x0008000020000090L});
-    public static final BitSet FOLLOW_typeParameters_in_methodDeclaration1951 = new BitSet(new long[]{0x0840400100214000L,0x0008000020000010L});
-    public static final BitSet FOLLOW_type_in_methodDeclaration1973 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_VOID_in_methodDeclaration1987 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_methodDeclaration2007 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_formalParameters_in_methodDeclaration2017 = new BitSet(new long[]{0x0000000000000000L,0x0000400010000006L});
-    public static final BitSet FOLLOW_LBRACKET_in_methodDeclaration2028 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_methodDeclaration2030 = new BitSet(new long[]{0x0000000000000000L,0x0000400010000006L});
-    public static final BitSet FOLLOW_THROWS_in_methodDeclaration2052 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_qualifiedNameList_in_methodDeclaration2054 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000002L});
-    public static final BitSet FOLLOW_block_in_methodDeclaration2109 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SEMI_in_methodDeclaration2123 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_fieldDeclaration2155 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_fieldDeclaration2165 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_variableDeclarator_in_fieldDeclaration2175 = new BitSet(new long[]{0x0000000002000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_COMMA_in_fieldDeclaration2186 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_variableDeclarator_in_fieldDeclaration2188 = new BitSet(new long[]{0x0000000002000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_fieldDeclaration2209 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_variableDeclarator2229 = new BitSet(new long[]{0x0000004000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_variableDeclarator2240 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_variableDeclarator2242 = new BitSet(new long[]{0x0000004000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_EQ_in_variableDeclarator2264 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1872L});
-    public static final BitSet FOLLOW_variableInitializer_in_variableDeclarator2266 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceFieldDeclaration_in_interfaceBodyDeclaration2305 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceMethodDeclaration_in_interfaceBodyDeclaration2315 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceDeclaration_in_interfaceBodyDeclaration2325 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classDeclaration_in_interfaceBodyDeclaration2335 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SEMI_in_interfaceBodyDeclaration2345 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_interfaceMethodDeclaration2365 = new BitSet(new long[]{0x0840400100214000L,0x0008000020000090L});
-    public static final BitSet FOLLOW_typeParameters_in_interfaceMethodDeclaration2376 = new BitSet(new long[]{0x0840400100214000L,0x0008000020000010L});
-    public static final BitSet FOLLOW_type_in_interfaceMethodDeclaration2398 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_VOID_in_interfaceMethodDeclaration2409 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_interfaceMethodDeclaration2429 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_formalParameters_in_interfaceMethodDeclaration2439 = new BitSet(new long[]{0x0000000000000000L,0x0000400010000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_interfaceMethodDeclaration2450 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_interfaceMethodDeclaration2452 = new BitSet(new long[]{0x0000000000000000L,0x0000400010000004L});
-    public static final BitSet FOLLOW_THROWS_in_interfaceMethodDeclaration2474 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_qualifiedNameList_in_interfaceMethodDeclaration2476 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_interfaceMethodDeclaration2489 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_interfaceFieldDeclaration2511 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_interfaceFieldDeclaration2513 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_variableDeclarator_in_interfaceFieldDeclaration2515 = new BitSet(new long[]{0x0000000002000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_COMMA_in_interfaceFieldDeclaration2526 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_variableDeclarator_in_interfaceFieldDeclaration2528 = new BitSet(new long[]{0x0000000002000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_interfaceFieldDeclaration2549 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classOrInterfaceType_in_type2570 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_type2581 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_type2583 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_primitiveType_in_type2604 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_type2615 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_type2617 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_classOrInterfaceType2649 = new BitSet(new long[]{0x0000000080000002L,0x0000000000000080L});
-    public static final BitSet FOLLOW_typeArguments_in_classOrInterfaceType2660 = new BitSet(new long[]{0x0000000080000002L});
-    public static final BitSet FOLLOW_DOT_in_classOrInterfaceType2682 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_classOrInterfaceType2684 = new BitSet(new long[]{0x0000000080000002L,0x0000000000000080L});
-    public static final BitSet FOLLOW_typeArguments_in_classOrInterfaceType2699 = new BitSet(new long[]{0x0000000080000002L});
-    public static final BitSet FOLLOW_LT_in_typeArguments2836 = new BitSet(new long[]{0x0840400100214000L,0x0000000020800010L});
-    public static final BitSet FOLLOW_typeArgument_in_typeArguments2838 = new BitSet(new long[]{0x0008000002000000L});
-    public static final BitSet FOLLOW_COMMA_in_typeArguments2849 = new BitSet(new long[]{0x0840400100214000L,0x0000000020800010L});
-    public static final BitSet FOLLOW_typeArgument_in_typeArguments2851 = new BitSet(new long[]{0x0008000002000000L});
-    public static final BitSet FOLLOW_GT_in_typeArguments2873 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_type_in_typeArgument2893 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_QUES_in_typeArgument2903 = new BitSet(new long[]{0x0000010000000002L,0x0000010000000000L});
-    public static final BitSet FOLLOW_set_in_typeArgument2927 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_typeArgument2971 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_qualifiedName_in_qualifiedNameList3002 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_COMMA_in_qualifiedNameList3013 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_qualifiedName_in_qualifiedNameList3015 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_LPAREN_in_formalParameters3046 = new BitSet(new long[]{0x0840500100214000L,0x0000000028000210L});
-    public static final BitSet FOLLOW_formalParameterDecls_in_formalParameters3057 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_RPAREN_in_formalParameters3079 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ellipsisParameterDecl_in_formalParameterDecls3099 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_normalParameterDecl_in_formalParameterDecls3109 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_COMMA_in_formalParameterDecls3120 = new BitSet(new long[]{0x0840500100214000L,0x0000000020000210L});
-    public static final BitSet FOLLOW_normalParameterDecl_in_formalParameterDecls3122 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_normalParameterDecl_in_formalParameterDecls3144 = new BitSet(new long[]{0x0000000002000000L});
-    public static final BitSet FOLLOW_COMMA_in_formalParameterDecls3154 = new BitSet(new long[]{0x0840500100214000L,0x0000000020000210L});
-    public static final BitSet FOLLOW_ellipsisParameterDecl_in_formalParameterDecls3176 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_variableModifiers_in_normalParameterDecl3196 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_normalParameterDecl3198 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_normalParameterDecl3200 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_normalParameterDecl3211 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_normalParameterDecl3213 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_variableModifiers_in_ellipsisParameterDecl3244 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_ellipsisParameterDecl3254 = new BitSet(new long[]{0x0000000800000000L});
-    public static final BitSet FOLLOW_ELLIPSIS_in_ellipsisParameterDecl3257 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_ellipsisParameterDecl3267 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_explicitConstructorInvocation3289 = new BitSet(new long[]{0x0000000000000000L,0x0000110000000000L});
-    public static final BitSet FOLLOW_set_in_explicitConstructorInvocation3315 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_arguments_in_explicitConstructorInvocation3347 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_explicitConstructorInvocation3349 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_primary_in_explicitConstructorInvocation3360 = new BitSet(new long[]{0x0000000080000000L});
-    public static final BitSet FOLLOW_DOT_in_explicitConstructorInvocation3370 = new BitSet(new long[]{0x0000000000000000L,0x0000010000000080L});
-    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_explicitConstructorInvocation3381 = new BitSet(new long[]{0x0000000000000000L,0x0000010000000000L});
-    public static final BitSet FOLLOW_SUPER_in_explicitConstructorInvocation3402 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_arguments_in_explicitConstructorInvocation3412 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_explicitConstructorInvocation3414 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_qualifiedName3434 = new BitSet(new long[]{0x0000000080000002L});
-    public static final BitSet FOLLOW_DOT_in_qualifiedName3445 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_qualifiedName3447 = new BitSet(new long[]{0x0000000080000002L});
-    public static final BitSet FOLLOW_annotation_in_annotations3479 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000200L});
-    public static final BitSet FOLLOW_MONKEYS_AT_in_annotation3512 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_qualifiedName_in_annotation3514 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000040L});
-    public static final BitSet FOLLOW_LPAREN_in_annotation3528 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0280A1A72L});
-    public static final BitSet FOLLOW_elementValuePairs_in_annotation3555 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_elementValue_in_annotation3579 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_RPAREN_in_annotation3615 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_elementValuePair_in_elementValuePairs3647 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_COMMA_in_elementValuePairs3658 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_elementValuePair_in_elementValuePairs3660 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_elementValuePair3691 = new BitSet(new long[]{0x0000004000000000L});
-    public static final BitSet FOLLOW_EQ_in_elementValuePair3693 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1A72L});
-    public static final BitSet FOLLOW_elementValue_in_elementValuePair3695 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionalExpression_in_elementValue3715 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_annotation_in_elementValue3725 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_elementValueArrayInitializer_in_elementValue3735 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACE_in_elementValueArrayInitializer3755 = new BitSet(new long[]{0x2840C80302614200L,0x000A91B0210A1A72L});
-    public static final BitSet FOLLOW_elementValue_in_elementValueArrayInitializer3766 = new BitSet(new long[]{0x0000000002000000L,0x0000000001000000L});
-    public static final BitSet FOLLOW_COMMA_in_elementValueArrayInitializer3781 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1A72L});
-    public static final BitSet FOLLOW_elementValue_in_elementValueArrayInitializer3783 = new BitSet(new long[]{0x0000000002000000L,0x0000000001000000L});
-    public static final BitSet FOLLOW_COMMA_in_elementValueArrayInitializer3812 = new BitSet(new long[]{0x0000000000000000L,0x0000000001000000L});
-    public static final BitSet FOLLOW_RBRACE_in_elementValueArrayInitializer3816 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_annotationTypeDeclaration3839 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000200L});
-    public static final BitSet FOLLOW_MONKEYS_AT_in_annotationTypeDeclaration3841 = new BitSet(new long[]{0x1000000000000000L});
-    public static final BitSet FOLLOW_INTERFACE_in_annotationTypeDeclaration3851 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_annotationTypeDeclaration3861 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_annotationTypeBody_in_annotationTypeDeclaration3871 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACE_in_annotationTypeBody3892 = new BitSet(new long[]{0x1840502100A14010L,0x0011040C31700610L});
-    public static final BitSet FOLLOW_annotationTypeElementDeclaration_in_annotationTypeBody3904 = new BitSet(new long[]{0x1840502100A14010L,0x0011040C31700610L});
-    public static final BitSet FOLLOW_RBRACE_in_annotationTypeBody3926 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_annotationMethodDeclaration_in_annotationTypeElementDeclaration3948 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceFieldDeclaration_in_annotationTypeElementDeclaration3958 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_normalClassDeclaration_in_annotationTypeElementDeclaration3968 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_normalInterfaceDeclaration_in_annotationTypeElementDeclaration3978 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_enumDeclaration_in_annotationTypeElementDeclaration3988 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_annotationTypeDeclaration_in_annotationTypeElementDeclaration3998 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SEMI_in_annotationTypeElementDeclaration4008 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_annotationMethodDeclaration4028 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_annotationMethodDeclaration4030 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_annotationMethodDeclaration4032 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_LPAREN_in_annotationMethodDeclaration4042 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_RPAREN_in_annotationMethodDeclaration4044 = new BitSet(new long[]{0x0000000020000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_DEFAULT_in_annotationMethodDeclaration4047 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1A72L});
-    public static final BitSet FOLLOW_elementValue_in_annotationMethodDeclaration4049 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_annotationMethodDeclaration4078 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACE_in_block4102 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1E72L});
-    public static final BitSet FOLLOW_blockStatement_in_block4113 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1E72L});
-    public static final BitSet FOLLOW_RBRACE_in_block4134 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_localVariableDeclarationStatement_in_blockStatement4156 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classOrInterfaceDeclaration_in_blockStatement4166 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_statement_in_blockStatement4176 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_localVariableDeclaration_in_localVariableDeclarationStatement4197 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_localVariableDeclarationStatement4207 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_variableModifiers_in_localVariableDeclaration4227 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_localVariableDeclaration4229 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_variableDeclarator_in_localVariableDeclaration4239 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_COMMA_in_localVariableDeclaration4250 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_variableDeclarator_in_localVariableDeclaration4252 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_block_in_statement4283 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ASSERT_in_statement4307 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_statement4327 = new BitSet(new long[]{0x0000000001000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_COLON_in_statement4330 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_statement4332 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_statement4336 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ASSERT_in_statement4346 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_statement4349 = new BitSet(new long[]{0x0000000001000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_COLON_in_statement4352 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_statement4354 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_statement4358 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IF_in_statement4380 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_parExpression_in_statement4382 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
-    public static final BitSet FOLLOW_statement_in_statement4384 = new BitSet(new long[]{0x0000001000000002L});
-    public static final BitSet FOLLOW_ELSE_in_statement4387 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
-    public static final BitSet FOLLOW_statement_in_statement4389 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_forstatement_in_statement4411 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_WHILE_in_statement4421 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_parExpression_in_statement4423 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
-    public static final BitSet FOLLOW_statement_in_statement4425 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DO_in_statement4435 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
-    public static final BitSet FOLLOW_statement_in_statement4437 = new BitSet(new long[]{0x0000000000000000L,0x0020000000000000L});
-    public static final BitSet FOLLOW_WHILE_in_statement4439 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_parExpression_in_statement4441 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_statement4443 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_trystatement_in_statement4453 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SWITCH_in_statement4463 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_parExpression_in_statement4465 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACE_in_statement4467 = new BitSet(new long[]{0x0000000020080000L,0x0000000001000000L});
-    public static final BitSet FOLLOW_switchBlockStatementGroups_in_statement4469 = new BitSet(new long[]{0x0000000000000000L,0x0000000001000000L});
-    public static final BitSet FOLLOW_RBRACE_in_statement4471 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SYNCHRONIZED_in_statement4481 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_parExpression_in_statement4483 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_block_in_statement4485 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_RETURN_in_statement4495 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0300A1870L});
-    public static final BitSet FOLLOW_expression_in_statement4498 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_statement4503 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_THROW_in_statement4513 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_statement4515 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_statement4517 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_BREAK_in_statement4527 = new BitSet(new long[]{0x0040000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_statement4542 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_statement4559 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_CONTINUE_in_statement4569 = new BitSet(new long[]{0x0040000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_statement4584 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_statement4601 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expression_in_statement4611 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_statement4614 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_statement4629 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_COLON_in_statement4631 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
-    public static final BitSet FOLLOW_statement_in_statement4633 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SEMI_in_statement4643 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_switchBlockStatementGroup_in_switchBlockStatementGroups4665 = new BitSet(new long[]{0x0000000020080002L});
-    public static final BitSet FOLLOW_switchLabel_in_switchBlockStatementGroup4694 = new BitSet(new long[]{0x38C1D82350E1C312L,0x003FB7BC347A1E72L});
-    public static final BitSet FOLLOW_blockStatement_in_switchBlockStatementGroup4705 = new BitSet(new long[]{0x38C1D82350E1C312L,0x003FB7BC347A1E72L});
-    public static final BitSet FOLLOW_CASE_in_switchLabel4736 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_switchLabel4738 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_COLON_in_switchLabel4740 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DEFAULT_in_switchLabel4750 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_COLON_in_switchLabel4752 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_TRY_in_trystatement4773 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_block_in_trystatement4775 = new BitSet(new long[]{0x0000200000100000L});
-    public static final BitSet FOLLOW_catches_in_trystatement4789 = new BitSet(new long[]{0x0000200000000000L});
-    public static final BitSet FOLLOW_FINALLY_in_trystatement4791 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_block_in_trystatement4793 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_catches_in_trystatement4807 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_FINALLY_in_trystatement4821 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_block_in_trystatement4823 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_catchClause_in_catches4854 = new BitSet(new long[]{0x0000000000100002L});
-    public static final BitSet FOLLOW_catchClause_in_catches4865 = new BitSet(new long[]{0x0000000000100002L});
-    public static final BitSet FOLLOW_CATCH_in_catchClause4896 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_LPAREN_in_catchClause4898 = new BitSet(new long[]{0x0840500100214000L,0x0000000020000210L});
-    public static final BitSet FOLLOW_formalParameter_in_catchClause4900 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_RPAREN_in_catchClause4910 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_block_in_catchClause4912 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_variableModifiers_in_formalParameter4933 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_formalParameter4935 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_formalParameter4937 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_formalParameter4948 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_formalParameter4950 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_FOR_in_forstatement4999 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_LPAREN_in_forstatement5001 = new BitSet(new long[]{0x0840500100214000L,0x0000000020000210L});
-    public static final BitSet FOLLOW_variableModifiers_in_forstatement5003 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_forstatement5005 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_forstatement5007 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_COLON_in_forstatement5009 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_forstatement5020 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_RPAREN_in_forstatement5022 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
-    public static final BitSet FOLLOW_statement_in_forstatement5024 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_FOR_in_forstatement5056 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_LPAREN_in_forstatement5058 = new BitSet(new long[]{0x2840D80300614200L,0x000A91B0300A1A70L});
-    public static final BitSet FOLLOW_forInit_in_forstatement5078 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_forstatement5099 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0300A1870L});
-    public static final BitSet FOLLOW_expression_in_forstatement5119 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_forstatement5140 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0280A1870L});
-    public static final BitSet FOLLOW_expressionList_in_forstatement5160 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_RPAREN_in_forstatement5181 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
-    public static final BitSet FOLLOW_statement_in_forstatement5183 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_localVariableDeclaration_in_forInit5203 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expressionList_in_forInit5213 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LPAREN_in_parExpression5233 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_parExpression5235 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_RPAREN_in_parExpression5237 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expression_in_expressionList5257 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_COMMA_in_expressionList5268 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_expressionList5270 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_conditionalExpression_in_expression5302 = new BitSet(new long[]{0x0008004000042082L,0x0000004280050080L});
-    public static final BitSet FOLLOW_assignmentOperator_in_expression5313 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_expression5315 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_EQ_in_assignmentOperator5347 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_PLUSEQ_in_assignmentOperator5357 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SUBEQ_in_assignmentOperator5367 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_STAREQ_in_assignmentOperator5377 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SLASHEQ_in_assignmentOperator5387 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_AMPEQ_in_assignmentOperator5397 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_BAREQ_in_assignmentOperator5407 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_CARETEQ_in_assignmentOperator5417 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_PERCENTEQ_in_assignmentOperator5427 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LT_in_assignmentOperator5438 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_LT_in_assignmentOperator5440 = new BitSet(new long[]{0x0000004000000000L});
-    public static final BitSet FOLLOW_EQ_in_assignmentOperator5442 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_GT_in_assignmentOperator5453 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_GT_in_assignmentOperator5455 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_GT_in_assignmentOperator5457 = new BitSet(new long[]{0x0000004000000000L});
-    public static final BitSet FOLLOW_EQ_in_assignmentOperator5459 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_GT_in_assignmentOperator5470 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_GT_in_assignmentOperator5472 = new BitSet(new long[]{0x0000004000000000L});
-    public static final BitSet FOLLOW_EQ_in_assignmentOperator5474 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionalOrExpression_in_conditionalExpression5495 = new BitSet(new long[]{0x0000000000000002L,0x0000000000800000L});
-    public static final BitSet FOLLOW_QUES_in_conditionalExpression5506 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_conditionalExpression5508 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_COLON_in_conditionalExpression5510 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_conditionalExpression_in_conditionalExpression5512 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_conditionalAndExpression_in_conditionalOrExpression5543 = new BitSet(new long[]{0x0000000000001002L});
-    public static final BitSet FOLLOW_BARBAR_in_conditionalOrExpression5554 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_conditionalAndExpression_in_conditionalOrExpression5556 = new BitSet(new long[]{0x0000000000001002L});
-    public static final BitSet FOLLOW_inclusiveOrExpression_in_conditionalAndExpression5587 = new BitSet(new long[]{0x0000000000000042L});
-    public static final BitSet FOLLOW_AMPAMP_in_conditionalAndExpression5598 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_inclusiveOrExpression_in_conditionalAndExpression5600 = new BitSet(new long[]{0x0000000000000042L});
-    public static final BitSet FOLLOW_exclusiveOrExpression_in_inclusiveOrExpression5631 = new BitSet(new long[]{0x0000000000000802L});
-    public static final BitSet FOLLOW_BAR_in_inclusiveOrExpression5642 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_exclusiveOrExpression_in_inclusiveOrExpression5644 = new BitSet(new long[]{0x0000000000000802L});
-    public static final BitSet FOLLOW_andExpression_in_exclusiveOrExpression5675 = new BitSet(new long[]{0x0000000000020002L});
-    public static final BitSet FOLLOW_CARET_in_exclusiveOrExpression5686 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_andExpression_in_exclusiveOrExpression5688 = new BitSet(new long[]{0x0000000000020002L});
-    public static final BitSet FOLLOW_equalityExpression_in_andExpression5719 = new BitSet(new long[]{0x0000000000000022L});
-    public static final BitSet FOLLOW_AMP_in_andExpression5730 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_equalityExpression_in_andExpression5732 = new BitSet(new long[]{0x0000000000000022L});
-    public static final BitSet FOLLOW_instanceOfExpression_in_equalityExpression5763 = new BitSet(new long[]{0x0000008000000402L});
-    public static final BitSet FOLLOW_set_in_equalityExpression5790 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_instanceOfExpression_in_equalityExpression5840 = new BitSet(new long[]{0x0000008000000402L});
-    public static final BitSet FOLLOW_relationalExpression_in_instanceOfExpression5871 = new BitSet(new long[]{0x0400000000000002L});
-    public static final BitSet FOLLOW_INSTANCEOF_in_instanceOfExpression5882 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_instanceOfExpression5884 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_shiftExpression_in_relationalExpression5915 = new BitSet(new long[]{0x0008000000000002L,0x0000000000000080L});
-    public static final BitSet FOLLOW_relationalOp_in_relationalExpression5926 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_shiftExpression_in_relationalExpression5928 = new BitSet(new long[]{0x0008000000000002L,0x0000000000000080L});
-    public static final BitSet FOLLOW_LT_in_relationalOp5960 = new BitSet(new long[]{0x0000004000000000L});
-    public static final BitSet FOLLOW_EQ_in_relationalOp5962 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_GT_in_relationalOp5973 = new BitSet(new long[]{0x0000004000000000L});
-    public static final BitSet FOLLOW_EQ_in_relationalOp5975 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LT_in_relationalOp5985 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_GT_in_relationalOp5995 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_additiveExpression_in_shiftExpression6015 = new BitSet(new long[]{0x0008000000000002L,0x0000000000000080L});
-    public static final BitSet FOLLOW_shiftOp_in_shiftExpression6026 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_additiveExpression_in_shiftExpression6028 = new BitSet(new long[]{0x0008000000000002L,0x0000000000000080L});
-    public static final BitSet FOLLOW_LT_in_shiftOp6061 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_LT_in_shiftOp6063 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_GT_in_shiftOp6074 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_GT_in_shiftOp6076 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_GT_in_shiftOp6078 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_GT_in_shiftOp6089 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_GT_in_shiftOp6091 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_multiplicativeExpression_in_additiveExpression6112 = new BitSet(new long[]{0x0000000000000002L,0x0000002000020000L});
-    public static final BitSet FOLLOW_set_in_additiveExpression6139 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_multiplicativeExpression_in_additiveExpression6189 = new BitSet(new long[]{0x0000000000000002L,0x0000002000020000L});
-    public static final BitSet FOLLOW_unaryExpression_in_multiplicativeExpression6227 = new BitSet(new long[]{0x0000000000000002L,0x0000000140008000L});
-    public static final BitSet FOLLOW_set_in_multiplicativeExpression6254 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_unaryExpression_in_multiplicativeExpression6322 = new BitSet(new long[]{0x0000000000000002L,0x0000000140008000L});
-    public static final BitSet FOLLOW_PLUS_in_unaryExpression6355 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_unaryExpression_in_unaryExpression6358 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SUB_in_unaryExpression6368 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_unaryExpression_in_unaryExpression6370 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_PLUSPLUS_in_unaryExpression6380 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_unaryExpression_in_unaryExpression6382 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SUBSUB_in_unaryExpression6392 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_unaryExpression_in_unaryExpression6394 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_unaryExpressionNotPlusMinus_in_unaryExpression6404 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_TILDE_in_unaryExpressionNotPlusMinus6424 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_unaryExpression_in_unaryExpressionNotPlusMinus6426 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_BANG_in_unaryExpressionNotPlusMinus6436 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_unaryExpression_in_unaryExpressionNotPlusMinus6438 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_castExpression_in_unaryExpressionNotPlusMinus6448 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_primary_in_unaryExpressionNotPlusMinus6458 = new BitSet(new long[]{0x0000000080000002L,0x0000008000080004L});
-    public static final BitSet FOLLOW_selector_in_unaryExpressionNotPlusMinus6469 = new BitSet(new long[]{0x0000000080000002L,0x0000008000080004L});
-    public static final BitSet FOLLOW_LPAREN_in_castExpression6539 = new BitSet(new long[]{0x0800400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_primitiveType_in_castExpression6541 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_RPAREN_in_castExpression6543 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_unaryExpression_in_castExpression6545 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LPAREN_in_castExpression6555 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_castExpression6557 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_RPAREN_in_castExpression6559 = new BitSet(new long[]{0x2840C80300614200L,0x000A911020001870L});
-    public static final BitSet FOLLOW_unaryExpressionNotPlusMinus_in_castExpression6561 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_parExpression_in_primary6583 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_THIS_in_primary6605 = new BitSet(new long[]{0x0000000080000002L,0x0000000000000044L});
-    public static final BitSet FOLLOW_DOT_in_primary6616 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_primary6618 = new BitSet(new long[]{0x0000000080000002L,0x0000000000000044L});
-    public static final BitSet FOLLOW_identifierSuffix_in_primary6640 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_primary6661 = new BitSet(new long[]{0x0000000080000002L,0x0000000000000044L});
-    public static final BitSet FOLLOW_DOT_in_primary6672 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_primary6674 = new BitSet(new long[]{0x0000000080000002L,0x0000000000000044L});
-    public static final BitSet FOLLOW_identifierSuffix_in_primary6696 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_SUPER_in_primary6717 = new BitSet(new long[]{0x0000000080000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_superSuffix_in_primary6727 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_literal_in_primary6737 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_creator_in_primary6747 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_primitiveType_in_primary6757 = new BitSet(new long[]{0x0000000080000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_primary6768 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_primary6770 = new BitSet(new long[]{0x0000000080000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_DOT_in_primary6791 = new BitSet(new long[]{0x0000000000800000L});
-    public static final BitSet FOLLOW_CLASS_in_primary6793 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_VOID_in_primary6803 = new BitSet(new long[]{0x0000000080000000L});
-    public static final BitSet FOLLOW_DOT_in_primary6805 = new BitSet(new long[]{0x0000000000800000L});
-    public static final BitSet FOLLOW_CLASS_in_primary6807 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_arguments_in_superSuffix6833 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DOT_in_superSuffix6843 = new BitSet(new long[]{0x0040000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_typeArguments_in_superSuffix6846 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_superSuffix6867 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000040L});
-    public static final BitSet FOLLOW_arguments_in_superSuffix6878 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACKET_in_identifierSuffix6911 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_identifierSuffix6913 = new BitSet(new long[]{0x0000000080000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_DOT_in_identifierSuffix6934 = new BitSet(new long[]{0x0000000000800000L});
-    public static final BitSet FOLLOW_CLASS_in_identifierSuffix6936 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACKET_in_identifierSuffix6947 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_identifierSuffix6949 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_identifierSuffix6951 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_arguments_in_identifierSuffix6972 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DOT_in_identifierSuffix6982 = new BitSet(new long[]{0x0000000000800000L});
-    public static final BitSet FOLLOW_CLASS_in_identifierSuffix6984 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DOT_in_identifierSuffix6994 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_identifierSuffix6996 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_identifierSuffix6998 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_arguments_in_identifierSuffix7000 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DOT_in_identifierSuffix7010 = new BitSet(new long[]{0x0000000000000000L,0x0000100000000000L});
-    public static final BitSet FOLLOW_THIS_in_identifierSuffix7012 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DOT_in_identifierSuffix7022 = new BitSet(new long[]{0x0000000000000000L,0x0000010000000000L});
-    public static final BitSet FOLLOW_SUPER_in_identifierSuffix7024 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_arguments_in_identifierSuffix7026 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_innerCreator_in_identifierSuffix7036 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DOT_in_selector7058 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_selector7060 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000040L});
-    public static final BitSet FOLLOW_arguments_in_selector7071 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DOT_in_selector7092 = new BitSet(new long[]{0x0000000000000000L,0x0000100000000000L});
-    public static final BitSet FOLLOW_THIS_in_selector7094 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DOT_in_selector7104 = new BitSet(new long[]{0x0000000000000000L,0x0000010000000000L});
-    public static final BitSet FOLLOW_SUPER_in_selector7106 = new BitSet(new long[]{0x0000000080000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_superSuffix_in_selector7116 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_innerCreator_in_selector7126 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACKET_in_selector7136 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_selector7138 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_selector7140 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_NEW_in_creator7160 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_creator7162 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_classOrInterfaceType_in_creator7164 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_classCreatorRest_in_creator7166 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_NEW_in_creator7176 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_classOrInterfaceType_in_creator7178 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_classCreatorRest_in_creator7180 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_arrayCreator_in_creator7190 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_NEW_in_arrayCreator7210 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_createdName_in_arrayCreator7212 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_arrayCreator7222 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_arrayCreator7224 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000006L});
-    public static final BitSet FOLLOW_LBRACKET_in_arrayCreator7235 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_arrayCreator7237 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000006L});
-    public static final BitSet FOLLOW_arrayInitializer_in_arrayCreator7258 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_NEW_in_arrayCreator7269 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_createdName_in_arrayCreator7271 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_arrayCreator7281 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_arrayCreator7283 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_arrayCreator7293 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_arrayCreator7307 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_arrayCreator7309 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_arrayCreator7323 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_arrayCreator7345 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_arrayCreator7347 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
-    public static final BitSet FOLLOW_arrayInitializer_in_variableInitializer7378 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expression_in_variableInitializer7388 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACE_in_arrayInitializer7408 = new BitSet(new long[]{0x2840C80302614200L,0x000A91B0210A1872L});
-    public static final BitSet FOLLOW_variableInitializer_in_arrayInitializer7424 = new BitSet(new long[]{0x0000000002000000L,0x0000000001000000L});
-    public static final BitSet FOLLOW_COMMA_in_arrayInitializer7443 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1872L});
-    public static final BitSet FOLLOW_variableInitializer_in_arrayInitializer7445 = new BitSet(new long[]{0x0000000002000000L,0x0000000001000000L});
-    public static final BitSet FOLLOW_COMMA_in_arrayInitializer7495 = new BitSet(new long[]{0x0000000000000000L,0x0000000001000000L});
-    public static final BitSet FOLLOW_RBRACE_in_arrayInitializer7508 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classOrInterfaceType_in_createdName7542 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_primitiveType_in_createdName7552 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DOT_in_innerCreator7573 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_NEW_in_innerCreator7575 = new BitSet(new long[]{0x0040000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_innerCreator7586 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_innerCreator7607 = new BitSet(new long[]{0x0000000000000000L,0x00000000000000C0L});
-    public static final BitSet FOLLOW_typeArguments_in_innerCreator7618 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_classCreatorRest_in_innerCreator7639 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_arguments_in_classCreatorRest7660 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000002L});
-    public static final BitSet FOLLOW_classBody_in_classCreatorRest7671 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LT_in_nonWildcardTypeArguments7703 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_typeList_in_nonWildcardTypeArguments7705 = new BitSet(new long[]{0x0008000000000000L});
-    public static final BitSet FOLLOW_GT_in_nonWildcardTypeArguments7715 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LPAREN_in_arguments7735 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0280A1870L});
-    public static final BitSet FOLLOW_expressionList_in_arguments7738 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_RPAREN_in_arguments7751 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_classHeader7875 = new BitSet(new long[]{0x0000000000800000L});
-    public static final BitSet FOLLOW_CLASS_in_classHeader7877 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_classHeader7879 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_enumHeader7899 = new BitSet(new long[]{0x0040002000000000L});
-    public static final BitSet FOLLOW_set_in_enumHeader7901 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_enumHeader7907 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_interfaceHeader7927 = new BitSet(new long[]{0x1000000000000000L});
-    public static final BitSet FOLLOW_INTERFACE_in_interfaceHeader7929 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_interfaceHeader7931 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_annotationHeader7951 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000200L});
-    public static final BitSet FOLLOW_MONKEYS_AT_in_annotationHeader7953 = new BitSet(new long[]{0x1000000000000000L});
-    public static final BitSet FOLLOW_INTERFACE_in_annotationHeader7955 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_annotationHeader7957 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_typeHeader7977 = new BitSet(new long[]{0x1000002000800000L,0x0000000000000200L});
-    public static final BitSet FOLLOW_CLASS_in_typeHeader7980 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_ENUM_in_typeHeader7982 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_MONKEYS_AT_in_typeHeader7985 = new BitSet(new long[]{0x1000000000000000L});
-    public static final BitSet FOLLOW_INTERFACE_in_typeHeader7989 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_typeHeader7993 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_methodHeader8013 = new BitSet(new long[]{0x0840400100214000L,0x0008000020000090L});
-    public static final BitSet FOLLOW_typeParameters_in_methodHeader8015 = new BitSet(new long[]{0x0840400100214000L,0x0008000020000010L});
-    public static final BitSet FOLLOW_type_in_methodHeader8019 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_VOID_in_methodHeader8021 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_methodHeader8025 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_LPAREN_in_methodHeader8027 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_fieldHeader8047 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_fieldHeader8049 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_fieldHeader8051 = new BitSet(new long[]{0x0000004002000000L,0x0000000010000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_fieldHeader8054 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_fieldHeader8055 = new BitSet(new long[]{0x0000004002000000L,0x0000000010000004L});
-    public static final BitSet FOLLOW_set_in_fieldHeader8059 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_variableModifiers_in_localVariableHeader8085 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_localVariableHeader8087 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_localVariableHeader8089 = new BitSet(new long[]{0x0000004002000000L,0x0000000010000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_localVariableHeader8092 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_localVariableHeader8093 = new BitSet(new long[]{0x0000004002000000L,0x0000000010000004L});
-    public static final BitSet FOLLOW_set_in_localVariableHeader8097 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_annotations_in_synpred2_NoDynamicLoadingANTLR95 = new BitSet(new long[]{0x0000000000000000L,0x0000000000004000L});
-    public static final BitSet FOLLOW_packageDeclaration_in_synpred2_NoDynamicLoadingANTLR124 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classDeclaration_in_synpred12_NoDynamicLoadingANTLR482 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_normalClassDeclaration_in_synpred27_NoDynamicLoadingANTLR719 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_normalInterfaceDeclaration_in_synpred43_NoDynamicLoadingANTLR1398 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_fieldDeclaration_in_synpred52_NoDynamicLoadingANTLR1728 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_methodDeclaration_in_synpred53_NoDynamicLoadingANTLR1739 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classDeclaration_in_synpred54_NoDynamicLoadingANTLR1750 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_explicitConstructorInvocation_in_synpred57_NoDynamicLoadingANTLR1887 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_modifiers_in_synpred59_NoDynamicLoadingANTLR1799 = new BitSet(new long[]{0x0040000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_typeParameters_in_synpred59_NoDynamicLoadingANTLR1810 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_synpred59_NoDynamicLoadingANTLR1831 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_formalParameters_in_synpred59_NoDynamicLoadingANTLR1841 = new BitSet(new long[]{0x0000000000000000L,0x0000400000000002L});
-    public static final BitSet FOLLOW_THROWS_in_synpred59_NoDynamicLoadingANTLR1852 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_qualifiedNameList_in_synpred59_NoDynamicLoadingANTLR1854 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACE_in_synpred59_NoDynamicLoadingANTLR1875 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1EF2L});
-    public static final BitSet FOLLOW_explicitConstructorInvocation_in_synpred59_NoDynamicLoadingANTLR1887 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1E72L});
-    public static final BitSet FOLLOW_blockStatement_in_synpred59_NoDynamicLoadingANTLR1909 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1E72L});
-    public static final BitSet FOLLOW_RBRACE_in_synpred59_NoDynamicLoadingANTLR1930 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceFieldDeclaration_in_synpred68_NoDynamicLoadingANTLR2305 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceMethodDeclaration_in_synpred69_NoDynamicLoadingANTLR2315 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceDeclaration_in_synpred70_NoDynamicLoadingANTLR2325 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classDeclaration_in_synpred71_NoDynamicLoadingANTLR2335 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ellipsisParameterDecl_in_synpred96_NoDynamicLoadingANTLR3099 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_normalParameterDecl_in_synpred98_NoDynamicLoadingANTLR3109 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_COMMA_in_synpred98_NoDynamicLoadingANTLR3120 = new BitSet(new long[]{0x0840500100214000L,0x0000000020000210L});
-    public static final BitSet FOLLOW_normalParameterDecl_in_synpred98_NoDynamicLoadingANTLR3122 = new BitSet(new long[]{0x0000000002000002L});
-    public static final BitSet FOLLOW_normalParameterDecl_in_synpred99_NoDynamicLoadingANTLR3144 = new BitSet(new long[]{0x0000000002000000L});
-    public static final BitSet FOLLOW_COMMA_in_synpred99_NoDynamicLoadingANTLR3154 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_synpred103_NoDynamicLoadingANTLR3289 = new BitSet(new long[]{0x0000000000000000L,0x0000110000000000L});
-    public static final BitSet FOLLOW_set_in_synpred103_NoDynamicLoadingANTLR3315 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_arguments_in_synpred103_NoDynamicLoadingANTLR3347 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_synpred103_NoDynamicLoadingANTLR3349 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_annotationMethodDeclaration_in_synpred117_NoDynamicLoadingANTLR3948 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_interfaceFieldDeclaration_in_synpred118_NoDynamicLoadingANTLR3958 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_normalClassDeclaration_in_synpred119_NoDynamicLoadingANTLR3968 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_normalInterfaceDeclaration_in_synpred120_NoDynamicLoadingANTLR3978 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_enumDeclaration_in_synpred121_NoDynamicLoadingANTLR3988 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_annotationTypeDeclaration_in_synpred122_NoDynamicLoadingANTLR3998 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_localVariableDeclarationStatement_in_synpred125_NoDynamicLoadingANTLR4156 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_classOrInterfaceDeclaration_in_synpred126_NoDynamicLoadingANTLR4166 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ASSERT_in_synpred130_NoDynamicLoadingANTLR4307 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_synpred130_NoDynamicLoadingANTLR4327 = new BitSet(new long[]{0x0000000001000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_COLON_in_synpred130_NoDynamicLoadingANTLR4330 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_synpred130_NoDynamicLoadingANTLR4332 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_synpred130_NoDynamicLoadingANTLR4336 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ASSERT_in_synpred132_NoDynamicLoadingANTLR4346 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_synpred132_NoDynamicLoadingANTLR4349 = new BitSet(new long[]{0x0000000001000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_COLON_in_synpred132_NoDynamicLoadingANTLR4352 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_synpred132_NoDynamicLoadingANTLR4354 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_synpred132_NoDynamicLoadingANTLR4358 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ELSE_in_synpred133_NoDynamicLoadingANTLR4387 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
-    public static final BitSet FOLLOW_statement_in_synpred133_NoDynamicLoadingANTLR4389 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expression_in_synpred148_NoDynamicLoadingANTLR4611 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
-    public static final BitSet FOLLOW_SEMI_in_synpred148_NoDynamicLoadingANTLR4614 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_synpred149_NoDynamicLoadingANTLR4629 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_COLON_in_synpred149_NoDynamicLoadingANTLR4631 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
-    public static final BitSet FOLLOW_statement_in_synpred149_NoDynamicLoadingANTLR4633 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_catches_in_synpred153_NoDynamicLoadingANTLR4789 = new BitSet(new long[]{0x0000200000000000L});
-    public static final BitSet FOLLOW_FINALLY_in_synpred153_NoDynamicLoadingANTLR4791 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
-    public static final BitSet FOLLOW_block_in_synpred153_NoDynamicLoadingANTLR4793 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_catches_in_synpred154_NoDynamicLoadingANTLR4807 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_FOR_in_synpred157_NoDynamicLoadingANTLR4999 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_LPAREN_in_synpred157_NoDynamicLoadingANTLR5001 = new BitSet(new long[]{0x0840500100214000L,0x0000000020000210L});
-    public static final BitSet FOLLOW_variableModifiers_in_synpred157_NoDynamicLoadingANTLR5003 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_type_in_synpred157_NoDynamicLoadingANTLR5005 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_synpred157_NoDynamicLoadingANTLR5007 = new BitSet(new long[]{0x0000000001000000L});
-    public static final BitSet FOLLOW_COLON_in_synpred157_NoDynamicLoadingANTLR5009 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_synpred157_NoDynamicLoadingANTLR5020 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_RPAREN_in_synpred157_NoDynamicLoadingANTLR5022 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
-    public static final BitSet FOLLOW_statement_in_synpred157_NoDynamicLoadingANTLR5024 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_localVariableDeclaration_in_synpred161_NoDynamicLoadingANTLR5203 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_castExpression_in_synpred202_NoDynamicLoadingANTLR6448 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LPAREN_in_synpred206_NoDynamicLoadingANTLR6539 = new BitSet(new long[]{0x0800400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_primitiveType_in_synpred206_NoDynamicLoadingANTLR6541 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
-    public static final BitSet FOLLOW_RPAREN_in_synpred206_NoDynamicLoadingANTLR6543 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_unaryExpression_in_synpred206_NoDynamicLoadingANTLR6545 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DOT_in_synpred208_NoDynamicLoadingANTLR6616 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_synpred208_NoDynamicLoadingANTLR6618 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_identifierSuffix_in_synpred209_NoDynamicLoadingANTLR6640 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DOT_in_synpred211_NoDynamicLoadingANTLR6672 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_IDENTIFIER_in_synpred211_NoDynamicLoadingANTLR6674 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_identifierSuffix_in_synpred212_NoDynamicLoadingANTLR6696 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACKET_in_synpred224_NoDynamicLoadingANTLR6947 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_synpred224_NoDynamicLoadingANTLR6949 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_synpred224_NoDynamicLoadingANTLR6951 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_NEW_in_synpred236_NoDynamicLoadingANTLR7160 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
-    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_synpred236_NoDynamicLoadingANTLR7162 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_classOrInterfaceType_in_synpred236_NoDynamicLoadingANTLR7164 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_classCreatorRest_in_synpred236_NoDynamicLoadingANTLR7166 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_NEW_in_synpred237_NoDynamicLoadingANTLR7176 = new BitSet(new long[]{0x0040000000000000L});
-    public static final BitSet FOLLOW_classOrInterfaceType_in_synpred237_NoDynamicLoadingANTLR7178 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
-    public static final BitSet FOLLOW_classCreatorRest_in_synpred237_NoDynamicLoadingANTLR7180 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_NEW_in_synpred239_NoDynamicLoadingANTLR7210 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
-    public static final BitSet FOLLOW_createdName_in_synpred239_NoDynamicLoadingANTLR7212 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
-    public static final BitSet FOLLOW_LBRACKET_in_synpred239_NoDynamicLoadingANTLR7222 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_synpred239_NoDynamicLoadingANTLR7224 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000006L});
-    public static final BitSet FOLLOW_LBRACKET_in_synpred239_NoDynamicLoadingANTLR7235 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_synpred239_NoDynamicLoadingANTLR7237 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000006L});
-    public static final BitSet FOLLOW_arrayInitializer_in_synpred239_NoDynamicLoadingANTLR7258 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LBRACKET_in_synpred240_NoDynamicLoadingANTLR7307 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
-    public static final BitSet FOLLOW_expression_in_synpred240_NoDynamicLoadingANTLR7309 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_RBRACKET_in_synpred240_NoDynamicLoadingANTLR7323 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_annotations_in_compilationUnit101 = new BitSet(new long[]{0x0000000000000000L,0x0000000000004000L});
+    public static final BitSet FOLLOW_packageDeclaration_in_compilationUnit130 = new BitSet(new long[]{0x1200102000800012L,0x0011040C10700600L});
+    public static final BitSet FOLLOW_importDeclaration_in_compilationUnit152 = new BitSet(new long[]{0x1200102000800012L,0x0011040C10700600L});
+    public static final BitSet FOLLOW_typeDeclaration_in_compilationUnit174 = new BitSet(new long[]{0x1000102000800012L,0x0011040C10700600L});
+    public static final BitSet FOLLOW_PACKAGE_in_packageDeclaration205 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_qualifiedName_in_packageDeclaration207 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_packageDeclaration217 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IMPORT_in_importDeclaration238 = new BitSet(new long[]{0x0040000000000000L,0x0000000400000000L});
+    public static final BitSet FOLLOW_STATIC_in_importDeclaration250 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_importDeclaration271 = new BitSet(new long[]{0x0000000080000000L});
+    public static final BitSet FOLLOW_DOT_in_importDeclaration273 = new BitSet(new long[]{0x0000000000000000L,0x0000000100000000L});
+    public static final BitSet FOLLOW_STAR_in_importDeclaration275 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_importDeclaration285 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IMPORT_in_importDeclaration302 = new BitSet(new long[]{0x0040000000000000L,0x0000000400000000L});
+    public static final BitSet FOLLOW_STATIC_in_importDeclaration314 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_importDeclaration335 = new BitSet(new long[]{0x0000000080000000L});
+    public static final BitSet FOLLOW_DOT_in_importDeclaration346 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_importDeclaration348 = new BitSet(new long[]{0x0000000080000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_DOT_in_importDeclaration370 = new BitSet(new long[]{0x0000000000000000L,0x0000000100000000L});
+    public static final BitSet FOLLOW_STAR_in_importDeclaration372 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_importDeclaration393 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_qualifiedImportName413 = new BitSet(new long[]{0x0000000080000002L});
+    public static final BitSet FOLLOW_DOT_in_qualifiedImportName424 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_qualifiedImportName426 = new BitSet(new long[]{0x0000000080000002L});
+    public static final BitSet FOLLOW_classOrInterfaceDeclaration_in_typeDeclaration457 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SEMI_in_typeDeclaration467 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classDeclaration_in_classOrInterfaceDeclaration488 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceDeclaration_in_classOrInterfaceDeclaration498 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_annotation_in_modifiers533 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
+    public static final BitSet FOLLOW_PUBLIC_in_modifiers543 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
+    public static final BitSet FOLLOW_PROTECTED_in_modifiers553 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
+    public static final BitSet FOLLOW_PRIVATE_in_modifiers563 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
+    public static final BitSet FOLLOW_STATIC_in_modifiers573 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
+    public static final BitSet FOLLOW_ABSTRACT_in_modifiers583 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
+    public static final BitSet FOLLOW_FINAL_in_modifiers593 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
+    public static final BitSet FOLLOW_NATIVE_in_modifiers603 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
+    public static final BitSet FOLLOW_SYNCHRONIZED_in_modifiers613 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
+    public static final BitSet FOLLOW_TRANSIENT_in_modifiers623 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
+    public static final BitSet FOLLOW_VOLATILE_in_modifiers633 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
+    public static final BitSet FOLLOW_STRICTFP_in_modifiers643 = new BitSet(new long[]{0x0000100000000012L,0x0011040C00700600L});
+    public static final BitSet FOLLOW_FINAL_in_variableModifiers675 = new BitSet(new long[]{0x0000100000000002L,0x0000000000000200L});
+    public static final BitSet FOLLOW_annotation_in_variableModifiers689 = new BitSet(new long[]{0x0000100000000002L,0x0000000000000200L});
+    public static final BitSet FOLLOW_normalClassDeclaration_in_classDeclaration725 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_enumDeclaration_in_classDeclaration735 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_normalClassDeclaration755 = new BitSet(new long[]{0x0000000000800000L});
+    public static final BitSet FOLLOW_CLASS_in_normalClassDeclaration758 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_normalClassDeclaration760 = new BitSet(new long[]{0x0100010000000000L,0x0000000000000082L});
+    public static final BitSet FOLLOW_typeParameters_in_normalClassDeclaration771 = new BitSet(new long[]{0x0100010000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_EXTENDS_in_normalClassDeclaration793 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_normalClassDeclaration795 = new BitSet(new long[]{0x0100000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_IMPLEMENTS_in_normalClassDeclaration817 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_typeList_in_normalClassDeclaration819 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_classBody_in_normalClassDeclaration852 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LT_in_typeParameters873 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_typeParameter_in_typeParameters887 = new BitSet(new long[]{0x0008000002000000L});
+    public static final BitSet FOLLOW_COMMA_in_typeParameters902 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_typeParameter_in_typeParameters904 = new BitSet(new long[]{0x0008000002000000L});
+    public static final BitSet FOLLOW_GT_in_typeParameters929 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_typeParameter949 = new BitSet(new long[]{0x0000010000000002L});
+    public static final BitSet FOLLOW_EXTENDS_in_typeParameter960 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_typeBound_in_typeParameter962 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_type_in_typeBound994 = new BitSet(new long[]{0x0000000000000022L});
+    public static final BitSet FOLLOW_AMP_in_typeBound1005 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_typeBound1007 = new BitSet(new long[]{0x0000000000000022L});
+    public static final BitSet FOLLOW_modifiers_in_enumDeclaration1039 = new BitSet(new long[]{0x0000002000000000L});
+    public static final BitSet FOLLOW_ENUM_in_enumDeclaration1051 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_enumDeclaration1072 = new BitSet(new long[]{0x0100000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_IMPLEMENTS_in_enumDeclaration1083 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_typeList_in_enumDeclaration1085 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_enumBody_in_enumDeclaration1106 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACE_in_enumBody1131 = new BitSet(new long[]{0x0040000002000000L,0x0000000011000200L});
+    public static final BitSet FOLLOW_enumConstants_in_enumBody1142 = new BitSet(new long[]{0x0000000002000000L,0x0000000011000000L});
+    public static final BitSet FOLLOW_COMMA_in_enumBody1164 = new BitSet(new long[]{0x0000000000000000L,0x0000000011000000L});
+    public static final BitSet FOLLOW_enumBodyDeclarations_in_enumBody1177 = new BitSet(new long[]{0x0000000000000000L,0x0000000001000000L});
+    public static final BitSet FOLLOW_RBRACE_in_enumBody1199 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_enumConstant_in_enumConstants1219 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_COMMA_in_enumConstants1230 = new BitSet(new long[]{0x0040000000000000L,0x0000000000000200L});
+    public static final BitSet FOLLOW_enumConstant_in_enumConstants1232 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_annotations_in_enumConstant1266 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_enumConstant1287 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000042L});
+    public static final BitSet FOLLOW_arguments_in_enumConstant1298 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000002L});
+    public static final BitSet FOLLOW_classBody_in_enumConstant1320 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SEMI_in_enumBodyDeclarations1361 = new BitSet(new long[]{0x1840502100A14012L,0x0019040C30700692L});
+    public static final BitSet FOLLOW_classBodyDeclaration_in_enumBodyDeclarations1373 = new BitSet(new long[]{0x1840502100A14012L,0x0019040C30700692L});
+    public static final BitSet FOLLOW_normalInterfaceDeclaration_in_interfaceDeclaration1404 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_annotationTypeDeclaration_in_interfaceDeclaration1414 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_normalInterfaceDeclaration1438 = new BitSet(new long[]{0x1000000000000000L});
+    public static final BitSet FOLLOW_INTERFACE_in_normalInterfaceDeclaration1440 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_normalInterfaceDeclaration1442 = new BitSet(new long[]{0x0000010000000000L,0x0000000000000082L});
+    public static final BitSet FOLLOW_typeParameters_in_normalInterfaceDeclaration1453 = new BitSet(new long[]{0x0000010000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_EXTENDS_in_normalInterfaceDeclaration1475 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_typeList_in_normalInterfaceDeclaration1477 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceBody_in_normalInterfaceDeclaration1498 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_type_in_typeList1518 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_COMMA_in_typeList1529 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_typeList1531 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_LBRACE_in_classBody1562 = new BitSet(new long[]{0x1840502100A14010L,0x0019040C31700692L});
+    public static final BitSet FOLLOW_classBodyDeclaration_in_classBody1574 = new BitSet(new long[]{0x1840502100A14010L,0x0019040C31700692L});
+    public static final BitSet FOLLOW_RBRACE_in_classBody1596 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACE_in_interfaceBody1616 = new BitSet(new long[]{0x1840502100A14010L,0x0019040C31700690L});
+    public static final BitSet FOLLOW_interfaceBodyDeclaration_in_interfaceBody1628 = new BitSet(new long[]{0x1840502100A14010L,0x0019040C31700690L});
+    public static final BitSet FOLLOW_RBRACE_in_interfaceBody1650 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SEMI_in_classBodyDeclaration1670 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_STATIC_in_classBodyDeclaration1681 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_block_in_classBodyDeclaration1703 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_memberDecl_in_classBodyDeclaration1713 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_fieldDeclaration_in_memberDecl1734 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_methodDeclaration_in_memberDecl1745 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classDeclaration_in_memberDecl1756 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceDeclaration_in_memberDecl1767 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_methodDeclaration1805 = new BitSet(new long[]{0x0040000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_typeParameters_in_methodDeclaration1816 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_methodDeclaration1837 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_formalParameters_in_methodDeclaration1847 = new BitSet(new long[]{0x0000000000000000L,0x0000400000000002L});
+    public static final BitSet FOLLOW_THROWS_in_methodDeclaration1858 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_qualifiedNameList_in_methodDeclaration1860 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACE_in_methodDeclaration1881 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1EF2L});
+    public static final BitSet FOLLOW_explicitConstructorInvocation_in_methodDeclaration1893 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1E72L});
+    public static final BitSet FOLLOW_blockStatement_in_methodDeclaration1915 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1E72L});
+    public static final BitSet FOLLOW_RBRACE_in_methodDeclaration1936 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_methodDeclaration1946 = new BitSet(new long[]{0x0840400100214000L,0x0008000020000090L});
+    public static final BitSet FOLLOW_typeParameters_in_methodDeclaration1957 = new BitSet(new long[]{0x0840400100214000L,0x0008000020000010L});
+    public static final BitSet FOLLOW_type_in_methodDeclaration1979 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_VOID_in_methodDeclaration1993 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_methodDeclaration2013 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_formalParameters_in_methodDeclaration2023 = new BitSet(new long[]{0x0000000000000000L,0x0000400010000006L});
+    public static final BitSet FOLLOW_LBRACKET_in_methodDeclaration2034 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_methodDeclaration2036 = new BitSet(new long[]{0x0000000000000000L,0x0000400010000006L});
+    public static final BitSet FOLLOW_THROWS_in_methodDeclaration2058 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_qualifiedNameList_in_methodDeclaration2060 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000002L});
+    public static final BitSet FOLLOW_block_in_methodDeclaration2115 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SEMI_in_methodDeclaration2129 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_fieldDeclaration2161 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_fieldDeclaration2171 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_variableDeclarator_in_fieldDeclaration2181 = new BitSet(new long[]{0x0000000002000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_COMMA_in_fieldDeclaration2192 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_variableDeclarator_in_fieldDeclaration2194 = new BitSet(new long[]{0x0000000002000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_fieldDeclaration2215 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_variableDeclarator2235 = new BitSet(new long[]{0x0000004000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_variableDeclarator2246 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_variableDeclarator2248 = new BitSet(new long[]{0x0000004000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_EQ_in_variableDeclarator2270 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1872L});
+    public static final BitSet FOLLOW_variableInitializer_in_variableDeclarator2272 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceFieldDeclaration_in_interfaceBodyDeclaration2311 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceMethodDeclaration_in_interfaceBodyDeclaration2321 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceDeclaration_in_interfaceBodyDeclaration2331 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classDeclaration_in_interfaceBodyDeclaration2341 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SEMI_in_interfaceBodyDeclaration2351 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_interfaceMethodDeclaration2371 = new BitSet(new long[]{0x0840400100214000L,0x0008000020000090L});
+    public static final BitSet FOLLOW_typeParameters_in_interfaceMethodDeclaration2382 = new BitSet(new long[]{0x0840400100214000L,0x0008000020000010L});
+    public static final BitSet FOLLOW_type_in_interfaceMethodDeclaration2404 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_VOID_in_interfaceMethodDeclaration2415 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_interfaceMethodDeclaration2435 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_formalParameters_in_interfaceMethodDeclaration2445 = new BitSet(new long[]{0x0000000000000000L,0x0000400010000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_interfaceMethodDeclaration2456 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_interfaceMethodDeclaration2458 = new BitSet(new long[]{0x0000000000000000L,0x0000400010000004L});
+    public static final BitSet FOLLOW_THROWS_in_interfaceMethodDeclaration2480 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_qualifiedNameList_in_interfaceMethodDeclaration2482 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_interfaceMethodDeclaration2495 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_interfaceFieldDeclaration2517 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_interfaceFieldDeclaration2519 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_variableDeclarator_in_interfaceFieldDeclaration2521 = new BitSet(new long[]{0x0000000002000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_COMMA_in_interfaceFieldDeclaration2532 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_variableDeclarator_in_interfaceFieldDeclaration2534 = new BitSet(new long[]{0x0000000002000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_interfaceFieldDeclaration2555 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classOrInterfaceType_in_type2576 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_type2587 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_type2589 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_primitiveType_in_type2610 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_type2621 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_type2623 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_classOrInterfaceType2655 = new BitSet(new long[]{0x0000000080000002L,0x0000000000000080L});
+    public static final BitSet FOLLOW_typeArguments_in_classOrInterfaceType2666 = new BitSet(new long[]{0x0000000080000002L});
+    public static final BitSet FOLLOW_DOT_in_classOrInterfaceType2688 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_classOrInterfaceType2690 = new BitSet(new long[]{0x0000000080000002L,0x0000000000000080L});
+    public static final BitSet FOLLOW_typeArguments_in_classOrInterfaceType2705 = new BitSet(new long[]{0x0000000080000002L});
+    public static final BitSet FOLLOW_LT_in_typeArguments2842 = new BitSet(new long[]{0x0840400100214000L,0x0000000020800010L});
+    public static final BitSet FOLLOW_typeArgument_in_typeArguments2844 = new BitSet(new long[]{0x0008000002000000L});
+    public static final BitSet FOLLOW_COMMA_in_typeArguments2855 = new BitSet(new long[]{0x0840400100214000L,0x0000000020800010L});
+    public static final BitSet FOLLOW_typeArgument_in_typeArguments2857 = new BitSet(new long[]{0x0008000002000000L});
+    public static final BitSet FOLLOW_GT_in_typeArguments2879 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_type_in_typeArgument2899 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_QUES_in_typeArgument2909 = new BitSet(new long[]{0x0000010000000002L,0x0000010000000000L});
+    public static final BitSet FOLLOW_set_in_typeArgument2933 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_typeArgument2977 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_qualifiedName_in_qualifiedNameList3008 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_COMMA_in_qualifiedNameList3019 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_qualifiedName_in_qualifiedNameList3021 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_LPAREN_in_formalParameters3052 = new BitSet(new long[]{0x0840500100214000L,0x0000000028000210L});
+    public static final BitSet FOLLOW_formalParameterDecls_in_formalParameters3063 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_RPAREN_in_formalParameters3085 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ellipsisParameterDecl_in_formalParameterDecls3105 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_normalParameterDecl_in_formalParameterDecls3115 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_COMMA_in_formalParameterDecls3126 = new BitSet(new long[]{0x0840500100214000L,0x0000000020000210L});
+    public static final BitSet FOLLOW_normalParameterDecl_in_formalParameterDecls3128 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_normalParameterDecl_in_formalParameterDecls3150 = new BitSet(new long[]{0x0000000002000000L});
+    public static final BitSet FOLLOW_COMMA_in_formalParameterDecls3160 = new BitSet(new long[]{0x0840500100214000L,0x0000000020000210L});
+    public static final BitSet FOLLOW_ellipsisParameterDecl_in_formalParameterDecls3182 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_variableModifiers_in_normalParameterDecl3202 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_normalParameterDecl3204 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_normalParameterDecl3206 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_normalParameterDecl3217 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_normalParameterDecl3219 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_variableModifiers_in_ellipsisParameterDecl3250 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_ellipsisParameterDecl3260 = new BitSet(new long[]{0x0000000800000000L});
+    public static final BitSet FOLLOW_ELLIPSIS_in_ellipsisParameterDecl3263 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_ellipsisParameterDecl3273 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_explicitConstructorInvocation3295 = new BitSet(new long[]{0x0000000000000000L,0x0000110000000000L});
+    public static final BitSet FOLLOW_set_in_explicitConstructorInvocation3321 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_arguments_in_explicitConstructorInvocation3353 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_explicitConstructorInvocation3355 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_primary_in_explicitConstructorInvocation3366 = new BitSet(new long[]{0x0000000080000000L});
+    public static final BitSet FOLLOW_DOT_in_explicitConstructorInvocation3376 = new BitSet(new long[]{0x0000000000000000L,0x0000010000000080L});
+    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_explicitConstructorInvocation3387 = new BitSet(new long[]{0x0000000000000000L,0x0000010000000000L});
+    public static final BitSet FOLLOW_SUPER_in_explicitConstructorInvocation3408 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_arguments_in_explicitConstructorInvocation3418 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_explicitConstructorInvocation3420 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_qualifiedName3440 = new BitSet(new long[]{0x0000000080000002L});
+    public static final BitSet FOLLOW_DOT_in_qualifiedName3451 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_qualifiedName3453 = new BitSet(new long[]{0x0000000080000002L});
+    public static final BitSet FOLLOW_annotation_in_annotations3485 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000200L});
+    public static final BitSet FOLLOW_MONKEYS_AT_in_annotation3518 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_qualifiedName_in_annotation3520 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000040L});
+    public static final BitSet FOLLOW_LPAREN_in_annotation3534 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0280A1A72L});
+    public static final BitSet FOLLOW_elementValuePairs_in_annotation3561 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_elementValue_in_annotation3585 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_RPAREN_in_annotation3621 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_elementValuePair_in_elementValuePairs3653 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_COMMA_in_elementValuePairs3664 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_elementValuePair_in_elementValuePairs3666 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_elementValuePair3697 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_EQ_in_elementValuePair3699 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1A72L});
+    public static final BitSet FOLLOW_elementValue_in_elementValuePair3701 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionalExpression_in_elementValue3721 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_annotation_in_elementValue3731 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_elementValueArrayInitializer_in_elementValue3741 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACE_in_elementValueArrayInitializer3761 = new BitSet(new long[]{0x2840C80302614200L,0x000A91B0210A1A72L});
+    public static final BitSet FOLLOW_elementValue_in_elementValueArrayInitializer3772 = new BitSet(new long[]{0x0000000002000000L,0x0000000001000000L});
+    public static final BitSet FOLLOW_COMMA_in_elementValueArrayInitializer3787 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1A72L});
+    public static final BitSet FOLLOW_elementValue_in_elementValueArrayInitializer3789 = new BitSet(new long[]{0x0000000002000000L,0x0000000001000000L});
+    public static final BitSet FOLLOW_COMMA_in_elementValueArrayInitializer3818 = new BitSet(new long[]{0x0000000000000000L,0x0000000001000000L});
+    public static final BitSet FOLLOW_RBRACE_in_elementValueArrayInitializer3822 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_annotationTypeDeclaration3845 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000200L});
+    public static final BitSet FOLLOW_MONKEYS_AT_in_annotationTypeDeclaration3847 = new BitSet(new long[]{0x1000000000000000L});
+    public static final BitSet FOLLOW_INTERFACE_in_annotationTypeDeclaration3857 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_annotationTypeDeclaration3867 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_annotationTypeBody_in_annotationTypeDeclaration3877 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACE_in_annotationTypeBody3898 = new BitSet(new long[]{0x1840502100A14010L,0x0011040C31700610L});
+    public static final BitSet FOLLOW_annotationTypeElementDeclaration_in_annotationTypeBody3910 = new BitSet(new long[]{0x1840502100A14010L,0x0011040C31700610L});
+    public static final BitSet FOLLOW_RBRACE_in_annotationTypeBody3932 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_annotationMethodDeclaration_in_annotationTypeElementDeclaration3954 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceFieldDeclaration_in_annotationTypeElementDeclaration3964 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_normalClassDeclaration_in_annotationTypeElementDeclaration3974 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_normalInterfaceDeclaration_in_annotationTypeElementDeclaration3984 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_enumDeclaration_in_annotationTypeElementDeclaration3994 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_annotationTypeDeclaration_in_annotationTypeElementDeclaration4004 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SEMI_in_annotationTypeElementDeclaration4014 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_annotationMethodDeclaration4034 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_annotationMethodDeclaration4036 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_annotationMethodDeclaration4038 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_LPAREN_in_annotationMethodDeclaration4048 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_RPAREN_in_annotationMethodDeclaration4050 = new BitSet(new long[]{0x0000000020000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_DEFAULT_in_annotationMethodDeclaration4053 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1A72L});
+    public static final BitSet FOLLOW_elementValue_in_annotationMethodDeclaration4055 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_annotationMethodDeclaration4084 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACE_in_block4108 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1E72L});
+    public static final BitSet FOLLOW_blockStatement_in_block4119 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1E72L});
+    public static final BitSet FOLLOW_RBRACE_in_block4140 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_localVariableDeclarationStatement_in_blockStatement4162 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classOrInterfaceDeclaration_in_blockStatement4172 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_statement_in_blockStatement4182 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_localVariableDeclaration_in_localVariableDeclarationStatement4203 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_localVariableDeclarationStatement4213 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_variableModifiers_in_localVariableDeclaration4233 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_localVariableDeclaration4235 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_variableDeclarator_in_localVariableDeclaration4245 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_COMMA_in_localVariableDeclaration4256 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_variableDeclarator_in_localVariableDeclaration4258 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_block_in_statement4289 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ASSERT_in_statement4313 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_statement4333 = new BitSet(new long[]{0x0000000001000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_COLON_in_statement4336 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_statement4338 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_statement4342 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ASSERT_in_statement4352 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_statement4355 = new BitSet(new long[]{0x0000000001000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_COLON_in_statement4358 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_statement4360 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_statement4364 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IF_in_statement4386 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_parExpression_in_statement4388 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
+    public static final BitSet FOLLOW_statement_in_statement4390 = new BitSet(new long[]{0x0000001000000002L});
+    public static final BitSet FOLLOW_ELSE_in_statement4393 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
+    public static final BitSet FOLLOW_statement_in_statement4395 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_forstatement_in_statement4417 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_WHILE_in_statement4427 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_parExpression_in_statement4429 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
+    public static final BitSet FOLLOW_statement_in_statement4431 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DO_in_statement4441 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
+    public static final BitSet FOLLOW_statement_in_statement4443 = new BitSet(new long[]{0x0000000000000000L,0x0020000000000000L});
+    public static final BitSet FOLLOW_WHILE_in_statement4445 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_parExpression_in_statement4447 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_statement4449 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_trystatement_in_statement4459 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SWITCH_in_statement4469 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_parExpression_in_statement4471 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACE_in_statement4473 = new BitSet(new long[]{0x0000000020080000L,0x0000000001000000L});
+    public static final BitSet FOLLOW_switchBlockStatementGroups_in_statement4475 = new BitSet(new long[]{0x0000000000000000L,0x0000000001000000L});
+    public static final BitSet FOLLOW_RBRACE_in_statement4477 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SYNCHRONIZED_in_statement4487 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_parExpression_in_statement4489 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_block_in_statement4491 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_RETURN_in_statement4501 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0300A1870L});
+    public static final BitSet FOLLOW_expression_in_statement4504 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_statement4509 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_THROW_in_statement4519 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_statement4521 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_statement4523 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_BREAK_in_statement4533 = new BitSet(new long[]{0x0040000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_statement4548 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_statement4565 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_CONTINUE_in_statement4575 = new BitSet(new long[]{0x0040000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_statement4590 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_statement4607 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expression_in_statement4617 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_statement4620 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_statement4635 = new BitSet(new long[]{0x0000000001000000L});
+    public static final BitSet FOLLOW_COLON_in_statement4637 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
+    public static final BitSet FOLLOW_statement_in_statement4639 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SEMI_in_statement4649 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_switchBlockStatementGroup_in_switchBlockStatementGroups4671 = new BitSet(new long[]{0x0000000020080002L});
+    public static final BitSet FOLLOW_switchLabel_in_switchBlockStatementGroup4700 = new BitSet(new long[]{0x38C1D82350E1C312L,0x003FB7BC347A1E72L});
+    public static final BitSet FOLLOW_blockStatement_in_switchBlockStatementGroup4711 = new BitSet(new long[]{0x38C1D82350E1C312L,0x003FB7BC347A1E72L});
+    public static final BitSet FOLLOW_CASE_in_switchLabel4742 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_switchLabel4744 = new BitSet(new long[]{0x0000000001000000L});
+    public static final BitSet FOLLOW_COLON_in_switchLabel4746 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DEFAULT_in_switchLabel4756 = new BitSet(new long[]{0x0000000001000000L});
+    public static final BitSet FOLLOW_COLON_in_switchLabel4758 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_TRY_in_trystatement4779 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_block_in_trystatement4781 = new BitSet(new long[]{0x0000200000100000L});
+    public static final BitSet FOLLOW_catches_in_trystatement4795 = new BitSet(new long[]{0x0000200000000000L});
+    public static final BitSet FOLLOW_FINALLY_in_trystatement4797 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_block_in_trystatement4799 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_catches_in_trystatement4813 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_FINALLY_in_trystatement4827 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_block_in_trystatement4829 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_catchClause_in_catches4860 = new BitSet(new long[]{0x0000000000100002L});
+    public static final BitSet FOLLOW_catchClause_in_catches4871 = new BitSet(new long[]{0x0000000000100002L});
+    public static final BitSet FOLLOW_CATCH_in_catchClause4902 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_LPAREN_in_catchClause4904 = new BitSet(new long[]{0x0840500100214000L,0x0000000020000210L});
+    public static final BitSet FOLLOW_formalParameter_in_catchClause4906 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_RPAREN_in_catchClause4916 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_block_in_catchClause4918 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_variableModifiers_in_formalParameter4939 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_formalParameter4941 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_formalParameter4943 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_formalParameter4954 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_formalParameter4956 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_FOR_in_forstatement5005 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_LPAREN_in_forstatement5007 = new BitSet(new long[]{0x0840500100214000L,0x0000000020000210L});
+    public static final BitSet FOLLOW_variableModifiers_in_forstatement5009 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_forstatement5011 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_forstatement5013 = new BitSet(new long[]{0x0000000001000000L});
+    public static final BitSet FOLLOW_COLON_in_forstatement5015 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_forstatement5026 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_RPAREN_in_forstatement5028 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
+    public static final BitSet FOLLOW_statement_in_forstatement5030 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_FOR_in_forstatement5062 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_LPAREN_in_forstatement5064 = new BitSet(new long[]{0x2840D80300614200L,0x000A91B0300A1A70L});
+    public static final BitSet FOLLOW_forInit_in_forstatement5084 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_forstatement5105 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0300A1870L});
+    public static final BitSet FOLLOW_expression_in_forstatement5125 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_forstatement5146 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0280A1870L});
+    public static final BitSet FOLLOW_expressionList_in_forstatement5166 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_RPAREN_in_forstatement5187 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
+    public static final BitSet FOLLOW_statement_in_forstatement5189 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_localVariableDeclaration_in_forInit5209 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expressionList_in_forInit5219 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LPAREN_in_parExpression5239 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_parExpression5241 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_RPAREN_in_parExpression5243 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expression_in_expressionList5263 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_COMMA_in_expressionList5274 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_expressionList5276 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_conditionalExpression_in_expression5308 = new BitSet(new long[]{0x0008004000042082L,0x0000004280050080L});
+    public static final BitSet FOLLOW_assignmentOperator_in_expression5319 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_expression5321 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_EQ_in_assignmentOperator5353 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_PLUSEQ_in_assignmentOperator5363 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SUBEQ_in_assignmentOperator5373 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_STAREQ_in_assignmentOperator5383 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SLASHEQ_in_assignmentOperator5393 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_AMPEQ_in_assignmentOperator5403 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_BAREQ_in_assignmentOperator5413 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_CARETEQ_in_assignmentOperator5423 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_PERCENTEQ_in_assignmentOperator5433 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LT_in_assignmentOperator5444 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_LT_in_assignmentOperator5446 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_EQ_in_assignmentOperator5448 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_GT_in_assignmentOperator5459 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_GT_in_assignmentOperator5461 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_GT_in_assignmentOperator5463 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_EQ_in_assignmentOperator5465 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_GT_in_assignmentOperator5476 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_GT_in_assignmentOperator5478 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_EQ_in_assignmentOperator5480 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionalOrExpression_in_conditionalExpression5501 = new BitSet(new long[]{0x0000000000000002L,0x0000000000800000L});
+    public static final BitSet FOLLOW_QUES_in_conditionalExpression5512 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_conditionalExpression5514 = new BitSet(new long[]{0x0000000001000000L});
+    public static final BitSet FOLLOW_COLON_in_conditionalExpression5516 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_conditionalExpression_in_conditionalExpression5518 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_conditionalAndExpression_in_conditionalOrExpression5549 = new BitSet(new long[]{0x0000000000001002L});
+    public static final BitSet FOLLOW_BARBAR_in_conditionalOrExpression5560 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_conditionalAndExpression_in_conditionalOrExpression5562 = new BitSet(new long[]{0x0000000000001002L});
+    public static final BitSet FOLLOW_inclusiveOrExpression_in_conditionalAndExpression5593 = new BitSet(new long[]{0x0000000000000042L});
+    public static final BitSet FOLLOW_AMPAMP_in_conditionalAndExpression5604 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_inclusiveOrExpression_in_conditionalAndExpression5606 = new BitSet(new long[]{0x0000000000000042L});
+    public static final BitSet FOLLOW_exclusiveOrExpression_in_inclusiveOrExpression5637 = new BitSet(new long[]{0x0000000000000802L});
+    public static final BitSet FOLLOW_BAR_in_inclusiveOrExpression5648 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_exclusiveOrExpression_in_inclusiveOrExpression5650 = new BitSet(new long[]{0x0000000000000802L});
+    public static final BitSet FOLLOW_andExpression_in_exclusiveOrExpression5681 = new BitSet(new long[]{0x0000000000020002L});
+    public static final BitSet FOLLOW_CARET_in_exclusiveOrExpression5692 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_andExpression_in_exclusiveOrExpression5694 = new BitSet(new long[]{0x0000000000020002L});
+    public static final BitSet FOLLOW_equalityExpression_in_andExpression5725 = new BitSet(new long[]{0x0000000000000022L});
+    public static final BitSet FOLLOW_AMP_in_andExpression5736 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_equalityExpression_in_andExpression5738 = new BitSet(new long[]{0x0000000000000022L});
+    public static final BitSet FOLLOW_instanceOfExpression_in_equalityExpression5769 = new BitSet(new long[]{0x0000008000000402L});
+    public static final BitSet FOLLOW_set_in_equalityExpression5796 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_instanceOfExpression_in_equalityExpression5846 = new BitSet(new long[]{0x0000008000000402L});
+    public static final BitSet FOLLOW_relationalExpression_in_instanceOfExpression5877 = new BitSet(new long[]{0x0400000000000002L});
+    public static final BitSet FOLLOW_INSTANCEOF_in_instanceOfExpression5888 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_instanceOfExpression5890 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_shiftExpression_in_relationalExpression5921 = new BitSet(new long[]{0x0008000000000002L,0x0000000000000080L});
+    public static final BitSet FOLLOW_relationalOp_in_relationalExpression5932 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_shiftExpression_in_relationalExpression5934 = new BitSet(new long[]{0x0008000000000002L,0x0000000000000080L});
+    public static final BitSet FOLLOW_LT_in_relationalOp5966 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_EQ_in_relationalOp5968 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_GT_in_relationalOp5979 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_EQ_in_relationalOp5981 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LT_in_relationalOp5991 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_GT_in_relationalOp6001 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_additiveExpression_in_shiftExpression6021 = new BitSet(new long[]{0x0008000000000002L,0x0000000000000080L});
+    public static final BitSet FOLLOW_shiftOp_in_shiftExpression6032 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_additiveExpression_in_shiftExpression6034 = new BitSet(new long[]{0x0008000000000002L,0x0000000000000080L});
+    public static final BitSet FOLLOW_LT_in_shiftOp6067 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_LT_in_shiftOp6069 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_GT_in_shiftOp6080 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_GT_in_shiftOp6082 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_GT_in_shiftOp6084 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_GT_in_shiftOp6095 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_GT_in_shiftOp6097 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_multiplicativeExpression_in_additiveExpression6118 = new BitSet(new long[]{0x0000000000000002L,0x0000002000020000L});
+    public static final BitSet FOLLOW_set_in_additiveExpression6145 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_multiplicativeExpression_in_additiveExpression6195 = new BitSet(new long[]{0x0000000000000002L,0x0000002000020000L});
+    public static final BitSet FOLLOW_unaryExpression_in_multiplicativeExpression6233 = new BitSet(new long[]{0x0000000000000002L,0x0000000140008000L});
+    public static final BitSet FOLLOW_set_in_multiplicativeExpression6260 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_unaryExpression_in_multiplicativeExpression6328 = new BitSet(new long[]{0x0000000000000002L,0x0000000140008000L});
+    public static final BitSet FOLLOW_PLUS_in_unaryExpression6361 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_unaryExpression_in_unaryExpression6364 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SUB_in_unaryExpression6374 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_unaryExpression_in_unaryExpression6376 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_PLUSPLUS_in_unaryExpression6386 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_unaryExpression_in_unaryExpression6388 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SUBSUB_in_unaryExpression6398 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_unaryExpression_in_unaryExpression6400 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_unaryExpressionNotPlusMinus_in_unaryExpression6410 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_TILDE_in_unaryExpressionNotPlusMinus6430 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_unaryExpression_in_unaryExpressionNotPlusMinus6432 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_BANG_in_unaryExpressionNotPlusMinus6442 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_unaryExpression_in_unaryExpressionNotPlusMinus6444 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_castExpression_in_unaryExpressionNotPlusMinus6454 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_primary_in_unaryExpressionNotPlusMinus6464 = new BitSet(new long[]{0x0000000080000002L,0x0000008000080004L});
+    public static final BitSet FOLLOW_selector_in_unaryExpressionNotPlusMinus6475 = new BitSet(new long[]{0x0000000080000002L,0x0000008000080004L});
+    public static final BitSet FOLLOW_LPAREN_in_castExpression6545 = new BitSet(new long[]{0x0800400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_primitiveType_in_castExpression6547 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_RPAREN_in_castExpression6549 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_unaryExpression_in_castExpression6551 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LPAREN_in_castExpression6561 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_castExpression6563 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_RPAREN_in_castExpression6565 = new BitSet(new long[]{0x2840C80300614200L,0x000A911020001870L});
+    public static final BitSet FOLLOW_unaryExpressionNotPlusMinus_in_castExpression6567 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_parExpression_in_primary6589 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_THIS_in_primary6615 = new BitSet(new long[]{0x0000000080000002L,0x0000000000000044L});
+    public static final BitSet FOLLOW_DOT_in_primary6626 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_primary6632 = new BitSet(new long[]{0x0000000080000002L,0x0000000000000044L});
+    public static final BitSet FOLLOW_identifierSuffix_in_primary6654 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_primary6681 = new BitSet(new long[]{0x0000000080000002L,0x0000000000000044L});
+    public static final BitSet FOLLOW_DOT_in_primary6692 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_primary6698 = new BitSet(new long[]{0x0000000080000002L,0x0000000000000044L});
+    public static final BitSet FOLLOW_identifierSuffix_in_primary6720 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_SUPER_in_primary6743 = new BitSet(new long[]{0x0000000080000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_superSuffix_in_primary6753 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_literal_in_primary6763 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_creator_in_primary6773 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_primitiveType_in_primary6783 = new BitSet(new long[]{0x0000000080000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_primary6794 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_primary6796 = new BitSet(new long[]{0x0000000080000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_DOT_in_primary6817 = new BitSet(new long[]{0x0000000000800000L});
+    public static final BitSet FOLLOW_CLASS_in_primary6819 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_VOID_in_primary6829 = new BitSet(new long[]{0x0000000080000000L});
+    public static final BitSet FOLLOW_DOT_in_primary6831 = new BitSet(new long[]{0x0000000000800000L});
+    public static final BitSet FOLLOW_CLASS_in_primary6833 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_arguments_in_superSuffix6859 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOT_in_superSuffix6869 = new BitSet(new long[]{0x0040000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_typeArguments_in_superSuffix6872 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_superSuffix6893 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000040L});
+    public static final BitSet FOLLOW_arguments_in_superSuffix6904 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACKET_in_identifierSuffix6936 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_identifierSuffix6938 = new BitSet(new long[]{0x0000000080000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_DOT_in_identifierSuffix6959 = new BitSet(new long[]{0x0000000000800000L});
+    public static final BitSet FOLLOW_CLASS_in_identifierSuffix6961 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACKET_in_identifierSuffix6972 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_identifierSuffix6974 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_identifierSuffix6976 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_arguments_in_identifierSuffix6997 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOT_in_identifierSuffix7007 = new BitSet(new long[]{0x0000000000800000L});
+    public static final BitSet FOLLOW_CLASS_in_identifierSuffix7009 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOT_in_identifierSuffix7019 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_identifierSuffix7021 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_identifierSuffix7023 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_arguments_in_identifierSuffix7025 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOT_in_identifierSuffix7035 = new BitSet(new long[]{0x0000000000000000L,0x0000100000000000L});
+    public static final BitSet FOLLOW_THIS_in_identifierSuffix7037 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOT_in_identifierSuffix7047 = new BitSet(new long[]{0x0000000000000000L,0x0000010000000000L});
+    public static final BitSet FOLLOW_SUPER_in_identifierSuffix7049 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_arguments_in_identifierSuffix7051 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_innerCreator_in_identifierSuffix7061 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOT_in_selector7083 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_selector7085 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000040L});
+    public static final BitSet FOLLOW_arguments_in_selector7096 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOT_in_selector7117 = new BitSet(new long[]{0x0000000000000000L,0x0000100000000000L});
+    public static final BitSet FOLLOW_THIS_in_selector7119 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOT_in_selector7129 = new BitSet(new long[]{0x0000000000000000L,0x0000010000000000L});
+    public static final BitSet FOLLOW_SUPER_in_selector7131 = new BitSet(new long[]{0x0000000080000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_superSuffix_in_selector7141 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_innerCreator_in_selector7151 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACKET_in_selector7161 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_selector7163 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_selector7165 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_NEW_in_creator7185 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_creator7187 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_classOrInterfaceType_in_creator7189 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_classCreatorRest_in_creator7191 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_NEW_in_creator7201 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_classOrInterfaceType_in_creator7203 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_classCreatorRest_in_creator7205 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_arrayCreator_in_creator7215 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_NEW_in_arrayCreator7235 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_createdName_in_arrayCreator7237 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_arrayCreator7247 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_arrayCreator7249 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000006L});
+    public static final BitSet FOLLOW_LBRACKET_in_arrayCreator7260 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_arrayCreator7262 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000006L});
+    public static final BitSet FOLLOW_arrayInitializer_in_arrayCreator7283 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_NEW_in_arrayCreator7294 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_createdName_in_arrayCreator7296 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_arrayCreator7306 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_arrayCreator7308 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_arrayCreator7318 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_arrayCreator7332 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_arrayCreator7334 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_arrayCreator7348 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_arrayCreator7370 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_arrayCreator7372 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000004L});
+    public static final BitSet FOLLOW_arrayInitializer_in_variableInitializer7403 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expression_in_variableInitializer7413 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACE_in_arrayInitializer7433 = new BitSet(new long[]{0x2840C80302614200L,0x000A91B0210A1872L});
+    public static final BitSet FOLLOW_variableInitializer_in_arrayInitializer7449 = new BitSet(new long[]{0x0000000002000000L,0x0000000001000000L});
+    public static final BitSet FOLLOW_COMMA_in_arrayInitializer7468 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1872L});
+    public static final BitSet FOLLOW_variableInitializer_in_arrayInitializer7470 = new BitSet(new long[]{0x0000000002000000L,0x0000000001000000L});
+    public static final BitSet FOLLOW_COMMA_in_arrayInitializer7520 = new BitSet(new long[]{0x0000000000000000L,0x0000000001000000L});
+    public static final BitSet FOLLOW_RBRACE_in_arrayInitializer7533 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classOrInterfaceType_in_createdName7567 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_primitiveType_in_createdName7577 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOT_in_innerCreator7598 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_NEW_in_innerCreator7600 = new BitSet(new long[]{0x0040000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_innerCreator7611 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_innerCreator7632 = new BitSet(new long[]{0x0000000000000000L,0x00000000000000C0L});
+    public static final BitSet FOLLOW_typeArguments_in_innerCreator7643 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_classCreatorRest_in_innerCreator7664 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_arguments_in_classCreatorRest7685 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000002L});
+    public static final BitSet FOLLOW_classBody_in_classCreatorRest7696 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LT_in_nonWildcardTypeArguments7728 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_typeList_in_nonWildcardTypeArguments7730 = new BitSet(new long[]{0x0008000000000000L});
+    public static final BitSet FOLLOW_GT_in_nonWildcardTypeArguments7740 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LPAREN_in_arguments7760 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0280A1870L});
+    public static final BitSet FOLLOW_expressionList_in_arguments7763 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_RPAREN_in_arguments7776 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_classHeader7900 = new BitSet(new long[]{0x0000000000800000L});
+    public static final BitSet FOLLOW_CLASS_in_classHeader7902 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_classHeader7904 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_enumHeader7924 = new BitSet(new long[]{0x0040002000000000L});
+    public static final BitSet FOLLOW_set_in_enumHeader7926 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_enumHeader7932 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_interfaceHeader7952 = new BitSet(new long[]{0x1000000000000000L});
+    public static final BitSet FOLLOW_INTERFACE_in_interfaceHeader7954 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_interfaceHeader7956 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_annotationHeader7976 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000200L});
+    public static final BitSet FOLLOW_MONKEYS_AT_in_annotationHeader7978 = new BitSet(new long[]{0x1000000000000000L});
+    public static final BitSet FOLLOW_INTERFACE_in_annotationHeader7980 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_annotationHeader7982 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_typeHeader8002 = new BitSet(new long[]{0x1000002000800000L,0x0000000000000200L});
+    public static final BitSet FOLLOW_CLASS_in_typeHeader8005 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_ENUM_in_typeHeader8007 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_MONKEYS_AT_in_typeHeader8010 = new BitSet(new long[]{0x1000000000000000L});
+    public static final BitSet FOLLOW_INTERFACE_in_typeHeader8014 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_typeHeader8018 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_methodHeader8038 = new BitSet(new long[]{0x0840400100214000L,0x0008000020000090L});
+    public static final BitSet FOLLOW_typeParameters_in_methodHeader8040 = new BitSet(new long[]{0x0840400100214000L,0x0008000020000010L});
+    public static final BitSet FOLLOW_type_in_methodHeader8044 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_VOID_in_methodHeader8046 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_methodHeader8050 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_LPAREN_in_methodHeader8052 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_fieldHeader8072 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_fieldHeader8074 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_fieldHeader8076 = new BitSet(new long[]{0x0000004002000000L,0x0000000010000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_fieldHeader8079 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_fieldHeader8080 = new BitSet(new long[]{0x0000004002000000L,0x0000000010000004L});
+    public static final BitSet FOLLOW_set_in_fieldHeader8084 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_variableModifiers_in_localVariableHeader8110 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_localVariableHeader8112 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_localVariableHeader8114 = new BitSet(new long[]{0x0000004002000000L,0x0000000010000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_localVariableHeader8117 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_localVariableHeader8118 = new BitSet(new long[]{0x0000004002000000L,0x0000000010000004L});
+    public static final BitSet FOLLOW_set_in_localVariableHeader8122 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_annotations_in_synpred2_NoDynamicLoadingANTLR101 = new BitSet(new long[]{0x0000000000000000L,0x0000000000004000L});
+    public static final BitSet FOLLOW_packageDeclaration_in_synpred2_NoDynamicLoadingANTLR130 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classDeclaration_in_synpred12_NoDynamicLoadingANTLR488 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_normalClassDeclaration_in_synpred27_NoDynamicLoadingANTLR725 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_normalInterfaceDeclaration_in_synpred43_NoDynamicLoadingANTLR1404 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_fieldDeclaration_in_synpred52_NoDynamicLoadingANTLR1734 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_methodDeclaration_in_synpred53_NoDynamicLoadingANTLR1745 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classDeclaration_in_synpred54_NoDynamicLoadingANTLR1756 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_explicitConstructorInvocation_in_synpred57_NoDynamicLoadingANTLR1893 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_modifiers_in_synpred59_NoDynamicLoadingANTLR1805 = new BitSet(new long[]{0x0040000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_typeParameters_in_synpred59_NoDynamicLoadingANTLR1816 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_synpred59_NoDynamicLoadingANTLR1837 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_formalParameters_in_synpred59_NoDynamicLoadingANTLR1847 = new BitSet(new long[]{0x0000000000000000L,0x0000400000000002L});
+    public static final BitSet FOLLOW_THROWS_in_synpred59_NoDynamicLoadingANTLR1858 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_qualifiedNameList_in_synpred59_NoDynamicLoadingANTLR1860 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACE_in_synpred59_NoDynamicLoadingANTLR1881 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1EF2L});
+    public static final BitSet FOLLOW_explicitConstructorInvocation_in_synpred59_NoDynamicLoadingANTLR1893 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1E72L});
+    public static final BitSet FOLLOW_blockStatement_in_synpred59_NoDynamicLoadingANTLR1915 = new BitSet(new long[]{0x38C1D82350E1C310L,0x003FB7BC357A1E72L});
+    public static final BitSet FOLLOW_RBRACE_in_synpred59_NoDynamicLoadingANTLR1936 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceFieldDeclaration_in_synpred68_NoDynamicLoadingANTLR2311 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceMethodDeclaration_in_synpred69_NoDynamicLoadingANTLR2321 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceDeclaration_in_synpred70_NoDynamicLoadingANTLR2331 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classDeclaration_in_synpred71_NoDynamicLoadingANTLR2341 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ellipsisParameterDecl_in_synpred96_NoDynamicLoadingANTLR3105 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_normalParameterDecl_in_synpred98_NoDynamicLoadingANTLR3115 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_COMMA_in_synpred98_NoDynamicLoadingANTLR3126 = new BitSet(new long[]{0x0840500100214000L,0x0000000020000210L});
+    public static final BitSet FOLLOW_normalParameterDecl_in_synpred98_NoDynamicLoadingANTLR3128 = new BitSet(new long[]{0x0000000002000002L});
+    public static final BitSet FOLLOW_normalParameterDecl_in_synpred99_NoDynamicLoadingANTLR3150 = new BitSet(new long[]{0x0000000002000000L});
+    public static final BitSet FOLLOW_COMMA_in_synpred99_NoDynamicLoadingANTLR3160 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_synpred103_NoDynamicLoadingANTLR3295 = new BitSet(new long[]{0x0000000000000000L,0x0000110000000000L});
+    public static final BitSet FOLLOW_set_in_synpred103_NoDynamicLoadingANTLR3321 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_arguments_in_synpred103_NoDynamicLoadingANTLR3353 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_synpred103_NoDynamicLoadingANTLR3355 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_annotationMethodDeclaration_in_synpred117_NoDynamicLoadingANTLR3954 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_interfaceFieldDeclaration_in_synpred118_NoDynamicLoadingANTLR3964 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_normalClassDeclaration_in_synpred119_NoDynamicLoadingANTLR3974 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_normalInterfaceDeclaration_in_synpred120_NoDynamicLoadingANTLR3984 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_enumDeclaration_in_synpred121_NoDynamicLoadingANTLR3994 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_annotationTypeDeclaration_in_synpred122_NoDynamicLoadingANTLR4004 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_localVariableDeclarationStatement_in_synpred125_NoDynamicLoadingANTLR4162 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_classOrInterfaceDeclaration_in_synpred126_NoDynamicLoadingANTLR4172 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ASSERT_in_synpred130_NoDynamicLoadingANTLR4313 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_synpred130_NoDynamicLoadingANTLR4333 = new BitSet(new long[]{0x0000000001000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_COLON_in_synpred130_NoDynamicLoadingANTLR4336 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_synpred130_NoDynamicLoadingANTLR4338 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_synpred130_NoDynamicLoadingANTLR4342 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ASSERT_in_synpred132_NoDynamicLoadingANTLR4352 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_synpred132_NoDynamicLoadingANTLR4355 = new BitSet(new long[]{0x0000000001000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_COLON_in_synpred132_NoDynamicLoadingANTLR4358 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_synpred132_NoDynamicLoadingANTLR4360 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_synpred132_NoDynamicLoadingANTLR4364 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ELSE_in_synpred133_NoDynamicLoadingANTLR4393 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
+    public static final BitSet FOLLOW_statement_in_synpred133_NoDynamicLoadingANTLR4395 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expression_in_synpred148_NoDynamicLoadingANTLR4617 = new BitSet(new long[]{0x0000000000000000L,0x0000000010000000L});
+    public static final BitSet FOLLOW_SEMI_in_synpred148_NoDynamicLoadingANTLR4620 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_synpred149_NoDynamicLoadingANTLR4635 = new BitSet(new long[]{0x0000000001000000L});
+    public static final BitSet FOLLOW_COLON_in_synpred149_NoDynamicLoadingANTLR4637 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
+    public static final BitSet FOLLOW_statement_in_synpred149_NoDynamicLoadingANTLR4639 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_catches_in_synpred153_NoDynamicLoadingANTLR4795 = new BitSet(new long[]{0x0000200000000000L});
+    public static final BitSet FOLLOW_FINALLY_in_synpred153_NoDynamicLoadingANTLR4797 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000002L});
+    public static final BitSet FOLLOW_block_in_synpred153_NoDynamicLoadingANTLR4799 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_catches_in_synpred154_NoDynamicLoadingANTLR4813 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_FOR_in_synpred157_NoDynamicLoadingANTLR5005 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_LPAREN_in_synpred157_NoDynamicLoadingANTLR5007 = new BitSet(new long[]{0x0840500100214000L,0x0000000020000210L});
+    public static final BitSet FOLLOW_variableModifiers_in_synpred157_NoDynamicLoadingANTLR5009 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_type_in_synpred157_NoDynamicLoadingANTLR5011 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_synpred157_NoDynamicLoadingANTLR5013 = new BitSet(new long[]{0x0000000001000000L});
+    public static final BitSet FOLLOW_COLON_in_synpred157_NoDynamicLoadingANTLR5015 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_synpred157_NoDynamicLoadingANTLR5026 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_RPAREN_in_synpred157_NoDynamicLoadingANTLR5028 = new BitSet(new long[]{0x28C1C8035061C300L,0x002EB7B0340A1872L});
+    public static final BitSet FOLLOW_statement_in_synpred157_NoDynamicLoadingANTLR5030 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_localVariableDeclaration_in_synpred161_NoDynamicLoadingANTLR5209 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_castExpression_in_synpred202_NoDynamicLoadingANTLR6454 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LPAREN_in_synpred206_NoDynamicLoadingANTLR6545 = new BitSet(new long[]{0x0800400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_primitiveType_in_synpred206_NoDynamicLoadingANTLR6547 = new BitSet(new long[]{0x0000000000000000L,0x0000000008000000L});
+    public static final BitSet FOLLOW_RPAREN_in_synpred206_NoDynamicLoadingANTLR6549 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_unaryExpression_in_synpred206_NoDynamicLoadingANTLR6551 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOT_in_synpred208_NoDynamicLoadingANTLR6626 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_synpred208_NoDynamicLoadingANTLR6632 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_identifierSuffix_in_synpred209_NoDynamicLoadingANTLR6654 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DOT_in_synpred211_NoDynamicLoadingANTLR6692 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_IDENTIFIER_in_synpred211_NoDynamicLoadingANTLR6698 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_identifierSuffix_in_synpred212_NoDynamicLoadingANTLR6720 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACKET_in_synpred224_NoDynamicLoadingANTLR6972 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_synpred224_NoDynamicLoadingANTLR6974 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_synpred224_NoDynamicLoadingANTLR6976 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_NEW_in_synpred236_NoDynamicLoadingANTLR7185 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000080L});
+    public static final BitSet FOLLOW_nonWildcardTypeArguments_in_synpred236_NoDynamicLoadingANTLR7187 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_classOrInterfaceType_in_synpred236_NoDynamicLoadingANTLR7189 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_classCreatorRest_in_synpred236_NoDynamicLoadingANTLR7191 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_NEW_in_synpred237_NoDynamicLoadingANTLR7201 = new BitSet(new long[]{0x0040000000000000L});
+    public static final BitSet FOLLOW_classOrInterfaceType_in_synpred237_NoDynamicLoadingANTLR7203 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000040L});
+    public static final BitSet FOLLOW_classCreatorRest_in_synpred237_NoDynamicLoadingANTLR7205 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_NEW_in_synpred239_NoDynamicLoadingANTLR7235 = new BitSet(new long[]{0x0840400100214000L,0x0000000020000010L});
+    public static final BitSet FOLLOW_createdName_in_synpred239_NoDynamicLoadingANTLR7237 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000004L});
+    public static final BitSet FOLLOW_LBRACKET_in_synpred239_NoDynamicLoadingANTLR7247 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_synpred239_NoDynamicLoadingANTLR7249 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000006L});
+    public static final BitSet FOLLOW_LBRACKET_in_synpred239_NoDynamicLoadingANTLR7260 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_synpred239_NoDynamicLoadingANTLR7262 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000006L});
+    public static final BitSet FOLLOW_arrayInitializer_in_synpred239_NoDynamicLoadingANTLR7283 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LBRACKET_in_synpred240_NoDynamicLoadingANTLR7332 = new BitSet(new long[]{0x2840C80300614200L,0x000A91B0200A1870L});
+    public static final BitSet FOLLOW_expression_in_synpred240_NoDynamicLoadingANTLR7334 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_RBRACKET_in_synpred240_NoDynamicLoadingANTLR7348 = new BitSet(new long[]{0x0000000000000002L});
 
 }

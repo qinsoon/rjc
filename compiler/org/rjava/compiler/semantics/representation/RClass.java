@@ -46,15 +46,10 @@ public class RClass {
 	fetchMethods();
     }
 
+
     private void fetchMethods() {
 	for (SootMethod m : internal.getMethods()) {
 	    methods.add(new RMethod(this, m));
-	}
-	
-	if (SemanticMap.DEBUG) {
-	    System.out.println("---Methods for " + name + "---");
-	    for (RMethod m : methods)
-		System.out.println(m);
 	}
     }
 

@@ -13,7 +13,7 @@ import static org.rjava.compiler.Constants.*;
 public class StaticRestrictionChecker {
     public void comply(RClass klass, SemanticMap semantics) throws RJavaError, RJavaWarning{
 	for (RRestriction restriction : klass.getRestrictions()) {
-	    System.out.print("  Checking " + restriction.getName() + " on " + klass.getName() + "...");
+	    System.out.println("Checking " + restriction.getName() + " on " + klass.getName() + "...");
 	    try {
 		Class checkClass = Class.forName(restriction.getName() + CHECK_RULE_SUFFIX);
 		Method checkMethod = checkClass.getDeclaredMethod(CHECK_CLASS_METHOD, CHECK_CLASS_PARA);  

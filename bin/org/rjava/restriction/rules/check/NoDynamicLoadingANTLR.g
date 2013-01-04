@@ -290,9 +290,38 @@ options {
 
 @header {
 package org.rjava.restriction.rules.check;
+
+import org.rjava.restriction.rules.NoDynamicLoading_CHECK;
+import org.rjava.compiler.semantics.*;
+import org.rjava.compiler.semantics.representation.*;
+import org.rjava.compiler.semantics.symtab.*;
 }
 @lexer::header {
 package org.rjava.restriction.rules.check;
+}
+
+@members {
+  public static final boolean DEBUG = true;
+  
+  public void checkMethodInvocation(List ids) {
+    if (DEBUG)
+      System.out.print("--Checking method invocation:");
+    
+    String receiver = "";
+    String methodName = null;
+    for (int i = 0; i < ids.size(); i++) {
+      Token t = (Token) ids.get(i);
+      if (i != ids.size() - 1) {
+        receiver += t.getText();
+        if (i != ids.size() - 2) receiver += ".";
+      }else {
+        methodName = t.getText();
+      }
+    }
+    
+    if (DEBUG)
+      System.out.println(methodName + " on " + receiver);
+  }
 }
 
 /********************************************************************************************
@@ -1104,15 +1133,15 @@ castExpression
  */
 primary 
     :   parExpression            
-    |   'this'
-        ('.' IDENTIFIER
+    |   ids += 'this'
+        ('.' ids += IDENTIFIER
         )*
-        (identifierSuffix
+        (identifierSuffix {checkMethodInvocation($ids);}
         )?
-    |   IDENTIFIER
-        ('.' IDENTIFIER
+    |   ids += IDENTIFIER
+        ('.' ids += IDENTIFIER
         )*
-        (identifierSuffix
+        (identifierSuffix {checkMethodInvocation($ids);}
         )?
     |   'super'
         superSuffix
@@ -1136,7 +1165,7 @@ superSuffix
     ;
 
 
-identifierSuffix 
+identifierSuffix
     :   ('[' ']'
         )+
         '.' 'class'
