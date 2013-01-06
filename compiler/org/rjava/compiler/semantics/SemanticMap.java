@@ -11,8 +11,6 @@ import org.antlr.runtime.CommonTokenStream;
 import org.rjava.compiler.CompilationTask;
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.representation.*;
-import org.rjava.compiler.semantics.symtab.RJavaSymbolTableLexer;
-import org.rjava.compiler.semantics.symtab.RJavaSymbolTableParser;
 
 import antlr.RecognitionException;
 
@@ -48,25 +46,7 @@ public class SemanticMap {
 
     private void buildSymbolTable() {
 	for (String klass : classes.keySet()) {
-	    try {
-		ANTLRInputStream input = new ANTLRInputStream(new FileInputStream(sources.get(klass)));
-		RJavaSymbolTableLexer lexer = new RJavaSymbolTableLexer(input);
-		CommonTokenStream tokens = new CommonTokenStream(lexer);
-		RJavaSymbolTableParser parser = new RJavaSymbolTableParser(tokens);
-		parser.setClass(classes.get(klass));
-		parser.compilationUnit();
-		
-		if (RJavaCompiler.DEBUG) {
-		    //classes.get(klass).printImports();
-		    //classes.get(klass).printSymbolTalbe();
-		}
-	    } catch (FileNotFoundException e) {
-		e.printStackTrace();
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    } catch (org.antlr.runtime.RecognitionException e) {
-		e.printStackTrace();
-	    }
+
 	}
     }
 
