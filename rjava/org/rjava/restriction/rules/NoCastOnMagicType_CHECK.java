@@ -5,7 +5,6 @@ import org.rjava.compiler.semantics.representation.RClass;
 
 public class NoCastOnMagicType_CHECK {
     public static Boolean checkClass (RClass klass, SemanticMap semantics) {
-	System.out.println("Pass..");
 	return true;
     }
 }

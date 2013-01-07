@@ -8,6 +8,7 @@ import org.rjava.compiler.semantics.representation.stmt.*;
 import soot.Unit;
 import soot.UnitBox;
 import soot.ValueBox;
+import soot.jimple.internal.AbstractStmt;
 
 public abstract class RStatement {
     public static final int ASSIGN_STMT = 1;
@@ -97,5 +98,9 @@ public abstract class RStatement {
 
     public int getType() {
         return type;
+    }
+    
+    public AbstractStmt internal() {
+	return (AbstractStmt) internal;
     }
 }

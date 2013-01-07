@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.rjava.compiler.exception.RJavaError;
+import org.rjava.compiler.exception.RJavaRestrictionViolation;
 import org.rjava.compiler.exception.RJavaWarning;
 import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RClass;
@@ -50,7 +51,7 @@ public class RJavaCompiler {
 		error(e);
 	    } catch (RJavaWarning e) {
 		warning(e);
-	    }
+	    } 
 	    
 	    // then compiles the class	    
 	    try {
