@@ -6,7 +6,7 @@ public class RJavaSymTab {
   float f;
   
   static {
-    String a;
+    String a = "test";
   }
 
   public static void main(String[] args) {

@@ -67,8 +67,7 @@ public class SootEngine {
 	    // resolve klass and add to map
 	    if (DEBUG)
 		System.out.println("Resolving " + className + "...");
-	    Scene.v().forceResolve(className, SootClass.SIGNATURES);
-	    SootClass klass = Scene.v().getSootClass(className);
+	    SootClass klass = resolveAndGetClass(className);
 	    allClasses.put(className, klass);
 	    
 	    // get methods
@@ -96,7 +95,7 @@ public class SootEngine {
 
     public static SootClass resolveAndGetClass(String name) {
 	//Scene.v().forceResolve(name, SootClass.SIGNATURES);
-	SootResolver.v().resolveClass(name, SootClass.SIGNATURES);
+	SootResolver.v().resolveClass(name, SootClass.BODIES);
 	SootClass ret = Scene.v().getSootClass(name);
 	return ret;
     }

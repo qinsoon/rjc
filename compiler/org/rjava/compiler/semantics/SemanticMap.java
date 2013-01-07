@@ -12,8 +12,6 @@ import org.rjava.compiler.CompilationTask;
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.representation.*;
 
-import antlr.RecognitionException;
-
 public class SemanticMap {
     public static final boolean DEBUG = true;
     
@@ -35,19 +33,10 @@ public class SemanticMap {
 	for (int i = 0; i < task.getClasses().size(); i++) {
 	    sources.put(task.getClasses().get(i), task.getSources().get(i));
 	}
-	
-	// build symbol table
-	buildSymbolTable();
     }
 
     public Map<String, RClass> getAllClasses() {
 	return classes;
-    }
-
-    private void buildSymbolTable() {
-	for (String klass : classes.keySet()) {
-
-	}
     }
 
     public Map<String, String> getSources() {

@@ -157,4 +157,9 @@ public class RClass {
     public List<RImport> getImports() {
         return imports;
     }
+
+
+    public List<RMethod> getMethods() {
+        return methods;
+    }
 }
