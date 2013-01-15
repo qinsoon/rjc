@@ -22,7 +22,7 @@ public class RJavaCompiler {
     private StaticRestrictionChecker checker;
     
     public RJavaCompiler(CompilationTask task) {
-	this.task = task;
+    	this.task = task;
     }
     
     /**
@@ -69,64 +69,70 @@ public class RJavaCompiler {
      * @param args @see usage()
      */
     public static void main(String[] args) {
-	if (args.length <= 0)
+	if (args.length < 2)
 	    usage();
 	
 	List<CompilationTask> tasks = new ArrayList<CompilationTask>();
 	
 	// input as source dir, i.e. -dir source_dir
+	String dir = "";
 	if (args.length >= 2 && args[0].equals("-dir")) {
 	    File sourceDir = new File(args[1]);
 	    if (!sourceDir.isDirectory())
-		usage();
+	        usage();
 	    
-	    try {
-		tasks.add(CompilationTask.newTaskFromDir(args[1]));
-	    } catch (RJavaWarning e) {
-		warning(e);
+	    dir = args[1];
+	} else usage();
+	
+	if (args.length >= 3) {
+	    // get the rest args as files
+	    for (int i = 2; i < args.length; i ++) {
+	        try {
+                tasks.add(CompilationTask.newTaskFromFile(dir, args[i]));
+            } catch (RJavaWarning e) {
+                warning(e);
+            }
 	    }
-	}
-	// input as a list of files
-	else {
-	    for (String arg : args)
-		try {
-		    tasks.add(CompilationTask.newTaskFromFile(arg));
-		} catch (RJavaWarning e) {
-		    warning(e);
-		}
+	} else {
+	    try {
+            tasks.add(CompilationTask.newTaskFromDir(dir));
+        } catch (RJavaWarning e) {
+            warning(e);
+        }
 	}
 
 	// compile all tasks
 	for (CompilationTask t : tasks) {
 	    if (DEBUG) debug(t);
+	    
 	    RJavaCompiler compiler = new RJavaCompiler(t);
 	    try {
-		compiler.compile();
+	        compiler.compile();
 	    } catch (RJavaWarning e) {
-		warning(e);
+	        warning(e);
 	    } catch (RJavaError e) {
-		error(e);
+	        error(e);
 	    }
 	}
     }
     
     public static void debug(Object o) {
-	System.out.println(o);
+        System.out.println(o);
     }
     
     public static void usage() {
-	String usage = "RJava compiler usage:\n";
-	usage += "1. Compiler file1 file2 ...\n";
-	usage += "2. Compiler -dir source_dir_to_be_compiled\n";
-	error(usage);
+    	String usage = "RJava compiler usage:\n";
+    	usage += "1. Compiler -dir base_dir file1 file2 ...\n";
+    	usage += "2. Compiler -dir source_dir_to_be_compiled\n";
+    	error(usage);
     }
 
     public static void warning(Object o) {
-	System.out.println("RJava compiler warning: " + o);
+        System.out.println("RJava compiler warning: " + o);
     }
     
     public static void error(Object o) {
-	System.out.println("RJava compiler error: " + o);
-	System.exit(-1);
+    	System.out.println("RJava compiler error: " + o);
+    	System.exit(-1);
     }
 }

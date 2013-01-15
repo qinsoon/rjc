@@ -20,20 +20,20 @@ public class RMethod {
     SootMethod internal;
     
     public RMethod(RClass rClass, SootMethod m) {
-	this.internal = m;
-	this.name = m.getName();
-	this.klass = rClass;
-	this.returnType = RType.initWithTypeName(rClass, m.getReturnType().toString());
-	// get parameter
-	for (Object o : m.getParameterTypes()) {
-	    Type t = (Type)o;
-	    parameters.add(RType.initWithTypeName(rClass, t.toString()));
-	}
-	// get body
-	Iterator<Unit> iter = m.retrieveActiveBody().getUnits().iterator();
-	while(iter.hasNext()) {
-	    body.add(RStatement.from(iter.next()));
-	}
+    	this.internal = m;
+    	this.name = m.getName();
+    	this.klass = rClass;
+    	this.returnType = RType.initWithTypeName(rClass, m.getReturnType().toString());
+    	// get parameter
+    	for (Object o : m.getParameterTypes()) {
+    	    Type t = (Type)o;
+    	    parameters.add(RType.initWithTypeName(rClass, t.toString()));
+    	}
+    	// get body
+    	Iterator<Unit> iter = m.retrieveActiveBody().getUnits().iterator();
+    	while(iter.hasNext()) {
+    	    body.add(RStatement.from(iter.next()));
+    	}
     }
 
     public List<RType> getParameters() {
@@ -61,5 +61,23 @@ public class RMethod {
 
     public List<RStatement> getBody() {
         return body;
+    }
+    
+    public boolean isMainMethod() {
+        return 
+                // return void
+                returnType.isVoidType() &&
+                // 1 parameter, array, String
+                parameters.size() == 1 && parameters.get(0).isArray() && parameters.get(0).getClassName().equals("java.lang.String") && 
+                // method name is main
+                name.equals("main");
+    }
+    
+    public boolean isStatic() {
+        return internal.isStatic();
+    }
+
+    public RClass getKlass() {
+        return klass;
     }
 }

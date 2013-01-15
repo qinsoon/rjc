@@ -21,11 +21,13 @@ public class RType {
     private String type;
     private String className;
     private String packageName;
-    private boolean primitive;
+    private boolean primitive = false;
     private boolean array;
+    private boolean voidType = false;
 
     public static final List<String> PRIMITIVE_TYPES = Arrays.asList("boolean",
-	    "char", "byte", "short", "int", "long", "float", "double", "void");
+	    "char", "byte", "short", "int", "long", "float", "double");
+    public static final String VOID_TYPE = "void";
 
     private RType() {
     }
@@ -38,11 +40,11 @@ public class RType {
      * @return corresponding RType
      */
     public static RType initWithTypeName(RClass klass, String type) {
-	RType r = new RType();
-	r.type = type;
-
-	r.resolveAndNormalize(klass);
-	return r;
+    	RType r = new RType();
+    	r.type = type;
+    
+    	r.resolveAndNormalize(klass);
+    	return r;
     }
 
     /**
@@ -53,44 +55,46 @@ public class RType {
      * @return corresponding RType
      */
     public static RType initWithClassName(RClass klass, String className) {
-	RType r = new RType();
-	r.className = className;
-
-	r.resolveAndNormalize(klass);
-	return r;
+    	RType r = new RType();
+    	r.className = className;
+    
+    	r.resolveAndNormalize(klass);
+    	return r;
     }
 
     private void resolveAndNormalize(RClass klass) {
-	className = getClassName();
-
-	// check if the type is array type
-	if (className.endsWith("[]")) {
-	    array = true;
-	    className = className.replaceAll("\\[\\]", "");
-	}
-
-	// check if the type is primitive
-	if (PRIMITIVE_TYPES.contains(className)) {
-	    primitive = true;
-	}
-	// if not, we need to resolve the type
-	else {
-	    primitive = false;
-	    String shortName = className;
-	    SootClass sootClass = resolveType(klass);
-	    resolvedClasses.put(className, sootClass);
-	    fullClassNames.put(shortName, className);
-	}
-    }
-
-    private SootClass resolveType(RClass klass) {
-	String fullName = fullClassNames.get(className);
-	if (fullName != null) {
-	    className = fullName;
-	}
-	SootClass s = resolvedClasses.get(className);
-	if (s != null){
-	    return s;
+    	className = getClassName();
+    
+    	// check if the type is array type
+    	if (className.endsWith("[]")) {
+    	    array = true;
+    	    className = className.replaceAll("\\[\\]", "");
+    	}
+    
+    	if (className.equals(VOID_TYPE))
+    	    voidType = true;
+    	// check if the type is primitive
+    	else if (PRIMITIVE_TYPES.contains(className)) {
+    	    primitive = true;
+    	}
+    	// if not, we need to resolve the type
+    	else {
+    	    primitive = false;
+    	    String shortName = className;
+    	    SootClass sootClass = resolveType(klass);
+    	    resolvedClasses.put(className, sootClass);
+    	    fullClassNames.put(shortName, className);
+    	}
+        }
+    
+        private SootClass resolveType(RClass klass) {
+    	String fullName = fullClassNames.get(className);
+    	if (fullName != null) {
+    	    className = fullName;
+    	}
+    	SootClass s = resolvedClasses.get(className);
+    	if (s != null){
+    	    return s;
 	}
 	
 	// actual resolve
@@ -212,5 +216,9 @@ public class RType {
 
     public void setArray(boolean array) {
 	this.array = array;
+    }
+
+    public boolean isVoidType() {
+        return voidType;
     }
 }

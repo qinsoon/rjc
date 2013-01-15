@@ -13,82 +13,82 @@ public class CompilationTask {
     List<String> sources;
     List<String> classes;
     
-    public static CompilationTask newTaskFromFile(String file) throws RJavaWarning {
-	File f = new File(file);
-	if (f.exists())
-	    f = f.getAbsoluteFile();
-	if (f.exists() && f.isFile())
-	    return new CompilationTask(f.getParent(), f.getAbsolutePath());
-	
-	throw new RJavaWarning("File doesn't exist: " + file);
+    public static CompilationTask newTaskFromFile(String dir, String file) throws RJavaWarning {
+    	File f = new File(file);
+    	File dirFile = new File(dir);
+    	if (f.exists())
+    	    f = f.getAbsoluteFile();
+    	if (f.exists() && f.isFile())
+    	    return new CompilationTask(dirFile.getAbsolutePath(), f.getAbsolutePath());
+    	
+    	throw new RJavaWarning("File doesn't exist: " + file);
     }
     
     public static CompilationTask newTaskFromDir(String dir) throws RJavaWarning {
-	File d = new File(dir);
-	if (d.exists())
-	    d = d.getAbsoluteFile();
-	if (d.exists() && d.isDirectory()) {
-	    List<String> sources = new ArrayList<String>();
-	    addFileToListRecursively(d, sources);
-	    return new CompilationTask(dir, sources);
-	}
-	
-	throw new RJavaWarning("Directory doesn't exist: " + dir);
+    	File d = new File(dir);
+    	if (d.exists())
+    	    d = d.getAbsoluteFile();
+    	if (d.exists() && d.isDirectory()) {
+    	    List<String> sources = new ArrayList<String>();
+    	    addFileToListRecursively(d, sources);
+    	    return new CompilationTask(d.getAbsolutePath(), sources);
+    	}
+    	
+    	throw new RJavaWarning("Directory doesn't exist: " + dir);
     }
     
     private static void addFileToListRecursively(File dir, List<String> list) {
-	File[] all = dir.listFiles();
-	for (File f : all) {
-	    if (f.isFile())
-		list.add(f.getAbsolutePath());
-	    else if (f.isDirectory())
-	    	addFileToListRecursively(f, list);
-	}
+    	File[] all = dir.listFiles();
+    	for (File f : all) {
+    	    if (f.isFile())
+    		list.add(f.getAbsolutePath());
+    	    else if (f.isDirectory())
+    	    	addFileToListRecursively(f, list);
+    	}
     }
 
     protected CompilationTask(String path, String file) {
-	super();
-	if (!path.endsWith("/"))
-	    path += "/";
-	this.path = path;
-	this.sources = new ArrayList<String>();
-	this.sources.add(file);
-	
-	buildClassList();
+    	super();
+    	if (!path.endsWith("/"))
+    	    path += "/";
+    	this.path = path;
+    	this.sources = new ArrayList<String>();
+    	this.sources.add(file);
+    	
+    	buildClassList();
     }
     
     protected CompilationTask(String path, List<String> sources) {
-	super();
-	if (!path.endsWith("/"))
-	    path += "/";
-	this.path = path;
-	this.sources = sources;
-	
-	buildClassList();
+    	super();
+    	if (!path.endsWith("/"))
+    	    path += "/";
+    	this.path = path;
+    	this.sources = sources;
+    	
+    	buildClassList();
     }
     
     /**
      * change source files into class names
      */	    
     private void buildClassList() {
-	classes = new ArrayList<String>();
-	for (String source : sources) {
-	    // change test/org/rjava/HelloWorld.java -> org.rjava.HelloWorld
-	    source = source.replaceAll(path, "");
-	    String className = source.substring(0, source.length() - RJAVA_EXT.length());
-	    className = className.replaceAll("/", ".");
-	    
-	    classes.add(className);
-	}
+    	classes = new ArrayList<String>();
+    	for (String source : sources) {
+    	    // change test/org/rjava/HelloWorld.java -> org.rjava.HelloWorld
+    	    source = source.replaceAll(path, "");
+    	    String className = source.substring(0, source.length() - RJAVA_EXT.length());
+    	    className = className.replaceAll("/", ".");
+    	    classes.add(className);
+    	}
     }
     
     public String toString() {
-	String result = "Compilation Task: " + path + "\n";
-	for (String s : sources) {
-	    result += "-" + s + "\n";
-	}
-	result += "\n";
-	return result;
+    	String result = "Compilation Task: " + path + "\n";
+    	for (String s : sources) {
+    	    result += "-" + s + "\n";
+    	}
+    	result += "\n";
+    	return result;
     }
 
     public String getPath() {

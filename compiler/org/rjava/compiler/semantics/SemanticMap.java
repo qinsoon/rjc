@@ -22,17 +22,17 @@ public class SemanticMap {
     SootEngine engine;
     
     public SemanticMap(CompilationTask task) {
-	classes = new HashMap<String, RClass>();
-	
-	// get class-level info
-	engine = new SootEngine(task);
-	engine.buildSemanticMap(this);
-	
-	// map class name with source files
-	sources = new HashMap<String, String>();
-	for (int i = 0; i < task.getClasses().size(); i++) {
-	    sources.put(task.getClasses().get(i), task.getSources().get(i));
-	}
+    	classes = new HashMap<String, RClass>();
+    	
+    	// get class-level info
+    	engine = new SootEngine(task);
+    	engine.buildSemanticMap(this);
+    	
+    	// map class name with source files
+    	sources = new HashMap<String, String>();
+    	for (int i = 0; i < task.getClasses().size(); i++) {
+    	    sources.put(task.getClasses().get(i), task.getSources().get(i));
+    	}
     }
 
     public Map<String, RClass> getAllClasses() {

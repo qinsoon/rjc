@@ -1,3 +1,4 @@
+package org.rjava.test;
 import org.rjava.restriction.rulesets.RJavaCore;
 
 @RJavaCore

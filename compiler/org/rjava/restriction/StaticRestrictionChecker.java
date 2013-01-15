@@ -43,16 +43,19 @@ public class StaticRestrictionChecker {
 	    }
 	}
 	
-	System.err.println("Restriction violations:");
-	for (int i = 0; i < violations.size(); i++) {
-	    System.err.println((i+1) + ". " + violations.get(i).getMessage());
-	}
+	if (violations.size() > 0) {
+	    System.out.println("Restriction violations:");
+    	for (int i = 0; i < violations.size(); i++) {
+    	    System.out.println((i+1) + ". " + violations.get(i).getMessage());
+    	}
+        // throw new RJavaError("Static check failed on " + klass.getName() + ", please check output log. ");	
     }
+}
 
     
     public static final List<RJavaRestrictionViolation> violations = new ArrayList<RJavaRestrictionViolation>();
     
     public static void addRestrictionViolation(RJavaRestrictionViolation violation) {
-	violations.add(violation);
+        violations.add(violation);
     }
 }

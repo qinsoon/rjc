@@ -81,16 +81,20 @@ public abstract class RStatement {
 	}
     }
     
+    public static final boolean verbose = false;
+    
     public String toString() {
-	String ret = "[" + internal.getClass() + "]:" + internal.toString() + "\n";
-	ret += "use/def boxes: \n";
-	for (Object o : internal.getUseAndDefBoxes()) {
-	    ValueBox b = (ValueBox) o;
-	    ret += " " + b.getClass() + ": " + b.toString() + "\n";
-	}
-	ret += "unit boxes: \n";
-	for (UnitBox b : internal.getUnitBoxes()) {
-	    ret += " " + b.getClass() + ": " + b.toString() + "\n";
+	String ret = "[" + internal.getClass() + "]:" + internal.toString();
+	if (verbose) {
+        	ret += "use/def boxes: \n";
+        	for (Object o : internal.getUseAndDefBoxes()) {
+        	    ValueBox b = (ValueBox) o;
+        	    ret += " " + b.getClass() + ": " + b.toString() + "\n";
+        	}
+        	ret += "unit boxes: \n";
+        	for (UnitBox b : internal.getUnitBoxes()) {
+        	    ret += " " + b.getClass() + ": " + b.toString() + "\n";
+        	}
 	}
 	
 	return ret;
@@ -101,6 +105,6 @@ public abstract class RStatement {
     }
     
     public AbstractStmt internal() {
-	return (AbstractStmt) internal;
+        return (AbstractStmt) internal;
     }
 }

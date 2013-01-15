@@ -30,14 +30,14 @@ public class SootEngine {
     private Map<String, SootMethod> allMethods;
 
     public SootEngine(CompilationTask task) {
-	// dir to process
-	this.dir = new ArrayList<String>();
-	this.dir.add(task.getPath());
-	
-	// sources
-	this.classNames = task.getClasses();
-	
-	init();
+    	// dir to process
+    	this.dir = new ArrayList<String>();
+    	this.dir.add(task.getPath());
+    	
+    	// sources
+    	this.classNames = task.getClasses();
+    	
+    	init();
     }
     
     private void init() {

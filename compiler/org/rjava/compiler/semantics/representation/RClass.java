@@ -2,6 +2,7 @@ package org.rjava.compiler.semantics.representation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import org.rjava.compiler.semantics.SemanticMap;
@@ -11,6 +12,7 @@ import org.rjava.compiler.semantics.symtab.RIdentifier;
 import org.rjava.compiler.semantics.symtab.RImport;
 
 import soot.SootClass;
+import soot.SootField;
 import soot.SootMethod;
 import soot.tagkit.AnnotationTag;
 import soot.tagkit.Tag;
@@ -35,22 +37,32 @@ public class RClass {
     // methods
     private List<RMethod> methods = new ArrayList<RMethod>();
     
+    // fields
+    private List<RField> fields = new ArrayList<RField>();
+    
     public RClass(SootClass sootClass) {
-	this.internal = sootClass;
-	this.name = internal.getName();
-	
-	this.annotations = fetchAnnotations(internal);
-	
-	topBlock = new RBlock(RBlock.CLASS_WIDE);
-	
-	fetchMethods();
+    	this.internal = sootClass;
+    	this.name = internal.getName();
+    	
+    	this.annotations = fetchAnnotations(internal);
+    	
+    	topBlock = new RBlock(RBlock.CLASS_WIDE);
+    	
+    	fetchMethods();
+    	fetchFields();
     }
 
+    private void fetchFields() {
+        Iterator<SootField> iter = internal.getFields().iterator();
+        while (iter.hasNext()) {
+            fields.add(new RField(this, iter.next()));
+        }
+    }
 
     private void fetchMethods() {
-	for (SootMethod m : internal.getMethods()) {
-	    methods.add(new RMethod(this, m));
-	}
+    	for (SootMethod m : internal.getMethods()) {
+    	    methods.add(new RMethod(this, m));
+    	}
     }
 
     /**
@@ -161,5 +173,10 @@ public class RClass {
 
     public List<RMethod> getMethods() {
         return methods;
+    }
+
+
+    public List<RField> getFields() {
+        return fields;
     }
 }
