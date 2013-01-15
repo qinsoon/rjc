@@ -81,12 +81,12 @@ public abstract class RStatement {
 	}
     }
     
-    public static final boolean verbose = false;
+    public static final boolean verbose = true;
     
     public String toString() {
 	String ret = "[" + internal.getClass() + "]:" + internal.toString();
 	if (verbose) {
-        	ret += "use/def boxes: \n";
+        	ret += "\nuse/def boxes: \n";
         	for (Object o : internal.getUseAndDefBoxes()) {
         	    ValueBox b = (ValueBox) o;
         	    ret += " " + b.getClass() + ": " + b.toString() + "\n";

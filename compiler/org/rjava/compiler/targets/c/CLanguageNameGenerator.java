@@ -26,10 +26,6 @@ public class CLanguageNameGenerator {
         return classPrefix + "_" + methodName;
     }
     
-    public String get(RStatement stmt) {
-        return "";
-    }
-    
     public String get(RType type) {
         return javaNameToCName(type.getClassName());
     }

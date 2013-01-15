@@ -60,11 +60,11 @@ public class CLanguageGenerator extends CodeGenerator {
         for (RMethod method : klass.getMethods()) {
             if (method.isMainMethod()) {
                 out.append(MAIN_METHOD_SIGNATURE + " {" + NEWLINE);
-                
+                out.append(getMethodBody(method));
                 out.append("}" + NEWLINE);
             } else {
                 out.append(getMethodSignature(method) + " {" + NEWLINE);
-                
+                out.append(getMethodBody(method));
                 out.append("}" + NEWLINE);
             }
         }
@@ -89,7 +89,6 @@ public class CLanguageGenerator extends CodeGenerator {
         }
         out.append("} " + name.get(klass) + SEMICOLON + NEWLINE);
         
-        // TODO: generate method list
         for (RMethod method : klass.getMethods()) {
             if (!method.isMainMethod()) {
                 out.append(getMethodSignature(method) + SEMICOLON + NEWLINE);
@@ -116,6 +115,15 @@ public class CLanguageGenerator extends CodeGenerator {
             out.append(name.get(method.getParameters().get(i)) + " " + FORMAL_PARAMETER + i);                        
         }
         out.append(")");
+        return out.toString();
+    }
+    
+    public String getMethodBody(RMethod method) {
+        StringBuilder out = new StringBuilder();
+        CLanguageStatementGenerator stmt = new CLanguageStatementGenerator();
+        for (RStatement rStmt : method.getBody()) {
+            out.append(stmt.get(rStmt) + SEMICOLON + NEWLINE);
+        }
         return out.toString();
     }
 }
