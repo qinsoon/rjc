@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.rjava.compiler.semantics.symtab.RIdentifier;
 
+import soot.Body;
+import soot.Local;
 import soot.SootMethod;
 import soot.Type;
 import soot.Unit;
@@ -16,6 +18,7 @@ public class RMethod {
     private RType returnType;
     private RClass klass;
     private List<RStatement> body = new ArrayList<RStatement>();
+    private List<RLocal> locals = new ArrayList<RLocal>();
     
     SootMethod internal;
     
@@ -30,9 +33,14 @@ public class RMethod {
     	    parameters.add(RType.initWithTypeName(rClass, t.toString()));
     	}
     	// get body
-    	Iterator<Unit> iter = m.retrieveActiveBody().getUnits().iterator();
+    	Body sootBody = m.retrieveActiveBody();
+    	Iterator<Unit> iter = sootBody.getUnits().iterator();
     	while(iter.hasNext()) {
     	    body.add(RStatement.from(iter.next()));
+    	}
+    	Iterator<Local> iter2 = sootBody.getLocals().iterator();
+    	while(iter2.hasNext()) {
+    	    locals.add(new RLocal(this, iter2.next()));
     	}
     }
 
@@ -79,5 +87,13 @@ public class RMethod {
 
     public RClass getKlass() {
         return klass;
+    }
+    
+    public SootMethod internal() {
+        return internal;
+    }
+
+    public List<RLocal> getLocals() {
+        return locals;
     }
 }

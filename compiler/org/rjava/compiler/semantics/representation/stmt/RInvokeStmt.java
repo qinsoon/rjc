@@ -3,6 +3,7 @@ package org.rjava.compiler.semantics.representation.stmt;
 import org.rjava.compiler.semantics.representation.RStatement;
 
 import soot.Unit;
+import soot.jimple.internal.JInvokeStmt;
 
 public class RInvokeStmt extends RStatement {
 
@@ -11,4 +12,7 @@ public class RInvokeStmt extends RStatement {
 	// TODO Auto-generated constructor stub
     }
 
+    public JInvokeStmt internal() {
+        return (JInvokeStmt) internal;
+    }
 }

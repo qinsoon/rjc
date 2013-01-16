@@ -6,12 +6,19 @@ import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.semantics.representation.RStatement;
 import org.rjava.compiler.semantics.representation.RType;
 
+import soot.Local;
+import soot.SootClass;
+import soot.Value;
+
 public class CLanguageNameGenerator {
 
     public CLanguageNameGenerator() {
-        // TODO Auto-generated constructor stub
+
     }
 
+    /*
+     * generating c style name from RJava element
+     */
     public String get(RClass klass) {
         return javaNameToCName(klass.getName());
     }
@@ -36,5 +43,32 @@ public class CLanguageNameGenerator {
     
     private String javaNameToCName(String javaName) {
         return javaName.replace('.', '_');
+    }
+    
+    /*
+     * generating c style name from soot element 
+     */
+    public String fromSootStaticFieldRef(soot.jimple.StaticFieldRef ref) {
+        String className = ref.getField().getDeclaringClass().getName();
+        String refName = ref.getField().getName();
+        return javaNameToCName(className + "." + refName);
+    }
+    
+    public String fromSootMethod(soot.SootMethod method) {
+        String classPrefix = fromSootClass(method.getDeclaringClass());
+        String methodName = method.getName();
+        if (methodName.equals("<init>"))
+            methodName = CLanguageGenerator.RJAVA_INIT;
+        else if (methodName.equals("<clinit>"))
+            methodName = CLanguageGenerator.RJAVA_CLINIT;
+        return classPrefix + "_" + methodName;
+    }
+
+    public String fromSootClass(SootClass declaringClass) {
+        return javaNameToCName(declaringClass.getName());
+    }
+    
+    public String fromSootLocal(Local local) {
+        return local.getName();
     }
 }

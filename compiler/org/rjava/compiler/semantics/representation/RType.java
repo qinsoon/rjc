@@ -22,7 +22,7 @@ public class RType {
     private String className;
     private String packageName;
     private boolean primitive = false;
-    private boolean array;
+    private boolean array = false;
     private boolean voidType = false;
 
     public static final List<String> PRIMITIVE_TYPES = Arrays.asList("boolean",
@@ -85,9 +85,9 @@ public class RType {
     	    resolvedClasses.put(className, sootClass);
     	    fullClassNames.put(shortName, className);
     	}
-        }
+    }
     
-        private SootClass resolveType(RClass klass) {
+    private SootClass resolveType(RClass klass) {
     	String fullName = fullClassNames.get(className);
     	if (fullName != null) {
     	    className = fullName;
@@ -95,52 +95,52 @@ public class RType {
     	SootClass s = resolvedClasses.get(className);
     	if (s != null){
     	    return s;
-	}
+    	}
 	
-	// actual resolve
-	SootClass sootClass = null;
+    	// actual resolve
+    	SootClass sootClass = null;
+    
+    	try {
+    	    sootClass = SootEngine.resolveAndGetClass(className);
+    	    return sootClass;
+    	} catch (RuntimeException e) {
+    	    System.out.println("Failed to find " + className);
+    	    // such className is not actually full class name
+    	    // check imports first
+    	    for (RImport i : klass.getImports()) {
+        		if (i.isWildCardImport()) {
+        		    // join import(package) with class name
+        		    className = i.getImportStatement().replaceAll("*",
+        			    className);
+        		    try {
+        			sootClass = SootEngine.resolveAndGetClass(className);
+        			return sootClass;
+        		    } catch (RuntimeException e2) {
+        			System.out.println("Failed to find " + className);
+        			continue;
+        		    }
+        		} else {
+        		    if (i.getImportStatement().endsWith(className)) {
+        			className = i.getImportStatement();
+            		        try {
+                			    sootClass = SootEngine.resolveAndGetClass(className);
+                			    return sootClass;
+            		        } catch (RuntimeException e2) {
+                			    System.out.println("Failed to find " + className);
+                			    continue;
+            		        }
+        		    }
+        		}
+    	    }
 
-	try {
-	    sootClass = SootEngine.resolveAndGetClass(className);
-	    return sootClass;
-	} catch (RuntimeException e) {
-	    System.out.println("Failed to find " + className);
-	    // such className is not actually full class name
-	    // check imports first
-	    for (RImport i : klass.getImports()) {
-		if (i.isWildCardImport()) {
-		    // join import(package) with class name
-		    className = i.getImportStatement().replaceAll("*",
-			    className);
-		    try {
-			sootClass = SootEngine.resolveAndGetClass(className);
-			return sootClass;
-		    } catch (RuntimeException e2) {
-			System.out.println("Failed to find " + className);
-			continue;
-		    }
-		} else {
-		    if (i.getImportStatement().endsWith(className)) {
-			className = i.getImportStatement();
-    		        try {
-    			    sootClass = SootEngine.resolveAndGetClass(className);
-    			    return sootClass;
-    		        } catch (RuntimeException e2) {
-    			    System.out.println("Failed to find " + className);
-    			    continue;
-    		        }
-		    }
-		}
-	    }
-
-	    // then check implicit import (i.e. java.lang)
-	    className = "java.lang." + className;
-	    try {
-		sootClass = SootEngine.resolveAndGetClass(className);
-		return sootClass;
-	    } catch (RuntimeException e2) {
-		System.out.println("Failed to find " + className);
-	    }
+    	    // then check implicit import (i.e. java.lang)
+    	    className = "java.lang." + className;
+    	    try {
+    	        sootClass = SootEngine.resolveAndGetClass(className);
+    		return sootClass;
+    	    } catch (RuntimeException e2) {
+    	        System.out.println("Failed to find " + className);
+    	    }
 	}
 
 	return null;
@@ -150,7 +150,7 @@ public class RType {
      * Java style type, such as Ljava/lang/Integer;
      */
     public String toString() {
-	return className + (array ? "[]":"");
+        return className + (array ? "[]":"");
     }
 
     /**
