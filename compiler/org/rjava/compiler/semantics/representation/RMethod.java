@@ -22,6 +22,9 @@ public class RMethod {
     
     SootMethod internal;
     
+    private boolean intrinsic;
+    private String code;
+    
     public RMethod(RClass rClass, SootMethod m) {
     	this.internal = m;
     	this.name = m.getName();
@@ -95,5 +98,21 @@ public class RMethod {
 
     public List<RLocal> getLocals() {
         return locals;
+    }
+
+    public boolean isIntrinsic() {
+        return intrinsic;
+    }
+
+    public void setIntrinsic(boolean intrinsic) {
+        this.intrinsic = intrinsic;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

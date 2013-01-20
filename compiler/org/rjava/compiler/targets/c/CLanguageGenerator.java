@@ -50,8 +50,14 @@ public class CLanguageGenerator extends CodeGenerator {
                 RJavaCompiler.debug("}");
             }
         
+        generateIntrinsic(klass, source, semantics);
         generateHeader(klass, source, semantics);
         generateCode(klass, source, semantics);
+    }
+
+    private void generateIntrinsic(RClass klass, String source,
+            SemanticMap semantics) {
+        // TODO: generate intrinsic here
     }
 
     private void generateCode(RClass klass, String source, SemanticMap semantics) {
@@ -69,13 +75,15 @@ public class CLanguageGenerator extends CodeGenerator {
         for (RMethod method : klass.getMethods()) {
             if (method.isMainMethod()) {
                 out.append(MAIN_METHOD_SIGNATURE + " {" + NEWLINE);
-                out.append(getMethodBody(method));
-                out.append("}" + NEWLINE);
             } else {
                 out.append(getMethodSignature(method) + " {" + NEWLINE);
-                out.append(getMethodBody(method));
-                out.append("}" + NEWLINE);
             }
+            
+            if (method.isIntrinsic()) {
+                out.append(method.getCode());
+            } else out.append(getMethodBody(method));
+            
+            out.append("}" + NEWLINE);
         }
         
         if (RJavaCompiler.DEBUG) {
@@ -136,7 +144,11 @@ public class CLanguageGenerator extends CodeGenerator {
         }
         out.append(comment("stmts") + NEWLINE);
         for (RStatement rStmt : method.getBody()) {
-            out.append(stmt.get(rStmt) + SEMICOLON + NEWLINE);
+            if (rStmt.isIntrinsic())
+                out.append(rStmt.getCode());
+            else out.append(stmt.get(rStmt));
+            
+            out.append(SEMICOLON + NEWLINE);
         }
         return out.toString();
     }

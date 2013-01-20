@@ -48,6 +48,11 @@ public abstract class RStatement {
     
     private int type;
     protected Unit internal;
+    /**
+     * some statements are intrinsic, which means the compiler will generate its code based on predefined rules. 
+     */
+    private boolean intrinsic;
+    private String code;        // if a statement is intrinsic, we store its code here (it might be generated in a different pass rather than normal code generation)
 
     protected RStatement(Unit internal) {
 	super();
@@ -106,5 +111,21 @@ public abstract class RStatement {
     
     public AbstractStmt internal() {
         return (AbstractStmt) internal;
+    }
+
+    public boolean isIntrinsic() {
+        return intrinsic;
+    }
+
+    public void setIntrinsic(boolean intrinsic) {
+        this.intrinsic = intrinsic;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }
