@@ -9,6 +9,7 @@ import soot.Local;
 import soot.SootMethod;
 import soot.Type;
 import soot.Unit;
+import soot.UnitBox;
 
 public class RMethod {
     private List<RType> parameters = new ArrayList<RType>();
@@ -37,10 +38,12 @@ public class RMethod {
     	}
     	// get body
     	Body sootBody = m.retrieveActiveBody();
+    	    	
     	Iterator<Unit> iter = sootBody.getUnits().iterator();
     	while(iter.hasNext()) {
     	    body.add(RStatement.from(this, iter.next()));
     	}
+    	
     	Iterator<Local> iter2 = sootBody.getLocals().iterator();
     	while(iter2.hasNext()) {
     	    locals.add(new RLocal(this, iter2.next()));

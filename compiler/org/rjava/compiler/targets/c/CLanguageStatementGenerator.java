@@ -1,24 +1,41 @@
 package org.rjava.compiler.targets.c;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.rjava.compiler.semantics.representation.RLocal;
 import org.rjava.compiler.semantics.representation.RStatement;
 import org.rjava.compiler.semantics.representation.RType;
 import org.rjava.compiler.semantics.representation.stmt.*;
 
 import soot.Local;
+import soot.Unit;
 import soot.Value;
+import soot.jimple.BinopExpr;
+import soot.jimple.ConditionExpr;
 import soot.jimple.InvokeExpr;
+import soot.jimple.NumericConstant;
 import soot.jimple.ParameterRef;
 import soot.jimple.StaticFieldRef;
+import soot.jimple.internal.AbstractStmt;
 import soot.jimple.internal.JAssignStmt;
+import soot.jimple.internal.JGotoStmt;
 import soot.jimple.internal.JIdentityStmt;
+import soot.jimple.internal.JIfStmt;
+import soot.jimple.internal.JInstanceFieldRef;
 import soot.jimple.internal.JInvokeStmt;
+import soot.jimple.internal.JNewExpr;
+import soot.jimple.internal.JNopStmt;
 import soot.jimple.internal.JSpecialInvokeExpr;
 import soot.jimple.internal.JVirtualInvokeExpr;
 import soot.jimple.internal.JimpleLocal;
 
 public class CLanguageStatementGenerator {
     CLanguageNameGenerator name = new CLanguageNameGenerator();
+    
+    private int labelIndex = 0;
+    // <target.hashCode(), labelIndex>
+    private Map<Integer, Integer> jumpLabels = new HashMap<Integer, Integer>();
     
     public CLanguageStatementGenerator() {
         // TODO Auto-generated constructor stub
@@ -45,22 +62,22 @@ public class CLanguageStatementGenerator {
      */
     public String get(RStatement stmt) {
         switch (stmt.getType()) {
-        case RStatement.ASSIGN_STMT:            return get((RAssignStmt) stmt);
-        case RStatement.BREAKPOINT_STMT:        return get((RBreakpointStmt) stmt);
-        case RStatement.ENTER_MONITOR_STMT:     return get((REnterMonitorStmt) stmt);
-        case RStatement.EXIT_MONITOR_STMT:      return get((RExitMonitorStmt) stmt);
-        case RStatement.GOTO_STMT:              return get((RGotoStmt) stmt);
-        case RStatement.IDENTITY_STMT:          return get((RIdentityStmt) stmt);
-        case RStatement.IF_STMT:                return get((RIfStmt) stmt);
-        case RStatement.INVOKE_STMT:            return get((RInvokeStmt) stmt);
-        case RStatement.LOOKUP_SWITCH_STMT:     return get((RLookupSwitchStmt) stmt);
-        case RStatement.NOP_STMT:               return get((RNopStmt) stmt);
-        case RStatement.RET_STMT:               return get((RRetStmt) stmt);
-        case RStatement.RETURN_STMT:            return get((RReturnStmt) stmt);
-        case RStatement.RETURN_VOID_STMT:       return get((RReturnVoidStmt) stmt);
-        case RStatement.TABLE_SWITCH_STMT:      return get((RTableSwitchStmt) stmt);
-        case RStatement.THROW_STMT:             return get((RThrowStmt) stmt);
-        default: return null;
+            case RStatement.ASSIGN_STMT:            return destLabel(stmt) + get((RAssignStmt) stmt);
+            case RStatement.BREAKPOINT_STMT:        return destLabel(stmt) + get((RBreakpointStmt) stmt);
+            case RStatement.ENTER_MONITOR_STMT:     return destLabel(stmt) + get((REnterMonitorStmt) stmt);
+            case RStatement.EXIT_MONITOR_STMT:      return destLabel(stmt) + get((RExitMonitorStmt) stmt);
+            case RStatement.GOTO_STMT:              return destLabel(stmt) + get((RGotoStmt) stmt);
+            case RStatement.IDENTITY_STMT:          return destLabel(stmt) + get((RIdentityStmt) stmt);
+            case RStatement.IF_STMT:                return destLabel(stmt) + get((RIfStmt) stmt);
+            case RStatement.INVOKE_STMT:            return destLabel(stmt) + get((RInvokeStmt) stmt);
+            case RStatement.LOOKUP_SWITCH_STMT:     return destLabel(stmt) + get((RLookupSwitchStmt) stmt);
+            case RStatement.NOP_STMT:               return destLabel(stmt) + get((RNopStmt) stmt);
+            case RStatement.RET_STMT:               return destLabel(stmt) + get((RRetStmt) stmt);
+            case RStatement.RETURN_STMT:            return destLabel(stmt) + get((RReturnStmt) stmt);
+            case RStatement.RETURN_VOID_STMT:       return destLabel(stmt) + get((RReturnVoidStmt) stmt);
+            case RStatement.TABLE_SWITCH_STMT:      return destLabel(stmt) + get((RTableSwitchStmt) stmt);
+            case RStatement.THROW_STMT:             return destLabel(stmt) + get((RThrowStmt) stmt);
+            default: return null;
         }
     }
 
@@ -72,8 +89,11 @@ public class CLanguageStatementGenerator {
         // left op -> local | field | local.field | local[imm]
         Value leftOp = internal.getLeftOp();
         if (leftOp instanceof soot.jimple.internal.JimpleLocal) {
-            ret = ((soot.jimple.internal.JimpleLocal) leftOp).getName();
-        } else {
+            ret = name.fromSootLocal((Local) leftOp);
+        } else if (leftOp instanceof soot.jimple.internal.JInstanceFieldRef) {
+            ret = name.fromSootInstanceFieldRef((JInstanceFieldRef) leftOp);
+        }            
+        else {
             ret = CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
         }
         
@@ -85,15 +105,29 @@ public class CLanguageStatementGenerator {
         // expr -> imm1 binop imm2 | (type) imm | imm instanceof type | invokeExpr | new refType | newarray (type) [imm] | newmultiarray(type)[imm1]...[immn][]* | length imm | neg imm;
         // invokeExpr -> specialinvoke/interfaceinvoke/virtualinvoke local.m(imm1,...,immn) | staticinvoke m(imm1,...,immn)
         Value rightOp = internal.getRightOp();
+        System.out.println(rightOp.getClass());
         if (rightOp instanceof soot.jimple.StaticFieldRef) {
             ret += name.fromSootStaticFieldRef((StaticFieldRef) rightOp);
-        } else {
+        } else if (rightOp instanceof soot.jimple.internal.JimpleLocal) {
+            ret += name.fromSootLocal((Local) rightOp);
+        } else if (rightOp instanceof soot.jimple.internal.JInstanceFieldRef) {
+            ret += name.fromSootInstanceFieldRef((JInstanceFieldRef) rightOp);
+        } else if (rightOp instanceof soot.jimple.internal.JVirtualInvokeExpr) {
+            ret += fromSootJVirtualInvokeExpr((JVirtualInvokeExpr) rightOp);
+        } else if (rightOp instanceof soot.jimple.BinopExpr) {
+            ret += fromSootBinopExpr((BinopExpr) rightOp);
+        } else if (rightOp instanceof soot.jimple.NumericConstant) {
+            ret += fromSootNumericConstant((NumericConstant) rightOp);
+        } else if (rightOp instanceof soot.jimple.internal.JNewExpr) {
+            ret += fromSootJNewExpr((JNewExpr) rightOp);
+        }
+        else {
             ret += CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
         }
         
         return ret;
     }
-    
+
     private String get(RBreakpointStmt stmt) {
         return "";
     }
@@ -107,7 +141,7 @@ public class CLanguageStatementGenerator {
     }
     
     private String get(RGotoStmt stmt) {
-        return "";
+        return "goto " + jumpToLabel((AbstractStmt) stmt.internal().getTarget());
     }
     
     private String get(RIdentityStmt stmt) {
@@ -130,7 +164,11 @@ public class CLanguageStatementGenerator {
     }
     
     private String get(RIfStmt stmt) {
-        return "";
+        JIfStmt internal = stmt.internal();
+        String ret = "";
+        ret += "if (" + fromSootConditionExpr((ConditionExpr) internal.getCondition()) + ") ";
+        ret += "goto " + jumpToLabel((AbstractStmt) internal.getTarget());
+        return ret;
     }
     
     private String get(RInvokeStmt stmt) {
@@ -157,6 +195,7 @@ public class CLanguageStatementGenerator {
     }
     
     private String get(RNopStmt stmt) {
+        // intentionally return empty
         return "";
     }
     
@@ -165,11 +204,11 @@ public class CLanguageStatementGenerator {
     }
     
     private String get(RReturnStmt stmt) {
-        return "";
+        return CLanguageGenerator.RETURN + " " + stmt.internal().getOp();
     }
     
     private String get(RReturnVoidStmt stmt) {
-        return "return";
+        return CLanguageGenerator.RETURN;
     }
     
     private String get(RTableSwitchStmt stmt) {
@@ -217,5 +256,41 @@ public class CLanguageStatementGenerator {
         }
         
         return ret;
+    }
+    
+    private String fromSootConditionExpr(soot.jimple.ConditionExpr conditionExpr) {
+        return conditionExpr.toString();
+    }
+    
+    private String fromSootBinopExpr(soot.jimple.BinopExpr binopExpr) {
+        return binopExpr.toString();
+    }
+    
+    private String fromSootNumericConstant(soot.jimple.NumericConstant numericConstant) {
+        return numericConstant.toString();
+    }
+    
+    private String fromSootJNewExpr(soot.jimple.internal.JNewExpr newExpr) {
+        String type = name.fromSootType(newExpr.getType());
+        String ret = "(" + type + CLanguageGenerator.POINTER + ") " + CLanguageGenerator.MALLOC + "(";
+        ret += CLanguageGenerator.SIZE_OF + "(" + type + "))";
+        return ret;
+    }
+    
+    /*
+     * jumping labels
+     */
+    private String jumpToLabel(AbstractStmt target) {
+        String ret = "label" + labelIndex;
+        jumpLabels.put(target.hashCode(), labelIndex);
+        labelIndex ++;
+        return ret;
+    }
+    
+    private String destLabel(RStatement stmt) {
+        Integer labelIndex = jumpLabels.get(stmt.internal().hashCode());
+        if (labelIndex == null)
+            return "";
+        else return "label" + labelIndex + ":";
     }
 }

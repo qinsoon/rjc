@@ -12,6 +12,9 @@ public class RField {
     public RField(RClass klass, SootField f) {
         this.klass = klass;
         this.internal = f;
+        
+        this.type = RType.initWithTypeName(f.getType().toString());
+        this.name = f.getName();
     }
 
     public RType getType() {

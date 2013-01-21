@@ -23,7 +23,11 @@ public class CLanguageGenerator extends CodeGenerator {
     public static final String NEWLINE = "\n";
     public static final String SEMICOLON = ";";
     public static final String POINTER = "*";
+    public static final String FIELD_POINTER = "->";
     public static final String THIS_LOCAL = "this";
+    public static final String RETURN = "return";
+    public static final String MALLOC = "malloc";       // may use gcmalloc instead
+    public static final String SIZE_OF = "sizeof";
     
     public static final String INCLUDE_STDIO = "#include <stdio.h>";
     public static final String RJAVA_LIB_INCLUDE_FILE = "rjava_lib.h";
@@ -31,7 +35,8 @@ public class CLanguageGenerator extends CodeGenerator {
     public static final String[] RJAVA_LIB = {
         "java_io_PrintStream",
         "java_lang_Object",
-        "java_lang_System"
+        "java_lang_System",
+        "java_lang_StringBuffer"
     };
     public static final String RJAVA_LIB_DIR = "rjava_clib/";
     public static final String MAIN_METHOD_SIGNATURE = "int main (int argc, const char** parameter0)";

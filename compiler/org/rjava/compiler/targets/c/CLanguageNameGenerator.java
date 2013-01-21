@@ -8,7 +8,9 @@ import org.rjava.compiler.semantics.representation.RType;
 
 import soot.Local;
 import soot.SootClass;
+import soot.Type;
 import soot.Value;
+import soot.jimple.internal.JInstanceFieldRef;
 
 public class CLanguageNameGenerator {
 
@@ -38,7 +40,7 @@ public class CLanguageNameGenerator {
     }
     
     public String get(RField field) {
-        return "";
+        return field.getName();
     }
     
     private String javaNameToCName(String javaName) {
@@ -70,5 +72,13 @@ public class CLanguageNameGenerator {
     
     public String fromSootLocal(Local local) {
         return local.getName();
+    }
+
+    public String fromSootInstanceFieldRef(JInstanceFieldRef ref) {
+        return ref.getBase() + CLanguageGenerator.FIELD_POINTER + ref.getField().getName();
+    }
+    
+    public String fromSootType(Type type) {
+        return get(RType.initWithTypeName(type.toString()));
     }
 }
