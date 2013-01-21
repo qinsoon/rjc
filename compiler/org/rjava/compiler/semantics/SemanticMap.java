@@ -12,21 +12,23 @@ import org.rjava.compiler.CompilationTask;
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.representation.*;
 
-public class SemanticMap {
+public abstract class SemanticMap {
     public static final boolean DEBUG = true;
     
     // task.class <-> RClass
-    Map<String, RClass> classes;
+    public static Map<String, RClass> classes;
     // task.class <-> task.sources
-    Map<String, String> sources;
-    SootEngine engine;
+    public static Map<String, String> sources;
+    public static Map<String, RType> types;
+    public static SootEngine engine;
     
-    public SemanticMap(CompilationTask task) {
+    public static void initSemanticMap(CompilationTask task) {
     	classes = new HashMap<String, RClass>();
+    	types = new HashMap<String, RType>();
     	
     	// get class-level info
     	engine = new SootEngine(task);
-    	engine.buildSemanticMap(this);
+    	engine.buildSemanticMap();
     	
     	// map class name with source files
     	sources = new HashMap<String, String>();
@@ -35,11 +37,11 @@ public class SemanticMap {
     	}
     }
 
-    public Map<String, RClass> getAllClasses() {
-	return classes;
+    public static Map<String, RClass> getAllClasses() {
+        return classes;
     }
 
-    public Map<String, String> getSources() {
+    public static Map<String, String> getSources() {
         return sources;
     }
 }

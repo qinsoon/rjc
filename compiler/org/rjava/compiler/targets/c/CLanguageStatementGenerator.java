@@ -31,6 +31,9 @@ public class CLanguageStatementGenerator {
         String ret = "";
         RType localType = local.getType();
         ret += name.get(localType);
+        // array to pointer
+        if (localType.isArray())
+            ret += CLanguageGenerator.POINTER;
         if (!localType.isPrimitive() && !localType.isVoidType())
             ret += CLanguageGenerator.POINTER;
         ret += " " + local.getName();

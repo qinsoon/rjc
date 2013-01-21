@@ -8,7 +8,6 @@ import java.util.Map;
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.SootEngine;
-import org.rjava.compiler.semantics.symtab.RImport;
 
 import soot.SootClass;
 
@@ -39,11 +38,17 @@ public class RType {
      *            something like Ljava/lang/Integer;
      * @return corresponding RType
      */
-    public static RType initWithTypeName(RClass klass, String type) {
+    public static RType initWithTypeName(String type) {
+        String classNameTmp = getClassNameFromType(type);
+        if (SemanticMap.types.get(classNameTmp) != null) {
+            return SemanticMap.types.get(classNameTmp);
+        }
+        
     	RType r = new RType();
     	r.type = type;
-    
-    	r.resolveAndNormalize(klass);
+      	r.resolveAndNormalize();
+      	
+      	SemanticMap.types.put(classNameTmp, r);
     	return r;
     }
 
@@ -54,15 +59,21 @@ public class RType {
      *            something like Integer or java.lang.Integer;
      * @return corresponding RType
      */
-    public static RType initWithClassName(RClass klass, String className) {
+    public static RType initWithClassName(String className) {
+        if (SemanticMap.types.get(className) != null) {
+            return SemanticMap.types.get(className);
+        }
+        
     	RType r = new RType();
-    	r.className = className;
-    
-    	r.resolveAndNormalize(klass);
+    	r.className = className;    
+    	r.resolveAndNormalize();
+    	
+    	// store back to types map
+    	SemanticMap.types.put(className, r);
     	return r;
     }
 
-    private void resolveAndNormalize(RClass klass) {
+    private void resolveAndNormalize() {
     	className = getClassName();
     
     	// check if the type is array type
@@ -77,73 +88,6 @@ public class RType {
     	else if (PRIMITIVE_TYPES.contains(className)) {
     	    primitive = true;
     	}
-    	// if not, we need to resolve the type
-    	else {
-    	    primitive = false;
-    	    String shortName = className;
-    	    SootClass sootClass = resolveType(klass);
-    	    resolvedClasses.put(className, sootClass);
-    	    fullClassNames.put(shortName, className);
-    	}
-    }
-    
-    private SootClass resolveType(RClass klass) {
-    	String fullName = fullClassNames.get(className);
-    	if (fullName != null) {
-    	    className = fullName;
-    	}
-    	SootClass s = resolvedClasses.get(className);
-    	if (s != null){
-    	    return s;
-    	}
-	
-    	// actual resolve
-    	SootClass sootClass = null;
-    
-    	try {
-    	    sootClass = SootEngine.resolveAndGetClass(className);
-    	    return sootClass;
-    	} catch (RuntimeException e) {
-    	    System.out.println("Failed to find " + className);
-    	    // such className is not actually full class name
-    	    // check imports first
-    	    for (RImport i : klass.getImports()) {
-        		if (i.isWildCardImport()) {
-        		    // join import(package) with class name
-        		    className = i.getImportStatement().replaceAll("*",
-        			    className);
-        		    try {
-        			sootClass = SootEngine.resolveAndGetClass(className);
-        			return sootClass;
-        		    } catch (RuntimeException e2) {
-        			System.out.println("Failed to find " + className);
-        			continue;
-        		    }
-        		} else {
-        		    if (i.getImportStatement().endsWith(className)) {
-        			className = i.getImportStatement();
-            		        try {
-                			    sootClass = SootEngine.resolveAndGetClass(className);
-                			    return sootClass;
-            		        } catch (RuntimeException e2) {
-                			    System.out.println("Failed to find " + className);
-                			    continue;
-            		        }
-        		    }
-        		}
-    	    }
-
-    	    // then check implicit import (i.e. java.lang)
-    	    className = "java.lang." + className;
-    	    try {
-    	        sootClass = SootEngine.resolveAndGetClass(className);
-    		return sootClass;
-    	    } catch (RuntimeException e2) {
-    	        System.out.println("Failed to find " + className);
-    	    }
-	}
-
-	return null;
     }
 
     /**
@@ -159,18 +103,23 @@ public class RType {
      * @return class name
      */
     public String getClassName() {
-	if (className == null) {
-	    className = type;
-	    if (className.startsWith("["))
-		className = className.substring(1);
-	    if (className.startsWith("L"))
-		className = className.substring(1);
-	    if (className.endsWith(";"))
-		className = className.substring(0, className.length() - 1);
-	    className = className.replace('/', '.');
-	}
-
-	return className;
+    	if (className == null) {
+    	    className = getClassNameFromType(type);
+    	}
+    
+    	return className;
+    }
+    
+    private static String getClassNameFromType(String type) {
+        String ret = type;
+        if (ret.startsWith("["))
+            ret = ret.substring(1);
+        if (ret.startsWith("L"))
+            ret = ret.substring(1);
+        if (ret.endsWith(";"))
+            ret = ret.substring(0, ret.length() - 1);
+        ret = ret.replace('/', '.');
+        return ret;
     }
     
     /**
@@ -220,5 +169,21 @@ public class RType {
 
     public boolean isVoidType() {
         return voidType;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
+
+    public void setVoidType(boolean voidType) {
+        this.voidType = voidType;
     }
 }

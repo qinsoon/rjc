@@ -10,6 +10,7 @@ import org.rjava.compiler.semantics.representation.RField;
 import org.rjava.compiler.semantics.representation.RLocal;
 import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.semantics.representation.RStatement;
+import org.rjava.compiler.semantics.representation.RType;
 import org.rjava.compiler.targets.CodeGenerator;
 
 public class CLanguageGenerator extends CodeGenerator {
@@ -19,7 +20,7 @@ public class CLanguageGenerator extends CodeGenerator {
     public static final String THIS_LOCAL = "this";
     
     public static final String INCLUDE_STDIO = "#include <stdio.h>";
-    public static final String MAIN_METHOD_SIGNATURE = "int main (int argc, const char* parameter0[])";
+    public static final String MAIN_METHOD_SIGNATURE = "int main (int argc, const char** parameter0)";
     
     public static final String FORMAL_PARAMETER = "parameter";
     public static final String THIS_PARAMETER = "this_parameter";
@@ -29,12 +30,13 @@ public class CLanguageGenerator extends CodeGenerator {
     public static final String INCOMPLETE_IMPLEMENTATION = "***Incomplete Implementation***";
     
     CLanguageNameGenerator name = new CLanguageNameGenerator();
+    CLanguageIntrinsicGenerator intrinsic = new CLanguageIntrinsicGenerator();
     
     String cHeaderSource;
     String cCodeSource;
 
     @Override
-    public void translate(RClass klass, String source, SemanticMap semantics)
+    public void translate(RClass klass, String source)
 	    throws RJavaWarning, RJavaError {
         if (RJavaCompiler.DEBUG)
             for (RMethod method : klass.getMethods()) {
@@ -50,19 +52,34 @@ public class CLanguageGenerator extends CodeGenerator {
                 RJavaCompiler.debug("}");
             }
         
-        generateIntrinsic(klass, source, semantics);
-        generateHeader(klass, source, semantics);
-        generateCode(klass, source, semantics);
+        generateIntrinsic(klass, source);
+        generateHeader(klass, source);
+        generateCode(klass, source);
     }
 
-    private void generateIntrinsic(RClass klass, String source,
-            SemanticMap semantics) {
-        // TODO: generate intrinsic here
+    private void generateIntrinsic(RClass klass, String source) {
+        // translate intrinsic types, e.g. java.lang.String/Integer, or org.vmmagic.unboxed.Address
+        for (RType type : SemanticMap.types.values()) {
+            intrinsic.generate(type);
+        }
+        
+        // translate intrinsic statement
+        for (RMethod method : klass.getMethods()) {
+            intrinsic.generate(method);
+            
+            if (!method.isIntrinsic()) {
+                for (RStatement stmt : method.getBody()) {
+                    intrinsic.generate(stmt);
+                }
+            }
+        }
     }
 
-    private void generateCode(RClass klass, String source, SemanticMap semantics) {
+    private void generateCode(RClass klass, String source) throws RJavaError {
         StringBuilder out = new StringBuilder();
-        cCodeSource = source.replace(Constants.RJAVA_EXT, ".c");
+
+        // get code source
+        cCodeSource = getSource(source, ".c");
         
         // include its own header
         out.append("#include \"" + cHeaderSource + "\"" + NEWLINE);
@@ -90,12 +107,14 @@ public class CLanguageGenerator extends CodeGenerator {
             RJavaCompiler.debug("Code output to: " + cCodeSource);
             RJavaCompiler.debug(out);
         }
+        
+        writeTo(out.toString(), Constants.OUTPUT_DIR + cCodeSource);
     }
 
-    private void generateHeader(RClass klass, String source,
-            SemanticMap semantics) {
+    private void generateHeader(RClass klass, String source) throws RJavaError {
         StringBuilder out = new StringBuilder();
-        cHeaderSource = source.replace(Constants.RJAVA_EXT, ".h");
+        
+        cHeaderSource = getSource(source, ".h");
         
         // TODO: generate global fields
         
@@ -116,6 +135,15 @@ public class CLanguageGenerator extends CodeGenerator {
             RJavaCompiler.debug("Header output to: " + cHeaderSource);
             RJavaCompiler.debug(out);
         }
+        
+        writeTo(out.toString(), Constants.OUTPUT_DIR + cHeaderSource);
+    }
+    
+    private String getSource(String origin, String ext) {
+        String ret = origin.replace(RJavaCompiler.currentTask.getPath(), "");
+        ret = ret.replace(Constants.RJAVA_EXT, ext);
+        ret = ret.replaceAll("/", "_");
+        return ret;
     }
     
     

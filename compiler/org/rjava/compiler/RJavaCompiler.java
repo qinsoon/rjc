@@ -9,6 +9,7 @@ import org.rjava.compiler.exception.RJavaRestrictionViolation;
 import org.rjava.compiler.exception.RJavaWarning;
 import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RClass;
+import org.rjava.compiler.semantics.representation.RType;
 import org.rjava.compiler.targets.CodeGenerator;
 import org.rjava.compiler.targets.c.CLanguageGenerator;
 import org.rjava.restriction.StaticRestrictionChecker;
@@ -17,9 +18,10 @@ public class RJavaCompiler {
     public static final boolean DEBUG = true;
 
     private CompilationTask task;
-    private SemanticMap semantics;
     private CodeGenerator codeGenerator;
     private StaticRestrictionChecker checker;
+    
+    public static CompilationTask currentTask;
     
     public RJavaCompiler(CompilationTask task) {
     	this.task = task;
@@ -31,37 +33,45 @@ public class RJavaCompiler {
      * @throws Error
      */
     public void compile() throws RJavaWarning, RJavaError{
-	// collect semantic information (now with soot)
-	semantics = new SemanticMap(task);
-	
-	// initialize Restriction Checker and Code Generator
-	checker = new StaticRestrictionChecker();
-	codeGenerator = new CLanguageGenerator();
-	
-	for (int i = 0; i < task.getSources().size(); i ++) {
-	    System.out.println("Compiling [" + task.getClasses().get(i) + "]: " + task.getSources().get(i));
-	    String source = task.getSources().get(i);
-	    String className = task.getClasses().get(i);
-	    RClass klass = semantics.getAllClasses().get(className);
-	    
-	    // for each class, check restriction compliance first
-	    try {
-		checker.comply(klass, semantics);
-	    } catch (RJavaError e) {
-		error(e);
-	    } catch (RJavaWarning e) {
-		warning(e);
-	    } 
-	    
-	    // then compiles the class	    
-	    try {
-		codeGenerator.translate(klass, source, semantics);
-	    } catch (RJavaError e) {
-		error(e);
-	    } catch (RJavaWarning e) {
-		warning(e);
-	    }
-	}
+        currentTask = task;
+        
+    	// collect semantic information (now with soot)
+    	SemanticMap.initSemanticMap(task);
+    	
+    	// initialize Restriction Checker and Code Generator
+    	checker = new StaticRestrictionChecker();
+    	codeGenerator = new CLanguageGenerator();
+    	
+    	for (int i = 0; i < task.getSources().size(); i ++) {
+    	    System.out.println("Compiling [" + task.getClasses().get(i) + "]: " + task.getSources().get(i));
+    	    String source = task.getSources().get(i);
+    	    String className = task.getClasses().get(i);
+    	    RClass klass = SemanticMap.getAllClasses().get(className);
+    	    
+    	    // for each class, check restriction compliance first
+    	    try {
+    		checker.comply(klass);
+    	    } catch (RJavaError e) {
+    		error(e);
+    	    } catch (RJavaWarning e) {
+    		warning(e);
+    	    } 
+    	    
+    	    // then compiles the class	    
+    	    try {
+    		codeGenerator.translate(klass, source);
+    	    } catch (RJavaError e) {
+    		error(e);
+    	    } catch (RJavaWarning e) {
+    		warning(e);
+    	    }
+    	}
+    	
+    	if (SemanticMap.DEBUG) {
+    	    debug("Types:");
+    	    for (RType type : SemanticMap.types.values())
+    	        debug(type);
+    	}
     }
     
     /**

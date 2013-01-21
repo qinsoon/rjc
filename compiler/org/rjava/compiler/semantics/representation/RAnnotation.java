@@ -11,7 +11,7 @@ public class RAnnotation {
     
     public RAnnotation(AnnotationTag tag, RClass klass) {
     	this.internal = tag;
-    	this.type = RType.initWithTypeName(klass, tag.getType());
+    	this.type = RType.initWithTypeName(tag.getType());
     }
 
     /**

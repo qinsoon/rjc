@@ -1,2 +1,5 @@
-.class
-.DS_Store
+syntax: regexp
+
+?\.class
+?\.DS_Store
+output\\*

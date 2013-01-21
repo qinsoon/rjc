@@ -4,7 +4,7 @@ import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RClass;
 
 public class NoCastOnMagicType_CHECK {
-    public static Boolean checkClass (RClass klass, SemanticMap semantics) {
-	return true;
+    public static Boolean checkClass (RClass klass) {
+        return true;
     }
 }

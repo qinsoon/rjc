@@ -17,7 +17,7 @@ public class NoDynamicLoading_CHECK {
     public static final String CLASS_FORNAME = "<java.lang.Class: java.lang.Class forName(java.lang.String)>";
     public static final String CLASSLOADER_LOADCLASS = "<java.lang.ClassLoader: java.lang.Class loadClass(java.lang.String)>";
     
-    public static Boolean checkClass (RClass klass, SemanticMap semantics) throws RJavaRestrictionViolation {
+    public static Boolean checkClass (RClass klass) throws RJavaRestrictionViolation {
 	boolean pass = true;
 	for (RMethod method : klass.getMethods()) {
 	    for (RStatement statement : method.getBody()) {

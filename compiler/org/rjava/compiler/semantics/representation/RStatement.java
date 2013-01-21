@@ -46,6 +46,8 @@ public abstract class RStatement {
 	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JThrowStmt", THROW_STMT);
     }
     
+    private RMethod method;
+    
     private int type;
     protected Unit internal;
     /**
@@ -54,39 +56,40 @@ public abstract class RStatement {
     private boolean intrinsic;
     private String code;        // if a statement is intrinsic, we store its code here (it might be generated in a different pass rather than normal code generation)
 
-    protected RStatement(Unit internal) {
-	super();
-	this.internal = internal;
-	try{
-	    type = JIMPLE_STMT_MAP.get(internal.getClass().toString());
-	} catch (Exception e) {
-	    System.err.println("Cannot recognize statement type: " + internal.getClass());
-	}
+    protected RStatement(RMethod method, Unit internal) {
+    	super();
+    	this.method = method;
+    	this.internal = internal;
+    	try{
+    	    type = JIMPLE_STMT_MAP.get(internal.getClass().toString());
+    	} catch (Exception e) {
+    	    System.err.println("Cannot recognize statement type: " + internal.getClass());
+    	}
     }
     
-    public static RStatement from(Unit jimpleUnit) {
-	int type = JIMPLE_STMT_MAP.get(jimpleUnit.getClass().toString());
-	switch(type) {
-	case ASSIGN_STMT: 		return new RAssignStmt(jimpleUnit);
-	case BREAKPOINT_STMT: 		return new RBreakpointStmt(jimpleUnit);
-	case ENTER_MONITOR_STMT:	return new REnterMonitorStmt(jimpleUnit);
-	case EXIT_MONITOR_STMT:		return new RExitMonitorStmt(jimpleUnit);
-	case GOTO_STMT:			return new RGotoStmt(jimpleUnit);
-	case IDENTITY_STMT:		return new RIdentityStmt(jimpleUnit);
-	case IF_STMT:			return new RIfStmt(jimpleUnit);
-	case INVOKE_STMT:		return new RInvokeStmt(jimpleUnit);
-	case LOOKUP_SWITCH_STMT:	return new RLookupSwitchStmt(jimpleUnit);
-	case NOP_STMT:			return new RNopStmt(jimpleUnit);
-	case RET_STMT:			return new RRetStmt(jimpleUnit);
-	case RETURN_STMT:		return new RReturnStmt(jimpleUnit);
-	case RETURN_VOID_STMT:		return new RReturnVoidStmt(jimpleUnit);
-	case TABLE_SWITCH_STMT:		return new RTableSwitchStmt(jimpleUnit);
-	case THROW_STMT:		return new RThrowStmt(jimpleUnit);
-	default:			RJavaCompiler.error("Unexpected statement type: " + type); return null;
-	}
+    public static RStatement from(RMethod method, Unit jimpleUnit) {
+        int type = JIMPLE_STMT_MAP.get(jimpleUnit.getClass().toString());
+    	switch(type) {
+        	case ASSIGN_STMT: 		return new RAssignStmt(method, jimpleUnit);
+        	case BREAKPOINT_STMT: 		return new RBreakpointStmt(method, jimpleUnit);
+        	case ENTER_MONITOR_STMT:	return new REnterMonitorStmt(method, jimpleUnit);
+        	case EXIT_MONITOR_STMT:		return new RExitMonitorStmt(method, jimpleUnit);
+        	case GOTO_STMT:			return new RGotoStmt(method, jimpleUnit);
+        	case IDENTITY_STMT:		return new RIdentityStmt(method, jimpleUnit);
+        	case IF_STMT:			return new RIfStmt(method, jimpleUnit);
+        	case INVOKE_STMT:		return new RInvokeStmt(method, jimpleUnit);
+        	case LOOKUP_SWITCH_STMT:	return new RLookupSwitchStmt(method, jimpleUnit);
+        	case NOP_STMT:			return new RNopStmt(method, jimpleUnit);
+        	case RET_STMT:			return new RRetStmt(method, jimpleUnit);
+        	case RETURN_STMT:		return new RReturnStmt(method, jimpleUnit);
+        	case RETURN_VOID_STMT:		return new RReturnVoidStmt(method, jimpleUnit);
+        	case TABLE_SWITCH_STMT:		return new RTableSwitchStmt(method, jimpleUnit);
+        	case THROW_STMT:		return new RThrowStmt(method, jimpleUnit);
+        	default:			RJavaCompiler.error("Unexpected statement type: " + type); return null;
+    	}
     }
     
-    public static final boolean verbose = true;
+    public static final boolean verbose = false;
     
     public String toString() {
 	String ret = "[" + internal.getClass() + "]:" + internal.toString();

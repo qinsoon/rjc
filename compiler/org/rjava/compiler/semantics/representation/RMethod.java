@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.rjava.compiler.semantics.symtab.RIdentifier;
-
 import soot.Body;
 import soot.Local;
 import soot.SootMethod;
@@ -20,6 +18,8 @@ public class RMethod {
     private List<RStatement> body = new ArrayList<RStatement>();
     private List<RLocal> locals = new ArrayList<RLocal>();
     
+    private boolean mainMethod;
+    
     SootMethod internal;
     
     private boolean intrinsic;
@@ -29,22 +29,24 @@ public class RMethod {
     	this.internal = m;
     	this.name = m.getName();
     	this.klass = rClass;
-    	this.returnType = RType.initWithTypeName(rClass, m.getReturnType().toString());
+    	this.returnType = RType.initWithTypeName(m.getReturnType().toString());
     	// get parameter
     	for (Object o : m.getParameterTypes()) {
     	    Type t = (Type)o;
-    	    parameters.add(RType.initWithTypeName(rClass, t.toString()));
+    	    parameters.add(RType.initWithTypeName(t.toString()));
     	}
     	// get body
     	Body sootBody = m.retrieveActiveBody();
     	Iterator<Unit> iter = sootBody.getUnits().iterator();
     	while(iter.hasNext()) {
-    	    body.add(RStatement.from(iter.next()));
+    	    body.add(RStatement.from(this, iter.next()));
     	}
     	Iterator<Local> iter2 = sootBody.getLocals().iterator();
     	while(iter2.hasNext()) {
     	    locals.add(new RLocal(this, iter2.next()));
     	}
+    	
+    	checkMainMethod();
     }
 
     public List<RType> getParameters() {
@@ -73,10 +75,9 @@ public class RMethod {
     public List<RStatement> getBody() {
         return body;
     }
-    
-    public boolean isMainMethod() {
-        return 
-                // return void
+
+    private void checkMainMethod() {
+        this.mainMethod =                 // return void
                 returnType.isVoidType() &&
                 // 1 parameter, array, String
                 parameters.size() == 1 && parameters.get(0).isArray() && parameters.get(0).getClassName().equals("java.lang.String") && 
@@ -114,5 +115,9 @@ public class RMethod {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public boolean isMainMethod() {
+        return mainMethod;
     }
 }

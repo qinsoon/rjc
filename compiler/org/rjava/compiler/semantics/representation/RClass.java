@@ -7,9 +7,6 @@ import java.util.List;
 
 import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.SootEngine;
-import org.rjava.compiler.semantics.symtab.RBlock;
-import org.rjava.compiler.semantics.symtab.RIdentifier;
-import org.rjava.compiler.semantics.symtab.RImport;
 
 import soot.SootClass;
 import soot.SootField;
@@ -27,13 +24,6 @@ public class RClass {
     // 'restrictions' are RJava restriction rules, including those unfolded from rulesets
     private List<RAnnotation> annotations;
     
-    // blocks in such class
-    private RBlock topBlock;
-    private RBlock currentBlock = null;
-    
-    // imports
-    private List<RImport> imports = new ArrayList<RImport>();
-    
     // methods
     private List<RMethod> methods = new ArrayList<RMethod>();
     
@@ -45,8 +35,6 @@ public class RClass {
     	this.name = internal.getName();
     	
     	this.annotations = fetchAnnotations(internal);
-    	
-    	topBlock = new RBlock(RBlock.CLASS_WIDE);
     	
     	fetchMethods();
     	fetchFields();
@@ -122,54 +110,6 @@ public class RClass {
     public List<RAnnotation> getAnnotations() {
         return annotations;
     }
-
-    public RBlock getTopBlock() {
-        return topBlock;
-    }
-
-    public void setTopBlock(RBlock topBlock) {
-        this.topBlock = topBlock;
-    }
-
-    public RBlock getCurrentBlock() {
-        return currentBlock;
-    }
-
-    public void setCurrentBlock(RBlock currentBlock) {
-        this.currentBlock = currentBlock;
-    }
-    
-    public void newBlock(String type) {
-	RBlock newCurrent = this.currentBlock.addInnerBlock(type);
-	this.currentBlock = newCurrent;
-    }
-    
-    public void backToUpperBlock() {
-	this.currentBlock = this.currentBlock.getUpper();
-    }
-    
-    public void newIdToCurrentBlock(RIdentifier id) {
-	this.currentBlock.add(id);
-    }
-    
-    public void printSymbolTalbe() {
-	System.out.println("---Symbol Table for " + name + "---");
-	topBlock.verbose();
-    }
-    
-    public void printImports() {
-	for (RImport i : imports)
-	    System.out.println(i);
-    }
-    
-    public void addNewImport(String statement) {
-	this.imports.add(new RImport(statement));
-    }
-
-    public List<RImport> getImports() {
-        return imports;
-    }
-
 
     public List<RMethod> getMethods() {
         return methods;

@@ -8,6 +8,8 @@ public final class Constants {
     // rjava source file extension, same as Java at the moment
     public static final String RJAVA_EXT = ".java";
     
+    public static final String OUTPUT_DIR = "output/";
+    
     // rjava restr./ext. annotations' path
     public static final String RJAVA_ANNOTATION_DIR = "rjava/";
     
@@ -20,11 +22,11 @@ public final class Constants {
     public static final String CHECK_RULE_SUFFIX = "_CHECK";
     public static final String CHECK_CLASS_METHOD = "checkClass";
     public static final Class[] CHECK_CLASS_PARA = new Class[] {
-	RClass.class, SemanticMap.class
+	RClass.class
     };
     public static final String CHECK_METHOD_METHOD = "checkMethod";
     public static final Class[] CHECK_METHOD_PARA = new Class[] {
-	RMethod.class, SemanticMap.class
+	RMethod.class
     };
 
     
