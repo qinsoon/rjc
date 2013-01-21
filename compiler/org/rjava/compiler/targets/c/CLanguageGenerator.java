@@ -242,14 +242,14 @@ public class CLanguageGenerator extends CodeGenerator {
         
         // generate makefile
         StringBuilder makeFile = new StringBuilder();
-        makeFile.append("make: ");
+        makeFile.append("all: ");
         String fileList = "";
         for (String c : translatedCSource)
             fileList += c + " ";
         for (String l : RJAVA_LIB)
             fileList += l + ".c ";
-        makeFile.append(fileList + NEWLINE);
-        makeFile.append("gcc -o " + mainObj + " ");
+        makeFile.append(NEWLINE);
+        makeFile.append("\tgcc -o " + mainObj + " ");
         makeFile.append(fileList);
         makeFile.append(" -I .");
         writeTo(makeFile.toString(), Constants.OUTPUT_DIR + "Makefile");
