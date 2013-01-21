@@ -67,6 +67,9 @@ public class RJavaCompiler {
     	    }
     	}
     	
+    	// copy library etc.
+    	codeGenerator.postTranslationWork();
+    	
     	if (SemanticMap.DEBUG) {
     	    debug("Types:");
     	    for (RType type : SemanticMap.types.values())

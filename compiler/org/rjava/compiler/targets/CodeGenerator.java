@@ -11,6 +11,13 @@ import org.rjava.compiler.semantics.SemanticMap;
 public abstract class CodeGenerator {
 
     public abstract void translate(RClass klass, String source) throws RJavaWarning, RJavaError;
+    
+    /**
+     * e.g. copy library files, etc.
+     * @throws RJavaWarning
+     * @throws RJavaError
+     */
+    public abstract void postTranslationWork() throws RJavaWarning, RJavaError;
 
     protected void writeTo(String out, String file) throws RJavaError {
         FileOutputStream os = null;

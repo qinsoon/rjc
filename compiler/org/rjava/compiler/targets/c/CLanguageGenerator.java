@@ -1,5 +1,11 @@
 package org.rjava.compiler.targets.c;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.io.FileUtils;
 import org.rjava.compiler.Constants;
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.exception.RJavaError;
@@ -20,6 +26,14 @@ public class CLanguageGenerator extends CodeGenerator {
     public static final String THIS_LOCAL = "this";
     
     public static final String INCLUDE_STDIO = "#include <stdio.h>";
+    public static final String RJAVA_LIB_INCLUDE_FILE = "rjava_lib.h";
+    public static final String RJAVA_LIB_INCLUDE = "#include \"" + RJAVA_LIB_INCLUDE_FILE + "\"";
+    public static final String[] RJAVA_LIB = {
+        "java_io_PrintStream",
+        "java_lang_Object",
+        "java_lang_System"
+    };
+    public static final String RJAVA_LIB_DIR = "rjava_clib/";
     public static final String MAIN_METHOD_SIGNATURE = "int main (int argc, const char** parameter0)";
     
     public static final String FORMAL_PARAMETER = "parameter";
@@ -34,6 +48,10 @@ public class CLanguageGenerator extends CodeGenerator {
     
     String cHeaderSource;
     String cCodeSource;
+    
+    List<String> translatedCSource = new ArrayList<String>();
+    String mainSource = "";
+    String mainObj = "";
 
     @Override
     public void translate(RClass klass, String source)
@@ -76,6 +94,8 @@ public class CLanguageGenerator extends CodeGenerator {
     }
 
     private void generateCode(RClass klass, String source) throws RJavaError {
+        boolean containsMain = false;
+        
         StringBuilder out = new StringBuilder();
 
         // get code source
@@ -92,6 +112,7 @@ public class CLanguageGenerator extends CodeGenerator {
         for (RMethod method : klass.getMethods()) {
             if (method.isMainMethod()) {
                 out.append(MAIN_METHOD_SIGNATURE + " {" + NEWLINE);
+                containsMain = true;
             } else {
                 out.append(getMethodSignature(method) + " {" + NEWLINE);
             }
@@ -109,12 +130,24 @@ public class CLanguageGenerator extends CodeGenerator {
         }
         
         writeTo(out.toString(), Constants.OUTPUT_DIR + cCodeSource);
+        translatedCSource.add(cCodeSource);
+        if (containsMain) {
+            mainSource = cCodeSource;
+            mainObj = name.get(klass);
+        }
     }
 
     private void generateHeader(RClass klass, String source) throws RJavaError {
         StringBuilder out = new StringBuilder();
         
         cHeaderSource = getSource(source, ".h");
+        
+        // include guard
+        out.append("#ifndef " + name.get(klass).toUpperCase() + "_H" + NEWLINE);
+        out.append("#define " + name.get(klass).toUpperCase() + "_H" + NEWLINE);
+        
+        // include rjava lib
+        out.append(RJAVA_LIB_INCLUDE + NEWLINE);
         
         // TODO: generate global fields
         
@@ -130,6 +163,8 @@ public class CLanguageGenerator extends CodeGenerator {
                 out.append(getMethodSignature(method) + SEMICOLON + NEWLINE);
             }
         }
+        
+        out.append("#endif");
         
         if (RJavaCompiler.DEBUG) {
             RJavaCompiler.debug("Header output to: " + cHeaderSource);
@@ -183,5 +218,40 @@ public class CLanguageGenerator extends CodeGenerator {
     
     public String comment(String s) {
         return "/* " + s + " */";
+    }
+
+    @Override
+    public void postTranslationWork() throws RJavaWarning, RJavaError {
+        // generating lib include
+        StringBuilder out = new StringBuilder();
+        out.append("#ifndef RJAVA_LIB_H" + NEWLINE);
+        out.append("#define RJAVA_LIB_H" + NEWLINE);
+        for (String lib : RJAVA_LIB) {
+            out.append("#include \"" + lib + ".h\"" + NEWLINE);
+        }
+        out.append("#endif");
+        writeTo(out.toString(), Constants.OUTPUT_DIR + RJAVA_LIB_INCLUDE_FILE);
+        
+        // copy lib files
+        try {
+            FileUtils.copyDirectory(new File(RJAVA_LIB_DIR), new File(Constants.OUTPUT_DIR), false);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        // generate makefile
+        StringBuilder makeFile = new StringBuilder();
+        makeFile.append("make: ");
+        String fileList = "";
+        for (String c : translatedCSource)
+            fileList += c + " ";
+        for (String l : RJAVA_LIB)
+            fileList += l + ".c ";
+        makeFile.append(fileList + NEWLINE);
+        makeFile.append("gcc -o " + mainObj + " ");
+        makeFile.append(fileList);
+        makeFile.append(" -I .");
+        writeTo(makeFile.toString(), Constants.OUTPUT_DIR + "Makefile");
     }
 }
