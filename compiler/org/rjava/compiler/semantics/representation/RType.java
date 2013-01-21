@@ -48,8 +48,23 @@ public class RType {
     	r.type = type;
       	r.resolveAndNormalize();
       	
-      	SemanticMap.types.put(classNameTmp, r);
+      	saveToSemanticMap(classNameTmp, r);
+
     	return r;
+    }
+
+    /**
+     * save to semantic map. If it is an array type, find base type and save as well.
+     * @param classNameTmp
+     * @param r
+     */
+    private static void saveToSemanticMap(String className, RType r) {
+        SemanticMap.types.put(className, r);
+        
+        if (r.isArray()) {
+            String baseClassName = r.getClassName();
+            RType.initWithClassName(baseClassName);
+        }
     }
 
     /**
@@ -69,7 +84,7 @@ public class RType {
     	r.resolveAndNormalize();
     	
     	// store back to types map
-    	SemanticMap.types.put(className, r);
+    	saveToSemanticMap(className, r);
     	return r;
     }
 
@@ -90,9 +105,6 @@ public class RType {
     	}
     }
 
-    /**
-     * Java style type, such as Ljava/lang/Integer;
-     */
     public String toString() {
         return className + (array ? "[]":"");
     }

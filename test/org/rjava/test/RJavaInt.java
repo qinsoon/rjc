@@ -15,7 +15,7 @@ public class RJavaInt {
     }
     
     int fact(int n) {
-        return n > 2 ? n * fact(n - 1) : 0;
+        return n > 2 ? n * fact(n - 1) : n;
     }
     
     public static void main(String[] args) {

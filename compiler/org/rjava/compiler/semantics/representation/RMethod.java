@@ -30,11 +30,11 @@ public class RMethod {
     	this.internal = m;
     	this.name = m.getName();
     	this.klass = rClass;
-    	this.returnType = RType.initWithTypeName(m.getReturnType().toString());
+    	this.returnType = RType.initWithClassName(m.getReturnType().toString());
     	// get parameter
     	for (Object o : m.getParameterTypes()) {
     	    Type t = (Type)o;
-    	    parameters.add(RType.initWithTypeName(t.toString()));
+    	    parameters.add(RType.initWithClassName(t.toString()));
     	}
     	// get body
     	Body sootBody = m.retrieveActiveBody();

@@ -13,7 +13,7 @@ public class RLocal {
         this.method = method;
         this.internal = internal;
         
-        this.type = RType.initWithTypeName(internal.getType().toString());
+        this.type = RType.initWithClassName(internal.getType().toString());
         this.name = internal.getName();
     }
 

@@ -13,7 +13,7 @@ public class RField {
         this.klass = klass;
         this.internal = f;
         
-        this.type = RType.initWithTypeName(f.getType().toString());
+        this.type = RType.initWithClassName(f.getType().toString());
         this.name = f.getName();
     }
 

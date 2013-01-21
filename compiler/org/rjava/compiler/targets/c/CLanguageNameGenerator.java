@@ -26,13 +26,7 @@ public class CLanguageNameGenerator {
     }
     
     public String get(RMethod method) {
-        String classPrefix = get(method.getKlass());
-        String methodName = method.getName();
-        if (methodName.equals("<init>"))
-            methodName = CLanguageGenerator.RJAVA_INIT;
-        else if (methodName.equals("<clinit>"))
-            methodName = CLanguageGenerator.RJAVA_CLINIT;
-        return classPrefix + "_" + methodName;
+        return fromSootMethod(method.internal());
     }
     
     public String get(RType type) {
@@ -63,7 +57,15 @@ public class CLanguageNameGenerator {
             methodName = CLanguageGenerator.RJAVA_INIT;
         else if (methodName.equals("<clinit>"))
             methodName = CLanguageGenerator.RJAVA_CLINIT;
-        return classPrefix + "_" + methodName;
+        
+        String ret = classPrefix + "_" + methodName;
+        
+        // add args type into method name to fake overloading
+        for (int i = 0; i < method.getParameterCount(); i++) {
+            ret += "_" + fromSootType(method.getParameterType(i));
+        }
+        
+        return ret;
     }
 
     public String fromSootClass(SootClass declaringClass) {
@@ -79,6 +81,7 @@ public class CLanguageNameGenerator {
     }
     
     public String fromSootType(Type type) {
-        return get(RType.initWithTypeName(type.toString()));
+        System.out.println("from soot type: " + type.toString());
+        return get(RType.initWithClassName(type.toString()));
     }
 }

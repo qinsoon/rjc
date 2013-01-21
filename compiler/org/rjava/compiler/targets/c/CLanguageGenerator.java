@@ -234,6 +234,8 @@ public class CLanguageGenerator extends CodeGenerator {
         for (String lib : RJAVA_LIB) {
             out.append("#include \"" + lib + ".h\"" + NEWLINE);
         }
+        
+        out.append("#define RJAVA_STR char *" + NEWLINE);
         out.append("#endif");
         writeTo(out.toString(), Constants.OUTPUT_DIR + RJAVA_LIB_INCLUDE_FILE);
         

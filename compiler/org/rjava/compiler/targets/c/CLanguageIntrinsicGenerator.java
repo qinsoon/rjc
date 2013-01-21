@@ -15,7 +15,7 @@ public class CLanguageIntrinsicGenerator {
     public void generate(RType type) {
         if (type.getClassName().equals("java.lang.String")) {
             type.setType(null);
-            type.setClassName("char*");
+            type.setClassName("RJAVA_STR");
             type.setPackageName(null);
             type.setPrimitive(true);
         }
