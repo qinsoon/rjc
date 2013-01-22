@@ -48,9 +48,9 @@ public class SootEngine {
     	Options.v().set_src_prec(Options.src_prec_java);
     	Options.v().set_whole_program(true);
     	Options.v().set_process_dir(dir);
-    	//Options.v().set_exclude(Arrays.asList("java"));
-    	//Options.v().set_no_bodies_for_excluded(true);
-    	//Options.v().set_allow_phantom_refs(true);
+    	Options.v().set_exclude(Arrays.asList("java"));
+    	Options.v().set_no_bodies_for_excluded(true);
+    	Options.v().set_allow_phantom_refs(true);
     	
     	// set class path
     	String classpath = "";
@@ -64,7 +64,7 @@ public class SootEngine {
     	if (DEBUG)
     	    System.out.println("soot classpath: " + classpath);
     	
-        //runSoot();
+        runSoot();
     	
     	// get all classes and methods
     	allClasses = new HashMap<String, SootClass>();
@@ -97,6 +97,11 @@ public class SootEngine {
     private void runSoot() {
         List<String> sootArgs = new ArrayList<String>();
         sootArgs.add("-W");
+        
+        // no output
+        sootArgs.add("-f");
+        sootArgs.add("n");
+        
         sootArgs.add("-p");
         sootArgs.add("wjop");
         sootArgs.add("enabled:true");
@@ -106,32 +111,16 @@ public class SootEngine {
         sootArgs.add("cg");
         sootArgs.add("enabled:true");
 
-        //enable Spark
         sootArgs.add("-p");
         sootArgs.add("cg.spark");
         sootArgs.add("enabled:true");
-        initSPARK();
+        
+        sootArgs.add("-p");
+        sootArgs.add("cg.spark");
+        sootArgs.add("verbose:true");
         
         soot.Main.main(sootArgs.toArray(new String[0]));
         System.out.println("Soot done. ");
-    }
-
-    private void initSPARK() {
-        PackManager.v().getPack("wjop").add(new Transform("wjop.mytrans",new SceneTransformer() {
-             protected void internalTransform(String phaseName, Map options) {
-                 System.out.println("SPARK pointer-to analysis...");
-                 HashMap map = new HashMap(options);
-                 //set the PointsToAnalysis with phase options
-                 map.put("verbose", "true");
-                 map.put("propagator", "worklist");
-                 map.put("simple-edges-bidirectional", "false");
-                 map.put("on-fly-cg", "true");
-                 map.put("set-impl", "hybrid");
-                 map.put("double-set-old", "hybrid");
-                 map.put("double-set-new", "hybrid");
-                 SparkTransformer.v().transform("",map);
-             }
-           }));
     }
 
     public void buildSemanticMap() {
