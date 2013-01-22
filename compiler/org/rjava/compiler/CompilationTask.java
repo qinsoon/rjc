@@ -37,6 +37,13 @@ public class CompilationTask {
     	throw new RJavaWarning("Directory doesn't exist: " + dir);
     }
     
+    public void addSource(String file) {
+        File f = new File(file);
+        this.sources.add(f.getAbsoluteFile().getAbsolutePath());
+        
+        buildClassList();
+    }
+    
     private static void addFileToListRecursively(File dir, List<String> list) {
     	File[] all = dir.listFiles();
     	for (File f : all) {

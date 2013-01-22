@@ -45,6 +45,7 @@ public class CLanguageGenerator extends CodeGenerator {
     public static final String THIS_PARAMETER = "this_parameter";
     public static final String RJAVA_INIT = "rjinit";
     public static final String RJAVA_CLINIT = "rjclinit";
+    public static final String SUPER_FIELD = "super";
     
     public static final String INCOMPLETE_IMPLEMENTATION = "***Incomplete Implementation***";
     
@@ -158,6 +159,9 @@ public class CLanguageGenerator extends CodeGenerator {
         
         // generate struct for such class
         out.append("typedef struct " + name.get(klass) + " {" + NEWLINE);
+        out.append(commentln("super class field"));
+        out.append(getStructFieldToSuperClass(klass));
+        out.append(commentln("instance fields"));
         for (RField field : klass.getFields()) {
             out.append(name.get(field.getType()) + " " + name.get(field) + SEMICOLON + NEWLINE);
         }
@@ -179,6 +183,14 @@ public class CLanguageGenerator extends CodeGenerator {
         writeTo(out.toString(), Constants.OUTPUT_DIR + cHeaderSource);
     }
     
+    private String getStructFieldToSuperClass(RClass klass) {
+        String ret = "";
+        if (klass.getSuperClass() != null) {
+            ret += name.get(klass.getSuperClass()) + POINTER + " " + SUPER_FIELD + SEMICOLON + NEWLINE;
+        }
+        return ret;
+    }
+
     private String getSource(String origin, String ext) {
         String ret = origin.replace(RJavaCompiler.currentTask.getPath(), "");
         ret = ret.replace(Constants.RJAVA_EXT, ext);
@@ -206,11 +218,11 @@ public class CLanguageGenerator extends CodeGenerator {
     public String getMethodBody(RMethod method) {
         StringBuilder out = new StringBuilder();
         CLanguageStatementGenerator stmt = new CLanguageStatementGenerator();
-        out.append(comment("locals") + NEWLINE);
+        out.append(commentln("locals"));
         for (RLocal local : method.getLocals()) {
             out.append(stmt.get(local) + SEMICOLON + NEWLINE);
         }
-        out.append(comment("stmts") + NEWLINE);
+        out.append(commentln("stmts"));
         for (RStatement rStmt : method.getBody()) {
             if (rStmt.isIntrinsic())
                 out.append(rStmt.getCode());
@@ -221,8 +233,8 @@ public class CLanguageGenerator extends CodeGenerator {
         return out.toString();
     }
     
-    public String comment(String s) {
-        return "/* " + s + " */";
+    public String commentln(String s) {
+        return "/* " + s + " */" + NEWLINE;
     }
 
     @Override

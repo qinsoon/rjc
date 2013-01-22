@@ -36,17 +36,20 @@ public class RMethod {
     	    Type t = (Type)o;
     	    parameters.add(RType.initWithClassName(t.toString()));
     	}
-    	// get body
-    	Body sootBody = m.retrieveActiveBody();
-    	    	
-    	Iterator<Unit> iter = sootBody.getUnits().iterator();
-    	while(iter.hasNext()) {
-    	    body.add(RStatement.from(this, iter.next()));
-    	}
     	
-    	Iterator<Local> iter2 = sootBody.getLocals().iterator();
-    	while(iter2.hasNext()) {
-    	    locals.add(new RLocal(this, iter2.next()));
+    	if (m.isConcrete()) {
+        	// get body
+        	Body sootBody = m.retrieveActiveBody();
+        	    	
+        	Iterator<Unit> iter = sootBody.getUnits().iterator();
+        	while(iter.hasNext()) {
+        	    body.add(RStatement.from(this, iter.next()));
+        	}
+        	
+        	Iterator<Local> iter2 = sootBody.getLocals().iterator();
+        	while(iter2.hasNext()) {
+        	    locals.add(new RLocal(this, iter2.next()));
+        	}
     	}
     	
     	checkMainMethod();

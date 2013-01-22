@@ -84,19 +84,24 @@ public class SootEngine {
     	    }
     	    System.out.println();
     	}
+    	
+    	Scene.v().loadNecessaryClasses();
     }
 
     public void buildSemanticMap() {
     	// pass classes
     	for (Map.Entry<String, SootClass> entry : allClasses.entrySet()) {
-    	    SemanticMap.classes.put(entry.getKey(), new RClass(entry.getValue()));
+    	    RClass.fromSootClass(entry.getValue());
     	}
     }
 
     public static SootClass resolveAndGetClass(String name) {
-	//Scene.v().forceResolve(name, SootClass.SIGNATURES);
-	SootResolver.v().resolveClass(name, SootClass.BODIES);
-	SootClass ret = Scene.v().getSootClass(name);
-	return ret;
+    	//Scene.v().forceResolve(name, SootClass.SIGNATURES);
+    	SootResolver.v().resolveClass(name, SootClass.BODIES);
+    	SootClass ret = Scene.v().getSootClass(name);
+    	return ret;
+    }
+    
+    public static void ensureResolved(SootClass sootClass) {
     }
 }

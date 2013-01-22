@@ -21,7 +21,7 @@ public abstract class SemanticMap {
     public static Map<String, String> sources;
     public static Map<String, RType> types;
     public static SootEngine engine;
-    
+
     public static void initSemanticMap(CompilationTask task) {
     	classes = new HashMap<String, RClass>();
     	types = new HashMap<String, RType>();

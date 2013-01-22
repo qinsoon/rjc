@@ -30,7 +30,24 @@ public class RClass {
     // fields
     private List<RField> fields = new ArrayList<RField>();
     
-    public RClass(SootClass sootClass) {
+    private RClass superClass;
+    
+    /**
+     * check if the corresponding RClass is resolved. if so, simply fetch it, otherwise resolve it
+     * @param sootClass
+     * @return
+     */
+    public static RClass fromSootClass(SootClass sootClass) {
+        String className = sootClass.getName();
+        RClass rClass = SemanticMap.classes.get(className);
+        if (rClass == null) {
+            rClass = new RClass(sootClass);
+            SemanticMap.classes.put(className, rClass);
+        }
+        return rClass;
+    }
+    
+    protected RClass(SootClass sootClass) {
     	this.internal = sootClass;
     	this.name = internal.getName();
     	
@@ -38,6 +55,9 @@ public class RClass {
     	
     	fetchMethods();
     	fetchFields();
+    	
+    	if (internal.hasSuperclass() && !internal.getSuperclass().getName().equals("java.lang.Object"))
+    	    superClass = fromSootClass(internal.getSuperclass());
     }
 
     private void fetchFields() {
@@ -118,5 +138,9 @@ public class RClass {
 
     public List<RField> getFields() {
         return fields;
+    }
+
+    public RClass getSuperClass() {
+        return superClass;
     }
 }

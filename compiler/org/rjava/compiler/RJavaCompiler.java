@@ -74,6 +74,9 @@ public class RJavaCompiler {
     	    debug("Types:");
     	    for (RType type : SemanticMap.types.values())
     	        debug(type);
+    	    debug("Classes:");
+    	    for (RClass klass : SemanticMap.classes.values())
+    	        debug(klass.getName());
     	}
     }
     
@@ -98,14 +101,18 @@ public class RJavaCompiler {
 	} else usage();
 	
 	if (args.length >= 3) {
+        CompilationTask task = null;
 	    // get the rest args as files
 	    for (int i = 2; i < args.length; i ++) {
 	        try {
-                tasks.add(CompilationTask.newTaskFromFile(dir, args[i]));
+	            if (task == null)
+                 task = CompilationTask.newTaskFromFile(dir, args[i]);
+	            else task.addSource(args[i]);
             } catch (RJavaWarning e) {
                 warning(e);
             }
 	    }
+	    tasks.add(task);
 	} else {
 	    try {
             tasks.add(CompilationTask.newTaskFromDir(dir));

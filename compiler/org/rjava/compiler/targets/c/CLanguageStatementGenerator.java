@@ -105,7 +105,6 @@ public class CLanguageStatementGenerator {
         // expr -> imm1 binop imm2 | (type) imm | imm instanceof type | invokeExpr | new refType | newarray (type) [imm] | newmultiarray(type)[imm1]...[immn][]* | length imm | neg imm;
         // invokeExpr -> specialinvoke/interfaceinvoke/virtualinvoke local.m(imm1,...,immn) | staticinvoke m(imm1,...,immn)
         Value rightOp = internal.getRightOp();
-        System.out.println(rightOp.getClass());
         if (rightOp instanceof soot.jimple.StaticFieldRef) {
             ret += name.fromSootStaticFieldRef((StaticFieldRef) rightOp);
         } else if (rightOp instanceof soot.jimple.internal.JimpleLocal) {

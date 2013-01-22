@@ -81,7 +81,6 @@ public class CLanguageNameGenerator {
     }
     
     public String fromSootType(Type type) {
-        System.out.println("from soot type: " + type.toString());
         return get(RType.initWithClassName(type.toString()));
     }
 }
