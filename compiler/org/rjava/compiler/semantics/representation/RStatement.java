@@ -8,6 +8,7 @@ import org.rjava.compiler.semantics.representation.stmt.*;
 import soot.Unit;
 import soot.UnitBox;
 import soot.ValueBox;
+import soot.jimple.InvokeExpr;
 import soot.jimple.internal.AbstractStmt;
 
 public abstract class RStatement {
@@ -90,9 +91,19 @@ public abstract class RStatement {
     }
     
     public static final boolean verbose = false;
+    public static final boolean verboseInvoke = false;
     
     public String toString() {
 	String ret = "[" + internal.getClass() + "]:" + internal.toString();
+	if (verboseInvoke && internal().containsInvokeExpr()) {
+	    ret += ",invoke base:";
+	    InvokeExpr invoke = internal().getInvokeExpr();
+	    if (invoke instanceof soot.jimple.internal.JSpecialInvokeExpr) {
+	        ret += ((soot.jimple.internal.JSpecialInvokeExpr) invoke).getBase().getType();
+	    } else if (invoke instanceof soot.jimple.internal.JVirtualInvokeExpr) {
+	        ret += ((soot.jimple.internal.JVirtualInvokeExpr) invoke).getBase().getType();
+	    } else ret += "non-virtual invoke";
+	}
 	if (verbose) {
         	ret += "\nuse/def boxes: \n";
         	for (Object o : internal.getUseAndDefBoxes()) {
