@@ -9,6 +9,10 @@ import org.rjava.compiler.semantics.representation.RType;
 import org.rjava.compiler.semantics.representation.stmt.*;
 
 import soot.Local;
+import soot.PointsToAnalysis;
+import soot.PointsToSet;
+import soot.Scene;
+import soot.Type;
 import soot.Unit;
 import soot.Value;
 import soot.jimple.BinopExpr;
@@ -222,6 +226,14 @@ public class CLanguageStatementGenerator {
      * from soot statement/expr representation
      */
     private String fromSootJVirtualInvokeExpr(soot.jimple.internal.JVirtualInvokeExpr virtualInvoke) {
+        Local baseLocal = (Local) virtualInvoke.getBase();
+        PointsToAnalysis pa = Scene.v().getPointsToAnalysis();
+        PointsToSet ptset = pa.reachingObjects(baseLocal);
+        System.out.println("possible types for " + baseLocal + " in " + virtualInvoke.toString());
+        for (Type t : ptset.possibleTypes()) {
+            System.out.println(t);
+        }
+        
         String methodName = name.fromSootMethod(virtualInvoke.getMethod());
         String base = name.fromSootLocal((Local) virtualInvoke.getBase());
         
