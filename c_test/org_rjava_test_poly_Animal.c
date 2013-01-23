@@ -34,5 +34,6 @@ return;
 }
 
 void org_rjava_test_poly_Animal_rjinit (org_rjava_test_poly_Animal* this_parameter) {
-
+    this_parameter -> class_struct = &org_rjava_test_poly_Animal_class_instance;
+    this_parameter -> sound = "noissssssssse";
 }

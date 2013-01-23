@@ -22,6 +22,7 @@ import org.rjava.compiler.targets.CodeGenerator;
 public class CLanguageGenerator extends CodeGenerator {
     public static final String NEWLINE = "\n";
     public static final String SEMICOLON = ";";
+    public static final String VOID = "void";
     public static final String POINTER = "*";
     public static final String FIELD_POINTER = "->";
     public static final String THIS_LOCAL = "this";
@@ -30,6 +31,7 @@ public class CLanguageGenerator extends CodeGenerator {
     public static final String SIZE_OF = "sizeof";
     
     public static final String INCLUDE_STDIO = "#include <stdio.h>";
+    public static final String RJAVA_CLASS_INIT = "rjava_class_init";
     public static final String RJAVA_LIB_INCLUDE_FILE = "rjava_lib.h";
     public static final String RJAVA_LIB_INCLUDE = "#include \"" + RJAVA_LIB_INCLUDE_FILE + "\"";
     public static final String[] RJAVA_LIB = {
@@ -45,7 +47,14 @@ public class CLanguageGenerator extends CodeGenerator {
     public static final String THIS_PARAMETER = "this_parameter";
     public static final String RJAVA_INIT = "rjinit";
     public static final String RJAVA_CLINIT = "rjclinit";
-    public static final String SUPER_FIELD = "super";
+    
+    // related with dyanmic dispatching
+    public static final String POINTER_TO_CLASS_STRUCT = "class_struct";    // in object, pointing to its class
+    public static final String EMBED_SUPER_OBJECT = "embed_super_object";
+    public static final String EMBED_SUPER_CLASS  = "embed_super_class";
+    public static final String SUPER_CLASS = "super_class";
+    public static final String CLASS_STRUCT_SUFFIX = "_class";
+    public static final String CLASS_STRUCT_INSTANCE_SUFFIX = "_class_instance";
     
     public static final String INCOMPLETE_IMPLEMENTATION = "***Incomplete Implementation***";
     
@@ -58,6 +67,8 @@ public class CLanguageGenerator extends CodeGenerator {
     List<String> translatedCSource = new ArrayList<String>();
     String mainSource = "";
     String mainObj = "";
+    
+    StringBuilder classInit = new StringBuilder();
 
     @Override
     public void translate(RClass klass, String source)
@@ -155,18 +166,60 @@ public class CLanguageGenerator extends CodeGenerator {
         // include rjava lib
         out.append(RJAVA_LIB_INCLUDE + NEWLINE);
         
-        // TODO: generate global fields
-        
-        // generate struct for such class
+        // generate struct for object (e.g. org_rjava_test_poly_Animal)
         out.append("typedef struct " + name.get(klass) + " {" + NEWLINE);
-        out.append(commentln("super class field"));
-        out.append(getStructFieldToSuperClass(klass));
+        // we only put void* class_struct in the super class
+        // otherwise we contain a struct for its super class object
+        if (klass.hasSuperClass()) {
+            out.append(commentln("contains super object struct"));
+            out.append(name.get(klass.getSuperClass()) + " " + EMBED_SUPER_OBJECT + SEMICOLON + NEWLINE);
+        } else {
+            out.append(commentln("pointer to its class Struct"));
+            out.append(getPointerToClassStruct(klass) + SEMICOLON + NEWLINE);
+        }
         out.append(commentln("instance fields"));
         for (RField field : klass.getFields()) {
             out.append(name.get(field.getType()) + " " + name.get(field) + SEMICOLON + NEWLINE);
         }
         out.append("} " + name.get(klass) + SEMICOLON + NEWLINE);
         
+        // generate struct for class (e.g. org_rjava_test_poly_Animal_class)
+        out.append("typedef struct " + name.get(klass) + CLASS_STRUCT_SUFFIX + " {" + NEWLINE);
+        if (klass.hasSuperClass()) {
+            // contain a struct for its super class
+            out.append(commentln("contains super class struct"));
+            out.append(name.get(klass.getSuperClass()) + " " + EMBED_SUPER_CLASS + SEMICOLON + NEWLINE);
+            // init super class in class_init()
+            classInit.append("((" + name.get(klass.getSuperMostClass()) + CLASS_STRUCT_SUFFIX + "*)(&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + "))");
+            classInit.append(" -> " + SUPER_CLASS + " = " + "&" + name.get(klass.getSuperMostClass()) + CLASS_STRUCT_INSTANCE_SUFFIX);
+            classInit.append(SEMICOLON + NEWLINE);
+        } else {
+            // only put void* super_class if this class doesnt have a super class
+            out.append(commentln("pointer to super class"));
+            out.append(VOID + POINTER + " " + SUPER_CLASS + SEMICOLON + NEWLINE);
+        }
+        for (RMethod method : klass.getMethods()) {
+            // if a method is 
+            // 1. not static
+            // 2. not overriden (declared in super class)
+            // 3. not constructor (this is implementation policy, which may be changed later)
+            // then we put it in the class struct
+            if (!method.isStatic() && !method.isOverridingMethod() && !method.getName().equals("<init>")) {
+                out.append(getFunctionPointerForMethod(method) + SEMICOLON + NEWLINE);
+                // init function pointer in class_init()
+                
+            }
+        }
+        out.append("} " + name.get(klass) + CLASS_STRUCT_SUFFIX + SEMICOLON + NEWLINE);
+        
+        // global variable
+        out.append(commentln("class instance"));
+        out.append(name.get(klass) + CLASS_STRUCT_SUFFIX + " ");
+        out.append(name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + SEMICOLON + NEWLINE);
+        // TODO: generate other global fields
+        
+        // functions
+        out.append(commentln("function definitions"));
         for (RMethod method : klass.getMethods()) {
             if (!method.isMainMethod()) {
                 out.append(getMethodSignature(method) + SEMICOLON + NEWLINE);
@@ -183,12 +236,25 @@ public class CLanguageGenerator extends CodeGenerator {
         writeTo(out.toString(), Constants.OUTPUT_DIR + cHeaderSource);
     }
     
-    private String getStructFieldToSuperClass(RClass klass) {
-        String ret = "";
-        if (klass.getSuperClass() != null) {
-            ret += name.get(klass.getSuperClass()) + POINTER + " " + SUPER_FIELD + SEMICOLON + NEWLINE;
-        }
-        return ret;
+    private String getFunctionPointerForMethod(RMethod method) {
+       StringBuilder out = new StringBuilder();
+       // return
+       out.append(name.get(method.getReturnType()) + " ");
+       // function ptr name
+       out.append("(*" + method.getName() + ") ");
+       // parameter list
+       out.append("(");
+       out.append(name.get(method.getKlass()) + POINTER + " " + THIS_PARAMETER);
+       for (int i = 0; i < method.getParameters().size(); i++) {
+           out.append(", ");
+           out.append(name.get(method.getParameters().get(i)) + " " + FORMAL_PARAMETER + i);   
+       }
+       out.append(")");
+       return out.toString();
+    }
+
+    private String getPointerToClassStruct(RClass klass) {
+        return VOID + POINTER + " " + POINTER_TO_CLASS_STRUCT;
     }
 
     private String getSource(String origin, String ext) {

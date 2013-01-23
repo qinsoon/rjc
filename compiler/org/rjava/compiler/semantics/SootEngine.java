@@ -115,15 +115,6 @@ public class SootEngine {
         
         PhaseOptions.v().setPhaseOption("jb", "enabled:false");
         
-        /*PackManager.v().getPack("wjtp").add(new Transform("wjtp.mytrans",new BodyTransformer() {
-
-            @Override
-            protected void internalTransform(Body body, String phase, Map arg2) {
-                System.out.println(body);
-            }
-             
-           }));*/
-        
         // set application classes
         sootArgs.add("--app");
         for (String className : classNames) {

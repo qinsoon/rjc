@@ -3,6 +3,7 @@
 #include "rjava_lib.h"
 typedef struct org_rjava_test_poly_Animal {
     void* class_struct;
+    char* sound;
 } org_rjava_test_poly_Animal;
 
 typedef struct org_rjava_test_poly_Animal_class {

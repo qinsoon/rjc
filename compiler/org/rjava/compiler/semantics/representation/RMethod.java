@@ -8,6 +8,7 @@ import org.rjava.compiler.RJavaCompiler;
 
 import soot.Body;
 import soot.Local;
+import soot.SootClass;
 import soot.SootMethod;
 import soot.Type;
 import soot.Unit;
@@ -132,5 +133,16 @@ public class RMethod {
 
     public boolean isMainMethod() {
         return mainMethod;
+    }
+
+    /**
+     * is this method overriding some method from its super class?
+     * @return
+     */
+    public boolean isOverridingMethod() {
+        SootClass superClass = internal.getDeclaringClass().getSuperclass();
+        if (superClass != null && superClass.declaresMethod(internal.getName(), internal.getParameterTypes()))
+            return true;
+        else return false;
     }
 }

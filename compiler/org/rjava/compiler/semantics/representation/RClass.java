@@ -143,4 +143,14 @@ public class RClass {
     public RClass getSuperClass() {
         return superClass;
     }
+    
+    public RClass getSuperMostClass() {
+        if (superClass != null)
+            return superClass.getSuperMostClass();
+        else return this;
+    }
+    
+    public boolean hasSuperClass() {
+        return superClass != null;
+    }
 }

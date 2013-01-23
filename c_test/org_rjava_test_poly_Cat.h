@@ -4,7 +4,7 @@
 #include "org_rjava_test_poly_Animal.h"
 
 typedef struct org_rjava_test_poly_Cat {
-    void* class_struct;
+    org_rjava_test_poly_Animal super_object;
 } org_rjava_test_poly_Cat;
 
 typedef struct org_rjava_test_poly_Cat_class {
