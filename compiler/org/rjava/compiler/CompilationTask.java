@@ -12,6 +12,7 @@ public class CompilationTask {
     String path;
     List<String> sources;
     List<String> classes;
+    String main;
     
     public static CompilationTask newTaskFromFile(String dir, String file) throws RJavaWarning {
     	File f = new File(file);

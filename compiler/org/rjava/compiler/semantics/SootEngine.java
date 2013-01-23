@@ -11,7 +11,10 @@ import org.rjava.compiler.semantics.representation.RClass;
 
 import static org.rjava.compiler.Constants.*;
 
+import soot.Body;
+import soot.BodyTransformer;
 import soot.PackManager;
+import soot.PhaseOptions;
 import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;
@@ -45,28 +48,12 @@ public class SootEngine {
     }
     
     private void init() {
-    	Options.v().set_src_prec(Options.src_prec_java);
-    	Options.v().set_whole_program(true);
-    	Options.v().set_process_dir(dir);
-    	Options.v().set_exclude(Arrays.asList("java"));
-    	Options.v().set_no_bodies_for_excluded(true);
-    	Options.v().set_allow_phantom_refs(true);
-    	
-    	// set class path
-    	String classpath = "";
-    	for (String path : dir)
-    	    classpath += path + ":";
-    	for (String path : jdkPath)
-    	    classpath += path + ":";
-    	classpath += RJAVA_ANNOTATION_DIR + ":"; 
-    	classpath += ".";
-    	Options.v().set_soot_classpath(classpath);
-    	if (DEBUG)
-    	    System.out.println("soot classpath: " + classpath);
-    	
-        runSoot();
-    	
-    	// get all classes and methods
+        runSoot();        
+    	resolveClasses();
+    }
+
+    private void resolveClasses() {
+        // get all classes and methods
     	allClasses = new HashMap<String, SootClass>();
     	allMethods = new HashMap<String, SootMethod>();
     	for (String className : classNames) {
@@ -78,8 +65,10 @@ public class SootEngine {
     	    
     	    // get methods
     	    for (SootMethod m : klass.getMethods()) {
-    		if (!m.isAbstract())
-    		    allMethods.put(m.getSignature(), m);
+    	        //System.out.println("method:" + m.getSignature());
+    	        //System.out.println(" body :" + m.retrieveActiveBody());
+        		if (!m.isAbstract())
+        		    allMethods.put(m.getSignature(), m);
     	    }
     	}
     	
@@ -90,37 +79,58 @@ public class SootEngine {
     	    }
     	    System.out.println();
     	}
-    	
-    	Scene.v().loadNecessaryClasses();
     }
 
     private void runSoot() {
         List<String> sootArgs = new ArrayList<String>();
-        sootArgs.add("-W");
+        // whole program
+        Options.v().set_whole_program(true);
+        
+        // source preference: java
+        Options.v().set_src_prec(Options.src_prec_java);
         
         // no output
-        sootArgs.add("-f");
-        sootArgs.add("n");
+        Options.v().set_output_format(Options.output_format_none);
         
-        sootArgs.add("-p");
-        sootArgs.add("wjop");
-        sootArgs.add("enabled:true");
+        // exclude java.*
+        Options.v().set_exclude(Arrays.asList("java"));
+        Options.v().set_no_bodies_for_excluded(true);
+        Options.v().set_allow_phantom_refs(true);
+        
+        // classpath
+        String classpath = "";
+        for (String path : dir)
+            classpath += path + ":";
+        for (String path : jdkPath)
+            classpath += path + ":";
+        classpath += RJAVA_ANNOTATION_DIR + ":"; 
+        classpath += ".";
+        Options.v().set_soot_classpath(classpath);
+        
+        PhaseOptions.v().setPhaseOption("wjop", "enabled:true");
         
         //enable points-to analysis
-        sootArgs.add("-p");
-        sootArgs.add("cg");
-        sootArgs.add("enabled:true");
+        PhaseOptions.v().setPhaseOption("cg", "enabled:true");
+        PhaseOptions.v().setPhaseOption("cg.spark", "enabled:true");
+        
+        PhaseOptions.v().setPhaseOption("jb", "enabled:false");
+        
+        /*PackManager.v().getPack("wjtp").add(new Transform("wjtp.mytrans",new BodyTransformer() {
 
-        sootArgs.add("-p");
-        sootArgs.add("cg.spark");
-        sootArgs.add("enabled:true");
+            @Override
+            protected void internalTransform(Body body, String phase, Map arg2) {
+                System.out.println(body);
+            }
+             
+           }));*/
         
-        sootArgs.add("-p");
-        sootArgs.add("cg.spark");
-        sootArgs.add("verbose:true");
+        // set application classes
+        sootArgs.add("--app");
+        for (String className : classNames) {
+            sootArgs.add(className);
+        }
         
-        soot.Main.main(sootArgs.toArray(new String[0]));
-        System.out.println("Soot done. ");
+        //soot.Main.main(sootArgs.toArray(new String[0]));
     }
 
     public void buildSemanticMap() {
@@ -132,8 +142,12 @@ public class SootEngine {
 
     public static SootClass resolveAndGetClass(String name) {
     	//Scene.v().forceResolve(name, SootClass.SIGNATURES);
+        System.out.println("contains class " + name + ":" + Scene.v().containsClass(name));
+        //SootClass ret = Scene.v().getSootClass(name);
+        //Scene.v().loadClassAndSupport(name);
     	SootResolver.v().resolveClass(name, SootClass.BODIES);
     	SootClass ret = Scene.v().getSootClass(name);
+    	System.out.println(ret.getName() + " is resolved to " + ret.resolvingLevel());
     	return ret;
     }
     
