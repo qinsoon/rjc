@@ -13,16 +13,19 @@ import soot.Value;
 import soot.jimple.internal.JInstanceFieldRef;
 
 public class CLanguageNameGenerator {
-
-    public CLanguageNameGenerator() {
-
+    CLanguageGenerator generator;
+    
+    public CLanguageNameGenerator(CLanguageGenerator generator) {
+        this.generator = generator;
     }
 
     /*
      * generating c style name from RJava element
      */
     public String get(RClass klass) {
-        return javaNameToCName(klass.getName());
+        String ret = javaNameToCName(klass.getName());
+        generator.referencing(ret);
+        return ret;
     }
     
     public String get(RMethod method) {
@@ -30,7 +33,9 @@ public class CLanguageNameGenerator {
     }
     
     public String get(RType type) {
-        return javaNameToCName(type.getClassName());
+        String ret = javaNameToCName(type.getClassName());
+        //generator.referencing(ret);
+        return ret;
     }
     
     public String get(RField field) {
@@ -69,7 +74,7 @@ public class CLanguageNameGenerator {
     }
 
     public String fromSootClass(SootClass declaringClass) {
-        return javaNameToCName(declaringClass.getName());
+        return get(RClass.fromSootClass(declaringClass));
     }
     
     public String fromSootLocal(Local local) {

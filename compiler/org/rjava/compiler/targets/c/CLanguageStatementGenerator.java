@@ -36,14 +36,17 @@ import soot.jimple.internal.JVirtualInvokeExpr;
 import soot.jimple.internal.JimpleLocal;
 
 public class CLanguageStatementGenerator {
-    CLanguageNameGenerator name = new CLanguageNameGenerator();
+    CLanguageNameGenerator name;
+    CLanguageGenerator generator;
+    
     
     private int labelIndex = 0;
     // <target.hashCode(), labelIndex>
     private Map<Integer, Integer> jumpLabels = new HashMap<Integer, Integer>();
     
-    public CLanguageStatementGenerator() {
-        // TODO Auto-generated constructor stub
+    public CLanguageStatementGenerator(CLanguageGenerator generator) {
+        this.generator = generator;
+        name = new CLanguageNameGenerator(generator);
     }
     
     /*
