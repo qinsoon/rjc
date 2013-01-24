@@ -47,7 +47,7 @@ public abstract class RStatement {
 	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JThrowStmt", THROW_STMT);
     }
     
-    private RMethod method;
+    protected RMethod method;
     
     private int type;
     protected Unit internal;

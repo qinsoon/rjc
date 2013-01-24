@@ -16,4 +16,8 @@ public class RIdentityStmt extends RStatement {
     public JIdentityStmt internal() {
         return (JIdentityStmt) internal;
     }
+    
+    public boolean isFetchingThisParameter() {
+        return internal().getLeftOp().toString().equals("this") && (internal().getRightOp() instanceof soot.jimple.ThisRef);
+    }
 }

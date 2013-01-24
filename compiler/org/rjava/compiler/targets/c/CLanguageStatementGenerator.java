@@ -3,6 +3,7 @@ package org.rjava.compiler.targets.c;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.semantics.representation.RLocal;
 import org.rjava.compiler.semantics.representation.RStatement;
 import org.rjava.compiler.semantics.representation.RType;
@@ -226,10 +227,39 @@ public class CLanguageStatementGenerator {
      * from soot statement/expr representation
      */
     private String fromSootJVirtualInvokeExpr(soot.jimple.internal.JVirtualInvokeExpr virtualInvoke) {
+        String callingClass = virtualInvoke.getMethod().getDeclaringClass().getName();
+        if (callingClass.startsWith("java.") || callingClass.startsWith("javax.")) {
+            return fromSootJVirtualInvokeExpr_libCall(virtualInvoke);
+        } else return fromSootJVirtualInvokeExpr_appCall(virtualInvoke);
+    }
+    
+    private String fromSootJVirtualInvokeExpr_libCall(soot.jimple.internal.JVirtualInvokeExpr virtualInvoke) {
         String methodName = name.fromSootMethod(virtualInvoke.getMethod());
         String base = name.fromSootLocal((Local) virtualInvoke.getBase());
-        
+         
         String ret = methodName + "(" + base;
+        
+        if (virtualInvoke.getArgCount() == 0)
+            ret += ")";
+        else {
+            for (int i = 0; i < virtualInvoke.getArgCount(); i++) {
+                ret += ", " + virtualInvoke.getArg(i).toString();
+            }
+            ret += ")";
+        }
+         
+        return ret;
+    }
+    
+    private String fromSootJVirtualInvokeExpr_appCall(soot.jimple.internal.JVirtualInvokeExpr virtualInvoke) {
+        // use class_struct to get function ptr
+        String methodName = virtualInvoke.getMethod().getName();
+        String base = name.fromSootLocal((Local) virtualInvoke.getBase());
+        
+        String ret = "(";
+        ret += "(" + name.get(RClass.fromSootClass(virtualInvoke.getMethod().getDeclaringClass()).getSuperMostClass()) + CLanguageGenerator.CLASS_STRUCT_SUFFIX + "*)";
+        ret += "(" + base + " -> " + CLanguageGenerator.POINTER_TO_CLASS_STRUCT + ")) -> ";
+        ret += methodName + "(" + base; // base is the first parameter
         
         if (virtualInvoke.getArgCount() == 0)
             ret += ")";

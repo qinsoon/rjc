@@ -17,6 +17,8 @@ import org.rjava.compiler.semantics.representation.RLocal;
 import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.semantics.representation.RStatement;
 import org.rjava.compiler.semantics.representation.RType;
+import org.rjava.compiler.semantics.representation.stmt.RIdentityStmt;
+import org.rjava.compiler.semantics.representation.stmt.RInvokeStmt;
 import org.rjava.compiler.targets.CodeGenerator;
 
 public class CLanguageGenerator extends CodeGenerator {
@@ -33,6 +35,7 @@ public class CLanguageGenerator extends CodeGenerator {
     public static final String INCLUDE_STDIO = "#include <stdio.h>";
     public static final String RJAVA_CLASS_INIT = "rjava_class_init";
     public static final String RJAVA_LIB_INCLUDE_FILE = "rjava_lib.h";
+    public static final String RJAVA_LIB_SOURCE_FILE = "rjava_lib.c";
     public static final String RJAVA_LIB_INCLUDE = "#include \"" + RJAVA_LIB_INCLUDE_FILE + "\"";
     public static final String[] RJAVA_LIB = {
         "java_io_PrintStream",
@@ -65,6 +68,7 @@ public class CLanguageGenerator extends CodeGenerator {
     String cCodeSource;
     
     List<String> translatedCSource = new ArrayList<String>();
+    List<String> translatedCHeader = new ArrayList<String>();
     String mainSource = "";
     String mainObj = "";
     
@@ -129,6 +133,8 @@ public class CLanguageGenerator extends CodeGenerator {
         for (RMethod method : klass.getMethods()) {
             if (method.isMainMethod()) {
                 out.append(MAIN_METHOD_SIGNATURE + " {" + NEWLINE);
+                // calling class_init();
+                out.append(RJAVA_CLASS_INIT + "()" + SEMICOLON + NEWLINE);
                 containsMain = true;
             } else {
                 out.append(getMethodSignature(method) + " {" + NEWLINE);
@@ -166,6 +172,14 @@ public class CLanguageGenerator extends CodeGenerator {
         // include rjava lib
         out.append(RJAVA_LIB_INCLUDE + NEWLINE);
         
+        // include super class
+        if (klass.hasSuperClass()) {
+            out.append("#include \"" + name.get(klass.getSuperClass()) + ".h\"" + NEWLINE);
+            if (!klass.getSuperClass().getName().equals(klass.getSuperMostClass().getName())) {
+                out.append("#include \"" + name.get(klass.getSuperMostClass()) + ".h\"" + NEWLINE);
+            }
+        }
+        
         // generate struct for object (e.g. org_rjava_test_poly_Animal)
         out.append("typedef struct " + name.get(klass) + " {" + NEWLINE);
         // we only put void* class_struct in the super class
@@ -198,16 +212,22 @@ public class CLanguageGenerator extends CodeGenerator {
             out.append(commentln("pointer to super class"));
             out.append(VOID + POINTER + " " + SUPER_CLASS + SEMICOLON + NEWLINE);
         }
+        out.append(commentln("function pointers"));
         for (RMethod method : klass.getMethods()) {
             // if a method is 
             // 1. not static
             // 2. not overriden (declared in super class)
             // 3. not constructor (this is implementation policy, which may be changed later)
             // then we put it in the class struct
-            if (!method.isStatic() && !method.isOverridingMethod() && !method.getName().equals("<init>")) {
+            if (!method.isStatic() && !method.isOverridingMethod() && !method.isConstructor()) {
                 out.append(getFunctionPointerForMethod(method) + SEMICOLON + NEWLINE);
-                // init function pointer in class_init()
-                
+            }
+            // for virtual non-contructor method, we link their function ptr in class struct
+            if (!method.isStatic() && !method.isConstructor()) {
+                // we need to type cast the class instance to its super most class instance, and then set function ptr
+                classInit.append("((" + name.get(klass.getSuperMostClass()) + CLASS_STRUCT_SUFFIX + "*)");
+                classInit.append("(&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + "))");
+                classInit.append(" -> " + method.getName() + " = " + name.get(method) + SEMICOLON + NEWLINE);
             }
         }
         out.append("} " + name.get(klass) + CLASS_STRUCT_SUFFIX + SEMICOLON + NEWLINE);
@@ -234,6 +254,8 @@ public class CLanguageGenerator extends CodeGenerator {
         }
         
         writeTo(out.toString(), Constants.OUTPUT_DIR + cHeaderSource);
+        
+        translatedCHeader.add(cHeaderSource);
     }
     
     private String getFunctionPointerForMethod(RMethod method) {
@@ -295,11 +317,24 @@ public class CLanguageGenerator extends CodeGenerator {
             else out.append(stmt.get(rStmt));
             
             out.append(SEMICOLON + NEWLINE);
+            
+            if (method.isConstructor()) {
+                // we have to init class struct for this class after calling its super init()
+                if (rStmt instanceof RInvokeStmt && ((RInvokeStmt) rStmt).isInvokingSuperInit()) {
+                    out.append("((" + name.get(method.getKlass().getSuperMostClass()) + "*)" + THIS_LOCAL + ") -> " + POINTER_TO_CLASS_STRUCT);
+                    out.append(" = &" + name.get(method.getKlass()) + CLASS_STRUCT_INSTANCE_SUFFIX + SEMICOLON + NEWLINE);
+                } 
+                // we will init class struct if such class do not have super class
+                // and we have got this_parater
+                else if (!method.getKlass().hasSuperClass() && rStmt instanceof RIdentityStmt && ((RIdentityStmt) rStmt).isFetchingThisParameter()) {
+                    out.append(THIS_LOCAL + " -> " + POINTER_TO_CLASS_STRUCT + " = &" + name.get(method.getKlass()) + CLASS_STRUCT_INSTANCE_SUFFIX + SEMICOLON + NEWLINE);
+                }
+            }
         }
         return out.toString();
     }
     
-    public String commentln(String s) {
+    public static String commentln(String s) {
         return "/* " + s + " */" + NEWLINE;
     }
 
@@ -314,8 +349,28 @@ public class CLanguageGenerator extends CodeGenerator {
         }
         
         out.append("#define RJAVA_STR char *" + NEWLINE);
-        out.append("#endif");
+        out.append("#endif" + NEWLINE);
+        
+        out.append("#ifndef RJAVA_APP_H" + NEWLINE);
+        out.append("#define RJAVA_APP_H" + NEWLINE);
+        /*for (String app : translatedCHeader) {
+            out.append("#include \"" + app + "\"" + NEWLINE);
+        }*/
+        out.append("void " + RJAVA_CLASS_INIT + "()" + SEMICOLON + NEWLINE);
+        out.append("#endif" + NEWLINE);
+        
         writeTo(out.toString(), Constants.OUTPUT_DIR + RJAVA_LIB_INCLUDE_FILE);
+        
+        // generating lib source - for class init()
+        StringBuilder libSource = new StringBuilder();
+        libSource.append(RJAVA_LIB_INCLUDE + NEWLINE);
+        for (String app : translatedCHeader) {
+            libSource.append("#include \"" + app + "\"" + NEWLINE);
+        }
+        libSource.append("void " + RJAVA_CLASS_INIT + "() {" + NEWLINE);
+        libSource.append(classInit.toString());
+        libSource.append("}");
+        writeTo(libSource.toString(), Constants.OUTPUT_DIR + RJAVA_LIB_SOURCE_FILE);
         
         // copy lib files
         try {
@@ -333,6 +388,8 @@ public class CLanguageGenerator extends CodeGenerator {
             fileList += c + " ";
         for (String l : RJAVA_LIB)
             fileList += l + ".c ";
+        fileList += "rjava_lib.c ";
+        
         makeFile.append(NEWLINE);
         makeFile.append("\tgcc -o " + mainObj + " ");
         makeFile.append(fileList);

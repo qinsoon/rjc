@@ -145,4 +145,8 @@ public class RMethod {
             return true;
         else return false;
     }
+    
+    public boolean isConstructor() {
+        return getName().equals("<init>");
+    }
 }
