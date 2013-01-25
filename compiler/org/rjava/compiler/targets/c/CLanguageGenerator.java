@@ -228,7 +228,7 @@ public class CLanguageGenerator extends CodeGenerator {
             outMain.append(name.get(klass.getSuperClass()) + CLASS_STRUCT_SUFFIX + " " + EMBED_SUPER_CLASS + SEMICOLON + NEWLINE);
             // init super class in class_init()
             classInit.append("((" + COMMON_CLASS_STRUCT + "*)(&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + "))");
-            classInit.append(" -> " + SUPER_CLASS + " = " + "&" + name.get(klass.getSuperClass()) + CLASS_STRUCT_INSTANCE_SUFFIX);
+            classInit.append(" -> " + SUPER_CLASS + " = (" + COMMON_CLASS_STRUCT + "*)" + "&" + name.get(klass.getSuperClass()) + CLASS_STRUCT_INSTANCE_SUFFIX);
             classInit.append(SEMICOLON + NEWLINE);
         } else {
             // contains common class struct
@@ -297,7 +297,7 @@ public class CLanguageGenerator extends CodeGenerator {
        out.append("(*" + method.getName() + ") ");
        // parameter list
        out.append("(");
-       out.append(name.get(method.getKlass()) + POINTER + " " + THIS_PARAMETER);
+       out.append(VOID + POINTER + " " + THIS_PARAMETER);
        for (int i = 0; i < method.getParameters().size(); i++) {
            out.append(", ");
            out.append(name.get(method.getParameters().get(i)) + " " + FORMAL_PARAMETER + i);   
@@ -320,7 +320,7 @@ public class CLanguageGenerator extends CodeGenerator {
         out.append(name.get(method) + " (");
         // if not static, the first parameter will be 'this'
         if (!method.isStatic()) {
-            out.append(name.get(method.getKlass()) + POINTER + " " + THIS_PARAMETER); 
+            out.append(VOID + POINTER + " " + THIS_PARAMETER); 
         }
         for (int i = 0; i < method.getParameters().size(); i++) {
             out.append(", ");

@@ -1,5 +1,7 @@
 #include "java_lang_StringBuffer.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 void java_lang_StringBuffer_rjinit(java_lang_StringBuffer* this_parameter) {
   this_parameter->internal = (char *) malloc (JAVA_LANG_STRINGBUFFER_INIT_SIZE);
