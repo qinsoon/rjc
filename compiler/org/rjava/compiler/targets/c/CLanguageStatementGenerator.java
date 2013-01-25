@@ -96,20 +96,18 @@ public class CLanguageStatementGenerator {
     private String get(RAssignStmt stmt) {
         JAssignStmt internal = stmt.internal();
         
-        String ret = "";
-        
         // left op -> local | field | local.field | local[imm]
         Value leftOp = internal.getLeftOp();
+        String leftOpStr = CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
+        
         if (leftOp instanceof soot.jimple.internal.JimpleLocal) {
-            ret = name.fromSootLocal((Local) leftOp);
+            leftOpStr = name.fromSootLocal((Local) leftOp);
         } else if (leftOp instanceof soot.jimple.internal.JInstanceFieldRef) {
-            ret = name.fromSootInstanceFieldRef((JInstanceFieldRef) leftOp);
+            leftOpStr = name.fromSootInstanceFieldRef((JInstanceFieldRef) leftOp);
         }            
         else {
-            ret = CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
+            
         }
-        
-        ret += " = ";
         
         // right op -> rvalue | imm
         // rvalue -> concreteRef | imm | expr
@@ -117,29 +115,37 @@ public class CLanguageStatementGenerator {
         // expr -> imm1 binop imm2 | (type) imm | imm instanceof type | invokeExpr | new refType | newarray (type) [imm] | newmultiarray(type)[imm1]...[immn][]* | length imm | neg imm;
         // invokeExpr -> specialinvoke/interfaceinvoke/virtualinvoke local.m(imm1,...,immn) | staticinvoke m(imm1,...,immn)
         Value rightOp = internal.getRightOp();
+        String rightOpStr = CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
         if (rightOp instanceof soot.jimple.StaticFieldRef) {
-            ret += name.fromSootStaticFieldRef((StaticFieldRef) rightOp);
+            rightOpStr = name.fromSootStaticFieldRef((StaticFieldRef) rightOp);
         } else if (rightOp instanceof soot.jimple.internal.JimpleLocal) {
-            ret += name.fromSootLocal((Local) rightOp);
+            rightOpStr = name.fromSootLocal((Local) rightOp);
         } else if (rightOp instanceof soot.jimple.internal.JInstanceFieldRef) {
-            ret += name.fromSootInstanceFieldRef((JInstanceFieldRef) rightOp);
+            rightOpStr = name.fromSootInstanceFieldRef((JInstanceFieldRef) rightOp);
         } else if (rightOp instanceof soot.jimple.internal.JVirtualInvokeExpr) {
-            ret += fromSootJVirtualInvokeExpr((JVirtualInvokeExpr) rightOp);
+            rightOpStr = fromSootJVirtualInvokeExpr((JVirtualInvokeExpr) rightOp);
         } else if (rightOp instanceof soot.jimple.BinopExpr) {
-            ret += fromSootBinopExpr((BinopExpr) rightOp);
+            rightOpStr = fromSootBinopExpr((BinopExpr) rightOp);
         } else if (rightOp instanceof soot.jimple.NumericConstant) {
-            ret += fromSootNumericConstant((NumericConstant) rightOp);
+            rightOpStr = fromSootNumericConstant((NumericConstant) rightOp);
         } else if (rightOp instanceof soot.jimple.internal.JNewExpr) {
-            ret += fromSootJNewExpr((JNewExpr) rightOp);
+            rightOpStr = fromSootJNewExpr((JNewExpr) rightOp);
         } else if (rightOp instanceof soot.jimple.StringConstant) {
-            ret += fromSootStringConstant((soot.jimple.StringConstant) rightOp);
+            rightOpStr = fromSootStringConstant((soot.jimple.StringConstant) rightOp);
         }
         else {
-            ret += CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
             System.out.println(rightOp.getClass());
         }
         
-        return ret;
+        // check type
+        String castStr = "";
+        if (!leftOp.getType().equals(rightOp.getType())) {
+            RType leftOpRType = RType.initWithClassName(leftOp.getType().toString());
+            if (leftOpRType.isReferenceType()) 
+                castStr = "(" + name.get(leftOpRType) + "*)";
+        }
+        
+        return leftOpStr + " = " + castStr + rightOpStr;
     }
 
     private String get(RBreakpointStmt stmt) {

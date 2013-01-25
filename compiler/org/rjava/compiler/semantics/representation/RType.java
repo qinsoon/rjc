@@ -205,4 +205,8 @@ public class RType {
     public void setVoidType(boolean voidType) {
         this.voidType = voidType;
     }
+    
+    public boolean isReferenceType() {
+        return (!primitive && !voidType);
+    }
 }

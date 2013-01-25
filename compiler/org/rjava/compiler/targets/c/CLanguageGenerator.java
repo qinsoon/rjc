@@ -36,6 +36,7 @@ public class CLanguageGenerator extends CodeGenerator {
     public static final String SIZE_OF = "sizeof";
     
     public static final String INCLUDE_STDIO = "#include <stdio.h>";
+    public static final String INCLUDE_STDLIB = "#include <stdlib.h>";
     public static final String RJAVA_CLASS_INIT = "rjava_class_init";
     public static final String RJAVA_LIB_INCLUDE_FILE = "rjava_lib.h";
     public static final String RJAVA_LIB_SOURCE_FILE = "rjava_lib.c";
@@ -47,7 +48,7 @@ public class CLanguageGenerator extends CodeGenerator {
         "java_lang_StringBuffer"
     };
     public static final String RJAVA_LIB_DIR = "rjava_clib/";
-    public static final String MAIN_METHOD_SIGNATURE = "int main (int argc, const char** parameter0)";
+    public static final String MAIN_METHOD_SIGNATURE = "int main (int argc, char** parameter0)";
     
     public static final String FORMAL_PARAMETER = "parameter";
     public static final String THIS_PARAMETER = "this_parameter";
@@ -135,7 +136,7 @@ public class CLanguageGenerator extends CodeGenerator {
         outInc.append("#include \"" + cHeaderSource + "\"" + NEWLINE);
         // include c std
         outInc.append(INCLUDE_STDIO + NEWLINE);
-        // TODO: include other
+        outInc.append(INCLUDE_STDLIB + NEWLINE);
         
         outInc.append(NEWLINE);
         
@@ -305,10 +306,6 @@ public class CLanguageGenerator extends CodeGenerator {
        return out.toString();
     }
 
-    private String getPointerToClassStruct(RClass klass) {
-        return VOID + POINTER + " " + POINTER_TO_CLASS_STRUCT;
-    }
-
     private String getSource(String origin, String ext) {
         String ret = origin.replace(RJavaCompiler.currentTask.getPath(), "");
         ret = ret.replace(Constants.RJAVA_EXT, ext);
@@ -381,7 +378,7 @@ public class CLanguageGenerator extends CodeGenerator {
         
         // instance struct
         out.append("typedef struct " + COMMON_INSTANCE_STRUCT + " {" + NEWLINE);
-        out.append(COMMON_CLASS_STRUCT + "* " + POINTER_TO_CLASS_STRUCT + SEMICOLON + NEWLINE);
+        out.append("void* " + POINTER_TO_CLASS_STRUCT + SEMICOLON + NEWLINE);
         out.append("} " + COMMON_INSTANCE_STRUCT + SEMICOLON + NEWLINE);
         
         out.append("#define RJAVA_STR char *" + NEWLINE);
@@ -399,6 +396,7 @@ public class CLanguageGenerator extends CodeGenerator {
         StringBuilder libSource = new StringBuilder();
         libSource.append(RJAVA_LIB_INCLUDE + NEWLINE);
         libSource.append(INCLUDE_STDIO + NEWLINE);
+        libSource.append(INCLUDE_STDLIB + NEWLINE);
         for (String app : translatedCHeader) {
             libSource.append("#include \"" + app + "\"" + NEWLINE);
         }
