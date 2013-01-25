@@ -25,6 +25,7 @@ import soot.jimple.InvokeExpr;
 import soot.jimple.NumericConstant;
 import soot.jimple.ParameterRef;
 import soot.jimple.StaticFieldRef;
+import soot.jimple.StringConstant;
 import soot.jimple.internal.AbstractStmt;
 import soot.jimple.internal.JAssignStmt;
 import soot.jimple.internal.JGotoStmt;
@@ -130,9 +131,12 @@ public class CLanguageStatementGenerator {
             ret += fromSootNumericConstant((NumericConstant) rightOp);
         } else if (rightOp instanceof soot.jimple.internal.JNewExpr) {
             ret += fromSootJNewExpr((JNewExpr) rightOp);
+        } else if (rightOp instanceof soot.jimple.StringConstant) {
+            ret += fromSootStringConstant((soot.jimple.StringConstant) rightOp);
         }
         else {
             ret += CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
+            System.out.println(rightOp.getClass());
         }
         
         return ret;
@@ -168,6 +172,8 @@ public class CLanguageStatementGenerator {
             ret += CLanguageGenerator.FORMAL_PARAMETER + parameterRef.getIndex();
         } else if (rightOp instanceof soot.jimple.ThisRef) {
             ret = CLanguageGenerator.THIS_LOCAL + " = " + CLanguageGenerator.THIS_PARAMETER;
+        } else {
+
         }
         
         return ret;
@@ -318,6 +324,10 @@ public class CLanguageStatementGenerator {
     
     private String fromSootNumericConstant(soot.jimple.NumericConstant numericConstant) {
         return numericConstant.toString();
+    }
+
+    private String fromSootStringConstant(StringConstant stringConstant) {
+        return stringConstant.toString();
     }
     
     private String fromSootJNewExpr(soot.jimple.internal.JNewExpr newExpr) {

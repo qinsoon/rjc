@@ -30,10 +30,10 @@ public class CLanguageIntrinsicGenerator {
             InvokeExpr invoke = stmt.internal().getInvokeExpr();
             if (invoke instanceof JSpecialInvokeExpr && invoke.getMethod().getDeclaringClass().getName().equals("java.lang.Object")) {
                 stmt.setIntrinsic(true);
-                stmt.setCode(CLanguageGenerator.commentln(stmt.toString()));
+                stmt.setCode(CLanguageGenerator.comment(stmt.toString()));
             } else if (invoke instanceof JVirtualInvokeExpr && invoke.getMethod().getDeclaringClass().getName().equals("java.lang.Object")) {
                 stmt.setIntrinsic(true);
-                stmt.setCode(CLanguageGenerator.commentln(stmt.toString()));
+                stmt.setCode(CLanguageGenerator.comment(stmt.toString()));
             }
         }
     }

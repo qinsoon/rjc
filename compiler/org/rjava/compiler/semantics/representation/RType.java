@@ -30,6 +30,13 @@ public class RType {
 
     private RType() {
     }
+    
+    public boolean equals(Object o) {
+        RType another = (RType) o;
+        if (voidType && another.voidType)
+            return true;
+        return className.equals(another.className) && primitive == another.primitive && array == another.array;
+    }
 
     /**
      * init an RType from a type name

@@ -197,7 +197,9 @@ public class CLanguageGenerator extends CodeGenerator {
             }
         }*/
         
-        // generate struct for object (e.g. org_rjava_test_poly_Animal)
+        /*
+         * Generate instance struct (e.g. org_rjava_test_poly_Animal)
+         */
         outMain.append("typedef struct " + name.get(klass) + " {" + NEWLINE);
         // we contain a struct for its super class object
         // if this class doesnt have super class, we use common instance struct
@@ -215,7 +217,9 @@ public class CLanguageGenerator extends CodeGenerator {
         }
         outMain.append("} " + name.get(klass) + SEMICOLON + NEWLINE);
         
-        // generate struct for class (e.g. org_rjava_test_poly_Animal_class)
+        /*
+         * Generating class struct (e.g. org_rjava_test_poly_Animal_class)
+         */
         outMain.append("typedef struct " + name.get(klass) + CLASS_STRUCT_SUFFIX + " {" + NEWLINE);
         if (klass.hasSuperClass()) {
             // contain a struct for its super class
@@ -353,6 +357,10 @@ public class CLanguageGenerator extends CodeGenerator {
     
     public static String commentln(String s) {
         return "/* " + s + " */" + NEWLINE;
+    }
+    
+    public static String comment(String s) {
+        return "//" + s;
     }
 
     @Override

@@ -1,6 +1,9 @@
 package org.rjava.test.poly;
 
 public class Cat extends Animal {
+    public Cat() {
+        this.sound = "Meow";
+    }
     
     public void climb() {
         System.out.println("Cat climbs trees");
@@ -8,7 +11,7 @@ public class Cat extends Animal {
 
     @Override
     public void speak() {
-        System.out.println("Meow!!");
+        System.out.println("A cat: " + sound);
     }
 
 }

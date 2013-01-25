@@ -188,6 +188,19 @@ public class RClass {
         }
     }
     
+    public static RClass whoOwnsFieldInTypeHierarchy(RClass base, RType type, String name) {
+        RClass ret = base;
+        while(true) {
+            for (RField f : ret.getFields()) {
+                if (f.getType().equals(type) && f.getName().equals(name))
+                    return ret;
+            }
+            if (ret.hasSuperClass())
+                ret = ret.getSuperClass();
+            else return null;
+        }
+    }
+    
     public RMethod getMethodBySootSignature(String signature) {
         for (RMethod method : methods) {
             if (method.internal().getSignature().equals(signature))

@@ -1,8 +1,14 @@
 package org.rjava.test.poly;
 
 public class Animal {
+    String sound;
+    
+    public Animal() {
+        this.sound = "noissssse";
+    }
+    
     public void speak() {
-        System.out.println("An animal makes noise.");
+        System.out.println("An animal: " + sound);
     }
     
     public static void main(String[] args) {

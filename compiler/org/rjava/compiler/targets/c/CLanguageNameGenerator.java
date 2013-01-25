@@ -82,7 +82,13 @@ public class CLanguageNameGenerator {
     }
 
     public String fromSootInstanceFieldRef(JInstanceFieldRef ref) {
-        return ref.getBase() + CLanguageGenerator.FIELD_POINTER + ref.getField().getName();
+        RClass target = RClass.whoOwnsFieldInTypeHierarchy(RClass.fromClassName(ref.getBase().getType().toString()), RType.initWithClassName(ref.getField().getType().toString()), ref.getField().getName());
+        StringBuilder ret = new StringBuilder();
+        ret.append("(");
+        ret.append("(" + get(target) + "*)");
+        ret.append(ref.getBase() + ")");
+        ret.append(" -> " + ref.getField().getName());
+        return ret.toString();
     }
     
     public String fromSootType(Type type) {
