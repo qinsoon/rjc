@@ -56,11 +56,13 @@ public class CLanguageGenerator extends CodeGenerator {
     
     // related with dyanmic dispatching
     public static final String POINTER_TO_CLASS_STRUCT = "class_struct";    // in object, pointing to its class
-    public static final String EMBED_SUPER_OBJECT = "embed_super_object";
-    public static final String EMBED_SUPER_CLASS  = "embed_super_class";
+    public static final String EMBED_SUPER_OBJECT = "instance_header";
+    public static final String EMBED_SUPER_CLASS  = "class_header";
     public static final String SUPER_CLASS = "super_class";
     public static final String CLASS_STRUCT_SUFFIX = "_class";
     public static final String CLASS_STRUCT_INSTANCE_SUFFIX = "_class_instance";
+    public static final String COMMON_CLASS_STRUCT = "RJava_Common_Class";
+    public static final String COMMON_INSTANCE_STRUCT = "RJava_Common_Instance";
     
     public static final String INCOMPLETE_IMPLEMENTATION = "***Incomplete Implementation***";
     
@@ -197,15 +199,16 @@ public class CLanguageGenerator extends CodeGenerator {
         
         // generate struct for object (e.g. org_rjava_test_poly_Animal)
         outMain.append("typedef struct " + name.get(klass) + " {" + NEWLINE);
-        // we only put void* class_struct in the super class
-        // otherwise we contain a struct for its super class object
+        // we contain a struct for its super class object
+        // if this class doesnt have super class, we use common instance struct
         if (klass.hasSuperClass()) {
-            outMain.append(commentln("contains super object struct"));
+            outMain.append(commentln("contains super instance struct"));
             outMain.append(name.get(klass.getSuperClass()) + " " + EMBED_SUPER_OBJECT + SEMICOLON + NEWLINE);
         } else {
-            outMain.append(commentln("pointer to its class Struct"));
-            outMain.append(getPointerToClassStruct(klass) + SEMICOLON + NEWLINE);
+            outMain.append(commentln("contains common instance struct"));
+            outMain.append(COMMON_INSTANCE_STRUCT + " " + EMBED_SUPER_OBJECT + SEMICOLON + NEWLINE);
         }
+        
         outMain.append(commentln("instance fields"));
         for (RField field : klass.getFields()) {
             outMain.append(name.get(field.getType()) + " " + name.get(field) + SEMICOLON + NEWLINE);
@@ -217,15 +220,17 @@ public class CLanguageGenerator extends CodeGenerator {
         if (klass.hasSuperClass()) {
             // contain a struct for its super class
             outMain.append(commentln("contains super class struct"));
-            outMain.append(name.get(klass.getSuperClass()) + " " + EMBED_SUPER_CLASS + SEMICOLON + NEWLINE);
+            outMain.append(name.get(klass.getSuperClass()) + CLASS_STRUCT_SUFFIX + " " + EMBED_SUPER_CLASS + SEMICOLON + NEWLINE);
             // init super class in class_init()
-            classInit.append("((" + name.get(klass.getSuperMostClass()) + CLASS_STRUCT_SUFFIX + "*)(&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + "))");
-            classInit.append(" -> " + SUPER_CLASS + " = " + "&" + name.get(klass.getSuperMostClass()) + CLASS_STRUCT_INSTANCE_SUFFIX);
+            classInit.append("((" + COMMON_CLASS_STRUCT + "*)(&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + "))");
+            classInit.append(" -> " + SUPER_CLASS + " = " + "&" + name.get(klass.getSuperClass()) + CLASS_STRUCT_INSTANCE_SUFFIX);
             classInit.append(SEMICOLON + NEWLINE);
         } else {
-            // only put void* super_class if this class doesnt have a super class
-            outMain.append(commentln("pointer to super class"));
-            outMain.append(VOID + POINTER + " " + SUPER_CLASS + SEMICOLON + NEWLINE);
+            // contains common class struct
+            outMain.append(commentln("contains common class struct"));
+            outMain.append(COMMON_CLASS_STRUCT + " " + EMBED_SUPER_CLASS + SEMICOLON + NEWLINE);
+            classInit.append("((" + COMMON_CLASS_STRUCT + "*)(&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + "))");
+            classInit.append(" -> " + SUPER_CLASS + " = NULL" + SEMICOLON + NEWLINE);
         }
         outMain.append(commentln("function pointers"));
         for (RMethod method : klass.getMethods()) {
@@ -239,8 +244,9 @@ public class CLanguageGenerator extends CodeGenerator {
             }
             // for virtual non-contructor method, we link their function ptr in class struct
             if (!method.isStatic() && !method.isConstructor()) {
+                RClass target = RClass.whoOwnsMethodInTypeHierarchy(method.getKlass(), method);
                 // we need to type cast the class instance to its super most class instance, and then set function ptr
-                classInit.append("((" + name.get(klass.getSuperMostClass()) + CLASS_STRUCT_SUFFIX + "*)");
+                classInit.append("((" + name.get(target) + CLASS_STRUCT_SUFFIX + "*)");
                 classInit.append("(&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + "))");
                 classInit.append(" -> " + method.getName() + " = " + name.get(method) + SEMICOLON + NEWLINE);
             }
@@ -334,22 +340,13 @@ public class CLanguageGenerator extends CodeGenerator {
         for (RStatement rStmt : method.getBody()) {
             if (rStmt.isIntrinsic())
                 out.append(rStmt.getCode());
-            else out.append(stmt.get(rStmt));
+            else {
+                if (method.isConstructor() && rStmt.isReturnStmt()) 
+                    out.append("((" + COMMON_INSTANCE_STRUCT + "*)" + THIS_LOCAL + ") -> " + POINTER_TO_CLASS_STRUCT + " = &" + name.get(method.getKlass()) + CLASS_STRUCT_INSTANCE_SUFFIX + SEMICOLON + NEWLINE);
+                out.append(stmt.get(rStmt));
+            }
             
             out.append(SEMICOLON + NEWLINE);
-            
-            if (method.isConstructor()) {
-                // we have to init class struct for this class after calling its super init()
-                if (rStmt instanceof RInvokeStmt && ((RInvokeStmt) rStmt).isInvokingSuperInit()) {
-                    out.append("((" + name.get(method.getKlass().getSuperMostClass()) + "*)" + THIS_LOCAL + ") -> " + POINTER_TO_CLASS_STRUCT);
-                    out.append(" = &" + name.get(method.getKlass()) + CLASS_STRUCT_INSTANCE_SUFFIX + SEMICOLON + NEWLINE);
-                } 
-                // we will init class struct if such class do not have super class
-                // and we have got this_parater
-                else if (!method.getKlass().hasSuperClass() && rStmt instanceof RIdentityStmt && ((RIdentityStmt) rStmt).isFetchingThisParameter()) {
-                    out.append(THIS_LOCAL + " -> " + POINTER_TO_CLASS_STRUCT + " = &" + name.get(method.getKlass()) + CLASS_STRUCT_INSTANCE_SUFFIX + SEMICOLON + NEWLINE);
-                }
-            }
         }
         return out.toString();
     }
@@ -368,14 +365,23 @@ public class CLanguageGenerator extends CodeGenerator {
             out.append("#include \"" + lib + ".h\"" + NEWLINE);
         }
         
+        // class struct
+        out.append("typedef struct " + COMMON_CLASS_STRUCT + " " + COMMON_CLASS_STRUCT + SEMICOLON + NEWLINE);
+        out.append("struct " + COMMON_CLASS_STRUCT + " {" + NEWLINE);
+        out.append(COMMON_CLASS_STRUCT + "* " + SUPER_CLASS + SEMICOLON + NEWLINE);
+        out.append("} " + SEMICOLON + NEWLINE);
+        
+        // instance struct
+        out.append("typedef struct " + COMMON_INSTANCE_STRUCT + " {" + NEWLINE);
+        out.append(COMMON_CLASS_STRUCT + "* " + POINTER_TO_CLASS_STRUCT + SEMICOLON + NEWLINE);
+        out.append("} " + COMMON_INSTANCE_STRUCT + SEMICOLON + NEWLINE);
+        
         out.append("#define RJAVA_STR char *" + NEWLINE);
         out.append("#endif" + NEWLINE);
         
         out.append("#ifndef RJAVA_APP_H" + NEWLINE);
         out.append("#define RJAVA_APP_H" + NEWLINE);
-        /*for (String app : translatedCHeader) {
-            out.append("#include \"" + app + "\"" + NEWLINE);
-        }*/
+        
         out.append("void " + RJAVA_CLASS_INIT + "()" + SEMICOLON + NEWLINE);
         out.append("#endif" + NEWLINE);
         
@@ -384,6 +390,7 @@ public class CLanguageGenerator extends CodeGenerator {
         // generating lib source - for class init()
         StringBuilder libSource = new StringBuilder();
         libSource.append(RJAVA_LIB_INCLUDE + NEWLINE);
+        libSource.append(INCLUDE_STDIO + NEWLINE);
         for (String app : translatedCHeader) {
             libSource.append("#include \"" + app + "\"" + NEWLINE);
         }

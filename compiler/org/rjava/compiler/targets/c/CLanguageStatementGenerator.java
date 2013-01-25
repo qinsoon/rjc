@@ -3,8 +3,10 @@ package org.rjava.compiler.targets.c;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.semantics.representation.RLocal;
+import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.semantics.representation.RStatement;
 import org.rjava.compiler.semantics.representation.RType;
 import org.rjava.compiler.semantics.representation.stmt.*;
@@ -13,6 +15,7 @@ import soot.Local;
 import soot.PointsToAnalysis;
 import soot.PointsToSet;
 import soot.Scene;
+import soot.SootClass;
 import soot.Type;
 import soot.Unit;
 import soot.Value;
@@ -255,25 +258,36 @@ public class CLanguageStatementGenerator {
     }
     
     private String fromSootJVirtualInvokeExpr_appCall(soot.jimple.internal.JVirtualInvokeExpr virtualInvoke) {
+        // for a call to cat.speak()
+        // we will have ((Animal_class) ((RJava_Common_Instance*) cat) -> class_struct) -> speak(cat);
+        //             1. who declares speak() 2. use common instance to get class_struct
+        
+        // get who declares speak() first
+        RClass baseClass = RClass.fromClassName(virtualInvoke.getBase().getType().toString());
+        RMethod callingMethod = baseClass.getMethodBySootSignature(virtualInvoke.getMethod().getSignature());
+        RClass targetClass = RClass.whoOwnsMethodInTypeHierarchy(baseClass, callingMethod);
+        
         // use class_struct to get function ptr
         String methodName = virtualInvoke.getMethod().getName();
         String base = name.fromSootLocal((Local) virtualInvoke.getBase());
         
-        String ret = "(";
-        ret += "(" + name.get(RClass.fromSootClass(virtualInvoke.getMethod().getDeclaringClass()).getSuperMostClass()) + CLanguageGenerator.CLASS_STRUCT_SUFFIX + "*)";
-        ret += "(" + base + " -> " + CLanguageGenerator.POINTER_TO_CLASS_STRUCT + ")) -> ";
-        ret += methodName + "(" + base; // base is the first parameter
+        StringBuilder ret = new StringBuilder();
+        ret.append("(");
+        ret.append("(" + name.get(targetClass) + CLanguageGenerator.CLASS_STRUCT_SUFFIX + "*)");
+        ret.append("(((" + CLanguageGenerator.COMMON_INSTANCE_STRUCT + "*) " + base + ")");
+        ret.append(" -> " + CLanguageGenerator.POINTER_TO_CLASS_STRUCT + "))");
+        ret.append(" -> " + methodName + "(" + base);   //base is the first parameter
         
         if (virtualInvoke.getArgCount() == 0)
-            ret += ")";
+            ret.append(")");
         else {
             for (int i = 0; i < virtualInvoke.getArgCount(); i++) {
-                ret += ", " + virtualInvoke.getArg(i).toString();
+                ret.append(", " + virtualInvoke.getArg(i).toString());
             }
-            ret += ")";
+            ret.append(")");
         }
         
-        return ret;
+        return ret.toString();
     }
     
     private String fromSootJSpecialInvokeExpr(soot.jimple.internal.JSpecialInvokeExpr specialInvoke) {

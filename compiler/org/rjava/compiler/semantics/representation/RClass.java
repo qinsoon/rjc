@@ -47,6 +47,15 @@ public class RClass {
         return rClass;
     }
     
+    public static RClass fromClassName(String className) {
+        RClass rClass = SemanticMap.classes.get(className);
+        if (rClass == null) {
+            rClass = new RClass(SootEngine.resolveAndGetClass(className));
+            SemanticMap.classes.put(className, rClass);
+        }
+        return rClass;
+    }
+    
     protected RClass(SootClass sootClass) {
     	this.internal = sootClass;
     	this.name = internal.getName();
@@ -152,5 +161,38 @@ public class RClass {
     
     public boolean hasSuperClass() {
         return superClass != null;
+    }
+    
+    /**
+     * returns the class who declares the method but whose parent doesnt declare such method
+     * @param base
+     * @param method
+     * @return
+     */
+    public static RClass whoOwnsMethodInTypeHierarchy(RClass base, RMethod method) {
+        String methodName = method.internal().getName();
+        List params = method.internal().getParameterTypes();
+        
+        RClass ret = base;
+        while(true) {
+            // ret declares such method, but either he has no parent or his parent doesnt have such method
+            if (
+                    (ret.internal.declaresMethod(methodName, params) && 
+                    ( ret.getSuperClass() == null || !ret.getSuperClass().internal.declaresMethod(methodName, params))))
+                return ret;
+            else {
+                if (ret.hasSuperClass())
+                    ret = ret.getSuperClass();
+                else return null;
+            }
+        }
+    }
+    
+    public RMethod getMethodBySootSignature(String signature) {
+        for (RMethod method : methods) {
+            if (method.internal().getSignature().equals(signature))
+                return method;
+        }
+        return null;
     }
 }

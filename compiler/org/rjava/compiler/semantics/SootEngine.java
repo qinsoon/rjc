@@ -132,14 +132,9 @@ public class SootEngine {
     }
 
     public static SootClass resolveAndGetClass(String name) {
-    	//Scene.v().forceResolve(name, SootClass.SIGNATURES);
-        System.out.println("contains class " + name + ":" + Scene.v().containsClass(name));
-        //SootClass ret = Scene.v().getSootClass(name);
-        //Scene.v().loadClassAndSupport(name);
-    	SootResolver.v().resolveClass(name, SootClass.BODIES);
-    	SootClass ret = Scene.v().getSootClass(name);
-    	System.out.println(ret.getName() + " is resolved to " + ret.resolvingLevel());
-    	return ret;
+        if (!Scene.v().containsClass(name))
+            SootResolver.v().resolveClass(name, SootClass.BODIES);
+    	return Scene.v().getSootClass(name);
     }
     
     public static void ensureResolved(SootClass sootClass) {

@@ -142,4 +142,8 @@ public abstract class RStatement {
     public void setCode(String code) {
         this.code = code;
     }
+    
+    public boolean isReturnStmt() {
+        return type == this.RET_STMT || type == this.RETURN_STMT || type == this.RETURN_VOID_STMT;
+    }
 }
