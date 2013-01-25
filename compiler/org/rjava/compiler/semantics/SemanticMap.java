@@ -13,7 +13,7 @@ import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.representation.*;
 
 public abstract class SemanticMap {
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
     
     // task.class <-> RClass
     public static Map<String, RClass> classes;

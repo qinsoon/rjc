@@ -323,8 +323,9 @@ public class CLanguageGenerator extends CodeGenerator {
             out.append(VOID + POINTER + " " + THIS_PARAMETER); 
         }
         for (int i = 0; i < method.getParameters().size(); i++) {
-            out.append(", ");
-            out.append(name.get(method.getParameters().get(i)) + " " + FORMAL_PARAMETER + i);                        
+            if (!method.isStatic())
+                out.append(", ");
+            out.append(name.getWithPointerIfProper(method.getParameters().get(i)) + " " + FORMAL_PARAMETER + i);                        
         }
         out.append(")");
         return out.toString();

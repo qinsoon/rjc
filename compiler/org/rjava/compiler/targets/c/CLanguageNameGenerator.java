@@ -34,8 +34,13 @@ public class CLanguageNameGenerator {
     
     public String get(RType type) {
         String ret = javaNameToCName(type.getClassName());
-        //generator.referencing(ret);
+        if (type.isReferenceType())
+            generator.referencing(ret);
         return ret;
+    }
+    
+    public String getWithPointerIfProper(RType type) {
+        return get(type) + (type.isReferenceType() ? "*" : ""); 
     }
     
     public String get(RField field) {

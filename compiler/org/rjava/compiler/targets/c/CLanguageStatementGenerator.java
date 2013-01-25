@@ -32,10 +32,12 @@ import soot.jimple.internal.JGotoStmt;
 import soot.jimple.internal.JIdentityStmt;
 import soot.jimple.internal.JIfStmt;
 import soot.jimple.internal.JInstanceFieldRef;
+import soot.jimple.internal.JInterfaceInvokeExpr;
 import soot.jimple.internal.JInvokeStmt;
 import soot.jimple.internal.JNewExpr;
 import soot.jimple.internal.JNopStmt;
 import soot.jimple.internal.JSpecialInvokeExpr;
+import soot.jimple.internal.JStaticInvokeExpr;
 import soot.jimple.internal.JVirtualInvokeExpr;
 import soot.jimple.internal.JimpleLocal;
 
@@ -203,15 +205,18 @@ public class CLanguageStatementGenerator {
             ret = fromSootJVirtualInvokeExpr((JVirtualInvokeExpr) actualInvoke);
         } else if (actualInvoke instanceof soot.jimple.internal.JSpecialInvokeExpr) {
             ret = fromSootJSpecialInvokeExpr((JSpecialInvokeExpr) actualInvoke);
+        } else if (actualInvoke instanceof soot.jimple.internal.JInterfaceInvokeExpr) {
+            ret = fromSootJInterfaceInvokeExpr((JInterfaceInvokeExpr) actualInvoke);
+        } else if (actualInvoke instanceof soot.jimple.internal.JStaticInvokeExpr) {
+            ret = fromSootJStaticInvokeExpr((JStaticInvokeExpr) actualInvoke);
         }
-        
         else {
             ret = CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
         }
         
         return ret;
     }
-    
+
     private String get(RLookupSwitchStmt stmt) {
         return "";
     }
@@ -302,6 +307,41 @@ public class CLanguageStatementGenerator {
         return ret.toString();
     }
     
+    
+    private String fromSootJInterfaceInvokeExpr(
+            JInterfaceInvokeExpr invoke) {
+        // for a call to cat.speak()
+        // we will have ((Animal_class) ((RJava_Common_Instance*) cat) -> class_struct) -> speak(cat);
+        //             1. who declares speak() 2. use common instance to get class_struct
+        
+        // get who declares speak() first
+        RClass baseClass = RClass.fromClassName(invoke.getBase().getType().toString());
+        RMethod callingMethod = baseClass.getMethodBySootSignature(invoke.getMethod().getSignature());
+        RClass targetClass = RClass.whoOwnsMethodInTypeHierarchy(baseClass, callingMethod);
+        
+        // use class_struct to get function ptr
+        String methodName = invoke.getMethod().getName();
+        String base = name.fromSootLocal((Local) invoke.getBase());
+        
+        StringBuilder ret = new StringBuilder();
+        ret.append("(");
+        ret.append("(" + name.get(targetClass) + CLanguageGenerator.CLASS_STRUCT_SUFFIX + "*)");
+        ret.append("(((" + CLanguageGenerator.COMMON_INSTANCE_STRUCT + "*) " + base + ")");
+        ret.append(" -> " + CLanguageGenerator.POINTER_TO_CLASS_STRUCT + "))");
+        ret.append(" -> " + methodName + "(" + base);   //base is the first parameter
+        
+        if (invoke.getArgCount() == 0)
+            ret.append(")");
+        else {
+            for (int i = 0; i < invoke.getArgCount(); i++) {
+                ret.append(", " + invoke.getArg(i).toString());
+            }
+            ret.append(")");
+        }
+        
+        return ret.toString();
+    }
+    
     private String fromSootJSpecialInvokeExpr(soot.jimple.internal.JSpecialInvokeExpr specialInvoke) {
         String methodName = name.fromSootMethod(specialInvoke.getMethod());
         String base = name.fromSootLocal((Local) specialInvoke.getBase());
@@ -317,6 +357,20 @@ public class CLanguageStatementGenerator {
             ret += ")";
         }
         
+        return ret;
+    }    
+
+    private String fromSootJStaticInvokeExpr(JStaticInvokeExpr actualInvoke) {
+        String ret = "";
+        ret = name.fromSootMethod(actualInvoke.getMethod());
+        
+        ret += "(";
+        for (int i = 0; i < actualInvoke.getArgCount(); i++) { 
+            ret += actualInvoke.getArg(i).toString();
+            if (i != actualInvoke.getArgCount() - 1)
+                ret += ", ";
+        }
+        ret += ")";
         return ret;
     }
     

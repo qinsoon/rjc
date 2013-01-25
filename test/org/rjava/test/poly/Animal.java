@@ -11,6 +11,10 @@ public class Animal {
         System.out.println("An animal: " + sound);
     }
     
+    public static void checkArithmetic(DoArithmetic a) {
+        a.calcAdd();
+    }
+    
     public static void main(String[] args) {
         // test polymorphism invoke
         Animal animal = new Animal();
@@ -20,6 +24,8 @@ public class Animal {
         cat.speak();
         
         Cat anotherCat = new Cat();
-        anotherCat.climb();
+        anotherCat.climb("a wall");
+        anotherCat.calcAdd();
+        checkArithmetic(anotherCat);
     }
 }
