@@ -325,7 +325,7 @@ public class CLanguageStatementGenerator {
         
         StringBuilder ret = new StringBuilder();
         ret.append("(");
-        ret.append("(" + name.get(targetClass) + CLanguageGenerator.CLASS_STRUCT_SUFFIX + "*)");
+        //ret.append("(" + name.get(targetClass) + CLanguageGenerator.CLASS_STRUCT_SUFFIX + "*)");
         ret.append("(((" + CLanguageGenerator.COMMON_INSTANCE_STRUCT + "*) " + base + ")");
         ret.append(" -> " + CLanguageGenerator.POINTER_TO_CLASS_STRUCT + "))");
         ret.append(" -> " + methodName + "(" + base);   //base is the first parameter
