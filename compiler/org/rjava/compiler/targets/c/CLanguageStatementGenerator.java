@@ -310,25 +310,23 @@ public class CLanguageStatementGenerator {
     
     private String fromSootJInterfaceInvokeExpr(
             JInterfaceInvokeExpr invoke) {
-        // for a call to cat.speak()
-        // we will have ((Animal_class) ((RJava_Common_Instance*) cat) -> class_struct) -> speak(cat);
-        //             1. who declares speak() 2. use common instance to get class_struct
+        // for a class Cat cat which implements interface DoArithmetic, and correspondingly has method calcAdd()
+        // we have a pointer (DoArithmetic* cat) which is actually pointing to Cat
+        // we invoke calcAdd by ((DoArithmetic*) rjava_get_interface( ((RJava_Common_Class*)((RJava_Common_Instance*) cat) -> class_struct) -> interfaces, "DoArithmetic") ) -> calcAdd();
         
-        // get who declares speak() first
-        RClass baseClass = RClass.fromClassName(invoke.getBase().getType().toString());
-        RMethod callingMethod = baseClass.getMethodBySootSignature(invoke.getMethod().getSignature());
-        RClass targetClass = RClass.whoOwnsMethodInTypeHierarchy(baseClass, callingMethod);
+        StringBuilder ret = new StringBuilder();
         
-        // use class_struct to get function ptr
+        // get the interface name first
+        RClass interfaceClass = RClass.fromClassName(invoke.getBase().getType().toString());
         String methodName = invoke.getMethod().getName();
         String base = name.fromSootLocal((Local) invoke.getBase());
         
-        StringBuilder ret = new StringBuilder();
-        ret.append("(");
-        //ret.append("(" + name.get(targetClass) + CLanguageGenerator.CLASS_STRUCT_SUFFIX + "*)");
-        ret.append("(((" + CLanguageGenerator.COMMON_INSTANCE_STRUCT + "*) " + base + ")");
-        ret.append(" -> " + CLanguageGenerator.POINTER_TO_CLASS_STRUCT + "))");
-        ret.append(" -> " + methodName + "(" + base);   //base is the first parameter
+        ret.append("((" + name.get(interfaceClass) + "*) ");
+        ret.append(CLanguageGenerator.RJAVA_GET_INTERFACE);
+        ret.append("( ((" + CLanguageGenerator.COMMON_CLASS_STRUCT + "*)");
+        ret.append("((" + CLanguageGenerator.COMMON_INSTANCE_STRUCT + "*) " + base + ") -> " + CLanguageGenerator.POINTER_TO_CLASS_STRUCT + ") -> " + CLanguageGenerator.INTERFACE_LIST);
+        ret.append(", \"" + name.get(interfaceClass) + "\") )");
+        ret.append(" -> " + methodName + "(" + base);
         
         if (invoke.getArgCount() == 0)
             ret.append(")");

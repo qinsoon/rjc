@@ -163,6 +163,39 @@ public class RClass {
         return superClass != null;
     }
     
+    public boolean isInterface() {
+        return internal.isInterface();
+    }
+    
+    public boolean hasInterfaces() {
+        return internal.getInterfaceCount() != 0;
+    }
+    
+    public List<RClass> getInterfaces() {
+        if (!hasInterfaces())
+            return null;
+        
+        List<RClass> ret = new ArrayList<RClass>();
+        Iterator<SootClass> iter = internal.getInterfaces().iterator();
+        while(iter.hasNext()) {
+            ret.add(RClass.fromSootClass(iter.next()));
+        }
+        return ret;
+    }
+    
+    public SootClass internal() {
+        return internal;
+    }
+    
+    public RMethod getImplenetingMethodOfAnInterfaceMethod(RMethod interfaceMethod) {
+        for (RMethod method : methods) {
+            if (method.internal.getName().equals(interfaceMethod.internal.getName()) && 
+                    method.internal.getParameterTypes().equals(interfaceMethod.internal.getParameterTypes()))
+                return method;
+        }
+        return null;
+    }
+    
     /**
      * returns the class who declares the method but whose parent doesnt declare such method
      * @param base

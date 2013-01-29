@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -24,7 +25,12 @@ import org.rjava.compiler.semantics.representation.stmt.RIdentityStmt;
 import org.rjava.compiler.semantics.representation.stmt.RInvokeStmt;
 import org.rjava.compiler.targets.CodeGenerator;
 
+import soot.SootClass;
+
 public class CLanguageGenerator extends CodeGenerator {
+    /*
+     * C keyword / reserves
+     */
     public static final String NEWLINE = "\n";
     public static final String SEMICOLON = ";";
     public static final String VOID = "void";
@@ -35,9 +41,11 @@ public class CLanguageGenerator extends CodeGenerator {
     public static final String MALLOC = "malloc";       // may use gcmalloc instead
     public static final String SIZE_OF = "sizeof";
     
+    /*
+     * RJava's C implementation helpers
+     */
     public static final String INCLUDE_STDIO = "#include <stdio.h>";
     public static final String INCLUDE_STDLIB = "#include <stdlib.h>";
-    public static final String RJAVA_CLASS_INIT = "rjava_class_init";
     public static final String RJAVA_LIB_INCLUDE_FILE = "rjava_lib.h";
     public static final String RJAVA_LIB_SOURCE_FILE = "rjava_lib.c";
     public static final String RJAVA_LIB_INCLUDE = "#include \"" + RJAVA_LIB_INCLUDE_FILE + "\"";
@@ -50,20 +58,41 @@ public class CLanguageGenerator extends CodeGenerator {
     public static final String RJAVA_LIB_DIR = "rjava_clib/";
     public static final String MAIN_METHOD_SIGNATURE = "int main (int argc, char** parameter0)";
     
+    // helper methods:
+    // void rjava_class_init()
+    public static final String RJAVA_CLASS_INIT = "rjava_class_init";
+    // void rjava_add_interface_to_class(void* interface, char* name, RJava_Common_Class* class);
+    // source at the end of this file
+    public static final String RJAVA_ADD_INTERFACE_TO_CLASS = "rjava_add_interface_to_class";
+    // void* rjava_get_interface(RJava_Interface_Node* list, char* name);
+    public static final String RJAVA_GET_INTERFACE = "rjava_get_interface";
+    
+    /*
+     * RJava's C Naming
+     */
     public static final String FORMAL_PARAMETER = "parameter";
     public static final String THIS_PARAMETER = "this_parameter";
     public static final String RJAVA_INIT = "rjinit";
     public static final String RJAVA_CLINIT = "rjclinit";
     
+    /*
+     * RJava's C Object
+     */
     // related with dyanmic dispatching
     public static final String POINTER_TO_CLASS_STRUCT = "class_struct";    // in object, pointing to its class
     public static final String EMBED_SUPER_OBJECT = "instance_header";
     public static final String EMBED_SUPER_CLASS  = "class_header";
     public static final String SUPER_CLASS = "super_class";
+    public static final String INTERFACE_LIST = "interfaces";
     public static final String CLASS_STRUCT_SUFFIX = "_class";
+    public static final String INTERFACE_STRUCT_SUFFIX = "";
     public static final String CLASS_STRUCT_INSTANCE_SUFFIX = "_class_instance";
     public static final String COMMON_CLASS_STRUCT = "RJava_Common_Class";
     public static final String COMMON_INSTANCE_STRUCT = "RJava_Common_Instance";
+    public static final String INTERFACE_LIST_NODE = "RJava_Interface_Node";
+    public static final String INTERFACE_LIST_NODE_ATTR_NAME = "name";
+    public static final String INTERFACE_LIST_NODE_ATTR_ADDR = "address";
+    public static final String INTERFACE_LIST_NODE_ATTR_NEXT = "next";
     
     public static final String INCOMPLETE_IMPLEMENTATION = "***Incomplete Implementation***";
     
@@ -99,9 +128,58 @@ public class CLanguageGenerator extends CodeGenerator {
                 RJavaCompiler.debug("}");
             }
         
-        generateIntrinsic(klass, source);
-        generateHeader(klass, source);
-        generateCode(klass, source);
+        if (!klass.isInterface()) {
+            generateIntrinsic(klass, source);
+            generateHeader(klass, source);
+            generateCode(klass, source);
+        } else {
+            generateInterface(klass, source);
+        }
+    }
+
+    private void generateInterface(RClass klass, String source) throws RJavaError {
+        referencedClasses = new HashSet<String>();
+        
+        StringBuilder outInc = new StringBuilder();
+        StringBuilder outMain = new StringBuilder();
+        
+        cHeaderSource = getSource(source, ".h");
+        
+        // include guard
+        outInc.append("#ifndef " + name.get(klass).toUpperCase() + "_H" + NEWLINE);
+        outInc.append("#define " + name.get(klass).toUpperCase() + "_H" + NEWLINE);
+        
+        // include rjava lib
+        outInc.append(RJAVA_LIB_INCLUDE + NEWLINE);
+        
+        /*
+         * Generate interface struct (e.g. org_rjava_test_poly_DoArithmetic_interface)
+         * it only has function pointers;
+         */
+        outMain.append("typedef struct " + name.get(klass) + INTERFACE_STRUCT_SUFFIX + " {" + NEWLINE);
+        outMain.append(commentln("function pointers"));
+        for (RMethod method : klass.getMethods()) {
+            outMain.append(getFunctionPointerForMethod(method) + SEMICOLON + NEWLINE);
+        }
+        outMain.append("} " + name.get(klass) + INTERFACE_STRUCT_SUFFIX + SEMICOLON + NEWLINE);
+        
+        // TODO: generate other global fields
+        
+        outMain.append("#endif");
+        
+        // get referenced
+        for (String reference : referencedClasses) {
+            outInc.append("#include \"" + reference + ".h\"" + NEWLINE);
+        }
+        
+        if (RJavaCompiler.DEBUG) {
+            RJavaCompiler.debug("Header output to: " + cHeaderSource);
+            RJavaCompiler.debug(outInc.toString() + outMain.toString());
+        }
+        
+        writeTo(outInc.toString() + outMain.toString(), Constants.OUTPUT_DIR + cHeaderSource);
+        
+        translatedCHeader.add(cHeaderSource);
     }
 
     private void generateIntrinsic(RClass klass, String source) {
@@ -190,14 +268,6 @@ public class CLanguageGenerator extends CodeGenerator {
         // include rjava lib
         outInc.append(RJAVA_LIB_INCLUDE + NEWLINE);
         
-        // include super class
-        /*if (klass.hasSuperClass()) {
-            outInc.append("#include \"" + name.get(klass.getSuperClass()) + ".h\"" + NEWLINE);
-            if (!klass.getSuperClass().getName().equals(klass.getSuperMostClass().getName())) {
-                outInc.append("#include \"" + name.get(klass.getSuperMostClass()) + ".h\"" + NEWLINE);
-            }
-        }*/
-        
         /*
          * Generate instance struct (e.g. org_rjava_test_poly_Animal)
          */
@@ -237,6 +307,10 @@ public class CLanguageGenerator extends CodeGenerator {
             classInit.append("((" + COMMON_CLASS_STRUCT + "*)(&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + "))");
             classInit.append(" -> " + SUPER_CLASS + " = NULL" + SEMICOLON + NEWLINE);
         }
+        // init class interfaces to null
+        classInit.append("((" + COMMON_CLASS_STRUCT + "*)(&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + "))");
+        classInit.append(" -> " + INTERFACE_LIST + " = NULL" + SEMICOLON + NEWLINE);
+        
         outMain.append(commentln("function pointers"));
         for (RMethod method : klass.getMethods()) {
             // if a method is 
@@ -282,6 +356,27 @@ public class CLanguageGenerator extends CodeGenerator {
         if (RJavaCompiler.DEBUG) {
             RJavaCompiler.debug("Header output to: " + cHeaderSource);
             RJavaCompiler.debug(outInc.toString() + outMain.toString());
+        }
+        
+        // check if the class implements any interface. If so, we will init those interfaces in class_init()
+        if (klass.hasInterfaces()) {
+            for(RClass myInterface : klass.getInterfaces()) {
+                // create the interface for this klass
+                String tempInterfaceVar = name.get(myInterface) + "_implemented_on_" + name.get(klass); 
+                classInit.append(name.get(myInterface) + INTERFACE_STRUCT_SUFFIX + "* " + tempInterfaceVar + " = ");
+                classInit.append(MALLOC + "(sizeof(" + name.get(myInterface) + INTERFACE_STRUCT_SUFFIX + "))" + SEMICOLON + NEWLINE);
+                
+                // link its function pointers
+                for (RMethod interfaceMethod : myInterface.getMethods()) {
+                    classInit.append(tempInterfaceVar + " -> " + interfaceMethod.getName());
+                    classInit.append(" = " + name.get(klass.getImplenetingMethodOfAnInterfaceMethod(interfaceMethod)) + SEMICOLON + NEWLINE);
+                }
+                
+                // add this interface to class
+                // void rjava_add_interface_to_class(void* interface, char* name, RJava_Common_Class* class);
+                classInit.append(RJAVA_ADD_INTERFACE_TO_CLASS + "(" + tempInterfaceVar + ",\"" + name.get(myInterface)+ "\",");
+                classInit.append("(" + COMMON_CLASS_STRUCT + "*)&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + ")" + SEMICOLON + NEWLINE);
+            }
         }
         
         writeTo(outInc.toString() + outMain.toString(), Constants.OUTPUT_DIR + cHeaderSource);
@@ -371,11 +466,21 @@ public class CLanguageGenerator extends CodeGenerator {
             out.append("#include \"" + lib + ".h\"" + NEWLINE);
         }
         
-        // class struct
+        // class struct and interface list forward declaration
         out.append("typedef struct " + COMMON_CLASS_STRUCT + " " + COMMON_CLASS_STRUCT + SEMICOLON + NEWLINE);
+        out.append("typedef struct " + INTERFACE_LIST_NODE + " " + INTERFACE_LIST_NODE + SEMICOLON + NEWLINE);
+        
+        // interface list
+        out.append("struct " + INTERFACE_LIST_NODE + " {" + NEWLINE);
+        out.append("char* " + INTERFACE_LIST_NODE_ATTR_NAME + SEMICOLON + NEWLINE);
+        out.append("void* " + INTERFACE_LIST_NODE_ATTR_ADDR + SEMICOLON + NEWLINE);
+        out.append(INTERFACE_LIST_NODE + "* " + INTERFACE_LIST_NODE_ATTR_NEXT + SEMICOLON + NEWLINE);
+        out.append("}" + SEMICOLON + NEWLINE);
+        
         out.append("struct " + COMMON_CLASS_STRUCT + " {" + NEWLINE);
         out.append(COMMON_CLASS_STRUCT + "* " + SUPER_CLASS + SEMICOLON + NEWLINE);
-        out.append("} " + SEMICOLON + NEWLINE);
+        out.append(INTERFACE_LIST_NODE + "* " + INTERFACE_LIST + SEMICOLON + NEWLINE);
+        out.append("}" + SEMICOLON + NEWLINE);
         
         // instance struct
         out.append("typedef struct " + COMMON_INSTANCE_STRUCT + " {" + NEWLINE);
@@ -388,7 +493,10 @@ public class CLanguageGenerator extends CodeGenerator {
         out.append("#ifndef RJAVA_APP_H" + NEWLINE);
         out.append("#define RJAVA_APP_H" + NEWLINE);
         
+        // helper methods
         out.append("void " + RJAVA_CLASS_INIT + "()" + SEMICOLON + NEWLINE);
+        out.append("void " + RJAVA_ADD_INTERFACE_TO_CLASS + "(void* interface, char* name, RJava_Common_Class* class)" + SEMICOLON + NEWLINE);
+        out.append("void* " + RJAVA_GET_INTERFACE + "(" + INTERFACE_LIST_NODE + "* list, char* name)" + SEMICOLON + NEWLINE);
         out.append("#endif" + NEWLINE);
         
         writeTo(out.toString(), Constants.OUTPUT_DIR + RJAVA_LIB_INCLUDE_FILE);
@@ -401,16 +509,24 @@ public class CLanguageGenerator extends CodeGenerator {
         for (String app : translatedCHeader) {
             libSource.append("#include \"" + app + "\"" + NEWLINE);
         }
+        // void rjava_class_init()
         libSource.append("void " + RJAVA_CLASS_INIT + "() {" + NEWLINE);
         libSource.append(classInit.toString());
-        libSource.append("}");
+        libSource.append("}" + NEWLINE);
+        // void rjava_add_interface_to_class(void* interface, char* name, RJava_Common_Class* class);
+        libSource.append("void " + RJAVA_ADD_INTERFACE_TO_CLASS + "(void* interface, char* name, " + COMMON_CLASS_STRUCT + "* class) {" + NEWLINE);
+        libSource.append(RJAVA_ADD_INTERFACE_TO_CLASS_SOURCE);
+        libSource.append("}" + NEWLINE);
+        // RJava_Interface_Node* rjava_get_interface(RJava_Interface_Node* list, char* name);
+        libSource.append("void* " + RJAVA_GET_INTERFACE + "(" + INTERFACE_LIST_NODE + "* list, char* name) {" + NEWLINE);
+        libSource.append(RJAVA_GET_INTERFACE_SOURCE);
+        libSource.append("}" + NEWLINE);
         writeTo(libSource.toString(), Constants.OUTPUT_DIR + RJAVA_LIB_SOURCE_FILE);
         
         // copy lib files
         try {
             FileUtils.copyDirectory(new File(RJAVA_LIB_DIR), new File(Constants.OUTPUT_DIR), false);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         
@@ -436,4 +552,36 @@ public class CLanguageGenerator extends CodeGenerator {
             return;
         referencedClasses.add(refName);
     }
+
+    // void rjava_add_interface_to_class(void* interface, char* name, RJava_Common_Class* class);
+    private static final String RJAVA_ADD_INTERFACE_TO_CLASS_SOURCE = 
+            INTERFACE_LIST_NODE + "* newNode = " + MALLOC + "(" + SIZE_OF + "(" + INTERFACE_LIST_NODE + "));" + NEWLINE +
+            "newNode->" + INTERFACE_LIST_NODE_ATTR_ADDR + "=interface;" + NEWLINE +
+            "newNode->" + INTERFACE_LIST_NODE_ATTR_NAME + "=name;" + NEWLINE +
+            "newNode->" + INTERFACE_LIST_NODE_ATTR_NEXT + "=NULL;" + NEWLINE +
+            
+            INTERFACE_LIST_NODE + "* last = class->" + INTERFACE_LIST + ";" + NEWLINE +
+            "if (class->" + INTERFACE_LIST + " == NULL) " + NEWLINE +
+            "  class->" + INTERFACE_LIST + "=newNode;" + NEWLINE +
+            "else {" + NEWLINE +
+            "  while(last->" + INTERFACE_LIST_NODE_ATTR_NEXT + "!=NULL)" + NEWLINE +
+            "    last = last->" + INTERFACE_LIST_NODE_ATTR_NEXT + ";" + NEWLINE +
+            "  last->" + INTERFACE_LIST_NODE_ATTR_NEXT + "=newNode;" + NEWLINE +
+            "}" + NEWLINE;
+    
+    // RJava_Interface_Node* rjava_get_interface(RJava_Interface_Node* list, char* name);
+    private static final String RJAVA_GET_INTERFACE_SOURCE = 
+            INTERFACE_LIST_NODE + "* interface = list;" + NEWLINE +
+            "while(1) {" + NEWLINE +
+            "  if (strcmp(interface->" + INTERFACE_LIST_NODE_ATTR_NAME + ", name) == 0)" + NEWLINE +
+            "    return interface->" + INTERFACE_LIST_NODE_ATTR_ADDR + ";" + NEWLINE +
+            "  else {" + NEWLINE +
+            "    if (interface->" + INTERFACE_LIST_NODE_ATTR_NEXT + " != NULL)" + NEWLINE +
+            "      interface = interface->" + INTERFACE_LIST_NODE_ATTR_NEXT + ";" + NEWLINE +
+            "    else {" + NEWLINE +
+            "      printf(\"Error when resolving interface invoke: %s\", name);" + NEWLINE +
+            "      exit(1);" + NEWLINE +
+            "    }" + NEWLINE +
+            "  }" + NEWLINE +
+            "}" + NEWLINE;
 }
