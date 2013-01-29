@@ -27,5 +27,11 @@ public class Animal {
         anotherCat.climb("a wall");
         anotherCat.calcAdd();
         checkArithmetic(anotherCat);
+        
+        DomesticCat domesticCat = new DomesticCat();
+        domesticCat.speak();
+        domesticCat.climb("a wall");
+        domesticCat.calcAdd();
+        checkArithmetic(domesticCat);
     }
 }

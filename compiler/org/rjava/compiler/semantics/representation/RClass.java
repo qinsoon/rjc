@@ -171,6 +171,36 @@ public class RClass {
         return internal.getInterfaceCount() != 0;
     }
     
+    public boolean hasInheritedInterfaces() {
+        if (!hasSuperClass())
+            return false;
+        
+        RClass superClass = getSuperClass();
+        do {
+            if (superClass.hasInterfaces())
+                return true;
+            else if (superClass.hasSuperClass())
+                superClass = superClass.getSuperClass();
+            else return false;
+        } while(true);
+    }
+    
+    public List<RClass> getInheritedInterfaces() {
+        if (!hasInheritedInterfaces())
+            return null;
+        
+        List<RClass> ret = new ArrayList<RClass>();
+        RClass superClass = getSuperClass();
+        do {
+            if (superClass.hasInterfaces()) {
+                ret.addAll(superClass.getInterfaces());
+            }
+            if (superClass.hasSuperClass())
+                superClass = superClass.getSuperClass();
+            else return ret;
+        } while (true);
+    }
+    
     public List<RClass> getInterfaces() {
         if (!hasInterfaces())
             return null;
@@ -196,6 +226,15 @@ public class RClass {
         return null;
     }
     
+    public RMethod getMethodByMatchingNameAndParameters(SootMethod sootMethod) {
+        for (RMethod method : methods) {
+            if (method.internal.getName().equals(sootMethod.getName()) && 
+                    method.internal.getParameterTypes().equals(sootMethod.getParameterTypes()))
+                return method;
+        }
+        return null;
+    }
+    
     /**
      * returns the class who declares the method but whose parent doesnt declare such method
      * @param base
@@ -206,6 +245,14 @@ public class RClass {
         String methodName = method.internal().getName();
         List params = method.internal().getParameterTypes();
         
+        return whoOwnsMethodInTypeHierarchyInternal(base, methodName, params);
+    }
+    
+    public static RClass whoOwnsMethodInTypeHierarchy(RClass base, SootMethod method) {
+        return whoOwnsMethodInTypeHierarchyInternal(base, method.getName(), method.getParameterTypes());
+    }
+    
+    private static RClass whoOwnsMethodInTypeHierarchyInternal(RClass base, String methodName, List params) {
         RClass ret = base;
         while(true) {
             // ret declares such method, but either he has no parent or his parent doesnt have such method
@@ -232,13 +279,5 @@ public class RClass {
                 ret = ret.getSuperClass();
             else return null;
         }
-    }
-    
-    public RMethod getMethodBySootSignature(String signature) {
-        for (RMethod method : methods) {
-            if (method.internal().getSignature().equals(signature))
-                return method;
-        }
-        return null;
     }
 }

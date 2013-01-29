@@ -281,8 +281,7 @@ public class CLanguageStatementGenerator {
         
         // get who declares speak() first
         RClass baseClass = RClass.fromClassName(virtualInvoke.getBase().getType().toString());
-        RMethod callingMethod = baseClass.getMethodBySootSignature(virtualInvoke.getMethod().getSignature());
-        RClass targetClass = RClass.whoOwnsMethodInTypeHierarchy(baseClass, callingMethod);
+        RClass targetClass = RClass.whoOwnsMethodInTypeHierarchy(baseClass, virtualInvoke.getMethod());
         
         // use class_struct to get function ptr
         String methodName = virtualInvoke.getMethod().getName();

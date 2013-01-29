@@ -1,1 +1,2 @@
-1. [NEED FIX] Do not support anonymous class at the moment. 
+1. Do not support anonymous class at the moment. 
+2. Class needs to be compiled by a top-down order in type hierarchy
