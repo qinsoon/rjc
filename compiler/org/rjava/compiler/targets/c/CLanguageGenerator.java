@@ -70,6 +70,8 @@ public class CLanguageGenerator extends CodeGenerator {
     public static final String RJAVA_GET_INTERFACE = "rjava_get_interface";
     // void rjava_init_header(void* this_class, void* super_class);
     public static final String RJAVA_INIT_HEADER = "rjava_init_header";
+    // void rjava_debug_print_header(void* this_class);
+    public static final String RJAVA_DEBUG_PRINT_HEADER = "rjava_debug_print_header";
     
     /*
      * RJava's C Naming
@@ -319,7 +321,8 @@ public class CLanguageGenerator extends CodeGenerator {
         // set header to its super class instruct
         if (klass.hasSuperClass()) {
             classInit.append(RJAVA_INIT_HEADER + "(&");
-            classInit.append(name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + ",&" + name.get(klass.getSuperClass()) + CLASS_STRUCT_INSTANCE_SUFFIX + ")" + SEMICOLON + NEWLINE);
+            classInit.append(name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + ",&" + name.get(klass.getSuperClass()) + CLASS_STRUCT_INSTANCE_SUFFIX);
+            classInit.append("," + SIZE_OF + "(" + name.get(klass.getSuperClass()) + CLASS_STRUCT_SUFFIX + "))" + SEMICOLON + NEWLINE);
         }
         
         outMain.append(commentln("function pointers"));
@@ -517,7 +520,8 @@ public class CLanguageGenerator extends CodeGenerator {
         out.append("void " + RJAVA_CLASS_INIT + "()" + SEMICOLON + NEWLINE);
         out.append("void " + RJAVA_ADD_INTERFACE_TO_CLASS + "(void* interface, int interface_size, char* name, RJava_Common_Class* class)" + SEMICOLON + NEWLINE);
         out.append("void* " + RJAVA_GET_INTERFACE + "(" + INTERFACE_LIST_NODE + "* list, char* name)" + SEMICOLON + NEWLINE);
-        out.append("void " + RJAVA_INIT_HEADER + "(void* this_class, void* super_class)" + SEMICOLON + NEWLINE);
+        out.append("void " + RJAVA_INIT_HEADER + "(void* this_class, void* super_class, int super_class_init)" + SEMICOLON + NEWLINE);
+        out.append("void " + RJAVA_DEBUG_PRINT_HEADER + "(char* name, void* this_class)" + SEMICOLON + NEWLINE);
         out.append("#endif" + NEWLINE);
         
         writeTo(out.toString(), Constants.OUTPUT_DIR + RJAVA_LIB_INCLUDE_FILE);
@@ -546,8 +550,11 @@ public class CLanguageGenerator extends CodeGenerator {
         libSource.append("void* " + RJAVA_GET_INTERFACE + "(" + INTERFACE_LIST_NODE + "* list, char* name) {" + NEWLINE);
         libSource.append(RJAVA_GET_INTERFACE_SOURCE);
         libSource.append("}" + NEWLINE);
-        libSource.append("void " + RJAVA_INIT_HEADER + "(void* this_class, void* super_class) {" + NEWLINE);
+        libSource.append("void " + RJAVA_INIT_HEADER + "(void* this_class, void* super_class, int super_class_size) {" + NEWLINE);
         libSource.append(RJAVA_INIT_HEADER_SOURCE);
+        libSource.append("}" + NEWLINE);
+        libSource.append("void " + RJAVA_DEBUG_PRINT_HEADER + "(char* name, void* this_class) {" + NEWLINE);
+        libSource.append(RJAVA_DEBUG_PRINT_HEADER_SOURCE);
         libSource.append("}" + NEWLINE);
         writeTo(libSource.toString(), Constants.OUTPUT_DIR + RJAVA_LIB_SOURCE_FILE);
         
@@ -586,7 +593,8 @@ public class CLanguageGenerator extends CodeGenerator {
             INTERFACE_LIST_NODE + "* newNode = " + MALLOC + "(" + SIZE_OF + "(" + INTERFACE_LIST_NODE + "));" + NEWLINE +
             "newNode->" + INTERFACE_LIST_NODE_ATTR_ADDR + "=interface;" + NEWLINE +
             "newNode->" + INTERFACE_LIST_NODE_ATTR_SIZE + "=interface_size;" + NEWLINE +
-            "newNode->" + INTERFACE_LIST_NODE_ATTR_NAME + "=name;" + NEWLINE +
+            "newNode->" + INTERFACE_LIST_NODE_ATTR_NAME + "=" + MALLOC + "(strlen(name)+1);" + NEWLINE +
+            "strcpy(newNode->" + INTERFACE_LIST_NODE_ATTR_NAME + ",name);" + NEWLINE +
             "newNode->" + INTERFACE_LIST_NODE_ATTR_NEXT + "=NULL;" + NEWLINE +
             
             INTERFACE_LIST_NODE + "* last = class->" + INTERFACE_LIST + ";" + NEWLINE +
@@ -625,8 +633,9 @@ public class CLanguageGenerator extends CodeGenerator {
             "  }" + NEWLINE +
             "}" + NEWLINE;
     
-    // void rjava_init_header(void* this_class, void* super_class);
-    private static final String RJAVA_INIT_HEADER_SOURCE = "" +
+    // void rjava_init_header(void* this_class, void* super_class, int super_class_size);
+    private static final String RJAVA_INIT_HEADER_SOURCE = 
+            "memcpy(this_class, super_class, super_class_size);" + NEWLINE + 
     		"((RJava_Common_Class*)this_class) -> super_class = (RJava_Common_Class*)super_class;" + NEWLINE + 
     		"if (((RJava_Common_Class*)super_class) -> interfaces == NULL) {" + NEWLINE + 
     		"  ((RJava_Common_Class*)this_class) -> interfaces = NULL;" + NEWLINE +
@@ -638,11 +647,12 @@ public class CLanguageGenerator extends CodeGenerator {
     		"RJava_Interface_Node* oldListIter = ((RJava_Common_Class*)super_class) -> interfaces;" + NEWLINE +
     		"RJava_Interface_Node* prevNewListNode = NULL;" + NEWLINE + 
     
-    		"for (; oldListIter->next != NULL; oldListIter = oldListIter->next) {" + NEWLINE + 
+    		"for (; oldListIter != NULL; oldListIter = oldListIter->next) {" + NEWLINE + 
     		"  newListIter = (RJava_Interface_Node*) malloc(sizeof(RJava_Interface_Node));" + NEWLINE + 
+    		"  newListIter->name = malloc(strlen(oldListIter->name)+1);" + NEWLINE +
     		"  strcpy(newListIter->name, oldListIter->name);" + NEWLINE + 
 
-    		"  newListIter->address = malloc(sizeof(oldListIter->interface_size));" + NEWLINE + 
+    		"  newListIter->address = malloc(oldListIter->interface_size);" + NEWLINE + 
     		"  memcpy(newListIter->address, oldListIter->address, oldListIter->interface_size);" + NEWLINE + 
 
     		"  newListIter->interface_size = oldListIter->interface_size;" + NEWLINE + 
@@ -658,4 +668,17 @@ public class CLanguageGenerator extends CodeGenerator {
             "}" + NEWLINE +
     
             "((RJava_Common_Class*)this_class) -> interfaces = newListHead;" + NEWLINE;
+    
+    // void rjava_debug_print_header(char* name, void* this_class);
+    private static final String RJAVA_DEBUG_PRINT_HEADER_SOURCE =
+            "printf(\"%s:\\n\", name);" + NEWLINE +
+            "printf(\" super:%d\\n\", ((RJava_Common_Class*)this_class)->super_class != NULL);" + NEWLINE + 
+            "if (((RJava_Common_Class*)this_class)->interfaces == NULL) {" + NEWLINE + 
+            "  printf(\" interfaces:none\\n\");" + NEWLINE + 
+            "  return;" + NEWLINE + 
+            "} " + NEWLINE + 
+            "RJava_Interface_Node* iter = ((RJava_Common_Class*)this_class)->interfaces;" + NEWLINE +
+            "for (; iter != NULL; iter = iter->next) {" + NEWLINE +
+            "  printf(\" interface:%s\\n\", iter->name);" + NEWLINE +
+            "}" + NEWLINE;
 }
