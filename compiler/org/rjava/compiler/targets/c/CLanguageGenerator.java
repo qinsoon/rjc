@@ -3,9 +3,7 @@ package org.rjava.compiler.targets.c;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -21,11 +19,7 @@ import org.rjava.compiler.semantics.representation.RLocal;
 import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.semantics.representation.RStatement;
 import org.rjava.compiler.semantics.representation.RType;
-import org.rjava.compiler.semantics.representation.stmt.RIdentityStmt;
-import org.rjava.compiler.semantics.representation.stmt.RInvokeStmt;
 import org.rjava.compiler.targets.CodeGenerator;
-
-import soot.SootClass;
 
 public class CLanguageGenerator extends CodeGenerator {
     /*
@@ -144,6 +138,13 @@ public class CLanguageGenerator extends CodeGenerator {
         }
     }
 
+    /**
+     * A Java interface will become a normal RJava-C-Class, its name will be the C-style class name (no extra suffix)
+     * A interface struct contains only function pointers. Constants become global variables (not finished yet)
+     * @param klass
+     * @param source
+     * @throws RJavaError
+     */
     private void generateInterface(RClass klass, String source) throws RJavaError {
         referencedClasses = new HashSet<String>();
         
@@ -207,6 +208,12 @@ public class CLanguageGenerator extends CodeGenerator {
         }
     }
 
+    /**
+     * A Java Class will become a C header and a C source file. The source file is generated here. 
+     * @param klass
+     * @param source
+     * @throws RJavaError
+     */
     private void generateCode(RClass klass, String source) throws RJavaError {
         referencedClasses = new HashSet<String>();
         boolean containsMain = false;
@@ -225,6 +232,7 @@ public class CLanguageGenerator extends CodeGenerator {
         
         outInc.append(NEWLINE);
         
+        // generating code for each method
         for (RMethod method : klass.getMethods()) {
             if (method.isMainMethod()) {
                 outMain.append(MAIN_METHOD_SIGNATURE + " {" + NEWLINE);
@@ -260,6 +268,12 @@ public class CLanguageGenerator extends CodeGenerator {
         }
     }
 
+    /**
+     * A Java Class will become a C header and a C source file. The header is generated here. 
+     * @param klass
+     * @param source
+     * @throws RJavaError
+     */
     private void generateHeader(RClass klass, String source) throws RJavaError {
         referencedClasses = new HashSet<String>();
         
@@ -303,28 +317,23 @@ public class CLanguageGenerator extends CodeGenerator {
             // contain a struct for its super class
             outMain.append(commentln("contains super class struct"));
             outMain.append(name.get(klass.getSuperClass()) + CLASS_STRUCT_SUFFIX + " " + EMBED_SUPER_CLASS + SEMICOLON + NEWLINE);
-            // init super class in class_init()
-            //classInit.append("((" + COMMON_CLASS_STRUCT + "*)(&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + "))");
-            //classInit.append(" -> " + SUPER_CLASS + " = (" + COMMON_CLASS_STRUCT + "*)" + "&" + name.get(klass.getSuperClass()) + CLASS_STRUCT_INSTANCE_SUFFIX);
-            //classInit.append(SEMICOLON + NEWLINE);
+            
+            // and set its header to super class
+            classInit.append(RJAVA_INIT_HEADER + "(&");
+            classInit.append(name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + ",&" + name.get(klass.getSuperClass()) + CLASS_STRUCT_INSTANCE_SUFFIX);
+            classInit.append("," + SIZE_OF + "(" + name.get(klass.getSuperClass()) + CLASS_STRUCT_SUFFIX + "))" + SEMICOLON + NEWLINE);
         } else {
             // contains common class struct
             outMain.append(commentln("contains common class struct"));
             outMain.append(COMMON_CLASS_STRUCT + " " + EMBED_SUPER_CLASS + SEMICOLON + NEWLINE);
+            
+            // this class has no super class, thus we initialize super and interface to NULL
+            // super_class = NULL
             classInit.append("((" + COMMON_CLASS_STRUCT + "*)(&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + "))");
             classInit.append(" -> " + SUPER_CLASS + " = NULL" + SEMICOLON + NEWLINE);
-        }
-        
-        // init class interfaces to null
-        if (!klass.hasSuperClass()) {
+            // interfaces = NULL
             classInit.append("((" + COMMON_CLASS_STRUCT + "*)(&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + "))");
             classInit.append(" -> " + INTERFACE_LIST + " = NULL" + SEMICOLON + NEWLINE);
-        }
-        // set header to its super class instruct
-        if (klass.hasSuperClass()) {
-            classInit.append(RJAVA_INIT_HEADER + "(&");
-            classInit.append(name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + ",&" + name.get(klass.getSuperClass()) + CLASS_STRUCT_INSTANCE_SUFFIX);
-            classInit.append("," + SIZE_OF + "(" + name.get(klass.getSuperClass()) + CLASS_STRUCT_SUFFIX + "))" + SEMICOLON + NEWLINE);
         }
         
         outMain.append(commentln("function pointers"));
