@@ -218,12 +218,17 @@ public class RClass {
     }
     
     public RMethod getImplenetingMethodOfAnInterfaceMethod(RMethod interfaceMethod) {
-        for (RMethod method : methods) {
-            if (method.internal.getName().equals(interfaceMethod.internal.getName()) && 
-                    method.internal.getParameterTypes().equals(interfaceMethod.internal.getParameterTypes()))
-                return method;
-        }
-        return null;
+        RClass base = this;
+        do {
+            for (RMethod method : base.methods) {
+                if (method.internal.getName().equals(interfaceMethod.internal.getName()) && 
+                        method.internal.getParameterTypes().equals(interfaceMethod.internal.getParameterTypes()))
+                    return method;
+            }
+            if (base.hasSuperClass())
+                base = base.getSuperClass();
+            else return null;
+        } while(true);
     }
     
     public RMethod getMethodByMatchingNameAndParameters(SootMethod sootMethod) {
@@ -279,5 +284,21 @@ public class RClass {
                 ret = ret.getSuperClass();
             else return null;
         }
+    }
+
+    /**
+     * this class overrides some methods from previous interface
+     * @param myInterface
+     * @return
+     */
+    public boolean hasOverridingMethodsFromInterface(RClass myInterface) {
+        for (RMethod method : methods) {
+            for (RMethod interfaceMethod : myInterface.getMethods()) {
+                if (method.internal.getName().equals(interfaceMethod.internal.getName()) &&
+                        method.internal.getParameterTypes().equals(interfaceMethod.internal.getParameterTypes()))
+                    return true;
+            }
+        }
+        return false;
     }
 }

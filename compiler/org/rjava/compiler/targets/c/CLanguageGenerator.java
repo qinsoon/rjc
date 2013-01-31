@@ -304,9 +304,9 @@ public class CLanguageGenerator extends CodeGenerator {
             outMain.append(commentln("contains super class struct"));
             outMain.append(name.get(klass.getSuperClass()) + CLASS_STRUCT_SUFFIX + " " + EMBED_SUPER_CLASS + SEMICOLON + NEWLINE);
             // init super class in class_init()
-            classInit.append("((" + COMMON_CLASS_STRUCT + "*)(&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + "))");
-            classInit.append(" -> " + SUPER_CLASS + " = (" + COMMON_CLASS_STRUCT + "*)" + "&" + name.get(klass.getSuperClass()) + CLASS_STRUCT_INSTANCE_SUFFIX);
-            classInit.append(SEMICOLON + NEWLINE);
+            //classInit.append("((" + COMMON_CLASS_STRUCT + "*)(&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + "))");
+            //classInit.append(" -> " + SUPER_CLASS + " = (" + COMMON_CLASS_STRUCT + "*)" + "&" + name.get(klass.getSuperClass()) + CLASS_STRUCT_INSTANCE_SUFFIX);
+            //classInit.append(SEMICOLON + NEWLINE);
         } else {
             // contains common class struct
             outMain.append(commentln("contains common class struct"));
@@ -316,8 +316,10 @@ public class CLanguageGenerator extends CodeGenerator {
         }
         
         // init class interfaces to null
-        classInit.append("((" + COMMON_CLASS_STRUCT + "*)(&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + "))");
-        classInit.append(" -> " + INTERFACE_LIST + " = NULL" + SEMICOLON + NEWLINE);
+        if (!klass.hasSuperClass()) {
+            classInit.append("((" + COMMON_CLASS_STRUCT + "*)(&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + "))");
+            classInit.append(" -> " + INTERFACE_LIST + " = NULL" + SEMICOLON + NEWLINE);
+        }
         // set header to its super class instruct
         if (klass.hasSuperClass()) {
             classInit.append(RJAVA_INIT_HEADER + "(&");
@@ -375,35 +377,54 @@ public class CLanguageGenerator extends CodeGenerator {
         // check if the class implements any interface. If so, we will init those interfaces in class_init()
         if (klass.hasInterfaces()) {
             for(RClass myInterface : klass.getInterfaces()) {
-                // create the C interface for this klass
-                String tempInterfaceVar = name.get(myInterface) + "_implemented_on_" + name.get(klass); 
-                classInit.append(name.get(myInterface) + INTERFACE_STRUCT_SUFFIX + "* " + tempInterfaceVar + " = ");
-                classInit.append(MALLOC + "(sizeof(" + name.get(myInterface) + INTERFACE_STRUCT_SUFFIX + "))" + SEMICOLON + NEWLINE);
-                
-                // link its function pointers
-                for (RMethod interfaceMethod : myInterface.getMethods()) {
-                    classInit.append(tempInterfaceVar + " -> " + interfaceMethod.getName());
-                    classInit.append(" = " + name.get(klass.getImplenetingMethodOfAnInterfaceMethod(interfaceMethod)) + SEMICOLON + NEWLINE);
-                }
-                
-                // add this interface to class
-                // void rjava_add_interface_to_class(void* interface, int interface_size, char* name, RJava_Common_Class* class);
-                classInit.append(RJAVA_ADD_INTERFACE_TO_CLASS + "(" + tempInterfaceVar + "," + SIZE_OF + "(" + name.get(myInterface) + "),");
-                classInit.append("\"" + name.get(myInterface)+ "\",");
-                classInit.append("(" + COMMON_CLASS_STRUCT + "*)&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + ")" + SEMICOLON + NEWLINE);
+                getInterfaceInitCode(klass, myInterface, false);
             }
         }
         if (klass.hasInheritedInterfaces()) {
             for(RClass myInterface : klass.getInheritedInterfaces()) {
-                //if (klass.isOverridingMethodsFrom(myInterface)) {
-                    
-                //}
+                if (klass.hasOverridingMethodsFromInterface(myInterface)) {
+                    getInterfaceInitCode(klass, myInterface, true);
+                }
             }
         }
         
         writeTo(outInc.toString() + outMain.toString(), Constants.OUTPUT_DIR + cHeaderSource);
         
         translatedCHeader.add(cHeaderSource);
+    }
+
+    /**
+     * generating class init code for RClass:klass on interface:myInterface. 
+     * @param klass
+     * @param myInterface
+     * @param rewrite true if we add such interface, otherwise change the old interface pointer
+     */
+    private void getInterfaceInitCode(RClass klass, RClass myInterface, boolean rewrite) {
+        // create the C interface for this klass
+        String tempInterfaceVar = name.get(myInterface) + "_implemented_on_" + name.get(klass); 
+        classInit.append(name.get(myInterface) + INTERFACE_STRUCT_SUFFIX + "* " + tempInterfaceVar + " = ");
+        classInit.append(MALLOC + "(sizeof(" + name.get(myInterface) + INTERFACE_STRUCT_SUFFIX + "))" + SEMICOLON + NEWLINE);
+        
+        // link its function pointers
+        for (RMethod interfaceMethod : myInterface.getMethods()) {
+            classInit.append(tempInterfaceVar + " -> " + interfaceMethod.getName());
+            classInit.append(" = " + name.get(klass.getImplenetingMethodOfAnInterfaceMethod(interfaceMethod)) + SEMICOLON + NEWLINE);
+        }
+        
+
+
+        if (rewrite) {
+            // rewrite
+            // void rjava_alter_interface(void* interface, char* name, RJava_Common_Class* class);
+            classInit.append(RJAVA_ALTER_INTERFACE + "(" + tempInterfaceVar + ",\"" + name.get(myInterface) + "\",");
+            classInit.append("(" + COMMON_CLASS_STRUCT + "*)&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + ")" + SEMICOLON + NEWLINE);
+        }else {
+            // add this interface to class
+            // void rjava_add_interface_to_class(void* interface, int interface_size, char* name, RJava_Common_Class* class);
+            classInit.append(RJAVA_ADD_INTERFACE_TO_CLASS + "(" + tempInterfaceVar + "," + SIZE_OF + "(" + name.get(myInterface) + "),");
+            classInit.append("\"" + name.get(myInterface)+ "\",");
+            classInit.append("(" + COMMON_CLASS_STRUCT + "*)&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + ")" + SEMICOLON + NEWLINE);
+        }
     }
     
     private String getFunctionPointerForMethod(RMethod method) {
@@ -612,10 +633,12 @@ public class CLanguageGenerator extends CodeGenerator {
             "do {" + NEWLINE + 
             "  if (strcmp(iter->" + INTERFACE_LIST_NODE_ATTR_NAME + ", name) == 0) {" + NEWLINE + 
             "    iter->" + INTERFACE_LIST_NODE_ATTR_ADDR + " = interface;" + NEWLINE +
-            "    return;" +
-            "  }" +
+            "    return;" + NEWLINE + 
+            "  }" + NEWLINE +
             "  iter = iter->" + INTERFACE_LIST_NODE_ATTR_NEXT + SEMICOLON + NEWLINE +
-            "} while (iter != NULL);" + NEWLINE;
+            "} while (iter != NULL);" + NEWLINE + 
+            "printf(\"didnt find interface(%s)\\n\", name);" + NEWLINE + 
+            "exit(1);" + NEWLINE;
     
     // RJava_Interface_Node* rjava_get_interface(RJava_Interface_Node* list, char* name);
     private static final String RJAVA_GET_INTERFACE_SOURCE = 
