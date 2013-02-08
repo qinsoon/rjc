@@ -3,14 +3,19 @@ package org.rjava.compiler.semantics;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.swing.tree.TreeModel;
 
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.rjava.compiler.CompilationTask;
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.representation.*;
+import org.rjava.compiler.util.Tree;
 
 public abstract class SemanticMap {
     public static final boolean DEBUG = true;
@@ -20,6 +25,10 @@ public abstract class SemanticMap {
     // task.class <-> task.sources
     public static Map<String, String> sources;
     public static Map<String, RType> types;
+    
+    // class hierarchy
+    public static TypeHierarchy hierarchy;
+    
     public static SootEngine engine;
 
     public static void initSemanticMap(CompilationTask task) {
@@ -35,6 +44,11 @@ public abstract class SemanticMap {
     	for (int i = 0; i < task.getClasses().size(); i++) {
     	    sources.put(task.getClasses().get(i), task.getSources().get(i));
     	}
+    	
+    	// init hierarchy
+    	hierarchy = TypeHierarchy.init();
+    	if (DEBUG)
+    	    hierarchy.printHierarchy();
     }
 
     public static Map<String, RClass> getAllClasses() {
