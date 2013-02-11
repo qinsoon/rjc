@@ -146,4 +146,8 @@ public abstract class RStatement {
     public boolean isReturnStmt() {
         return type == this.RET_STMT || type == this.RETURN_STMT || type == this.RETURN_VOID_STMT;
     }
+    
+    public RMethod getMethod() {
+        return method;
+    }
 }

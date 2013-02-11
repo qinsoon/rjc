@@ -82,6 +82,8 @@ public class CLanguageGenerator extends CodeGenerator {
     public static final String RJAVA_ACCESS_ARRAY = "rjava_access_array";
     // int rjava_length_of_array(void* array);
     public static final String RJAVA_LENGTH_OF_ARRAY = "rjava_length_of_array";
+    // void* rjava_c_array_to_rjava_array(int length, long ele_size, void* c_array);
+    public static final String RJAVA_C_ARRAY_TO_RJAVA_ARRAY = "rjava_c_array_to_rjava_array";
     
     /*
      * RJava's C Naming
@@ -590,6 +592,7 @@ public class CLanguageGenerator extends CodeGenerator {
         out.append("void* " + RJAVA_NEW_ARRAY + "(int length, long ele_size)" + SEMICOLON + NEWLINE);
         out.append("void* " + RJAVA_ACCESS_ARRAY + "(void* array, int index)" + SEMICOLON + NEWLINE);
         out.append("int " + RJAVA_LENGTH_OF_ARRAY + "(void* array)" + SEMICOLON + NEWLINE);
+        out.append("void* " + RJAVA_C_ARRAY_TO_RJAVA_ARRAY + "(int length, long ele_size, void* c_array)" + SEMICOLON + NEWLINE);
         out.append("#endif" + NEWLINE);
         
         writeTo(out.toString(), Constants.OUTPUT_DIR + RJAVA_LIB_INCLUDE_FILE);
@@ -633,6 +636,9 @@ public class CLanguageGenerator extends CodeGenerator {
         libSource.append("}" + NEWLINE);
         libSource.append("int " + RJAVA_LENGTH_OF_ARRAY + "(void* array) {" + NEWLINE);
         libSource.append(RJAVA_LENGTH_OF_ARRAY_SOURCE);
+        libSource.append("}" + NEWLINE);
+        libSource.append("void* " + RJAVA_C_ARRAY_TO_RJAVA_ARRAY + "(int length, long ele_size, void* c_array) {" + NEWLINE);
+        libSource.append(RJAVA_C_ARRAY_TO_RJAVA_ARRAY_SOURCE);
         libSource.append("}" + NEWLINE);
         writeTo(libSource.toString(), Constants.OUTPUT_DIR + RJAVA_LIB_SOURCE_FILE);
         
@@ -806,4 +812,17 @@ public class CLanguageGenerator extends CodeGenerator {
     // int rjava_length_of_array(void* array);
     public static final String RJAVA_LENGTH_OF_ARRAY_SOURCE = 
             "return *((int*)array);" + NEWLINE;
+    
+    // void* rjava_c_array_to_rjava_array(int length, long ele_size, void* c_array);
+    public static final String RJAVA_C_ARRAY_TO_RJAVA_ARRAY_SOURCE = 
+            "void* ret = rjava_new_array(length, ele_size);" + NEWLINE +
+            "void* src_ptr = c_array;" + NEWLINE +
+            "void* dst_ptr = ret + sizeof(int) + sizeof(long);" + NEWLINE +
+            "int i = 0;" + NEWLINE +
+            "for (; i < length; i = i + 1) {" + NEWLINE +
+            "  memcpy(dst_ptr, src_ptr, ele_size);" + NEWLINE +
+            "  dst_ptr = dst_ptr + ele_size;" + NEWLINE + 
+            "  src_ptr = src_ptr + ele_size;" + NEWLINE +
+            "}" + NEWLINE +
+            "return ret;" + NEWLINE;
 }

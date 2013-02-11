@@ -4,6 +4,10 @@ import org.rjava.restriction.rulesets.RJavaCore;
 @RJavaCore
 public class RJavaHelloWorld {
   public static void main(String[] args) {
-    System.out.println("Hello World");
+      String message;
+      if (args.length > 0)
+          message = "Hello " + args[0];
+      else message = "Hello World";
+      System.out.println(message);
   }
 }
