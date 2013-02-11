@@ -1,11 +1,18 @@
 package org.rjava.compiler.semantics;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.util.Tree;
 
+/**
+ * This class stores the type hierarchy. This info is used to generate class_init(), since parent class should be inited before child. 
+ * @author Yi
+ *
+ */
 public class TypeHierarchy {
     List<Tree<RClass>> internal;
     
@@ -26,6 +33,9 @@ public class TypeHierarchy {
         if (contains(klass))
             return;
         
+        if (klass.isInterface())
+            return;
+        
         // we need to add this klass
         
         // if this klass is a root, then directly add to list
@@ -38,7 +48,12 @@ public class TypeHierarchy {
         // we dont have its super class yet, add super into hierarchy
         else {
             add(klass.getSuperClass());
+            getTree(klass.getSuperClass()).addLeaf(klass);
         }
+    }
+    
+    public List<Tree<RClass>> getRoots() {
+        return internal;
     }
 
     private Tree<RClass> getTree(RClass superClass) {
@@ -56,7 +71,9 @@ public class TypeHierarchy {
     
     public void printHierarchy() {
         for (Tree<RClass> root : internal) {
-            System.out.println("Tree:" + root.toString());
+            System.out.println("Tree:");
+            System.out.println(root.printTree(0));
         }
+        System.out.println();
     }
 }

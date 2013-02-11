@@ -111,7 +111,7 @@ public class Tree<T> {
 
     private static final int indent = 2;
 
-    private String printTree(int increment) {
+    public String printTree(int increment) {
         String s = "";
         String inc = "";
         for (int i = 0; i < increment; ++i) {
@@ -122,5 +122,9 @@ public class Tree<T> {
             s += "\n" + child.printTree(increment + indent);
         }
         return s;
+    }
+    
+    public TreeBreadthFirstIterator<T> getBreadthFirstIterator() {
+        return new TreeBreadthFirstIterator<T>(this);
     }
 }

@@ -1,2 +1,3 @@
 1. Do not support anonymous class at the moment. 
-2. Class needs to be compiled by a top-down order in type hierarchy
+2. [SOLVED]Class needs to be compiled by a top-down order in type hierarchy
+3. Not sure if interface can have subinterface (currently I don't maintain typehierarchy for interfaces)

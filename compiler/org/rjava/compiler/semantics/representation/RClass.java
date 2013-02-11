@@ -131,6 +131,10 @@ public class RClass {
     public String getName() {
         return name;
     }
+    
+    public String toString() {
+        return name;
+    }
 
     /**
      * get a list of annotations on such class

@@ -3,8 +3,10 @@ package org.rjava.compiler.targets.c;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
@@ -20,6 +22,8 @@ import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.semantics.representation.RStatement;
 import org.rjava.compiler.semantics.representation.RType;
 import org.rjava.compiler.targets.CodeGenerator;
+import org.rjava.compiler.util.Tree;
+import org.rjava.compiler.util.TreeBreadthFirstIterator;
 
 public class CLanguageGenerator extends CodeGenerator {
     /*
@@ -107,8 +111,8 @@ public class CLanguageGenerator extends CodeGenerator {
     List<String> translatedCHeader = new ArrayList<String>();
     String mainSource = "";
     String mainObj = "";
-    
-    StringBuilder classInit = new StringBuilder();
+   
+    Map<String, StringBuilder> classInitMap = new HashMap<String, StringBuilder>();
     
     Set<String> referencedClasses;
 
@@ -319,21 +323,25 @@ public class CLanguageGenerator extends CodeGenerator {
             outMain.append(name.get(klass.getSuperClass()) + CLASS_STRUCT_SUFFIX + " " + EMBED_SUPER_CLASS + SEMICOLON + NEWLINE);
             
             // and set its header to super class
-            classInit.append(RJAVA_INIT_HEADER + "(&");
-            classInit.append(name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + ",&" + name.get(klass.getSuperClass()) + CLASS_STRUCT_INSTANCE_SUFFIX);
-            classInit.append("," + SIZE_OF + "(" + name.get(klass.getSuperClass()) + CLASS_STRUCT_SUFFIX + "))" + SEMICOLON + NEWLINE);
+            StringBuilder classInitTemp = new StringBuilder();
+            classInitTemp.append(RJAVA_INIT_HEADER + "(&");
+            classInitTemp.append(name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + ",&" + name.get(klass.getSuperClass()) + CLASS_STRUCT_INSTANCE_SUFFIX);
+            classInitTemp.append("," + SIZE_OF + "(" + name.get(klass.getSuperClass()) + CLASS_STRUCT_SUFFIX + "))" + SEMICOLON + NEWLINE);
+            addToClassInitMap(klass.getName(), classInitTemp.toString());
         } else {
             // contains common class struct
             outMain.append(commentln("contains common class struct"));
             outMain.append(COMMON_CLASS_STRUCT + " " + EMBED_SUPER_CLASS + SEMICOLON + NEWLINE);
             
             // this class has no super class, thus we initialize super and interface to NULL
+            StringBuilder classInitTemp = new StringBuilder();
             // super_class = NULL
-            classInit.append("((" + COMMON_CLASS_STRUCT + "*)(&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + "))");
-            classInit.append(" -> " + SUPER_CLASS + " = NULL" + SEMICOLON + NEWLINE);
+            classInitTemp.append("((" + COMMON_CLASS_STRUCT + "*)(&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + "))");
+            classInitTemp.append(" -> " + SUPER_CLASS + " = NULL" + SEMICOLON + NEWLINE);
             // interfaces = NULL
-            classInit.append("((" + COMMON_CLASS_STRUCT + "*)(&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + "))");
-            classInit.append(" -> " + INTERFACE_LIST + " = NULL" + SEMICOLON + NEWLINE);
+            classInitTemp.append("((" + COMMON_CLASS_STRUCT + "*)(&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + "))");
+            classInitTemp.append(" -> " + INTERFACE_LIST + " = NULL" + SEMICOLON + NEWLINE);
+            addToClassInitMap(klass.getName(), classInitTemp.toString());
         }
         
         outMain.append(commentln("function pointers"));
@@ -350,9 +358,11 @@ public class CLanguageGenerator extends CodeGenerator {
             if (!method.isStatic() && !method.isConstructor()) {
                 RClass target = RClass.whoOwnsMethodInTypeHierarchy(method.getKlass(), method);
                 // we need to type cast the class instance to its super most class instance, and then set function ptr
-                classInit.append("((" + name.get(target) + CLASS_STRUCT_SUFFIX + "*)");
-                classInit.append("(&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + "))");
-                classInit.append(" -> " + method.getName() + " = " + name.get(method) + SEMICOLON + NEWLINE);
+                StringBuilder classInitTemp = new StringBuilder();
+                classInitTemp.append("((" + name.get(target) + CLASS_STRUCT_SUFFIX + "*)");
+                classInitTemp.append("(&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + "))");
+                classInitTemp.append(" -> " + method.getName() + " = " + name.get(method) + SEMICOLON + NEWLINE);
+                addToClassInitMap(klass.getName(), classInitTemp.toString());
             }
         }
         outMain.append("} " + name.get(klass) + CLASS_STRUCT_SUFFIX + SEMICOLON + NEWLINE);
@@ -409,31 +419,33 @@ public class CLanguageGenerator extends CodeGenerator {
      * @param rewrite true if we add such interface, otherwise change the old interface pointer
      */
     private void getInterfaceInitCode(RClass klass, RClass myInterface, boolean rewrite) {
+        StringBuilder classInitTemp = new StringBuilder();
+        
         // create the C interface for this klass
         String tempInterfaceVar = name.get(myInterface) + "_implemented_on_" + name.get(klass); 
-        classInit.append(name.get(myInterface) + INTERFACE_STRUCT_SUFFIX + "* " + tempInterfaceVar + " = ");
-        classInit.append(MALLOC + "(sizeof(" + name.get(myInterface) + INTERFACE_STRUCT_SUFFIX + "))" + SEMICOLON + NEWLINE);
+        classInitTemp.append(name.get(myInterface) + INTERFACE_STRUCT_SUFFIX + "* " + tempInterfaceVar + " = ");
+        classInitTemp.append(MALLOC + "(sizeof(" + name.get(myInterface) + INTERFACE_STRUCT_SUFFIX + "))" + SEMICOLON + NEWLINE);
         
         // link its function pointers
         for (RMethod interfaceMethod : myInterface.getMethods()) {
-            classInit.append(tempInterfaceVar + " -> " + interfaceMethod.getName());
-            classInit.append(" = " + name.get(klass.getImplenetingMethodOfAnInterfaceMethod(interfaceMethod)) + SEMICOLON + NEWLINE);
+            classInitTemp.append(tempInterfaceVar + " -> " + interfaceMethod.getName());
+            classInitTemp.append(" = " + name.get(klass.getImplenetingMethodOfAnInterfaceMethod(interfaceMethod)) + SEMICOLON + NEWLINE);
         }
-        
-
 
         if (rewrite) {
             // rewrite
             // void rjava_alter_interface(void* interface, char* name, RJava_Common_Class* class);
-            classInit.append(RJAVA_ALTER_INTERFACE + "(" + tempInterfaceVar + ",\"" + name.get(myInterface) + "\",");
-            classInit.append("(" + COMMON_CLASS_STRUCT + "*)&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + ")" + SEMICOLON + NEWLINE);
+            classInitTemp.append(RJAVA_ALTER_INTERFACE + "(" + tempInterfaceVar + ",\"" + name.get(myInterface) + "\",");
+            classInitTemp.append("(" + COMMON_CLASS_STRUCT + "*)&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + ")" + SEMICOLON + NEWLINE);
         }else {
             // add this interface to class
             // void rjava_add_interface_to_class(void* interface, int interface_size, char* name, RJava_Common_Class* class);
-            classInit.append(RJAVA_ADD_INTERFACE_TO_CLASS + "(" + tempInterfaceVar + "," + SIZE_OF + "(" + name.get(myInterface) + "),");
-            classInit.append("\"" + name.get(myInterface)+ "\",");
-            classInit.append("(" + COMMON_CLASS_STRUCT + "*)&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + ")" + SEMICOLON + NEWLINE);
+            classInitTemp.append(RJAVA_ADD_INTERFACE_TO_CLASS + "(" + tempInterfaceVar + "," + SIZE_OF + "(" + name.get(myInterface) + "),");
+            classInitTemp.append("\"" + name.get(myInterface)+ "\",");
+            classInitTemp.append("(" + COMMON_CLASS_STRUCT + "*)&" + name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + ")" + SEMICOLON + NEWLINE);
         }
+        
+        addToClassInitMap(klass.getName(), classInitTemp.toString());
     }
     
     private String getFunctionPointerForMethod(RMethod method) {
@@ -566,7 +578,7 @@ public class CLanguageGenerator extends CodeGenerator {
         }
         // void rjava_class_init()
         libSource.append("void " + RJAVA_CLASS_INIT + "() {" + NEWLINE);
-        libSource.append(classInit.toString());
+        libSource.append(getClassInitMethodBody());
         libSource.append("}" + NEWLINE);
         // void rjava_add_interface_to_class(void* interface, char* name, RJava_Common_Class* class);
         libSource.append("void " + RJAVA_ADD_INTERFACE_TO_CLASS + "(void* interface, int interface_size, char* name, " + COMMON_CLASS_STRUCT + "* class) {" + NEWLINE);
@@ -616,6 +628,35 @@ public class CLanguageGenerator extends CodeGenerator {
         if (refName.startsWith("java_") || refName.startsWith("javax_"))
             return;
         referencedClasses.add(refName);
+    }
+    
+    private void addToClassInitMap(String rClassName, String initStmt) {
+        if (classInitMap.containsKey(rClassName)) {
+            StringBuilder value = classInitMap.get(rClassName);
+            value.append(initStmt);
+            classInitMap.put(rClassName, value);
+        } else {
+            StringBuilder newValue = new StringBuilder();
+            newValue.append(initStmt);
+            classInitMap.put(rClassName, newValue);
+        }
+    }
+    
+    private String getClassInitMethodBody() {
+        StringBuilder body = new StringBuilder();
+        
+        for (Tree<RClass> root : SemanticMap.hierarchy.getRoots()) {
+            TreeBreadthFirstIterator<RClass> iter = root.getBreadthFirstIterator();
+            while (iter.hasNext()) {
+                RClass current = iter.next();
+                System.out.println("Generating class init statements for " + current.getName());
+                body.append(commentln("init for " + name.get(current)));
+                body.append(classInitMap.get(current.getName()).toString());
+                body.append("\n\n");
+            }
+        }
+        
+        return body.toString();
     }
 
     // void rjava_add_interface_to_class(void* interface, int interface_size, char* name, RJava_Common_Class* class);
