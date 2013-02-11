@@ -25,4 +25,15 @@ public class RField {
         return name;
     }
 
+    public boolean isStatic() {
+        return internal.isStatic();
+    }
+    
+    public boolean isFinal() {
+        return internal.isFinal();
+    }
+    
+    public RClass getDeclaringClass() {
+        return klass;
+    }
 }

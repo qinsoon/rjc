@@ -44,7 +44,9 @@ public class CLanguageNameGenerator {
     }
     
     public String get(RField field) {
-        return field.getName();
+        if (!field.isStatic())
+            return field.getName();
+        else return get(field.getDeclaringClass()) + "_" + field.getName();
     }
     
     private String javaNameToCName(String javaName) {

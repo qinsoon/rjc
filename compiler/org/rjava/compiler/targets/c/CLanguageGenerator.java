@@ -307,9 +307,13 @@ public class CLanguageGenerator extends CodeGenerator {
             outMain.append(COMMON_INSTANCE_STRUCT + " " + EMBED_SUPER_OBJECT + SEMICOLON + NEWLINE);
         }
         
+        /*
+         * Generating instance field
+         */
         outMain.append(commentln("instance fields"));
         for (RField field : klass.getFields()) {
-            outMain.append(name.get(field.getType()) + " " + name.get(field) + SEMICOLON + NEWLINE);
+            if (!field.isStatic())
+                outMain.append(name.getWithPointerIfProper(field.getType()) + " " + name.get(field) + SEMICOLON + NEWLINE);
         }
         outMain.append("} " + name.get(klass) + SEMICOLON + NEWLINE);
         
@@ -371,7 +375,13 @@ public class CLanguageGenerator extends CodeGenerator {
         outMain.append(commentln("class instance"));
         outMain.append(name.get(klass) + CLASS_STRUCT_SUFFIX + " ");
         outMain.append(name.get(klass) + CLASS_STRUCT_INSTANCE_SUFFIX + SEMICOLON + NEWLINE);
-        // TODO: generate other global fields
+        // generate other global fields (static field)
+        outMain.append(commentln("static field (global)"));
+        for (RField field : klass.getFields()) {
+            if (field.isStatic()) {
+                outMain.append(name.getWithPointerIfProper(field.getType()) + " " + name.get(field) + SEMICOLON + NEWLINE);
+            }                
+        }
         
         // functions
         outMain.append(commentln("function definitions"));
