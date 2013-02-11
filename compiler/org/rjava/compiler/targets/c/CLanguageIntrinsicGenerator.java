@@ -22,6 +22,9 @@ public class CLanguageIntrinsicGenerator {
             type.setClassName("RJAVA_STR");
             type.setPackageName(null);
             type.setPrimitive(true);
+        } else if (type.getClassName().equals("boolean")) {
+            type.setType(null);
+            type.setClassName("bool");
         }
     }
 

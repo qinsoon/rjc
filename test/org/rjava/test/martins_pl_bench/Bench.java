@@ -79,26 +79,19 @@ public class Bench {
 
     public static void main(String[] args) {
         tracing = false;
+        for (int i = 0; i < args.length; i++) {
 
-        try {
-
-            for (int i = 0; i < args.length; i++) {
-
-                if (args[i].equals("-100")) {
-                    Count = Count100;
-                    Qpktcountval = Qpktcountval100;
-                    Holdcountval = Holdcountval100;
-                    continue;
-                }
-
-                if (args[i].equals("-t")) {
-                    tracing = true;
-                    continue;
-                }
+            if (args[i].equals("-100")) {
+                Count = Count100;
+                Qpktcountval = Qpktcountval100;
+                Holdcountval = Holdcountval100;
+                continue;
             }
 
-        } catch (NumberFormatException e) {
-            System.err.println("Integer argument expected");
+            if (args[i].equals("-t")) {
+                tracing = true;
+                continue;
+            }
         }
 
         Packet wkq = null;

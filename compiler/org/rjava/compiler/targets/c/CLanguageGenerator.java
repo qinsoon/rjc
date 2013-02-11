@@ -44,6 +44,7 @@ public class CLanguageGenerator extends CodeGenerator {
      */
     public static final String INCLUDE_STDIO = "#include <stdio.h>";
     public static final String INCLUDE_STDLIB = "#include <stdlib.h>";
+    public static final String INCLUDE_STDBOOL = "#include <stdbool.h>";
     public static final String RJAVA_LIB_INCLUDE_FILE = "rjava_lib.h";
     public static final String RJAVA_LIB_SOURCE_FILE = "rjava_lib.c";
     public static final String RJAVA_LIB_INCLUDE = "#include \"" + RJAVA_LIB_INCLUDE_FILE + "\"";
@@ -244,6 +245,7 @@ public class CLanguageGenerator extends CodeGenerator {
         // include c std
         outInc.append(INCLUDE_STDIO + NEWLINE);
         outInc.append(INCLUDE_STDLIB + NEWLINE);
+        outInc.append(INCLUDE_STDBOOL + NEWLINE);
         
         outInc.append(NEWLINE);
         
@@ -597,6 +599,7 @@ public class CLanguageGenerator extends CodeGenerator {
         libSource.append(RJAVA_LIB_INCLUDE + NEWLINE);
         libSource.append(INCLUDE_STDIO + NEWLINE);
         libSource.append(INCLUDE_STDLIB + NEWLINE);
+        libSource.append(INCLUDE_STDBOOL + NEWLINE);
         for (String app : translatedCHeader) {
             libSource.append("#include \"" + app + "\"" + NEWLINE);
         }
