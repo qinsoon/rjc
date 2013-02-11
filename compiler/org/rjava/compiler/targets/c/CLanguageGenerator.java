@@ -71,6 +71,17 @@ public class CLanguageGenerator extends CodeGenerator {
     // void rjava_debug_print_header(void* this_class);
     public static final String RJAVA_DEBUG_PRINT_HEADER = "rjava_debug_print_header";
     
+    // array implements: an array is a void* that points to a structure (in memory) like this
+    // --------------------------------------------------
+    // | int length | long ele_size | actual array .....|
+    // --------------------------------------------------
+    // void* rjava_new_array(int length, long ele_size);
+    public static final String RJAVA_NEW_ARRAY = "rjava_new_array";
+    // void* rjava_access_array(void* array, int index);
+    public static final String RJAVA_ACCESS_ARRAY = "rjava_access_array";
+    // int rjava_length_of_array(void* array);
+    public static final String RJAVA_LENGTH_OF_ARRAY = "rjava_length_of_array";
+    
     /*
      * RJava's C Naming
      */
@@ -574,6 +585,9 @@ public class CLanguageGenerator extends CodeGenerator {
         out.append("void* " + RJAVA_GET_INTERFACE + "(" + INTERFACE_LIST_NODE + "* list, char* name)" + SEMICOLON + NEWLINE);
         out.append("void " + RJAVA_INIT_HEADER + "(void* this_class, void* super_class, int super_class_init)" + SEMICOLON + NEWLINE);
         out.append("void " + RJAVA_DEBUG_PRINT_HEADER + "(char* name, void* this_class)" + SEMICOLON + NEWLINE);
+        out.append("void* " + RJAVA_NEW_ARRAY + "(int length, long ele_size)" + SEMICOLON + NEWLINE);
+        out.append("void* " + RJAVA_ACCESS_ARRAY + "(void* array, int index)" + SEMICOLON + NEWLINE);
+        out.append("int " + RJAVA_LENGTH_OF_ARRAY + "(void* array)" + SEMICOLON + NEWLINE);
         out.append("#endif" + NEWLINE);
         
         writeTo(out.toString(), Constants.OUTPUT_DIR + RJAVA_LIB_INCLUDE_FILE);
@@ -607,6 +621,15 @@ public class CLanguageGenerator extends CodeGenerator {
         libSource.append("}" + NEWLINE);
         libSource.append("void " + RJAVA_DEBUG_PRINT_HEADER + "(char* name, void* this_class) {" + NEWLINE);
         libSource.append(RJAVA_DEBUG_PRINT_HEADER_SOURCE);
+        libSource.append("}" + NEWLINE);
+        libSource.append("void* " + RJAVA_NEW_ARRAY + "(int length, long ele_size) {" + NEWLINE);
+        libSource.append(RJAVA_NEW_ARRAY_SOURCE);
+        libSource.append("}" + NEWLINE);
+        libSource.append("void* " + RJAVA_ACCESS_ARRAY + "(void* array, int index) {" + NEWLINE);
+        libSource.append(RJAVA_ACCESS_ARRAY_SOURCE);
+        libSource.append("}" + NEWLINE);
+        libSource.append("int " + RJAVA_LENGTH_OF_ARRAY + "(void* array) {" + NEWLINE);
+        libSource.append(RJAVA_LENGTH_OF_ARRAY_SOURCE);
         libSource.append("}" + NEWLINE);
         writeTo(libSource.toString(), Constants.OUTPUT_DIR + RJAVA_LIB_SOURCE_FILE);
         
@@ -764,4 +787,20 @@ public class CLanguageGenerator extends CodeGenerator {
             "for (; iter != NULL; iter = iter->next) {" + NEWLINE +
             "  printf(\" interface:%s\\n\", iter->name);" + NEWLINE +
             "}" + NEWLINE;
+    
+    // void* rjava_new_array(int length, long ele_size);
+    public static final String RJAVA_NEW_ARRAY_SOURCE = 
+            "void* ret = " + MALLOC + "(sizeof(int) + sizeof(long) + ele_size * length);" + NEWLINE +
+            "*((int*)ret) = length;" + NEWLINE + 
+            "*((long*)(ret + sizeof(int))) = ele_size;" + NEWLINE +
+            "return ret;" + NEWLINE;
+    
+    // void* rjava_access_array(void* array, int index);
+    public static final String RJAVA_ACCESS_ARRAY_SOURCE = 
+            "long ele_size = *((long*)(array + sizeof(int)));" + NEWLINE +
+            "return (array + sizeof(int) + sizeof(long) + ele_size * index);" + NEWLINE;
+    
+    // int rjava_length_of_array(void* array);
+    public static final String RJAVA_LENGTH_OF_ARRAY_SOURCE = 
+            "return *((int*)array);" + NEWLINE;
 }

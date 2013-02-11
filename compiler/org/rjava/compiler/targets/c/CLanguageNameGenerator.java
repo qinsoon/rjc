@@ -41,7 +41,7 @@ public class CLanguageNameGenerator {
     }
     
     public String getWithPointerIfProper(RType type) {
-        return get(type) + (type.isReferenceType() ? "*" : ""); 
+        return get(type) + (type.isReferenceType() || type.isArray() ? "*" : ""); 
     }
     
     public String get(RField field) {
@@ -76,6 +76,8 @@ public class CLanguageNameGenerator {
         // add args type into method name to fake overloading
         for (int i = 0; i < method.getParameterCount(); i++) {
             ret += "_" + fromSootType(method.getParameterType(i));
+            if (RType.initWithClassName(method.getParameterType(i).toString()).isArray())
+                ret += "array";
         }
         
         return ret;

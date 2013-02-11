@@ -36,6 +36,7 @@ import soot.jimple.internal.JInstanceFieldRef;
 import soot.jimple.internal.JInterfaceInvokeExpr;
 import soot.jimple.internal.JInvokeStmt;
 import soot.jimple.internal.JLengthExpr;
+import soot.jimple.internal.JNewArrayExpr;
 import soot.jimple.internal.JNewExpr;
 import soot.jimple.internal.JNopStmt;
 import soot.jimple.internal.JSpecialInvokeExpr;
@@ -110,6 +111,8 @@ public class CLanguageStatementGenerator {
             leftOpStr = name.fromSootInstanceFieldRef((JInstanceFieldRef) leftOp);
         } else if (leftOp instanceof soot.jimple.StaticFieldRef) {
             leftOpStr = name.fromSootStaticFieldRef((StaticFieldRef) leftOp);
+        } else if (leftOp instanceof soot.jimple.internal.JArrayRef) {
+            leftOpStr = fromSootJArrayRef((soot.jimple.internal.JArrayRef) leftOp);
         }
         else {
             System.out.println("leftOp:" + leftOp.getClass());
@@ -142,6 +145,10 @@ public class CLanguageStatementGenerator {
             rightOpStr = name.fromSootNullConstant((soot.jimple.NullConstant)rightOp);
         } else if (rightOp instanceof soot.jimple.internal.JLengthExpr) {
             rightOpStr = fromSootJLengthExpr((soot.jimple.internal.JLengthExpr) rightOp);
+        } else if (rightOp instanceof soot.jimple.internal.JNewArrayExpr) {
+            rightOpStr = fromSootJNewArrayExpr((soot.jimple.internal.JNewArrayExpr) rightOp);
+        } else if (rightOp instanceof soot.jimple.internal.JArrayRef) {
+            rightOpStr = fromSootJArrayRef((soot.jimple.internal.JArrayRef) rightOp);
         }
         else {
             System.out.println("rightOp:" + rightOp.getClass());
@@ -257,11 +264,7 @@ public class CLanguageStatementGenerator {
     /*
      * from soot statement/expr representation
      */
-    private String fromSootJLengthExpr(JLengthExpr rightOp) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-    
+  
     private String fromSootJVirtualInvokeExpr(soot.jimple.internal.JVirtualInvokeExpr virtualInvoke) {
         String callingClass = virtualInvoke.getMethod().getDeclaringClass().getName();
         if (callingClass.startsWith("java.") || callingClass.startsWith("javax.")) {
@@ -408,9 +411,32 @@ public class CLanguageStatementGenerator {
     }
     
     /*
+     * RJava array implements
+     */
+    private String fromSootJLengthExpr(JLengthExpr rightOp) {
+        return CLanguageGenerator.RJAVA_LENGTH_OF_ARRAY + "(" + rightOp.getOp().toString() + ")";
+    }    
+
+    private String fromSootJNewArrayExpr(JNewArrayExpr rightOp) {
+        return CLanguageGenerator.RJAVA_NEW_ARRAY + "(" + rightOp.getSize().toString() + ",(long) sizeof(" + name.fromSootType(rightOp.getBaseType()) + "))";
+    }
+    
+    private String fromSootJArrayRef(soot.jimple.internal.JArrayRef op) {
+        String type = name.fromSootType(op.getType());
+        
+        String ret = "*((" + type + "*)";
+        ret += CLanguageGenerator.RJAVA_ACCESS_ARRAY + "(" + op.getBase().toString() + "," + op.getIndex().toString() + "))";
+        
+        return ret;
+    }
+    
+    /*
      * jumping labels
      */
     private String jumpToLabel(AbstractStmt target) {
+        if (jumpLabels.containsKey(target.hashCode()))
+            return "label" + jumpLabels.get(target.hashCode());
+        
         String ret = "label" + labelIndex;
         jumpLabels.put(target.hashCode(), labelIndex);
         labelIndex ++;
@@ -418,9 +444,16 @@ public class CLanguageStatementGenerator {
     }
     
     private String destLabel(RStatement stmt) {
-        Integer labelIndex = jumpLabels.get(stmt.internal().hashCode());
-        if (labelIndex == null)
+        if (stmt.internal().getBoxesPointingToThis().size() == 0)
             return "";
-        else return "label" + labelIndex + ":";
+        
+        Integer storedLabel = jumpLabels.get(stmt.internal().hashCode());
+        if (storedLabel == null) {
+            String ret = "label" + labelIndex + ":";
+            jumpLabels.put(stmt.internal().hashCode(), labelIndex);
+            labelIndex ++;
+            return ret;
+        }
+        else return "label" + storedLabel + ":";
     }
 }
