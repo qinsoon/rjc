@@ -418,11 +418,11 @@ public class CLanguageStatementGenerator {
     }    
 
     private String fromSootJNewArrayExpr(JNewArrayExpr rightOp) {
-        return CLanguageGenerator.RJAVA_NEW_ARRAY + "(" + rightOp.getSize().toString() + ",(long) sizeof(" + name.fromSootType(rightOp.getBaseType()) + "))";
+        return CLanguageGenerator.RJAVA_NEW_ARRAY + "(" + rightOp.getSize().toString() + ",(long) sizeof(" + name.getWithPointerIfProper(RType.initWithClassName(rightOp.getBaseType().toString())) + "))";
     }
     
     private String fromSootJArrayRef(soot.jimple.internal.JArrayRef op) {
-        String type = name.fromSootType(op.getType());
+        String type = name.getWithPointerIfProper(RType.initWithClassName(op.getType().toString()));
         
         String ret = "*((" + type + "*)";
         ret += CLanguageGenerator.RJAVA_ACCESS_ARRAY + "(" + op.getBase().toString() + "," + op.getIndex().toString() + "))";
