@@ -22,6 +22,7 @@ import soot.Value;
 import soot.jimple.BinopExpr;
 import soot.jimple.ConditionExpr;
 import soot.jimple.InvokeExpr;
+import soot.jimple.NullConstant;
 import soot.jimple.NumericConstant;
 import soot.jimple.ParameterRef;
 import soot.jimple.StaticFieldRef;
@@ -34,6 +35,7 @@ import soot.jimple.internal.JIfStmt;
 import soot.jimple.internal.JInstanceFieldRef;
 import soot.jimple.internal.JInterfaceInvokeExpr;
 import soot.jimple.internal.JInvokeStmt;
+import soot.jimple.internal.JLengthExpr;
 import soot.jimple.internal.JNewExpr;
 import soot.jimple.internal.JNopStmt;
 import soot.jimple.internal.JSpecialInvokeExpr;
@@ -106,9 +108,11 @@ public class CLanguageStatementGenerator {
             leftOpStr = name.fromSootLocal((Local) leftOp);
         } else if (leftOp instanceof soot.jimple.internal.JInstanceFieldRef) {
             leftOpStr = name.fromSootInstanceFieldRef((JInstanceFieldRef) leftOp);
-        }            
+        } else if (leftOp instanceof soot.jimple.StaticFieldRef) {
+            leftOpStr = name.fromSootStaticFieldRef((StaticFieldRef) leftOp);
+        }
         else {
-            
+            System.out.println("leftOp:" + leftOp.getClass());
         }
         
         // right op -> rvalue | imm
@@ -134,9 +138,13 @@ public class CLanguageStatementGenerator {
             rightOpStr = fromSootJNewExpr((JNewExpr) rightOp);
         } else if (rightOp instanceof soot.jimple.StringConstant) {
             rightOpStr = fromSootStringConstant((soot.jimple.StringConstant) rightOp);
+        } else if (rightOp instanceof soot.jimple.NullConstant) {
+            rightOpStr = name.fromSootNullConstant((soot.jimple.NullConstant)rightOp);
+        } else if (rightOp instanceof soot.jimple.internal.JLengthExpr) {
+            rightOpStr = fromSootJLengthExpr((soot.jimple.internal.JLengthExpr) rightOp);
         }
         else {
-            System.out.println(rightOp.getClass());
+            System.out.println("rightOp:" + rightOp.getClass());
         }
         
         // check type
@@ -223,7 +231,7 @@ public class CLanguageStatementGenerator {
     
     private String get(RNopStmt stmt) {
         // intentionally return empty
-        return "";
+        return CLanguageGenerator.comment("nop");
     }
     
     private String get(RRetStmt stmt) {
@@ -249,6 +257,11 @@ public class CLanguageStatementGenerator {
     /*
      * from soot statement/expr representation
      */
+    private String fromSootJLengthExpr(JLengthExpr rightOp) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
     private String fromSootJVirtualInvokeExpr(soot.jimple.internal.JVirtualInvokeExpr virtualInvoke) {
         String callingClass = virtualInvoke.getMethod().getDeclaringClass().getName();
         if (callingClass.startsWith("java.") || callingClass.startsWith("javax.")) {

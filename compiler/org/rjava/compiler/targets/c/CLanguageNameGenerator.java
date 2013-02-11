@@ -10,6 +10,7 @@ import soot.Local;
 import soot.SootClass;
 import soot.Type;
 import soot.Value;
+import soot.jimple.NullConstant;
 import soot.jimple.internal.JInstanceFieldRef;
 
 public class CLanguageNameGenerator {
@@ -100,5 +101,9 @@ public class CLanguageNameGenerator {
     
     public String fromSootType(Type type) {
         return get(RType.initWithClassName(type.toString()));
+    }
+
+    public String fromSootNullConstant(NullConstant rightOp) {
+        return "NULL";
     }
 }

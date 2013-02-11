@@ -659,7 +659,7 @@ public class CLanguageGenerator extends CodeGenerator {
             TreeBreadthFirstIterator<RClass> iter = root.getBreadthFirstIterator();
             while (iter.hasNext()) {
                 RClass current = iter.next();
-                System.out.println("Generating class init statements for " + current.getName());
+                //System.out.println("Generating class init statements for " + current.getName());
                 body.append(commentln("init for " + name.get(current)));
                 body.append(classInitMap.get(current.getName()).toString());
                 body.append("\n\n");
