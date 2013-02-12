@@ -29,6 +29,7 @@ import soot.jimple.StaticFieldRef;
 import soot.jimple.StringConstant;
 import soot.jimple.internal.AbstractStmt;
 import soot.jimple.internal.JAssignStmt;
+import soot.jimple.internal.JCastExpr;
 import soot.jimple.internal.JGotoStmt;
 import soot.jimple.internal.JIdentityStmt;
 import soot.jimple.internal.JIfStmt;
@@ -41,6 +42,7 @@ import soot.jimple.internal.JNewExpr;
 import soot.jimple.internal.JNopStmt;
 import soot.jimple.internal.JSpecialInvokeExpr;
 import soot.jimple.internal.JStaticInvokeExpr;
+import soot.jimple.internal.JTableSwitchStmt;
 import soot.jimple.internal.JVirtualInvokeExpr;
 import soot.jimple.internal.JimpleLocal;
 
@@ -112,7 +114,7 @@ public class CLanguageStatementGenerator {
         } else if (leftOp instanceof soot.jimple.StaticFieldRef) {
             leftOpStr = name.fromSootStaticFieldRef((StaticFieldRef) leftOp);
         } else if (leftOp instanceof soot.jimple.internal.JArrayRef) {
-            leftOpStr = fromSootJArrayRef((soot.jimple.internal.JArrayRef) leftOp);
+            leftOpStr = name.fromSootJArrayRef((soot.jimple.internal.JArrayRef) leftOp);
         }
         else {
             System.out.println("leftOp:" + leftOp.getClass());
@@ -127,28 +129,45 @@ public class CLanguageStatementGenerator {
         String rightOpStr = CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
         if (rightOp instanceof soot.jimple.StaticFieldRef) {
             rightOpStr = name.fromSootStaticFieldRef((StaticFieldRef) rightOp);
-        } else if (rightOp instanceof soot.jimple.internal.JimpleLocal) {
+        } 
+        else if (rightOp instanceof soot.jimple.internal.JimpleLocal) {
             rightOpStr = name.fromSootLocal((Local) rightOp);
-        } else if (rightOp instanceof soot.jimple.internal.JInstanceFieldRef) {
+        } 
+        else if (rightOp instanceof soot.jimple.internal.JInstanceFieldRef) {
             rightOpStr = name.fromSootInstanceFieldRef((JInstanceFieldRef) rightOp);
-        } else if (rightOp instanceof soot.jimple.internal.JVirtualInvokeExpr) {
+        } 
+        else if (rightOp instanceof soot.jimple.internal.JVirtualInvokeExpr) {
             rightOpStr = fromSootJVirtualInvokeExpr((JVirtualInvokeExpr) rightOp);
-        } else if (rightOp instanceof soot.jimple.BinopExpr) {
+        } 
+        else if (rightOp instanceof soot.jimple.internal.JStaticInvokeExpr) {
+            rightOpStr = fromSootJStaticInvokeExpr((JStaticInvokeExpr) rightOp);
+        }
+        else if (rightOp instanceof soot.jimple.BinopExpr) {
             rightOpStr = fromSootBinopExpr((BinopExpr) rightOp);
-        } else if (rightOp instanceof soot.jimple.NumericConstant) {
+        } 
+        else if (rightOp instanceof soot.jimple.NumericConstant) {
             rightOpStr = fromSootNumericConstant((NumericConstant) rightOp);
-        } else if (rightOp instanceof soot.jimple.internal.JNewExpr) {
+        } 
+        else if (rightOp instanceof soot.jimple.internal.JNewExpr) {
             rightOpStr = fromSootJNewExpr((JNewExpr) rightOp);
-        } else if (rightOp instanceof soot.jimple.StringConstant) {
+        } 
+        else if (rightOp instanceof soot.jimple.StringConstant) {
             rightOpStr = fromSootStringConstant((soot.jimple.StringConstant) rightOp);
-        } else if (rightOp instanceof soot.jimple.NullConstant) {
+        } 
+        else if (rightOp instanceof soot.jimple.NullConstant) {
             rightOpStr = name.fromSootNullConstant((soot.jimple.NullConstant)rightOp);
-        } else if (rightOp instanceof soot.jimple.internal.JLengthExpr) {
+        } 
+        else if (rightOp instanceof soot.jimple.internal.JLengthExpr) {
             rightOpStr = fromSootJLengthExpr((soot.jimple.internal.JLengthExpr) rightOp);
-        } else if (rightOp instanceof soot.jimple.internal.JNewArrayExpr) {
+        } 
+        else if (rightOp instanceof soot.jimple.internal.JNewArrayExpr) {
             rightOpStr = fromSootJNewArrayExpr((soot.jimple.internal.JNewArrayExpr) rightOp);
-        } else if (rightOp instanceof soot.jimple.internal.JArrayRef) {
-            rightOpStr = fromSootJArrayRef((soot.jimple.internal.JArrayRef) rightOp);
+        } 
+        else if (rightOp instanceof soot.jimple.internal.JArrayRef) {
+            rightOpStr = name.fromSootJArrayRef((soot.jimple.internal.JArrayRef) rightOp);
+        }
+        else if (rightOp instanceof soot.jimple.internal.JCastExpr) {
+            rightOpStr = fromSootJCastExpr((soot.jimple.internal.JCastExpr) rightOp);
         }
         else {
             System.out.println("rightOp:" + rightOp.getClass());
@@ -164,17 +183,17 @@ public class CLanguageStatementGenerator {
         
         return leftOpStr + " = " + castStr + rightOpStr;
     }
-
+    
     private String get(RBreakpointStmt stmt) {
-        return "";
+        return CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
     }
     
     private String get(REnterMonitorStmt stmt) {
-        return "";
+        return CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
     }
     
     private String get(RExitMonitorStmt stmt) {
-        return "";
+        return CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
     }
     
     private String get(RGotoStmt stmt) {
@@ -233,7 +252,7 @@ public class CLanguageStatementGenerator {
     }
 
     private String get(RLookupSwitchStmt stmt) {
-        return "";
+        return CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
     }
     
     private String get(RNopStmt stmt) {
@@ -242,7 +261,7 @@ public class CLanguageStatementGenerator {
     }
     
     private String get(RRetStmt stmt) {
-        return "";
+        return CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
     }
     
     private String get(RReturnStmt stmt) {
@@ -254,11 +273,21 @@ public class CLanguageStatementGenerator {
     }
     
     private String get(RTableSwitchStmt stmt) {
-        return "";
+        JTableSwitchStmt internal = stmt.internal();
+        StringBuilder ret = new StringBuilder();
+        
+        ret.append("switch (" + internal.getKey().toString() + ") {\n");
+        for (int i = internal.getLowIndex(); i <= internal.getHighIndex(); i++) {
+            ret.append("  case " + i + ":");
+            ret.append("goto " + this.jumpToLabel((AbstractStmt) internal.getTarget(i)) + ";\n");
+        }
+        ret.append("  default: goto " + this.jumpToLabel((AbstractStmt) internal.getDefaultTarget()) + ";\n");
+        ret.append("}");
+        return ret.toString();
     }
     
     private String get(RThrowStmt stmt) {
-        return "";
+        return CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
     }
     
     /*
@@ -272,6 +301,11 @@ public class CLanguageStatementGenerator {
         } else return fromSootJVirtualInvokeExpr_appCall(virtualInvoke);
     }
     
+    /**
+     * virtual call into library, we dont do any dispatching related work here.
+     * @param virtualInvoke
+     * @return
+     */
     private String fromSootJVirtualInvokeExpr_libCall(soot.jimple.internal.JVirtualInvokeExpr virtualInvoke) {
         String methodName = name.fromSootMethod(virtualInvoke.getMethod());
         String base = name.fromSootLocal((Local) virtualInvoke.getBase());
@@ -290,6 +324,11 @@ public class CLanguageStatementGenerator {
         return ret;
     }
     
+    /**
+     * virtual call into application, we have to solve dispatching here. 
+     * @param virtualInvoke
+     * @return
+     */
     private String fromSootJVirtualInvokeExpr_appCall(soot.jimple.internal.JVirtualInvokeExpr virtualInvoke) {
         // for a call to cat.speak()
         // we will have ((Animal_class) ((RJava_Common_Instance*) cat) -> class_struct) -> speak(cat);
@@ -314,7 +353,7 @@ public class CLanguageStatementGenerator {
             ret.append(")");
         else {
             for (int i = 0; i < virtualInvoke.getArgCount(); i++) {
-                ret.append(", " + virtualInvoke.getArg(i).toString());
+                ret.append(", " + name.fromSootValue(virtualInvoke.getArg(i)));
             }
             ret.append(")");
         }
@@ -365,7 +404,7 @@ public class CLanguageStatementGenerator {
             ret += ")";
         else {
             for (int i = 0; i < specialInvoke.getArgCount(); i++) {
-                ret += ", " + specialInvoke.getArg(i).toString();
+                ret += ", " + name.fromSootValue(specialInvoke.getArg(i));
             }
             ret += ")";
         }
@@ -388,7 +427,7 @@ public class CLanguageStatementGenerator {
     }
     
     private String fromSootConditionExpr(soot.jimple.ConditionExpr conditionExpr) {
-        return conditionExpr.toString();
+        return name.fromSootValue(conditionExpr.getOp1()) + conditionExpr.getSymbol() + name.fromSootValue(conditionExpr.getOp2());
     }
     
     private String fromSootBinopExpr(soot.jimple.BinopExpr binopExpr) {
@@ -410,6 +449,11 @@ public class CLanguageStatementGenerator {
         return ret;
     }
     
+
+    private String fromSootJCastExpr(JCastExpr castExpr) {
+        return "(" + name.getWithPointerIfProper(RType.initWithClassName(castExpr.getCastType().toString())) + ")" + castExpr.getOp().toString();
+    }
+    
     /*
      * RJava array implements
      */
@@ -419,15 +463,6 @@ public class CLanguageStatementGenerator {
 
     private String fromSootJNewArrayExpr(JNewArrayExpr rightOp) {
         return CLanguageGenerator.RJAVA_NEW_ARRAY + "(" + rightOp.getSize().toString() + ",(long) sizeof(" + name.getWithPointerIfProper(RType.initWithClassName(rightOp.getBaseType().toString())) + "))";
-    }
-    
-    private String fromSootJArrayRef(soot.jimple.internal.JArrayRef op) {
-        String type = name.getWithPointerIfProper(RType.initWithClassName(op.getType().toString()));
-        
-        String ret = "*((" + type + "*)";
-        ret += CLanguageGenerator.RJAVA_ACCESS_ARRAY + "(" + op.getBase().toString() + "," + op.getIndex().toString() + "))";
-        
-        return ret;
     }
     
     /*

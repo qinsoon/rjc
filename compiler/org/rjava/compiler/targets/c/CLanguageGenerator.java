@@ -52,7 +52,9 @@ public class CLanguageGenerator extends CodeGenerator {
         "java_io_PrintStream",
         "java_lang_Object",
         "java_lang_System",
-        "java_lang_StringBuffer"
+        "java_lang_StringBuffer",
+        "java_lang_String",
+        "java_lang_Integer"
     };
     public static final String RJAVA_LIB_DIR = "rjava_clib/";
     public static final String MAIN_METHOD_SIGNATURE = "int main (int argc, char** parameter0)";
@@ -120,6 +122,7 @@ public class CLanguageGenerator extends CodeGenerator {
     
     String cHeaderSource;
     String cCodeSource;
+    RClass currentRClass;
     
     List<String> translatedCSource = new ArrayList<String>();
     List<String> translatedCHeader = new ArrayList<String>();
@@ -147,6 +150,7 @@ public class CLanguageGenerator extends CodeGenerator {
                 RJavaCompiler.debug("}");
             }
         
+        currentRClass = klass;
         if (!klass.isInterface()) {
             generateIntrinsic(klass, source);
             generateHeader(klass, source);
@@ -311,7 +315,9 @@ public class CLanguageGenerator extends CodeGenerator {
         /*
          * Generate instance struct (e.g. org_rjava_test_poly_Animal)
          */
-        outMain.append("typedef struct " + name.get(klass) + " {" + NEWLINE);
+        outMain.append("typedef struct " + name.get(klass) + " " + name.get(klass) + SEMICOLON + NEWLINE);
+        outMain.append("struct " + name.get(klass) + " {" + NEWLINE);
+        
         // we contain a struct for its super class object
         // if this class doesnt have super class, we use common instance struct
         if (klass.hasSuperClass()) {
@@ -330,7 +336,7 @@ public class CLanguageGenerator extends CodeGenerator {
             if (!field.isStatic())
                 outMain.append(name.getWithPointerIfProper(field.getType()) + " " + name.get(field) + SEMICOLON + NEWLINE);
         }
-        outMain.append("} " + name.get(klass) + SEMICOLON + NEWLINE);
+        outMain.append("}" + SEMICOLON + NEWLINE);
         
         /*
          * Generating class struct (e.g. org_rjava_test_poly_Animal_class)
@@ -476,7 +482,7 @@ public class CLanguageGenerator extends CodeGenerator {
     private String getFunctionPointerForMethod(RMethod method) {
        StringBuilder out = new StringBuilder();
        // return
-       out.append(name.get(method.getReturnType()) + " ");
+       out.append(name.getWithPointerIfProper(method.getReturnType()) + " ");
        // function ptr name
        out.append("(*" + method.getName() + ") ");
        // parameter list
@@ -484,7 +490,7 @@ public class CLanguageGenerator extends CodeGenerator {
        out.append(VOID + POINTER + " " + THIS_PARAMETER);
        for (int i = 0; i < method.getParameters().size(); i++) {
            out.append(", ");
-           out.append(name.get(method.getParameters().get(i)) + " " + FORMAL_PARAMETER + i);   
+           out.append(name.getWithPointerIfProper(method.getParameters().get(i)) + " " + FORMAL_PARAMETER + i);   
        }
        out.append(")");
        return out.toString();
@@ -500,16 +506,18 @@ public class CLanguageGenerator extends CodeGenerator {
     
     public String getMethodSignature(RMethod method) {
         StringBuilder out = new StringBuilder();
-        out.append(name.get(method.getReturnType()) + " ");
+        out.append(name.getWithPointerIfProper(method.getReturnType()) + " ");
         out.append(name.get(method) + " (");
         // if not static, the first parameter will be 'this'
         if (!method.isStatic()) {
             out.append(VOID + POINTER + " " + THIS_PARAMETER); 
+            if (method.getParameters().size() > 0)
+                out.append(", ");
         }
         for (int i = 0; i < method.getParameters().size(); i++) {
-            if (!method.isStatic())
+            out.append(name.getWithPointerIfProper(method.getParameters().get(i)) + " " + FORMAL_PARAMETER + i);
+            if (i < method.getParameters().size() - 1)
                 out.append(", ");
-            out.append(name.getWithPointerIfProper(method.getParameters().get(i)) + " " + FORMAL_PARAMETER + i);                        
         }
         out.append(")");
         return out.toString();
@@ -577,7 +585,7 @@ public class CLanguageGenerator extends CodeGenerator {
         out.append("void* " + POINTER_TO_CLASS_STRUCT + SEMICOLON + NEWLINE);
         out.append("} " + COMMON_INSTANCE_STRUCT + SEMICOLON + NEWLINE);
         
-        out.append("#define RJAVA_STR char *" + NEWLINE);
+        //out.append("#define RJAVA_STR char *" + NEWLINE);
         out.append("#endif" + NEWLINE);
         
         out.append("#ifndef RJAVA_APP_H" + NEWLINE);
@@ -669,7 +677,10 @@ public class CLanguageGenerator extends CodeGenerator {
     public void referencing(String refName) {
         if (refName.startsWith("java_") || refName.startsWith("javax_"))
             return;
-        referencedClasses.add(refName);
+        
+        // avoid adding include for current class
+        if (!name.javaNameToCName(currentRClass.getName()).equals(refName))
+            referencedClasses.add(refName);
     }
     
     private void addToClassInitMap(String rClassName, String initStmt) {
@@ -687,6 +698,7 @@ public class CLanguageGenerator extends CodeGenerator {
     private String getClassInitMethodBody() {
         StringBuilder body = new StringBuilder();
         
+        // init c struct for those classes
         for (Tree<RClass> root : SemanticMap.hierarchy.getRoots()) {
             TreeBreadthFirstIterator<RClass> iter = root.getBreadthFirstIterator();
             while (iter.hasNext()) {
@@ -695,6 +707,18 @@ public class CLanguageGenerator extends CodeGenerator {
                 body.append(commentln("init for " + name.get(current)));
                 body.append(classInitMap.get(current.getName()).toString());
                 body.append("\n\n");
+            }
+        }
+        
+        // calling <clinit> for those classes
+        body.append(commentln("calling <clinit> for RJava classes"));
+        for (Tree<RClass> root : SemanticMap.hierarchy.getRoots()) {
+            TreeBreadthFirstIterator<RClass> iter = root.getBreadthFirstIterator();
+            while(iter.hasNext()) {
+                RClass current = iter.next();
+                if (current.getCLInitMethod() != null) {
+                    body.append(name.get(current.getCLInitMethod()) + "();\n");
+                }
             }
         }
         

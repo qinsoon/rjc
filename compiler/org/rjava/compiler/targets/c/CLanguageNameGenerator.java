@@ -11,6 +11,7 @@ import soot.SootClass;
 import soot.Type;
 import soot.Value;
 import soot.jimple.NullConstant;
+import soot.jimple.internal.JArrayRef;
 import soot.jimple.internal.JInstanceFieldRef;
 
 public class CLanguageNameGenerator {
@@ -50,7 +51,12 @@ public class CLanguageNameGenerator {
         else return get(field.getDeclaringClass()) + "_" + field.getName();
     }
     
-    private String javaNameToCName(String javaName) {
+    /**
+     * get a C style name for a java name. Code generating shouldn't directly call this method, use get(RClass/RMethod/RType) instead. 
+     * @param javaName
+     * @return
+     */
+    public String javaNameToCName(String javaName) {
         return javaName.replace('.', '_');
     }
     
@@ -58,7 +64,7 @@ public class CLanguageNameGenerator {
      * generating c style name from soot element 
      */
     public String fromSootStaticFieldRef(soot.jimple.StaticFieldRef ref) {
-        String className = ref.getField().getDeclaringClass().getName();
+        String className = fromSootClass(ref.getField().getDeclaringClass());
         String refName = ref.getField().getName();
         return javaNameToCName(className + "." + refName);
     }
@@ -107,5 +113,20 @@ public class CLanguageNameGenerator {
 
     public String fromSootNullConstant(NullConstant rightOp) {
         return "NULL";
+    }
+    
+    public String fromSootValue(Value value) {
+        if (value.toString().equals("null"))
+            return "NULL";
+        else return value.toString();
+    }
+
+    String fromSootJArrayRef(JArrayRef op) {
+        String type = getWithPointerIfProper(RType.initWithClassName(op.getType().toString()));
+        
+        String ret = "*((" + type + "*)";
+        ret += CLanguageGenerator.RJAVA_ACCESS_ARRAY + "(" + op.getBase().toString() + "," + op.getIndex().toString() + "))";
+        
+        return ret;
     }
 }

@@ -29,13 +29,18 @@ public class CLanguageIntrinsicGenerator {
         } else if (type.getClassName().equals("boolean")) {
             type.setType(null);
             type.setClassName("bool");
+        } else if (type.getClassName().equals("java.lang.Integer")) {
+            type.setType(null);
+            type.setClassName("int");
+            type.setPackageName(null);
+            type.setPrimitive(true);
         }
     }
 
     public void generate(RStatement stmt) {
-        // remove any call to object
-        if (stmt instanceof RInvokeStmt) {
+        if (stmt.internal().containsInvokeExpr()) {
             InvokeExpr invoke = stmt.internal().getInvokeExpr();
+            // remove any call to object
             if (invoke instanceof JSpecialInvokeExpr && invoke.getMethod().getDeclaringClass().getName().equals("java.lang.Object")) {
                 stmt.setIntrinsic(true);
                 stmt.setCode(CLanguageGenerator.comment(stmt.toString()));

@@ -3,3 +3,4 @@ syntax: regexp
 ?\.class
 ?\.DS_Store
 output\\*
+c_test\\*

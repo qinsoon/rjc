@@ -217,6 +217,13 @@ public class RClass {
         return ret;
     }
     
+    public RMethod getCLInitMethod() {
+        for (RMethod method : methods)
+            if (method.getName().equals("<clinit>"))
+                return method;
+        return null;
+    }
+    
     public SootClass internal() {
         return internal;
     }
