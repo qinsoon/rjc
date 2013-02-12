@@ -443,6 +443,11 @@ public class CLanguageStatementGenerator {
     }
     
     private String fromSootJNewExpr(soot.jimple.internal.JNewExpr newExpr) {
+        // intrinsic happens, and this type becomes a primitive type. just init it to zero
+        if (RType.initWithClassName(newExpr.getType().toString()).isPrimitive())
+            return "0";
+        
+        // otherwise, we malloc
         String type = name.fromSootType(newExpr.getType());
         String ret = "(" + type + CLanguageGenerator.POINTER + ") " + CLanguageGenerator.MALLOC + "(";
         ret += CLanguageGenerator.SIZE_OF + "(" + type + "))";

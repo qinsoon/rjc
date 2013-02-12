@@ -15,9 +15,12 @@ import soot.jimple.internal.JSpecialInvokeExpr;
 import soot.jimple.internal.JVirtualInvokeExpr;
 
 public class CLanguageIntrinsicGenerator {
-
-    public CLanguageIntrinsicGenerator() {
-        // TODO Auto-generated constructor stub
+    CLanguageNameGenerator name;
+    CLanguageGenerator languageGenerator;
+    
+    public CLanguageIntrinsicGenerator(CLanguageGenerator generator) {
+        this.languageGenerator = generator;
+        name = new CLanguageNameGenerator(generator);
     }
 
     public void generate(RType type) {
@@ -26,6 +29,7 @@ public class CLanguageIntrinsicGenerator {
             type.setClassName("RJAVA_STR");
             type.setPackageName(null);
             type.setPrimitive(true);
+            //type.setIntrinsicType(true);
         } else if (type.getClassName().equals("boolean")) {
             type.setType(null);
             type.setClassName("bool");
@@ -34,6 +38,7 @@ public class CLanguageIntrinsicGenerator {
             type.setClassName("int");
             type.setPackageName(null);
             type.setPrimitive(true);
+            type.setIntrinsicType(true);
         }
     }
 
@@ -47,6 +52,16 @@ public class CLanguageIntrinsicGenerator {
             } else if (invoke instanceof JVirtualInvokeExpr && invoke.getMethod().getDeclaringClass().getName().equals("java.lang.Object")) {
                 stmt.setIntrinsic(true);
                 stmt.setCode(CLanguageGenerator.comment(stmt.toString()));
+            }
+            
+            // rewrite boxed primitive type init
+            else if (invoke instanceof JSpecialInvokeExpr && invoke.getMethod().getName().equals("<init>") && invoke.getMethod().getDeclaringClass().getName().startsWith("java.lang")) {
+                if (invoke.getMethod().getDeclaringClass().getName().equals("java.lang.Integer")) {
+                    if (invoke.getMethod().getSignature().equals("<java.lang.Integer: void <init>(int)>")) {
+                        stmt.setIntrinsic(true);
+                        stmt.setCode(name.fromSootValue(((JSpecialInvokeExpr) invoke).getBase()) + " = " + name.fromSootValue(invoke.getArg(0))); 
+                    }
+                }
             }
         } 
         // transform char** args into an 'rjava' array

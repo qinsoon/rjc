@@ -23,6 +23,8 @@ public class RType {
     private boolean primitive = false;
     private boolean array = false;
     private boolean voidType = false;
+    
+    private boolean intrinsicType = false;
 
     public static final List<String> PRIMITIVE_TYPES = Arrays.asList("boolean",
 	    "char", "byte", "short", "int", "long", "float", "double");
@@ -208,5 +210,13 @@ public class RType {
     
     public boolean isReferenceType() {
         return (!primitive && !voidType);
+    }
+
+    public boolean isIntrinsicType() {
+        return intrinsicType;
+    }
+
+    public void setIntrinsicType(boolean intrinsicType) {
+        this.intrinsicType = intrinsicType;
     }
 }

@@ -118,7 +118,7 @@ public class CLanguageGenerator extends CodeGenerator {
     public static final String INCOMPLETE_IMPLEMENTATION = "***Incomplete Implementation***";
     
     CLanguageNameGenerator name = new CLanguageNameGenerator(this);
-    CLanguageIntrinsicGenerator intrinsic = new CLanguageIntrinsicGenerator();
+    CLanguageIntrinsicGenerator intrinsic = new CLanguageIntrinsicGenerator(this);
     
     String cHeaderSource;
     String cCodeSource;
@@ -152,7 +152,7 @@ public class CLanguageGenerator extends CodeGenerator {
         
         currentRClass = klass;
         if (!klass.isInterface()) {
-            generateIntrinsic(klass, source);
+            //generateIntrinsic(klass, source);
             generateHeader(klass, source);
             generateCode(klass, source);
         } else {
