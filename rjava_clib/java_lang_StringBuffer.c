@@ -3,13 +3,23 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "rjava_crt.h"
+
 void java_lang_StringBuffer_rjinit(java_lang_StringBuffer* this_parameter) {
   this_parameter->internal = (char *) malloc (JAVA_LANG_STRINGBUFFER_INIT_SIZE);
   this_parameter->internal[0] = '\0';
   this_parameter->curr_buffer_size = JAVA_LANG_STRINGBUFFER_INIT_SIZE;
 }
 
-void java_lang_StringBuffer_append_java_lang_Object(java_lang_StringBuffer* this_parameter, char * str) {
+void java_lang_StringBuffer_append_java_lang_Object(java_lang_StringBuffer* this_parameter, void* obj) {
+    char *str;
+    
+    if (obj == NULL)
+        str = "NULL";
+    
+    else{str = (char*) malloc(sizeof(char) * 1000);
+    strcpy(str, ((java_lang_Object_class*)(((RJava_Common_Instance*)obj) -> class_struct)) -> toString(obj));
+    }
   if ((strlen(str) + strlen(this_parameter->internal)) + 1> this_parameter->curr_buffer_size) {
     char* old = this_parameter->internal;
     this_parameter->internal = (char *) malloc (this_parameter->curr_buffer_size * 2);
@@ -26,6 +36,6 @@ void java_lang_StringBuffer_append_int(java_lang_StringBuffer* this_parameter, i
     java_lang_StringBuffer_append_java_lang_Object(this_parameter, iStr);
 }
 
-char* java_lang_StringBuffer_toString(java_lang_StringBuffer* this_parameter) {
-  return this_parameter->internal;
+java_lang_String* java_lang_StringBuffer_toString(java_lang_StringBuffer* this_parameter) {
+  return newStringConstant(this_parameter->internal);
 }

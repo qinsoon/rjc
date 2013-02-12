@@ -11,6 +11,7 @@ import soot.SootClass;
 import soot.Type;
 import soot.Value;
 import soot.jimple.NullConstant;
+import soot.jimple.StringConstant;
 import soot.jimple.internal.JArrayRef;
 import soot.jimple.internal.JInstanceFieldRef;
 
@@ -118,6 +119,9 @@ public class CLanguageNameGenerator {
     public String fromSootValue(Value value) {
         if (value.toString().equals("null"))
             return "NULL";
+        else if (value instanceof StringConstant) {
+            return "newStringConstant(" + value.toString() + ")";
+        }
         else return value.toString();
     }
 

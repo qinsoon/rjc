@@ -316,7 +316,7 @@ public class CLanguageStatementGenerator {
             ret += ")";
         else {
             for (int i = 0; i < virtualInvoke.getArgCount(); i++) {
-                ret += ", " + virtualInvoke.getArg(i).toString();
+                ret += ", " + name.fromSootValue(virtualInvoke.getArg(i));
             }
             ret += ")";
         }
@@ -386,7 +386,7 @@ public class CLanguageStatementGenerator {
             ret.append(")");
         else {
             for (int i = 0; i < invoke.getArgCount(); i++) {
-                ret.append(", " + invoke.getArg(i).toString());
+                ret.append(", " + name.fromSootValue(invoke.getArg(i)));
             }
             ret.append(")");
         }
@@ -418,7 +418,7 @@ public class CLanguageStatementGenerator {
         
         ret += "(";
         for (int i = 0; i < actualInvoke.getArgCount(); i++) { 
-            ret += actualInvoke.getArg(i).toString();
+            ret += name.fromSootValue(actualInvoke.getArg(i));
             if (i != actualInvoke.getArgCount() - 1)
                 ret += ", ";
         }

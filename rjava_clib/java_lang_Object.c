@@ -1,6 +1,14 @@
 #include "java_lang_Object.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 void java_lang_Object_rjinit(void* this_parameter) {
-  return;
+    ((RJava_Common_Instance*)this_parameter) -> class_struct = &java_lang_Object_class_instance;
+    return;
+}
+
+char* java_lang_Object_toString(void* this_parameter) {
+    char* buffer = (char*)malloc(sizeof(char) * 100);
+    sprintf(buffer, "Object:%p", this_parameter);
+    return buffer;
 }

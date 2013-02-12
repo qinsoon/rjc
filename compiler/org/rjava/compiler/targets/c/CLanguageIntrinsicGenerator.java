@@ -24,22 +24,22 @@ public class CLanguageIntrinsicGenerator {
     }
 
     public void generate(RType type) {
-        if (type.getClassName().equals("java.lang.String")) {
+        /*if (type.getClassName().equals("java.lang.String")) {
             type.setType(null);
             type.setClassName("RJAVA_STR");
             type.setPackageName(null);
             type.setPrimitive(true);
             //type.setIntrinsicType(true);
-        } else if (type.getClassName().equals("boolean")) {
+        } else*/ if (type.getClassName().equals("boolean")) {
             type.setType(null);
             type.setClassName("bool");
-        } else if (type.getClassName().equals("java.lang.Integer")) {
+        } /*else if (type.getClassName().equals("java.lang.Integer")) {
             type.setType(null);
             type.setClassName("int");
             type.setPackageName(null);
             type.setPrimitive(true);
             type.setIntrinsicType(true);
-        }
+        }*/
     }
 
     public void generate(RStatement stmt) {
@@ -55,14 +55,14 @@ public class CLanguageIntrinsicGenerator {
             }
             
             // rewrite boxed primitive type init
-            else if (invoke instanceof JSpecialInvokeExpr && invoke.getMethod().getName().equals("<init>") && invoke.getMethod().getDeclaringClass().getName().startsWith("java.lang")) {
+            /*else if (invoke instanceof JSpecialInvokeExpr && invoke.getMethod().getName().equals("<init>") && invoke.getMethod().getDeclaringClass().getName().startsWith("java.lang")) {
                 if (invoke.getMethod().getDeclaringClass().getName().equals("java.lang.Integer")) {
                     if (invoke.getMethod().getSignature().equals("<java.lang.Integer: void <init>(int)>")) {
                         stmt.setIntrinsic(true);
                         stmt.setCode(name.fromSootValue(((JSpecialInvokeExpr) invoke).getBase()) + " = " + name.fromSootValue(invoke.getArg(0))); 
                     }
                 }
-            }
+            }*/
         } 
         // transform char** args into an 'rjava' array
         else if (stmt instanceof RIdentityStmt && stmt.getMethod().isMainMethod() && 

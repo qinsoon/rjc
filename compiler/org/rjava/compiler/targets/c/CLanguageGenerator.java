@@ -45,9 +45,12 @@ public class CLanguageGenerator extends CodeGenerator {
     public static final String INCLUDE_STDIO = "#include <stdio.h>";
     public static final String INCLUDE_STDLIB = "#include <stdlib.h>";
     public static final String INCLUDE_STDBOOL = "#include <stdbool.h>";
-    public static final String RJAVA_LIB_INCLUDE_FILE = "rjava_lib.h";
-    public static final String RJAVA_LIB_SOURCE_FILE = "rjava_lib.c";
+    public static final String RJAVA_LIB_INCLUDE_FILE  = "rjava_c_lib.h";
+    public static final String RJAVA_LIB_SOURCE_FILE = "rjava_c_lib.c";
     public static final String RJAVA_LIB_INCLUDE = "#include \"" + RJAVA_LIB_INCLUDE_FILE + "\"";
+    public static final String RJAVA_RUNTIME_INCLUDE_FILE = "rjava_crt.h";
+    public static final String RJAVA_RUNTIME_SOURCE_FILE = "rjava_crt.c";
+    public static final String RJAVA_RUNTIME_INCLUDE = "#include \"" + RJAVA_RUNTIME_INCLUDE_FILE + "\"";
     public static final String[] RJAVA_LIB = {
         "java_io_PrintStream",
         "java_lang_Object",
@@ -62,6 +65,8 @@ public class CLanguageGenerator extends CodeGenerator {
     // helper methods:
     // void rjava_class_init()
     public static final String RJAVA_CLASS_INIT = "rjava_class_init";
+    // void rjava_lib_init()
+    public static final String RJAVA_LIB_INIT = "rjava_lib_init";
     // void rjava_add_interface_to_class(void* interface, int interface_size, char* name, RJava_Common_Class* class);
     // source at the end of this file
     public static final String RJAVA_ADD_INTERFACE_TO_CLASS = "rjava_add_interface_to_class";
@@ -152,7 +157,7 @@ public class CLanguageGenerator extends CodeGenerator {
         
         currentRClass = klass;
         if (!klass.isInterface()) {
-            //generateIntrinsic(klass, source);
+            generateIntrinsic(klass, source);
             generateHeader(klass, source);
             generateCode(klass, source);
         } else {
@@ -180,7 +185,7 @@ public class CLanguageGenerator extends CodeGenerator {
         outInc.append("#define " + name.get(klass).toUpperCase() + "_H" + NEWLINE);
         
         // include rjava lib
-        outInc.append(RJAVA_LIB_INCLUDE + NEWLINE);
+        outInc.append(RJAVA_RUNTIME_INCLUDE + NEWLINE);
         
         /*
          * Generate interface struct (e.g. org_rjava_test_poly_DoArithmetic_interface)
@@ -310,6 +315,7 @@ public class CLanguageGenerator extends CodeGenerator {
         outInc.append("#define " + name.get(klass).toUpperCase() + "_H" + NEWLINE);
         
         // include rjava lib
+        outInc.append(RJAVA_RUNTIME_INCLUDE + NEWLINE);
         outInc.append(RJAVA_LIB_INCLUDE + NEWLINE);
         
         /*
@@ -559,9 +565,9 @@ public class CLanguageGenerator extends CodeGenerator {
         StringBuilder out = new StringBuilder();
         out.append("#ifndef RJAVA_LIB_H" + NEWLINE);
         out.append("#define RJAVA_LIB_H" + NEWLINE);
-        for (String lib : RJAVA_LIB) {
+        /*for (String lib : RJAVA_LIB) {
             out.append("#include \"" + lib + ".h\"" + NEWLINE);
-        }
+        }*/
         
         // class struct and interface list forward declaration
         out.append("typedef struct " + COMMON_CLASS_STRUCT + " " + COMMON_CLASS_STRUCT + SEMICOLON + NEWLINE);
@@ -603,10 +609,11 @@ public class CLanguageGenerator extends CodeGenerator {
         out.append("void* " + RJAVA_C_ARRAY_TO_RJAVA_ARRAY + "(int length, long ele_size, void* c_array)" + SEMICOLON + NEWLINE);
         out.append("#endif" + NEWLINE);
         
-        writeTo(out.toString(), Constants.OUTPUT_DIR + RJAVA_LIB_INCLUDE_FILE);
+        writeTo(out.toString(), Constants.OUTPUT_DIR + RJAVA_RUNTIME_INCLUDE_FILE);
         
         // generating lib source - for class init()
         StringBuilder libSource = new StringBuilder();
+        libSource.append(RJAVA_RUNTIME_INCLUDE + NEWLINE);
         libSource.append(RJAVA_LIB_INCLUDE + NEWLINE);
         libSource.append(INCLUDE_STDIO + NEWLINE);
         libSource.append(INCLUDE_STDLIB + NEWLINE);
@@ -616,6 +623,7 @@ public class CLanguageGenerator extends CodeGenerator {
         }
         // void rjava_class_init()
         libSource.append("void " + RJAVA_CLASS_INIT + "() {" + NEWLINE);
+        libSource.append(RJAVA_LIB_INIT + "()" + SEMICOLON + NEWLINE);
         libSource.append(getClassInitMethodBody());
         libSource.append("}" + NEWLINE);
         // void rjava_add_interface_to_class(void* interface, char* name, RJava_Common_Class* class);
@@ -648,7 +656,7 @@ public class CLanguageGenerator extends CodeGenerator {
         libSource.append("void* " + RJAVA_C_ARRAY_TO_RJAVA_ARRAY + "(int length, long ele_size, void* c_array) {" + NEWLINE);
         libSource.append(RJAVA_C_ARRAY_TO_RJAVA_ARRAY_SOURCE);
         libSource.append("}" + NEWLINE);
-        writeTo(libSource.toString(), Constants.OUTPUT_DIR + RJAVA_LIB_SOURCE_FILE);
+        writeTo(libSource.toString(), Constants.OUTPUT_DIR + RJAVA_RUNTIME_SOURCE_FILE);
         
         // copy lib files
         try {
@@ -665,7 +673,8 @@ public class CLanguageGenerator extends CodeGenerator {
             fileList += c + " ";
         for (String l : RJAVA_LIB)
             fileList += l + ".c ";
-        fileList += "rjava_lib.c ";
+        fileList += RJAVA_RUNTIME_SOURCE_FILE + " ";
+        fileList += RJAVA_LIB_SOURCE_FILE + " ";
         
         makeFile.append(NEWLINE);
         makeFile.append("\tgcc -o " + mainObj + " ");
