@@ -5,6 +5,7 @@ import org.rjava.compiler.semantics.representation.RField;
 import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.semantics.representation.RStatement;
 import org.rjava.compiler.semantics.representation.RType;
+import org.rjava.compiler.targets.c.runtime.CLanguageRuntime;
 
 import soot.Local;
 import soot.SootClass;
@@ -111,10 +112,6 @@ public class CLanguageNameGenerator {
     public String fromSootType(Type type) {
         return get(RType.initWithClassName(type.toString()));
     }
-
-    public String fromSootNullConstant(NullConstant rightOp) {
-        return "NULL";
-    }
     
     public String fromSootValue(Value value) {
         if (value.toString().equals("null"))
@@ -125,11 +122,11 @@ public class CLanguageNameGenerator {
         else return value.toString();
     }
 
-    String fromSootJArrayRef(JArrayRef op) {
+    public String fromSootJArrayRef(JArrayRef op) {
         String type = getWithPointerIfProper(RType.initWithClassName(op.getType().toString()));
         
         String ret = "*((" + type + "*)";
-        ret += CLanguageGenerator.RJAVA_ACCESS_ARRAY + "(" + op.getBase().toString() + "," + op.getIndex().toString() + "))";
+        ret += CLanguageRuntime.RJAVA_ACCESS_ARRAY + "(" + op.getBase().toString() + "," + op.getIndex().toString() + "))";
         
         return ret;
     }

@@ -19,7 +19,7 @@ public abstract class CodeGenerator {
      */
     public abstract void postTranslationWork() throws RJavaWarning, RJavaError;
 
-    protected void writeTo(String out, String file) throws RJavaError {
+    public void writeTo(String out, String file) throws RJavaError {
         FileOutputStream os = null;
         try{
             File f = new File(file);

@@ -10,6 +10,7 @@ import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.semantics.representation.RStatement;
 import org.rjava.compiler.semantics.representation.RType;
 import org.rjava.compiler.semantics.representation.stmt.*;
+import org.rjava.compiler.targets.c.runtime.CLanguageRuntime;
 
 import soot.Local;
 import soot.PointsToAnalysis;
@@ -48,8 +49,7 @@ import soot.jimple.internal.JimpleLocal;
 
 public class CLanguageStatementGenerator {
     CLanguageNameGenerator name;
-    CLanguageGenerator generator;
-    
+    CLanguageGenerator generator;    
     
     private int labelIndex = 0;
     // <target.hashCode(), labelIndex>
@@ -155,7 +155,7 @@ public class CLanguageStatementGenerator {
             rightOpStr = name.fromSootValue((soot.jimple.StringConstant) rightOp);
         } 
         else if (rightOp instanceof soot.jimple.NullConstant) {
-            rightOpStr = name.fromSootNullConstant((soot.jimple.NullConstant)rightOp);
+            rightOpStr = name.fromSootValue((soot.jimple.NullConstant)rightOp);
         } 
         else if (rightOp instanceof soot.jimple.internal.JLengthExpr) {
             rightOpStr = fromSootJLengthExpr((soot.jimple.internal.JLengthExpr) rightOp);
@@ -344,9 +344,9 @@ public class CLanguageStatementGenerator {
         
         StringBuilder ret = new StringBuilder();
         ret.append("(");
-        ret.append("(" + name.get(targetClass) + CLanguageGenerator.CLASS_STRUCT_SUFFIX + "*)");
-        ret.append("(((" + CLanguageGenerator.COMMON_INSTANCE_STRUCT + "*) " + base + ")");
-        ret.append(" -> " + CLanguageGenerator.POINTER_TO_CLASS_STRUCT + "))");
+        ret.append("(" + name.get(targetClass) + CLanguageRuntime.CLASS_STRUCT_SUFFIX + "*)");
+        ret.append("(((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*) " + base + ")");
+        ret.append(" -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + "))");
         ret.append(" -> " + methodName + "(" + base);   //base is the first parameter
         
         if (virtualInvoke.getArgCount() == 0)
@@ -376,9 +376,9 @@ public class CLanguageStatementGenerator {
         String base = name.fromSootLocal((Local) invoke.getBase());
         
         ret.append("((" + name.get(interfaceClass) + "*) ");
-        ret.append(CLanguageGenerator.RJAVA_GET_INTERFACE);
-        ret.append("( ((" + CLanguageGenerator.COMMON_CLASS_STRUCT + "*)");
-        ret.append("((" + CLanguageGenerator.COMMON_INSTANCE_STRUCT + "*) " + base + ") -> " + CLanguageGenerator.POINTER_TO_CLASS_STRUCT + ") -> " + CLanguageGenerator.INTERFACE_LIST);
+        ret.append(CLanguageRuntime.RJAVA_GET_INTERFACE);
+        ret.append("( ((" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)");
+        ret.append("((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*) " + base + ") -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + ") -> " + CLanguageRuntime.INTERFACE_LIST);
         ret.append(", \"" + name.get(interfaceClass) + "\") )");
         ret.append(" -> " + methodName + "(" + base);
         
@@ -455,11 +455,11 @@ public class CLanguageStatementGenerator {
      * RJava array implements
      */
     private String fromSootJLengthExpr(JLengthExpr rightOp) {
-        return CLanguageGenerator.RJAVA_LENGTH_OF_ARRAY + "(" + rightOp.getOp().toString() + ")";
+        return CLanguageRuntime.RJAVA_LENGTH_OF_ARRAY + "(" + rightOp.getOp().toString() + ")";
     }    
 
     private String fromSootJNewArrayExpr(JNewArrayExpr rightOp) {
-        return CLanguageGenerator.RJAVA_NEW_ARRAY + "(" + rightOp.getSize().toString() + ",(long) sizeof(" + name.getWithPointerIfProper(RType.initWithClassName(rightOp.getBaseType().toString())) + "))";
+        return CLanguageRuntime.RJAVA_NEW_ARRAY + "(" + rightOp.getSize().toString() + ",(long) sizeof(" + name.getWithPointerIfProper(RType.initWithClassName(rightOp.getBaseType().toString())) + "))";
     }
     
     /*

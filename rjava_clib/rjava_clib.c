@@ -1,4 +1,4 @@
-#include "rjava_c_lib.h"
+#include "rjava_clib.h"
 #include "rjava_crt.h"
 #include <stdio.h>
 

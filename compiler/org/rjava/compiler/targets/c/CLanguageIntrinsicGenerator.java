@@ -6,6 +6,7 @@ import org.rjava.compiler.semantics.representation.RType;
 import org.rjava.compiler.semantics.representation.stmt.RAssignStmt;
 import org.rjava.compiler.semantics.representation.stmt.RIdentityStmt;
 import org.rjava.compiler.semantics.representation.stmt.RInvokeStmt;
+import org.rjava.compiler.targets.c.runtime.CLanguageRuntime;
 
 import soot.SootMethod;
 import soot.jimple.InvokeExpr;
@@ -69,7 +70,7 @@ public class CLanguageIntrinsicGenerator {
                 ((JIdentityStmt)stmt.internal()).getLeftOp().toString().equals("args") 
                 && ((JIdentityStmt)stmt.internal()).getRightOp().toString().contains("parameter0")) {
             stmt.setIntrinsic(true);
-            stmt.setCode("args = " + CLanguageGenerator.RJAVA_INIT_ARGS + "(argc, parameter0)");
+            stmt.setCode("args = " + CLanguageRuntime.RJAVA_INIT_ARGS + "(argc, parameter0)");
         }
     }
 
