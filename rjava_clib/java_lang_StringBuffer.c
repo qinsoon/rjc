@@ -34,7 +34,7 @@ void java_lang_StringBuffer_append_java_lang_Object(java_lang_StringBuffer* this
 void java_lang_StringBuffer_append_int(java_lang_StringBuffer* this_parameter, int i) {
     char iStr[50];
     sprintf (iStr, "%d", i);
-    java_lang_StringBuffer_append_java_lang_Object(this_parameter, iStr);
+    java_lang_StringBuffer_append_java_lang_Object(this_parameter, newStringConstant(iStr));
 }
 
 java_lang_String* java_lang_StringBuffer_toString(java_lang_StringBuffer* this_parameter) {
