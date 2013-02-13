@@ -174,14 +174,9 @@ public class CLanguageStatementGenerator {
         }
         
         // check type
-        String castStr = "";
-        if (!leftOp.getType().equals(rightOp.getType())) {
-            RType leftOpRType = RType.initWithClassName(leftOp.getType().toString());
-            if (leftOpRType.isReferenceType()) 
-                castStr = "(" + name.get(leftOpRType) + "*)";
-        }
+        String rightOpWithCast = typeCasting(leftOp.getType(), rightOp.getType(), rightOpStr);
         
-        return leftOpStr + " = " + castStr + rightOpStr;
+        return leftOpStr + " = " + rightOpWithCast;
     }
     
     private String get(RBreakpointStmt stmt) {
@@ -316,7 +311,8 @@ public class CLanguageStatementGenerator {
             ret += ")";
         else {
             for (int i = 0; i < virtualInvoke.getArgCount(); i++) {
-                ret += ", " + name.fromSootValue(virtualInvoke.getArg(i));
+                //ret += ", " + name.fromSootValue(virtualInvoke.getArg(i));
+                ret += ", " + typeCastingForInvokeParameter(virtualInvoke, i);
             }
             ret += ")";
         }
@@ -353,7 +349,8 @@ public class CLanguageStatementGenerator {
             ret.append(")");
         else {
             for (int i = 0; i < virtualInvoke.getArgCount(); i++) {
-                ret.append(", " + name.fromSootValue(virtualInvoke.getArg(i)));
+                //ret.append(", " + name.fromSootValue(virtualInvoke.getArg(i)));
+                ret.append(", " + typeCastingForInvokeParameter(virtualInvoke, i));
             }
             ret.append(")");
         }
@@ -386,7 +383,8 @@ public class CLanguageStatementGenerator {
             ret.append(")");
         else {
             for (int i = 0; i < invoke.getArgCount(); i++) {
-                ret.append(", " + name.fromSootValue(invoke.getArg(i)));
+                //ret.append(", " + name.fromSootValue(invoke.getArg(i)));
+                ret.append(", " + typeCastingForInvokeParameter(invoke, i));
             }
             ret.append(")");
         }
@@ -404,7 +402,8 @@ public class CLanguageStatementGenerator {
             ret += ")";
         else {
             for (int i = 0; i < specialInvoke.getArgCount(); i++) {
-                ret += ", " + name.fromSootValue(specialInvoke.getArg(i));
+                //ret += ", " + name.fromSootValue(specialInvoke.getArg(i));
+                ret += ", " + typeCastingForInvokeParameter(specialInvoke, i);
             }
             ret += ")";
         }
@@ -418,7 +417,8 @@ public class CLanguageStatementGenerator {
         
         ret += "(";
         for (int i = 0; i < actualInvoke.getArgCount(); i++) { 
-            ret += name.fromSootValue(actualInvoke.getArg(i));
+            //ret += name.fromSootValue(actualInvoke.getArg(i));
+            ret += typeCastingForInvokeParameter(actualInvoke, i);
             if (i != actualInvoke.getArgCount() - 1)
                 ret += ", ";
         }
@@ -487,5 +487,49 @@ public class CLanguageStatementGenerator {
             return ret;
         }
         else return "label" + storedLabel + ":";
+    }
+    
+    /*
+     * type cast
+     */
+    /**
+     * generate typecasting expr
+     * @param expect expect type
+     * @param current current type
+     * @param value current value
+     * @return
+     */
+    private String typeCasting(Type expect, Type current, String value) {
+        if (expect.equals(current))
+            return value;
+        
+        String expr = value;
+        
+        // we need to do type cast
+        RType expectRType = RType.initWithClassName(expect.toString());
+        RType currentRType = RType.initWithClassName(current.toString());
+        
+        // check if we should unbox the type
+        if (expectRType.isPrimitive() && currentRType.isBoxedPrimitiveType() && RType.boxedTypeMatchesPrimitiveType(currentRType, expectRType)) {
+            expr = "(" + value + ") -> internal";
+        }
+        // check if we should box the type
+        else if (expectRType.isBoxedPrimitiveType() && currentRType.isPrimitive() && RType.boxedTypeMatchesPrimitiveType(expectRType, currentRType)) {
+            String shortBoxedTypeName = expectRType.getClassName().substring(expectRType.getClassName().lastIndexOf('.'));
+            expr = "new" + shortBoxedTypeName + "Constant(" + value + ")";
+        } 
+        // type cast
+        // TODO: check type cast
+        else if (expectRType.isReferenceType()) 
+            expr = "(" + name.getWithPointerIfProper(expectRType) + ")" + value;
+        
+        return expr;
+    }
+    
+    private String typeCastingForInvokeParameter(InvokeExpr invoke, int arg) {
+        Type expect = invoke.getMethod().getParameterType(arg);
+        Type current = invoke.getArg(arg).getType();
+        String value = name.fromSootValue(invoke.getArg(arg));
+        return typeCasting(expect, current, value);
     }
 }

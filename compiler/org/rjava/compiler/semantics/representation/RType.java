@@ -26,8 +26,25 @@ public class RType {
     
     private boolean intrinsicType = false;
 
-    public static final List<String> PRIMITIVE_TYPES = Arrays.asList("boolean",
-	    "char", "byte", "short", "int", "long", "float", "double");
+    public static final List<String> PRIMITIVE_TYPES = Arrays.asList(
+            "boolean",
+            "char",
+            "byte",
+            "short",
+            "int",
+            "long",
+            "float",
+            "double");
+    public static final List<String> BOXED_PRIMITIVE_TYPES = Arrays.asList(
+            "java.lang.Boolean",
+            "java.lang.Character",
+            "java.lang.Byte",
+            "java.lang.Short",
+            "java.lang.Integer",
+            "java.lang.Long",
+            "java.lang.Float",
+            "java.lang.Double"
+            ); 
     public static final String VOID_TYPE = "void";
 
     private RType() {
@@ -218,5 +235,16 @@ public class RType {
 
     public void setIntrinsicType(boolean intrinsicType) {
         this.intrinsicType = intrinsicType;
+    }
+    
+    public boolean isBoxedPrimitiveType() {
+        return BOXED_PRIMITIVE_TYPES.contains(className);
+    }
+    
+    public static boolean boxedTypeMatchesPrimitiveType(RType boxed, RType primitive) {
+        int index1 = BOXED_PRIMITIVE_TYPES.indexOf(boxed);
+        int index2 = PRIMITIVE_TYPES.indexOf(primitive);
+        
+        return index1 != -1 && index1 == index2;
     }
 }

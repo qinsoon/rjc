@@ -20,3 +20,7 @@ java_lang_String* newStringConstant(char* string) {
     
     return ret;
 }
+
+char java_lang_String_charAt_int(void* this_parameter, int index) {
+    return ((java_lang_String*)this_parameter) -> internal[index];
+}

@@ -44,7 +44,7 @@ public class CLanguageNameGenerator {
     }
     
     public String getWithPointerIfProper(RType type) {
-        return get(type) + (type.isReferenceType() || type.isArray() ? "*" : ""); 
+        return get(type) + (type.isReferenceType()? "*":"") + (type.isArray() ? "*" : ""); 
     }
     
     public String get(RField field) {

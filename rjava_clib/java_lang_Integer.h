@@ -15,7 +15,9 @@ typedef struct java_lang_Integer_class {
 java_lang_Integer_class java_lang_Integer_class_instance;
 
 void java_lang_Integer_rjinit_int(void* this_parameter, int i);
-int java_lang_Integer_valueOf_int(int i);
+java_lang_Integer* java_lang_Integer_valueOf_int(int i);
 java_lang_String* java_lang_Integer_toString(void* this_parameter);
+int java_lang_Integer_intValue(void* this_parameter);
+java_lang_Integer* newIntegerConstant(int i);
 
 #endif
