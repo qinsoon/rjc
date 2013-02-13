@@ -21,6 +21,6 @@ java_lang_String_class java_lang_String_class_instance;
 
 java_lang_String* newStringConstant(char* string);
 bool java_lang_String_equals_java_lang_Object(void* this_parameter, void* another);
-char* java_lang_String_toString(void* this_parameter);
+java_lang_String* java_lang_String_toString(void* this_parameter);
 
 #endif

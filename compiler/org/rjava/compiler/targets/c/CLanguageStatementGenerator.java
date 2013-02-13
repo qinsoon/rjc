@@ -146,13 +146,13 @@ public class CLanguageStatementGenerator {
             rightOpStr = fromSootBinopExpr((BinopExpr) rightOp);
         } 
         else if (rightOp instanceof soot.jimple.NumericConstant) {
-            rightOpStr = fromSootNumericConstant((NumericConstant) rightOp);
+            rightOpStr = name.fromSootValue((NumericConstant) rightOp);
         } 
         else if (rightOp instanceof soot.jimple.internal.JNewExpr) {
             rightOpStr = fromSootJNewExpr((JNewExpr) rightOp);
         } 
         else if (rightOp instanceof soot.jimple.StringConstant) {
-            rightOpStr = fromSootStringConstant((soot.jimple.StringConstant) rightOp);
+            rightOpStr = name.fromSootValue((soot.jimple.StringConstant) rightOp);
         } 
         else if (rightOp instanceof soot.jimple.NullConstant) {
             rightOpStr = name.fromSootNullConstant((soot.jimple.NullConstant)rightOp);
@@ -432,14 +432,6 @@ public class CLanguageStatementGenerator {
     
     private String fromSootBinopExpr(soot.jimple.BinopExpr binopExpr) {
         return binopExpr.toString();
-    }
-    
-    private String fromSootNumericConstant(soot.jimple.NumericConstant numericConstant) {
-        return numericConstant.toString();
-    }
-
-    private String fromSootStringConstant(StringConstant stringConstant) {
-        return stringConstant.toString();
     }
     
     private String fromSootJNewExpr(soot.jimple.internal.JNewExpr newExpr) {

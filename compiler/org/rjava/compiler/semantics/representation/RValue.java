@@ -2,7 +2,7 @@ package org.rjava.compiler.semantics.representation;
 
 import soot.Value;
 
-public class RValue {
+public class RValue{
     protected RType type;
     Value internal;
 

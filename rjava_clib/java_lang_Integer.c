@@ -11,8 +11,8 @@ int java_lang_Integer_valueOf_int(int i) {
   return i;
 }
 
-char* java_lang_Integer_toString(void* this_parameter) {
+java_lang_String* java_lang_Integer_toString(void* this_parameter) {
     char* ret = (char*) malloc(sizeof(char) * 50);
     sprintf(ret, "%d", ((java_lang_Integer*)this_parameter) -> internal);
-    return ret;
+    return newStringConstant(ret);
 }

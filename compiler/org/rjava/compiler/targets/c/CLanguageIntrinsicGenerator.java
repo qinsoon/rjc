@@ -69,7 +69,7 @@ public class CLanguageIntrinsicGenerator {
                 ((JIdentityStmt)stmt.internal()).getLeftOp().toString().equals("args") 
                 && ((JIdentityStmt)stmt.internal()).getRightOp().toString().contains("parameter0")) {
             stmt.setIntrinsic(true);
-            stmt.setCode("args = " + CLanguageGenerator.RJAVA_C_ARRAY_TO_RJAVA_ARRAY + "(argc-1, (long)sizeof(char*), &parameter0[1])");
+            stmt.setCode("args = " + CLanguageGenerator.RJAVA_INIT_ARGS + "(argc, parameter0)");
         }
     }
 

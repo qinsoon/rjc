@@ -17,8 +17,9 @@ void java_lang_StringBuffer_append_java_lang_Object(java_lang_StringBuffer* this
     if (obj == NULL)
         str = "NULL";
     
-    else{str = (char*) malloc(sizeof(char) * 1000);
-    strcpy(str, ((java_lang_Object_class*)(((RJava_Common_Instance*)obj) -> class_struct)) -> toString(obj));
+    else{
+        str = (char*) malloc(sizeof(char) * 1000);
+        strcpy(str, ((java_lang_Object_class*)(((RJava_Common_Instance*)obj) -> class_struct)) -> toString(obj) -> internal);
     }
   if ((strlen(str) + strlen(this_parameter->internal)) + 1> this_parameter->curr_buffer_size) {
     char* old = this_parameter->internal;

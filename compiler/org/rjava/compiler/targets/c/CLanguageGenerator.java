@@ -91,6 +91,8 @@ public class CLanguageGenerator extends CodeGenerator {
     public static final String RJAVA_LENGTH_OF_ARRAY = "rjava_length_of_array";
     // void* rjava_c_array_to_rjava_array(int length, long ele_size, void* c_array);
     public static final String RJAVA_C_ARRAY_TO_RJAVA_ARRAY = "rjava_c_array_to_rjava_array";
+    // void* rjava_init_args(int argc, char** args)
+    public static final String RJAVA_INIT_ARGS = "rjava_init_args";
     
     /*
      * RJava's C Naming
@@ -607,6 +609,7 @@ public class CLanguageGenerator extends CodeGenerator {
         out.append("void* " + RJAVA_ACCESS_ARRAY + "(void* array, int index)" + SEMICOLON + NEWLINE);
         out.append("int " + RJAVA_LENGTH_OF_ARRAY + "(void* array)" + SEMICOLON + NEWLINE);
         out.append("void* " + RJAVA_C_ARRAY_TO_RJAVA_ARRAY + "(int length, long ele_size, void* c_array)" + SEMICOLON + NEWLINE);
+        out.append("void* " + RJAVA_INIT_ARGS + "(int argc, char** args)" + SEMICOLON + NEWLINE);
         out.append("#endif" + NEWLINE);
         
         writeTo(out.toString(), Constants.OUTPUT_DIR + RJAVA_RUNTIME_INCLUDE_FILE);
@@ -655,6 +658,9 @@ public class CLanguageGenerator extends CodeGenerator {
         libSource.append("}" + NEWLINE);
         libSource.append("void* " + RJAVA_C_ARRAY_TO_RJAVA_ARRAY + "(int length, long ele_size, void* c_array) {" + NEWLINE);
         libSource.append(RJAVA_C_ARRAY_TO_RJAVA_ARRAY_SOURCE);
+        libSource.append("}" + NEWLINE);
+        libSource.append("void* " + RJAVA_INIT_ARGS + "(int argc, char** args) {" + NEWLINE);
+        libSource.append(RJAVA_INIT_ARGS_SOURCE);
         libSource.append("}" + NEWLINE);
         writeTo(libSource.toString(), Constants.OUTPUT_DIR + RJAVA_RUNTIME_SOURCE_FILE);
         
@@ -856,6 +862,15 @@ public class CLanguageGenerator extends CodeGenerator {
             "  memcpy(dst_ptr, src_ptr, ele_size);" + NEWLINE +
             "  dst_ptr = dst_ptr + ele_size;" + NEWLINE + 
             "  src_ptr = src_ptr + ele_size;" + NEWLINE +
+            "}" + NEWLINE +
+            "return ret;" + NEWLINE;
+    
+    // void* rjava_init_args(int argc, char** args)
+    public static final String RJAVA_INIT_ARGS_SOURCE = 
+            "void* ret = " + RJAVA_NEW_ARRAY + "(argc-1, sizeof(java_lang_String*));" + NEWLINE +
+            "int i = 0;" + NEWLINE + 
+            "for (; i < argc - 1; i = i + 1) {" + NEWLINE +
+            "  *((java_lang_String**)rjava_access_array(ret,i)) = newStringConstant(args[i+1]);" + NEWLINE +
             "}" + NEWLINE +
             "return ret;" + NEWLINE;
 }

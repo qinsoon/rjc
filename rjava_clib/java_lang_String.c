@@ -2,13 +2,13 @@
 #include <stdlib.h>
 
 bool java_lang_String_equals_java_lang_Object(void* this_parameter, void* another) {
-    if (strcmp(this_parameter, (char*)another) == 0) {
+    if (strcmp(((java_lang_String*)this_parameter)->internal, (((java_lang_Object_class*)((RJava_Common_Instance*)another)->class_struct) -> toString(another)) -> internal) == 0) {
         return true;
     } else return false;
 }
 
-char* java_lang_String_toString(void* this_parameter) {
-    return ((java_lang_String*) this_parameter) -> internal;
+java_lang_String* java_lang_String_toString(void* this_parameter) {
+    return this_parameter;
 }
 
 java_lang_String* newStringConstant(char* string) {

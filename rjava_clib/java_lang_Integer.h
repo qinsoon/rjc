@@ -16,6 +16,6 @@ java_lang_Integer_class java_lang_Integer_class_instance;
 
 void java_lang_Integer_rjinit_int(void* this_parameter, int i);
 int java_lang_Integer_valueOf_int(int i);
-char* java_lang_Integer_toString(void* this_parameter);
+java_lang_String* java_lang_Integer_toString(void* this_parameter);
 
 #endif
