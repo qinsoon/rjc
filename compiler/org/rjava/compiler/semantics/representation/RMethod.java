@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.rjava.compiler.RJavaCompiler;
+import org.rjava.compiler.semantics.SootEngine;
 
 import soot.Body;
 import soot.Local;
@@ -44,7 +45,11 @@ public class RMethod {
         	
     	    try {
         	    // get body
-            	Body sootBody = m.retrieveActiveBody();
+    	        Body sootBody = null;
+    	        if (SootEngine.RUN_SOOT) {
+    	            sootBody = SootEngine.methodStorage.get(m);
+    	        }
+    	        else sootBody = m.retrieveActiveBody();
             	    	
             	Iterator<Unit> iter = sootBody.getUnits().iterator();
             	while(iter.hasNext()) {
@@ -133,6 +138,10 @@ public class RMethod {
 
     public boolean isMainMethod() {
         return mainMethod;
+    }
+    
+    public boolean shouldBeInlined() {
+        return false;
     }
 
     /**

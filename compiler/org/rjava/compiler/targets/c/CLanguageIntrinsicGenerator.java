@@ -40,7 +40,14 @@ public class CLanguageIntrinsicGenerator {
             type.setPackageName(null);
             type.setPrimitive(true);
             type.setIntrinsicType(true);
-        }*/
+        }*/ else if (type.getClassName().equals("null_type")) {
+            // void*
+            type.setType(null);
+            type.setClassName("void*");
+            type.setPrimitive(true);
+            type.setArray(false);
+            type.setVoidType(true);
+        }
     }
 
     public void generate(RStatement stmt) {

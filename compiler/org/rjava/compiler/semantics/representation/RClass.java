@@ -62,8 +62,10 @@ public class RClass {
     	
     	this.annotations = fetchAnnotations(internal);
     	
-    	fetchMethods();
-    	fetchFields();
+    	if (isAppClass()) {
+    	    fetchMethods();
+    	    fetchFields();
+    	}
     	
     	if (internal.hasSuperclass() && !internal.getSuperclass().getName().equals("java.lang.Object"))
     	    superClass = fromSootClass(internal.getSuperclass());
@@ -311,5 +313,9 @@ public class RClass {
             }
         }
         return false;
+    }
+    
+    public boolean isAppClass() {
+        return !name.startsWith("java.") && !name.startsWith("javax.");
     }
 }

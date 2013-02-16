@@ -27,6 +27,8 @@ import soot.options.Options;
 public class SootEngine {  
     private static final boolean DEBUG = true;
     
+    public static final boolean RUN_SOOT = true;
+    
     private static final String[] jdkPath = {"components/soot/jce.jar",
     "components/soot/rt.jar"};
     
@@ -35,6 +37,8 @@ public class SootEngine {
     
     private Map<String, SootClass> allClasses;
     private Map<String, SootMethod> allMethods;
+    
+    public static Map<SootMethod, Body> methodStorage = new HashMap<SootMethod, Body>();
 
     public SootEngine(CompilationTask task) {
     	// dir to process
@@ -108,12 +112,11 @@ public class SootEngine {
         Options.v().set_soot_classpath(classpath);
         
         PhaseOptions.v().setPhaseOption("wjop", "enabled:true");
+        PhaseOptions.v().setPhaseOption("jop", "enabled:true");
         
         //enable points-to analysis
-        PhaseOptions.v().setPhaseOption("cg", "enabled:true");
-        PhaseOptions.v().setPhaseOption("cg.spark", "enabled:true");
-        
-        PhaseOptions.v().setPhaseOption("jb", "enabled:false");
+        //PhaseOptions.v().setPhaseOption("cg", "enabled:true");
+        //PhaseOptions.v().setPhaseOption("cg.spark", "enabled:true");
         
         // set application classes
         sootArgs.add("--app");
@@ -121,7 +124,17 @@ public class SootEngine {
             sootArgs.add(className);
         }
         
-        //soot.Main.main(sootArgs.toArray(new String[0]));
+        if (RUN_SOOT) {
+            // get jimple body
+            PackManager.v().getPack("jop").add(new Transform("jop.getbody", new soot.BodyTransformer() {
+                @Override
+                protected void internalTransform(Body body, String phase, Map arg2) {
+                    methodStorage.put(body.getMethod(), body);
+                }
+            }));
+
+            soot.Main.main(sootArgs.toArray(new String[0]));
+        }
     }
 
     public void buildSemanticMap() {

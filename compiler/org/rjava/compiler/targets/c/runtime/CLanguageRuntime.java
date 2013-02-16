@@ -356,7 +356,7 @@ public class CLanguageRuntime {
         fileList += RJAVA_LIB_SOURCE_FILE + " ";
         
         makeFile.append(NEWLINE);
-        makeFile.append("\tgcc -o " + generator.getMainObj() + " ");
+        makeFile.append("\tgcc -O3 -o " + generator.getMainObj() + " ");
         makeFile.append(fileList);
         makeFile.append(" -I .");
         generator.writeTo(makeFile.toString(), Constants.OUTPUT_DIR + "Makefile");

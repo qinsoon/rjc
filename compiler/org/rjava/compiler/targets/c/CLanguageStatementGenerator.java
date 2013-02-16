@@ -202,13 +202,13 @@ public class CLanguageStatementGenerator {
         Value rightOp = internal.getRightOp();
         if (rightOp instanceof soot.jimple.ParameterRef) {
             // left op
-            ret = internal.getLeftOp().toString() + " = ";
+            ret = name.fromSootValue(internal.getLeftOp()) + " = ";
             
             // right op
             soot.jimple.ParameterRef parameterRef = (ParameterRef) rightOp;
             ret += CLanguageGenerator.FORMAL_PARAMETER + parameterRef.getIndex();
         } else if (rightOp instanceof soot.jimple.ThisRef) {
-            ret = CLanguageGenerator.THIS_LOCAL + " = " + CLanguageGenerator.THIS_PARAMETER;
+            ret = name.fromSootValue(internal.getLeftOp()) + " = " + CLanguageGenerator.THIS_PARAMETER;
         } else {
 
         }
