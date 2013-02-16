@@ -141,7 +141,7 @@ public class RMethod {
     }
     
     public boolean shouldBeInlined() {
-        return false;
+        return body.size() <= 25;
     }
 
     /**

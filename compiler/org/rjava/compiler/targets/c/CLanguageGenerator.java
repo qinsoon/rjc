@@ -210,7 +210,7 @@ public class CLanguageGenerator extends CodeGenerator {
                 outMain.append(method.getCode());
             } else outMain.append(getMethodBody(method));
             
-            outMain.append("}" + NEWLINE);
+            outMain.append("}" + NEWLINE + NEWLINE);
         }
         
         // get referenced
@@ -457,6 +457,8 @@ public class CLanguageGenerator extends CodeGenerator {
     
     public String getMethodSignature(RMethod method) {
         StringBuilder out = new StringBuilder();
+        if (method.shouldBeInlined())
+            out.append("inline ");
         out.append(name.getWithPointerIfProper(method.getReturnType()) + " ");
         out.append(name.get(method) + " (");
         // if not static, the first parameter will be 'this'
