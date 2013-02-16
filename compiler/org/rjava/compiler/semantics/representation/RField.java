@@ -36,4 +36,8 @@ public class RField {
     public RClass getDeclaringClass() {
         return klass;
     }
+    
+    public boolean equals(Object another) {
+        return internal.equals(((RField)another).internal);
+    }
 }

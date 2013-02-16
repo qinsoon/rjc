@@ -21,10 +21,15 @@ import org.rjava.compiler.semantics.representation.RLocal;
 import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.semantics.representation.RStatement;
 import org.rjava.compiler.semantics.representation.RType;
+import org.rjava.compiler.semantics.representation.stmt.RAssignStmt;
 import org.rjava.compiler.targets.CodeGenerator;
 import org.rjava.compiler.targets.c.runtime.CLanguageRuntime;
 import org.rjava.compiler.util.Tree;
 import org.rjava.compiler.util.TreeBreadthFirstIterator;
+
+import soot.Value;
+import soot.jimple.StaticFieldRef;
+import soot.jimple.internal.JAssignStmt;
 
 public class CLanguageGenerator extends CodeGenerator {
     /*
@@ -337,13 +342,22 @@ public class CLanguageGenerator extends CodeGenerator {
         outMain.append(commentln("class instance"));
         outMain.append(name.get(klass) + CLanguageRuntime.CLASS_STRUCT_SUFFIX + " ");
         outMain.append(name.get(klass) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + SEMICOLON + NEWLINE);
+        
+        
         // generate other global fields (static field)
         outMain.append(commentln("static field (global)"));
         for (RField field : klass.getFields()) {
-            if (field.isStatic()) {
+            if (field.isStatic() && !field.isFinal()) {
                 outMain.append(name.getWithPointerIfProper(field.getType()) + " " + name.get(field) + SEMICOLON + NEWLINE);
-            }                
+            }
         }
+        
+        // generate constants (static final)
+        Map<RField, String> constantValues = getConstantValues(klass);
+        if (constantValues != null)
+            for (RField f : constantValues.keySet())
+                outMain.append("#define " + name.get(f) + " " + constantValues.get(f) + NEWLINE);
+        
         
         // functions
         outMain.append(commentln("function definitions"));
@@ -382,6 +396,37 @@ public class CLanguageGenerator extends CodeGenerator {
         writeTo(outInc.toString() + outMain.toString(), Constants.OUTPUT_DIR + cHeaderSource);
         
         translatedCHeader.add(cHeaderSource);
+    }
+
+    /**
+     * fetch constant values, returns pairs of <value_name, value>. So we will #define value_name value
+     * @param klass
+     * @return
+     */
+    private Map<RField, String> getConstantValues(RClass klass) {
+        HashMap<RField, String> ret = new HashMap<RField, String>();
+        
+        for (RField f : klass.getFields())
+            if (f.isFinal() && f.isStatic())
+                ret.put(f, INCOMPLETE_IMPLEMENTATION);
+        
+        if (ret.size() == 0)
+            return null;
+                
+        for (RStatement stmt: klass.getCLInitMethod().getBody()) {
+            if (stmt instanceof RAssignStmt) {
+                JAssignStmt sootStmt = ((RAssignStmt) stmt).internal();
+                for (RField f : ret.keySet()) {
+                    if (sootStmt.getLeftOp() instanceof soot.jimple.StaticFieldRef && f.getName().equals(((StaticFieldRef) sootStmt.getLeftOp()).getField().getName())) {
+                        ret.put(f, name.fromSootValue(sootStmt.getRightOp()));
+                        stmt.setIntrinsic(true);
+                        stmt.setCode(comment("constant definition for " + f.getName()));
+                    }
+                }
+            }
+        }
+        
+        return ret;
     }
 
     /**
