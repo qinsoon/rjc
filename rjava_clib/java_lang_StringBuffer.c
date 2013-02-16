@@ -5,7 +5,7 @@
 
 #include "rjava_crt.h"
 
-void java_lang_StringBuffer_rjinit(java_lang_StringBuffer* this_parameter) {
+inline void java_lang_StringBuffer_rjinit(java_lang_StringBuffer* this_parameter) {
   this_parameter->internal = (char *) malloc (JAVA_LANG_STRINGBUFFER_INIT_SIZE);
   this_parameter->internal[0] = '\0';
   this_parameter->curr_buffer_size = JAVA_LANG_STRINGBUFFER_INIT_SIZE;
@@ -31,12 +31,12 @@ void java_lang_StringBuffer_append_java_lang_Object(java_lang_StringBuffer* this
   strcat(this_parameter->internal, str);
 }
 
-void java_lang_StringBuffer_append_int(java_lang_StringBuffer* this_parameter, int i) {
+inline void java_lang_StringBuffer_append_int(java_lang_StringBuffer* this_parameter, int i) {
     char iStr[50];
     sprintf (iStr, "%d", i);
     java_lang_StringBuffer_append_java_lang_Object(this_parameter, newStringConstant(iStr));
 }
 
-java_lang_String* java_lang_StringBuffer_toString(java_lang_StringBuffer* this_parameter) {
+inline java_lang_String* java_lang_StringBuffer_toString(java_lang_StringBuffer* this_parameter) {
   return newStringConstant(this_parameter->internal);
 }

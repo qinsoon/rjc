@@ -15,8 +15,8 @@ typedef struct java_lang_Object_class {
     java_lang_String* (*toString)(void* this_parameter);
 } java_lang_Object_class;
 
-void java_lang_Object_rjinit(void* this_parameter);
-java_lang_String* java_lang_Object_toString(void* this_parameter);
+inline void java_lang_Object_rjinit(void* this_parameter);
+inline java_lang_String* java_lang_Object_toString(void* this_parameter);
 
 java_lang_Object_class java_lang_Object_class_instance;
 
