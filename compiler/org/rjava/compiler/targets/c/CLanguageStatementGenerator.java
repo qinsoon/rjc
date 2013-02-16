@@ -277,7 +277,7 @@ public class CLanguageStatementGenerator {
             ret.append("goto " + this.jumpToLabel((AbstractStmt) internal.getTarget(i)) + ";\n");
         }
         ret.append("  default: goto " + this.jumpToLabel((AbstractStmt) internal.getDefaultTarget()) + ";\n");
-        ret.append("}");
+        ret.append("  }");
         return ret.toString();
     }
     
