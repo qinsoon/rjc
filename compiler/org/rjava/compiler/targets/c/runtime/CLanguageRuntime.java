@@ -91,11 +91,11 @@ public class CLanguageRuntime {
     // | int length | long ele_size | actual array .....|
     // --------------------------------------------------
     // void* rjava_new_array(int length, long ele_size);
-    public static final String RJAVA_NEW_ARRAY = "rjava_new_array";
+    public static final String RJAVA_NEW_ARRAY = "rjava_new_array";                 // inline
     // void* rjava_access_array(void* array, int index);
-    public static final String RJAVA_ACCESS_ARRAY = "rjava_access_array";
+    public static final String RJAVA_ACCESS_ARRAY = "rjava_access_array";           // inline
     // int rjava_length_of_array(void* array);
-    public static final String RJAVA_LENGTH_OF_ARRAY = "rjava_length_of_array";
+    public static final String RJAVA_LENGTH_OF_ARRAY = "rjava_length_of_array";     // inline
     // void* rjava_c_array_to_rjava_array(int length, long ele_size, void* c_array);
     public static final String RJAVA_C_ARRAY_TO_RJAVA_ARRAY = "rjava_c_array_to_rjava_array";
     // void* rjava_init_args(int argc, char** args)
@@ -278,9 +278,9 @@ public class CLanguageRuntime {
         out.append("void* " + CLanguageRuntime.RJAVA_GET_INTERFACE + "(" + INTERFACE_LIST_NODE + "* list, char* name)" + SEMICOLON + NEWLINE);
         out.append("void " + CLanguageRuntime.RJAVA_INIT_HEADER + "(void* this_class, void* super_class, int super_class_init)" + SEMICOLON + NEWLINE);
         out.append("void " + CLanguageRuntime.RJAVA_DEBUG_PRINT_HEADER + "(char* name, void* this_class)" + SEMICOLON + NEWLINE);
-        out.append("void* " + CLanguageRuntime.RJAVA_NEW_ARRAY + "(int length, long ele_size)" + SEMICOLON + NEWLINE);
-        out.append("void* " + CLanguageRuntime.RJAVA_ACCESS_ARRAY + "(void* array, int index)" + SEMICOLON + NEWLINE);
-        out.append("int " + CLanguageRuntime.RJAVA_LENGTH_OF_ARRAY + "(void* array)" + SEMICOLON + NEWLINE);
+        out.append("inline void* " + CLanguageRuntime.RJAVA_NEW_ARRAY + "(int length, long ele_size)" + SEMICOLON + NEWLINE);
+        out.append("inline void* " + CLanguageRuntime.RJAVA_ACCESS_ARRAY + "(void* array, int index)" + SEMICOLON + NEWLINE);
+        out.append("inline int " + CLanguageRuntime.RJAVA_LENGTH_OF_ARRAY + "(void* array)" + SEMICOLON + NEWLINE);
         out.append("void* " + CLanguageRuntime.RJAVA_C_ARRAY_TO_RJAVA_ARRAY + "(int length, long ele_size, void* c_array)" + SEMICOLON + NEWLINE);
         out.append("void* " + CLanguageRuntime.RJAVA_INIT_ARGS + "(int argc, char** args)" + SEMICOLON + NEWLINE);
         out.append("#endif" + NEWLINE);
@@ -320,13 +320,13 @@ public class CLanguageRuntime {
         libSource.append("void " + CLanguageRuntime.RJAVA_DEBUG_PRINT_HEADER + "(char* name, void* this_class) {" + NEWLINE);
         libSource.append(CLanguageRuntime.RJAVA_DEBUG_PRINT_HEADER_SOURCE);
         libSource.append("}" + NEWLINE);
-        libSource.append("void* " + CLanguageRuntime.RJAVA_NEW_ARRAY + "(int length, long ele_size) {" + NEWLINE);
+        libSource.append("inline void* " + CLanguageRuntime.RJAVA_NEW_ARRAY + "(int length, long ele_size) {" + NEWLINE);
         libSource.append(CLanguageRuntime.RJAVA_NEW_ARRAY_SOURCE);
         libSource.append("}" + NEWLINE);
-        libSource.append("void* " + CLanguageRuntime.RJAVA_ACCESS_ARRAY + "(void* array, int index) {" + NEWLINE);
+        libSource.append("inline void* " + CLanguageRuntime.RJAVA_ACCESS_ARRAY + "(void* array, int index) {" + NEWLINE);
         libSource.append(CLanguageRuntime.RJAVA_ACCESS_ARRAY_SOURCE);
         libSource.append("}" + NEWLINE);
-        libSource.append("int " + CLanguageRuntime.RJAVA_LENGTH_OF_ARRAY + "(void* array) {" + NEWLINE);
+        libSource.append("inline int " + CLanguageRuntime.RJAVA_LENGTH_OF_ARRAY + "(void* array) {" + NEWLINE);
         libSource.append(CLanguageRuntime.RJAVA_LENGTH_OF_ARRAY_SOURCE);
         libSource.append("}" + NEWLINE);
         libSource.append("void* " + CLanguageRuntime.RJAVA_C_ARRAY_TO_RJAVA_ARRAY + "(int length, long ele_size, void* c_array) {" + NEWLINE);
