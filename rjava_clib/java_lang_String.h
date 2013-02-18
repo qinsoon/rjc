@@ -8,10 +8,10 @@
 
 #define RJAVA_STR java_lang_String*
 
-typedef struct java_lang_String {
+struct java_lang_String {
     java_lang_Object instance_header;
     char internal[10000];
-} java_lang_String;
+};
 
 typedef struct java_lang_String_class {
     java_lang_Object_class class_header;

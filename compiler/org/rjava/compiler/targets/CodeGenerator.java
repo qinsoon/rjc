@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
+import org.rjava.compiler.Constants;
 import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.exception.*;
 import org.rjava.compiler.semantics.SemanticMap;
@@ -11,6 +13,17 @@ import org.rjava.compiler.semantics.SemanticMap;
 public abstract class CodeGenerator {
 
     public abstract void translate(RClass klass, String source) throws RJavaWarning, RJavaError;
+    
+    /**
+     * e.g. clean up output dir
+     */
+    public void preTranslationWork() throws RJavaError{
+        try {
+            FileUtils.cleanDirectory(new File(Constants.OUTPUT_DIR));
+        } catch (IOException e) {
+            throw new RJavaError("Error when cleaning output dir : " + e.getMessage());
+        }
+    }
     
     /**
      * e.g. copy library files, etc.

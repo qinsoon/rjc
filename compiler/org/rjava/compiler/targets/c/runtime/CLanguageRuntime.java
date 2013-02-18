@@ -7,6 +7,8 @@ import static org.rjava.compiler.targets.c.CLanguageGenerator.SEMICOLON;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.commons.io.FileUtils;
 import org.rjava.compiler.Constants;
@@ -19,12 +21,35 @@ import org.rjava.compiler.util.Tree;
 import org.rjava.compiler.util.TreeBreadthFirstIterator;
 
 public class CLanguageRuntime {
+    public static final int DEFAULT_MALLOC  = 0;
+    public static final int GC_MALLOC       = 1;
+    public static final int DL_MALLOC       = 2;
+
+    public static final int MEMORY_MANAGEMENT_SCHEME = GC_MALLOC;
+    
     CLanguageGenerator generator;
     CLanguageNameGenerator name;
     
     public CLanguageRuntime(CLanguageGenerator generator) {
         this.generator = generator;
         name = new CLanguageNameGenerator(generator);
+        
+        switch (MEMORY_MANAGEMENT_SCHEME) {
+        case DEFAULT_MALLOC: 
+            CLanguageGenerator.MALLOC = "malloc";
+            break;
+        case GC_MALLOC:
+            CLanguageGenerator.MALLOC = "GC_malloc";
+            EXTRA_INCLUDE.add("#include \"boehm-gc/include/gc.h\"");
+            STATIC_LINK.put("boehm-gc.a", "boehm-gc.a:\n" +
+                    "\tcd boehm-gc;autoreconf -vif;automake --add-missing;./configure;make -f Makefile.direct\n" +
+            		"\tcp boehm-gc/gc.a boehm-gc.a\n");
+            break;
+        case DL_MALLOC:
+            CLanguageGenerator.MALLOC = "malloc";
+            STATIC_LINK.put("dlmalloc.o", "dlmalloc.o:\n\tgcc -O3 -c -o dlmalloc.o dlmalloc.c\n");
+            break;
+        }
     }
     
     /*
@@ -45,8 +70,10 @@ public class CLanguageRuntime {
         "java_lang_System",
         "java_lang_StringBuffer",
         "java_lang_String",
-        "java_lang_Integer"
+        "java_lang_Integer",
     };
+    public static final ArrayList<String> EXTRA_INCLUDE = new ArrayList<String>();
+    public static final HashMap<String, String> STATIC_LINK = new HashMap<String, String>();
     public static final String RJAVA_LIB_DIR = "rjava_clib/";
     
     /*
@@ -163,11 +190,11 @@ public class CLanguageRuntime {
             "RJava_Interface_Node* prevNewListNode = NULL;" + NEWLINE + 
     
             "for (; oldListIter != NULL; oldListIter = oldListIter->next) {" + NEWLINE + 
-            "  newListIter = (RJava_Interface_Node*) malloc(sizeof(RJava_Interface_Node));" + NEWLINE + 
-            "  newListIter->name = malloc(strlen(oldListIter->name)+1);" + NEWLINE +
+            "  newListIter = (RJava_Interface_Node*)" + CLanguageGenerator.MALLOC + "(sizeof(RJava_Interface_Node));" + NEWLINE + 
+            "  newListIter->name = " + CLanguageGenerator.MALLOC + "(strlen(oldListIter->name)+1);" + NEWLINE +
             "  strcpy(newListIter->name, oldListIter->name);" + NEWLINE + 
 
-            "  newListIter->address = malloc(oldListIter->interface_size);" + NEWLINE + 
+            "  newListIter->address = " + CLanguageGenerator.MALLOC + "(oldListIter->interface_size);" + NEWLINE + 
             "  memcpy(newListIter->address, oldListIter->address, oldListIter->interface_size);" + NEWLINE + 
 
             "  newListIter->interface_size = oldListIter->interface_size;" + NEWLINE + 
@@ -240,9 +267,9 @@ public class CLanguageRuntime {
         StringBuilder out = new StringBuilder();
         out.append("#ifndef RJAVA_LIB_H" + NEWLINE);
         out.append("#define RJAVA_LIB_H" + NEWLINE);
-        /*for (String lib : RJAVA_LIB) {
-            out.append("#include \"" + lib + ".h\"" + NEWLINE);
-        }*/
+        for (String inc : EXTRA_INCLUDE) {
+            out.append(inc + NEWLINE);
+        }
         
         // class struct and interface list forward declaration
         out.append("typedef struct " + COMMON_CLASS_STRUCT + " " + COMMON_CLASS_STRUCT + SEMICOLON + NEWLINE);
@@ -340,13 +367,23 @@ public class CLanguageRuntime {
         // copy lib files
         try {
             FileUtils.copyDirectory(new File(RJAVA_LIB_DIR), new File(Constants.OUTPUT_DIR), false);
+            Runtime.getRuntime().exec("chmod -R 777 " + Constants.OUTPUT_DIR);
         } catch (IOException e) {
             e.printStackTrace();
+            throw new RJavaError("Error when copying lib files: " + e.getMessage());
         }
         
-        // generate makefile
+        /*
+         *  generate makefile
+         */
         StringBuilder makeFile = new StringBuilder();
+        
+        // add dependencies
         makeFile.append("all: ");
+        for (String lib : STATIC_LINK.keySet())
+            makeFile.append(lib + " ");
+        makeFile.append(NEWLINE);
+        
         String fileList = "";
         for (String c : generator.getTranslatedCSource())
             fileList += c + " ";
@@ -354,11 +391,19 @@ public class CLanguageRuntime {
             fileList += l + ".c ";
         fileList += RJAVA_RUNTIME_SOURCE_FILE + " ";
         fileList += RJAVA_LIB_SOURCE_FILE + " ";
+        for (String link : STATIC_LINK.keySet())
+            fileList += link + " ";
         
-        makeFile.append(NEWLINE);
         makeFile.append("\tgcc -O3 -o " + generator.getMainObj() + " ");
         makeFile.append(fileList);
         makeFile.append(" -I .");
+        makeFile.append(NEWLINE);
+        
+        // build static libs
+        for (String lib : STATIC_LINK.keySet()) {
+            makeFile.append(STATIC_LINK.get(lib));
+        }
+        
         generator.writeTo(makeFile.toString(), Constants.OUTPUT_DIR + "Makefile");
     }
     

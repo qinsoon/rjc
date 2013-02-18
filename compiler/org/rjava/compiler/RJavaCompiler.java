@@ -42,6 +42,8 @@ public class RJavaCompiler {
     	checker = new StaticRestrictionChecker();
     	codeGenerator = new CLanguageGenerator();
     	
+    	codeGenerator.preTranslationWork();
+    	
     	for (int i = 0; i < task.getSources().size(); i ++) {
     	    System.out.println("Compiling [" + task.getClasses().get(i) + "]: " + task.getSources().get(i));
     	    String source = task.getSources().get(i);
@@ -121,6 +123,9 @@ public class RJavaCompiler {
         }
 	}
 
+	// should have only one compilation task here.
+	assert (tasks.size() <= 1);
+	
 	// compile all tasks
 	for (CompilationTask t : tasks) {
 	    if (DEBUG) debug(t);
