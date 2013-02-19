@@ -11,7 +11,9 @@ import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.semantics.representation.RType;
 import org.rjava.compiler.targets.CodeGenerator;
+import org.rjava.compiler.targets.GeneratorOptions;
 import org.rjava.compiler.targets.c.CLanguageGenerator;
+import org.rjava.compiler.targets.c.CLanguageGeneratorOptions;
 import org.rjava.restriction.StaticRestrictionChecker;
 
 public class RJavaCompiler {
@@ -19,6 +21,7 @@ public class RJavaCompiler {
 
     private CompilationTask task;
     private CodeGenerator codeGenerator;
+    private GeneratorOptions generatorOptions;
     private StaticRestrictionChecker checker;
     
     public static CompilationTask currentTask;
@@ -40,7 +43,8 @@ public class RJavaCompiler {
     	
     	// initialize Restriction Checker and Code Generator
     	checker = new StaticRestrictionChecker();
-    	codeGenerator = new CLanguageGenerator();
+    	generatorOptions = new CLanguageGeneratorOptions();
+    	codeGenerator = new CLanguageGenerator(generatorOptions);
     	
     	codeGenerator.preTranslationWork();
     	
@@ -130,7 +134,7 @@ public class RJavaCompiler {
 	for (CompilationTask t : tasks) {
 	    if (DEBUG) debug(t);
 	    
-	    RJavaCompiler compiler = new RJavaCompiler(t);
+	    RJavaCompiler compiler = newRJavaCompiler(t);
 	    try {
 	        compiler.compile();
 	    } catch (RJavaWarning e) {
@@ -139,6 +143,15 @@ public class RJavaCompiler {
 	        error(e);
 	    }
 	}
+    }
+    
+    private static RJavaCompiler singleton;
+    private static RJavaCompiler newRJavaCompiler(CompilationTask t) {
+        singleton = new RJavaCompiler(t);
+        return singleton;
+    }
+    public static GeneratorOptions getCurrentGeneratorOptions() {
+        return singleton.generatorOptions;
     }
     
     public static void debug(Object o) {

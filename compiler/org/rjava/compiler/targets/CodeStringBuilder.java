@@ -18,9 +18,21 @@ public class CodeStringBuilder {
         else throw new RuntimeException("Trying to decrease indent level when indent level is already 0");
     }
     
+    public void appendWithIndent(Object o) {
+        increaseIndent();
+        append(o);
+        decreaseIndent();
+    }
+    
     public void append(Object o) {
         builder.append(getIndent());
-        builder.append(o);
+        String tmp = o.toString();
+        if (tmp.endsWith("\n")) {
+            tmp = tmp.substring(0, tmp.length() - 1);
+            tmp = tmp.replaceAll("\n", "\n" + getIndent());
+            tmp += "\n";
+        } else tmp = tmp.replaceAll("\n", "\n" + getIndent());
+        builder.append(tmp);
     }
     
     public void appendNoIndent(Object o) {

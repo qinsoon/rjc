@@ -24,6 +24,7 @@ import org.rjava.compiler.semantics.representation.RType;
 import org.rjava.compiler.semantics.representation.stmt.RAssignStmt;
 import org.rjava.compiler.targets.CodeGenerator;
 import org.rjava.compiler.targets.CodeStringBuilder;
+import org.rjava.compiler.targets.GeneratorOptions;
 import org.rjava.compiler.targets.c.runtime.CLanguageRuntime;
 import org.rjava.compiler.util.Tree;
 import org.rjava.compiler.util.TreeBreadthFirstIterator;
@@ -77,6 +78,12 @@ public class CLanguageGenerator extends CodeGenerator {
     Map<String, CodeStringBuilder> classInitMap = new HashMap<String, CodeStringBuilder>();
     
     Set<String> referencedClasses;
+    
+    CLanguageGeneratorOptions options;
+
+    public CLanguageGenerator(GeneratorOptions generatorOptions) {
+        this.options = (CLanguageGeneratorOptions) generatorOptions;
+    }
 
     @Override
     public void translate(RClass klass, String source)
@@ -213,6 +220,7 @@ public class CLanguageGenerator extends CodeGenerator {
                 outMain.append(CLanguageRuntime.RJAVA_CLASS_INIT + "()" + SEMICOLON + NEWLINE);
                 containsMain = true;
             } else {
+                outMain.append(commentln(method.getKlass().getName() + "." + method.getName() + "()"));
                 outMain.append(getMethodSignature(method) + " {" + NEWLINE);
                 outMain.increaseIndent();
             }

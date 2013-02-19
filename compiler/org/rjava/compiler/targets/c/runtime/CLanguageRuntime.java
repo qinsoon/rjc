@@ -15,17 +15,19 @@ import org.rjava.compiler.Constants;
 import org.rjava.compiler.exception.RJavaError;
 import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RClass;
+import org.rjava.compiler.targets.CodeStringBuilder;
 import org.rjava.compiler.targets.c.CLanguageGenerator;
 import org.rjava.compiler.targets.c.CLanguageNameGenerator;
 import org.rjava.compiler.util.Tree;
 import org.rjava.compiler.util.TreeBreadthFirstIterator;
 
 public class CLanguageRuntime {
-    public static final int DEFAULT_MALLOC  = 0;
-    public static final int GC_MALLOC       = 1;
-    public static final int DL_MALLOC       = 2;
+    public static final int DEFAULT_MALLOC      = 0;
+    public static final int GC_MALLOC           = 1;
+    public static final int DL_MALLOC           = 2;
+    public static final int GC_MALLOC_PREBUILT  = 3;
 
-    public static final int MEMORY_MANAGEMENT_SCHEME = GC_MALLOC;
+    public static final int MEMORY_MANAGEMENT_SCHEME = GC_MALLOC_PREBUILT;
     
     CLanguageGenerator generator;
     CLanguageNameGenerator name;
@@ -44,6 +46,12 @@ public class CLanguageRuntime {
             STATIC_LINK.put("boehm-gc.a", "boehm-gc.a:\n" +
                     "\tcd boehm-gc;autoreconf -vif;automake --add-missing;./configure;make -f Makefile.direct\n" +
             		"\tcp boehm-gc/gc.a boehm-gc.a\n");
+            break;
+        case GC_MALLOC_PREBUILT:
+            CLanguageGenerator.MALLOC = "GC_malloc";
+            EXTRA_INCLUDE.add("#include \"boehm-gc/include/gc.h\"");
+            STATIC_LINK.put("boehm-gc.a", "boehm-gc.a:\n" +
+                    "\tcp prebuilt/boehm-gc.a boehm-gc.a\n");
             break;
         case DL_MALLOC:
             CLanguageGenerator.MALLOC = "malloc";
@@ -264,34 +272,44 @@ public class CLanguageRuntime {
     
     public void generateCRuntime() throws RJavaError {
         // generating lib include
-        StringBuilder out = new StringBuilder();
+        CodeStringBuilder out = new CodeStringBuilder();
         out.append("#ifndef RJAVA_LIB_H" + NEWLINE);
         out.append("#define RJAVA_LIB_H" + NEWLINE);
         for (String inc : EXTRA_INCLUDE) {
             out.append(inc + NEWLINE);
         }
+        out.append(NEWLINE);
         
         // class struct and interface list forward declaration
         out.append("typedef struct " + COMMON_CLASS_STRUCT + " " + COMMON_CLASS_STRUCT + SEMICOLON + NEWLINE);
         out.append("typedef struct " + INTERFACE_LIST_NODE + " " + INTERFACE_LIST_NODE + SEMICOLON + NEWLINE);
+        out.append(NEWLINE);
         
         // interface list
         out.append("struct " + INTERFACE_LIST_NODE + " {" + NEWLINE);
+        out.increaseIndent();
         out.append("char* " + INTERFACE_LIST_NODE_ATTR_NAME + SEMICOLON + NEWLINE);
         out.append("void* " + INTERFACE_LIST_NODE_ATTR_ADDR + SEMICOLON + NEWLINE);
         out.append("int " + INTERFACE_LIST_NODE_ATTR_SIZE + SEMICOLON + NEWLINE);
         out.append(INTERFACE_LIST_NODE + "* " + INTERFACE_LIST_NODE_ATTR_NEXT + SEMICOLON + NEWLINE);
+        out.decreaseIndent();
         out.append("}" + SEMICOLON + NEWLINE);
+        out.append(NEWLINE);
         
         out.append("struct " + COMMON_CLASS_STRUCT + " {" + NEWLINE);
+        out.increaseIndent();
         out.append(COMMON_CLASS_STRUCT + "* " + SUPER_CLASS + SEMICOLON + NEWLINE);
         out.append(INTERFACE_LIST_NODE + "* " + INTERFACE_LIST + SEMICOLON + NEWLINE);
+        out.decreaseIndent();
         out.append("}" + SEMICOLON + NEWLINE);
+        out.append(NEWLINE);
         
         // instance struct
         out.append("typedef struct " + COMMON_INSTANCE_STRUCT + " {" + NEWLINE);
-        out.append("void* " + POINTER_TO_CLASS_STRUCT + SEMICOLON + NEWLINE);
+        out.appendWithIndent("void* " + POINTER_TO_CLASS_STRUCT + SEMICOLON + NEWLINE);
         out.append("} " + COMMON_INSTANCE_STRUCT + SEMICOLON + NEWLINE);
+        
+        out.append(NEWLINE);
         
         //out.append("#define RJAVA_STR char *" + NEWLINE);
         out.append("#endif" + NEWLINE);
@@ -315,7 +333,7 @@ public class CLanguageRuntime {
         generator.writeTo(out.toString(), Constants.OUTPUT_DIR + RJAVA_RUNTIME_INCLUDE_FILE);
         
         // generating lib source - for class init()
-        StringBuilder libSource = new StringBuilder();
+        CodeStringBuilder libSource = new CodeStringBuilder();
         libSource.append(RJAVA_RUNTIME_INCLUDE + NEWLINE);
         libSource.append(RJAVA_LIB_INCLUDE + NEWLINE);
         libSource.append(INCLUDE_STDIO + NEWLINE);
@@ -324,43 +342,47 @@ public class CLanguageRuntime {
         for (String app : generator.getTranslatedCHeader()) {
             libSource.append("#include \"" + app + "\"" + NEWLINE);
         }
+        libSource.append(NEWLINE);
+        
         // void rjava_class_init()
         libSource.append("void " + CLanguageRuntime.RJAVA_CLASS_INIT + "() {" + NEWLINE);
+        libSource.increaseIndent();
         libSource.append(CLanguageRuntime.RJAVA_LIB_INIT + "()" + SEMICOLON + NEWLINE);
         libSource.append(getClassInitMethodBody());
+        libSource.decreaseIndent();
         libSource.append("}" + NEWLINE);
         // void rjava_add_interface_to_class(void* interface, char* name, RJava_Common_Class* class);
         libSource.append("void " + CLanguageRuntime.RJAVA_ADD_INTERFACE_TO_CLASS + "(void* interface, int interface_size, char* name, " + COMMON_CLASS_STRUCT + "* class) {" + NEWLINE);
-        libSource.append(CLanguageRuntime.RJAVA_ADD_INTERFACE_TO_CLASS_SOURCE);
+        libSource.appendWithIndent(CLanguageRuntime.RJAVA_ADD_INTERFACE_TO_CLASS_SOURCE);
         libSource.append("}" + NEWLINE);
         // void rjava_alter_interface(void* interface, char* name, RJava_Common_Class* class);
         libSource.append("void " + CLanguageRuntime.RJAVA_ALTER_INTERFACE + "(void* interface, char* name, " + COMMON_CLASS_STRUCT + "* class) {" + NEWLINE);
-        libSource.append(CLanguageRuntime.RJAVA_ALTER_INTERFACE_SOURCE);
+        libSource.appendWithIndent(CLanguageRuntime.RJAVA_ALTER_INTERFACE_SOURCE);
         libSource.append("}" + NEWLINE);
         // RJava_Interface_Node* rjava_get_interface(RJava_Interface_Node* list, char* name);
         libSource.append("void* " + CLanguageRuntime.RJAVA_GET_INTERFACE + "(" + INTERFACE_LIST_NODE + "* list, char* name) {" + NEWLINE);
-        libSource.append(CLanguageRuntime.RJAVA_GET_INTERFACE_SOURCE);
+        libSource.appendWithIndent(CLanguageRuntime.RJAVA_GET_INTERFACE_SOURCE);
         libSource.append("}" + NEWLINE);
         libSource.append("void " + CLanguageRuntime.RJAVA_INIT_HEADER + "(void* this_class, void* super_class, int super_class_size) {" + NEWLINE);
-        libSource.append(CLanguageRuntime.RJAVA_INIT_HEADER_SOURCE);
+        libSource.appendWithIndent(CLanguageRuntime.RJAVA_INIT_HEADER_SOURCE);
         libSource.append("}" + NEWLINE);
         libSource.append("void " + CLanguageRuntime.RJAVA_DEBUG_PRINT_HEADER + "(char* name, void* this_class) {" + NEWLINE);
-        libSource.append(CLanguageRuntime.RJAVA_DEBUG_PRINT_HEADER_SOURCE);
+        libSource.appendWithIndent(CLanguageRuntime.RJAVA_DEBUG_PRINT_HEADER_SOURCE);
         libSource.append("}" + NEWLINE);
         libSource.append("inline void* " + CLanguageRuntime.RJAVA_NEW_ARRAY + "(int length, long ele_size) {" + NEWLINE);
-        libSource.append(CLanguageRuntime.RJAVA_NEW_ARRAY_SOURCE);
+        libSource.appendWithIndent(CLanguageRuntime.RJAVA_NEW_ARRAY_SOURCE);
         libSource.append("}" + NEWLINE);
         libSource.append("inline void* " + CLanguageRuntime.RJAVA_ACCESS_ARRAY + "(void* array, int index) {" + NEWLINE);
-        libSource.append(CLanguageRuntime.RJAVA_ACCESS_ARRAY_SOURCE);
+        libSource.appendWithIndent(CLanguageRuntime.RJAVA_ACCESS_ARRAY_SOURCE);
         libSource.append("}" + NEWLINE);
         libSource.append("inline int " + CLanguageRuntime.RJAVA_LENGTH_OF_ARRAY + "(void* array) {" + NEWLINE);
-        libSource.append(CLanguageRuntime.RJAVA_LENGTH_OF_ARRAY_SOURCE);
+        libSource.appendWithIndent(CLanguageRuntime.RJAVA_LENGTH_OF_ARRAY_SOURCE);
         libSource.append("}" + NEWLINE);
         libSource.append("void* " + CLanguageRuntime.RJAVA_C_ARRAY_TO_RJAVA_ARRAY + "(int length, long ele_size, void* c_array) {" + NEWLINE);
-        libSource.append(CLanguageRuntime.RJAVA_C_ARRAY_TO_RJAVA_ARRAY_SOURCE);
+        libSource.appendWithIndent(CLanguageRuntime.RJAVA_C_ARRAY_TO_RJAVA_ARRAY_SOURCE);
         libSource.append("}" + NEWLINE);
         libSource.append("void* " + CLanguageRuntime.RJAVA_INIT_ARGS + "(int argc, char** args) {" + NEWLINE);
-        libSource.append(CLanguageRuntime.RJAVA_INIT_ARGS_SOURCE);
+        libSource.appendWithIndent(CLanguageRuntime.RJAVA_INIT_ARGS_SOURCE);
         libSource.append("}" + NEWLINE);
         generator.writeTo(libSource.toString(), Constants.OUTPUT_DIR + RJAVA_RUNTIME_SOURCE_FILE);
         
@@ -376,7 +398,7 @@ public class CLanguageRuntime {
         /*
          *  generate makefile
          */
-        StringBuilder makeFile = new StringBuilder();
+        CodeStringBuilder makeFile = new CodeStringBuilder();
         
         // add dependencies
         makeFile.append("all: ");
@@ -408,7 +430,7 @@ public class CLanguageRuntime {
     }
     
     private String getClassInitMethodBody() {
-        StringBuilder body = new StringBuilder();
+        CodeStringBuilder body = new CodeStringBuilder();
         
         // init c struct for those classes
         for (Tree<RClass> root : SemanticMap.hierarchy.getRoots()) {
@@ -433,7 +455,7 @@ public class CLanguageRuntime {
                 }
             }
         }
-        
+
         return body.toString();
     }
 }

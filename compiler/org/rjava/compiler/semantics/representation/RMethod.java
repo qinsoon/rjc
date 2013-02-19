@@ -141,7 +141,7 @@ public class RMethod {
     }
     
     public boolean shouldBeInlined() {
-        return body.size() <= 25;
+        return body.size() <= 25 && RJavaCompiler.getCurrentGeneratorOptions().allowInline();
     }
 
     /**
