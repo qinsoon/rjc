@@ -19,6 +19,7 @@ typedef struct java_lang_String_class {
 
 java_lang_String_class java_lang_String_class_instance;
 
+inline void java_lang_String_rjinit(void* this_parameter, char* str);
 inline java_lang_String* newStringConstant(char* string);
 inline bool java_lang_String_equals_java_lang_Object(void* this_parameter, void* another);
 inline java_lang_String* java_lang_String_toString(void* this_parameter);

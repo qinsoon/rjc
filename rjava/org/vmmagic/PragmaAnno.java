@@ -35,4 +35,4 @@ import java.lang.annotation.Inherited;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE,ElementType.ANNOTATION_TYPE})
 @Inherited
-public @interface Pragma { }
+public @interface PragmaAnno { }

@@ -16,7 +16,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.ElementType;
-import org.vmmagic.Pragma;
+import org.vmmagic.PragmaAnno;
 
 /**
  * By default all Java code is interruptible, that is scheduling or garbage
@@ -39,7 +39,7 @@ import org.vmmagic.Pragma;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
-@Pragma
+@PragmaAnno
 public @interface Preemptible {
   /**
    * @return Explanation of why code needs to be preemptible

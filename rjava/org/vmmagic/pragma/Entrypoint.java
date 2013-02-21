@@ -16,7 +16,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.annotation.ElementType;
-import org.vmmagic.Pragma;
+import org.vmmagic.PragmaAnno;
 
 /**
  * The entrypoint annotation indicates that the method or field is
@@ -25,5 +25,5 @@ import org.vmmagic.Pragma;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.FIELD})
-@Pragma
+@PragmaAnno
 public @interface Entrypoint { }

@@ -16,7 +16,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.ElementType;
-import org.vmmagic.Pragma;
+import org.vmmagic.PragmaAnno;
 
 /**
  * A special case of {@link Unpreemptible} where the code may call out to other
@@ -24,7 +24,7 @@ import org.vmmagic.Pragma;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
-@Pragma
+@PragmaAnno
 public @interface UnpreemptibleNoWarn {
   /**
    * @return Explanation of why code needs to be unpreemptible

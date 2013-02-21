@@ -12,14 +12,14 @@
  */
 package org.vmmagic.unboxed;
 
-import org.vmmagic.Unboxed;
+import org.vmmagic.UnboxedAnno;
 import org.vmmagic.pragma.RawStorage;
 
 /**
  * A generic pointer-sized integer. Can be converted to/from other pointer-sized types, and
  * provides shifting and masking operations.
  */
-@Unboxed
+@UnboxedAnno
 @RawStorage(lengthInWords = true, length = 1)
 public final class Word {
 

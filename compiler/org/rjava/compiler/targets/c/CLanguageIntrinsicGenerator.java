@@ -1,5 +1,7 @@
 package org.rjava.compiler.targets.c;
 
+import java.util.Arrays;
+
 import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.semantics.representation.RStatement;
 import org.rjava.compiler.semantics.representation.RType;
@@ -16,6 +18,21 @@ import soot.jimple.internal.JSpecialInvokeExpr;
 import soot.jimple.internal.JVirtualInvokeExpr;
 
 public class CLanguageIntrinsicGenerator {
+    private static final String[] MAGIC_TYPES = {
+        "org.vmmagic.unboxed.Address",
+        "org.vmmagic.unboxed.Extent",
+        "org.vmmagic.unboxed.ObjectReference",
+        "org.vmmagic.unboxed.Offset",
+        "org.vmmagic.unboxed.Word"
+    };
+    private static final String[] MAGIC_ARRAY_TYPES = {
+        "org.vmmagic.unboxed.AddressArray",
+        "org.vmmagic.unboxed.ExtentArray",
+        "org.vmmagic.unboxed.ObjectReferenceArray",
+        "org.vmmagic.unboxed.OffsetArray",
+        "org.vmmagic.unboxed.WordArray"
+    };
+    
     CLanguageNameGenerator name;
     CLanguageGenerator languageGenerator;
     
@@ -47,6 +64,13 @@ public class CLanguageIntrinsicGenerator {
             type.setPrimitive(true);
             type.setArray(false);
             type.setVoidType(true);
+        } 
+        
+        /*
+         * Magic types
+         */
+        else if (Arrays.asList(MAGIC_TYPES).contains(type.getClassName())) {
+            type.setPrimitive(true);
         }
     }
 

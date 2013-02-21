@@ -41,4 +41,4 @@ import java.lang.annotation.Inherited;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Inherited
-public @interface Unboxed { }
+public @interface UnboxedAnno { }

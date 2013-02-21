@@ -13,14 +13,15 @@ inline java_lang_String* java_lang_String_toString(void* this_parameter) {
 
 inline java_lang_String* newStringConstant(char* string) {
     java_lang_String* ret = (java_lang_String*) malloc(sizeof(java_lang_String));
-    
-    strcpy(ret->internal, string);
-    
-    ((RJava_Common_Instance*)ret) -> class_struct = &java_lang_String_class_instance;
-    
+    java_lang_String_rjinit(ret, string);    
     return ret;
 }
 
 inline char java_lang_String_charAt_int(void* this_parameter, int index) {
     return ((java_lang_String*)this_parameter) -> internal[index];
+}
+
+inline void java_lang_String_rjinit(void* this_parameter, char* str) {
+    strcpy(((java_lang_String*) this_parameter) -> internal, str);
+    (((RJava_Common_Instance*)this_parameter) -> class_struct) = &java_lang_String_class_instance;
 }

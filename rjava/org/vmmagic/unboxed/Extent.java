@@ -12,14 +12,14 @@
  */
 package org.vmmagic.unboxed;
 
-import org.vmmagic.Unboxed;
+import org.vmmagic.UnboxedAnno;
 import org.vmmagic.pragma.RawStorage;
 
 /**
  * Represents a pointer-sized unsigned integer used for describing a length in bytes.
  * Typical uses include "length" or "size" arguments (e.g., for memcpy).
  */
-@Unboxed
+@UnboxedAnno
 @RawStorage(lengthInWords = true, length = 1)
 public final class Extent {
   public static Extent fromIntSignExtend(int address) {

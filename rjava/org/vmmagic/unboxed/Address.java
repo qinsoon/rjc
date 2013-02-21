@@ -12,7 +12,7 @@
  */
 package org.vmmagic.unboxed;
 
-import org.vmmagic.Unboxed;
+import org.vmmagic.UnboxedAnno;
 import org.vmmagic.pragma.RawStorage;
 
 /**
@@ -27,7 +27,7 @@ import org.vmmagic.pragma.RawStorage;
  * to 32 bit and 64 bit integral types), and access to unsigned
  * operations (Java does not have unsigned int types).
  */
-@Unboxed
+@UnboxedAnno
 @RawStorage(lengthInWords = true, length = 1)
 public final class Address {
 

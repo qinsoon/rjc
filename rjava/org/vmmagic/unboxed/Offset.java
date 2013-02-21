@@ -12,14 +12,14 @@
  */
 package org.vmmagic.unboxed;
 
-import org.vmmagic.Unboxed;
+import org.vmmagic.UnboxedAnno;
 import org.vmmagic.pragma.RawStorage;
 
 /**
  * Represents a pointer-sized signed integer used for describing an offset in bytes.
  * Can be used to refer to a field in a type-unsafe way.
  */
-@Unboxed
+@UnboxedAnno
 @RawStorage(lengthInWords = true, length = 1)
 public final class Offset {
 

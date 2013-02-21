@@ -291,7 +291,8 @@ public class CLanguageStatementGenerator {
   
     private String fromSootJVirtualInvokeExpr(soot.jimple.internal.JVirtualInvokeExpr virtualInvoke) {
         String callingClass = virtualInvoke.getMethod().getDeclaringClass().getName();
-        if (callingClass.startsWith("java.") || callingClass.startsWith("javax.")) {
+        if (callingClass.startsWith("java.") || callingClass.startsWith("javax.") ||
+                callingClass.startsWith("org.vmmagic.")) {
             return fromSootJVirtualInvokeExpr_libCall(virtualInvoke);
         } else return fromSootJVirtualInvokeExpr_appCall(virtualInvoke);
     }

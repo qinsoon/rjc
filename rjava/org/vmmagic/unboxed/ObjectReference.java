@@ -12,7 +12,7 @@
  */
 package org.vmmagic.unboxed;
 
-import org.vmmagic.Unboxed;
+import org.vmmagic.UnboxedAnno;
 
 /**
  * The object reference type is used by the runtime system and collector to
@@ -22,7 +22,7 @@ import org.vmmagic.Unboxed;
  * objects that the VM is managing. No operations that can not be completed in
  * pure Java should be allowed on Object.
  */
-@Unboxed
+@UnboxedAnno
 public final class ObjectReference {
 
   /**

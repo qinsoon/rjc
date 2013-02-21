@@ -16,7 +16,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.ElementType;
-import org.vmmagic.Pragma;
+import org.vmmagic.PragmaAnno;
 
 /**
  * A pragma that has the same direct effect as {@link Uninterruptible}
@@ -26,7 +26,7 @@ import org.vmmagic.Pragma;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE, ElementType.METHOD})
-@Pragma
+@PragmaAnno
 public @interface UninterruptibleNoWarn {
   /**
    * @return Explanation of why uninterruptible warnings are disabled
