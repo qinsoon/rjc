@@ -19,6 +19,13 @@ import org.rjava.restriction.StaticRestrictionChecker;
 public class RJavaCompiler {
     public static final boolean DEBUG = true;
 
+    // we use RJavaCompiler to compile its library and vmmagic
+    private int internalCompile = INTERNAL_COMPILE_NONE;
+    
+    public static int INTERNAL_COMPILE_NONE         = 0;
+    public static int INTERNAL_COMPILE_MAGIC_TYPES  = 1;
+    public static int INTERNAL_COMPILE_LIB          = 2;
+    
     private CompilationTask task;
     private CodeGenerator codeGenerator;
     private GeneratorOptions generatorOptions;
@@ -26,8 +33,22 @@ public class RJavaCompiler {
     
     public static CompilationTask currentTask;
     
-    public RJavaCompiler(CompilationTask task) {
+    private RJavaCompiler(CompilationTask task) {
     	this.task = task;
+    	
+        // initialize Restriction Checker and Code Generator
+        checker = new StaticRestrictionChecker();
+        generatorOptions = new CLanguageGeneratorOptions();
+        codeGenerator = new CLanguageGenerator(generatorOptions);
+    }
+    
+    public void internalCompile(int compileType) throws RJavaWarning, RJavaError{
+        this.internalCompile = compileType;
+        compile();
+    }
+    
+    public void setCodeGenerator(CodeGenerator myCodeGenerator) {
+        this.codeGenerator = myCodeGenerator;
     }
     
     /**
@@ -40,11 +61,6 @@ public class RJavaCompiler {
         
     	// collect semantic information (now with soot)
     	SemanticMap.initSemanticMap(task);
-    	
-    	// initialize Restriction Checker and Code Generator
-    	checker = new StaticRestrictionChecker();
-    	generatorOptions = new CLanguageGeneratorOptions();
-    	codeGenerator = new CLanguageGenerator(generatorOptions);
     	
     	codeGenerator.preTranslationWork();
     	
@@ -74,7 +90,8 @@ public class RJavaCompiler {
     	}
     	
     	// copy library etc.
-    	codeGenerator.postTranslationWork();
+    	if (internalCompile == INTERNAL_COMPILE_NONE)
+    	    codeGenerator.postTranslationWork();
     	
     	if (SemanticMap.DEBUG) {
     	    debug("Types:");
@@ -146,14 +163,16 @@ public class RJavaCompiler {
     }
     
     private static RJavaCompiler singleton;
-    private static RJavaCompiler newRJavaCompiler(CompilationTask t) {
+    public static RJavaCompiler newRJavaCompiler(CompilationTask t) {
         singleton = new RJavaCompiler(t);
         return singleton;
     }
     public static GeneratorOptions getCurrentGeneratorOptions() {
         return singleton.generatorOptions;
     }
-    
+    public static int isInternalCompiling() {
+        return singleton.internalCompile;
+    }
     public static void debug(Object o) {
         System.out.println(o);
     }

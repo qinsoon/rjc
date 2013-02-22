@@ -1,7 +1,10 @@
 package org.rjava.compiler.targets.c;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.rjava.compiler.Constants;
 import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.semantics.representation.RStatement;
 import org.rjava.compiler.semantics.representation.RType;
@@ -18,23 +21,16 @@ import soot.jimple.internal.JSpecialInvokeExpr;
 import soot.jimple.internal.JVirtualInvokeExpr;
 
 public class CLanguageIntrinsicGenerator {
-    private static final String[] MAGIC_TYPES = {
-        "org.vmmagic.unboxed.Address",
-        "org.vmmagic.unboxed.Extent",
-        "org.vmmagic.unboxed.ObjectReference",
-        "org.vmmagic.unboxed.Offset",
-        "org.vmmagic.unboxed.Word"
-    };
-    private static final String[] MAGIC_ARRAY_TYPES = {
-        "org.vmmagic.unboxed.AddressArray",
-        "org.vmmagic.unboxed.ExtentArray",
-        "org.vmmagic.unboxed.ObjectReferenceArray",
-        "org.vmmagic.unboxed.OffsetArray",
-        "org.vmmagic.unboxed.WordArray"
-    };
-    
     CLanguageNameGenerator name;
     CLanguageGenerator languageGenerator;
+    
+    public static final Map<String, String> JAVA_PRIMITIVE_TO_C_TYPE = new HashMap<String, String>();
+    static {
+        JAVA_PRIMITIVE_TO_C_TYPE.put("boolean", "bool");
+        JAVA_PRIMITIVE_TO_C_TYPE.put("short", "uint16_t");
+        JAVA_PRIMITIVE_TO_C_TYPE.put("int", "uint32_t");
+        JAVA_PRIMITIVE_TO_C_TYPE.put("long", "uint64_t");
+    }
     
     public CLanguageIntrinsicGenerator(CLanguageGenerator generator) {
         this.languageGenerator = generator;
@@ -42,34 +38,21 @@ public class CLanguageIntrinsicGenerator {
     }
 
     public void generate(RType type) {
-        /*if (type.getClassName().equals("java.lang.String")) {
-            type.setType(null);
-            type.setClassName("RJAVA_STR");
-            type.setPackageName(null);
-            type.setPrimitive(true);
-            //type.setIntrinsicType(true);
-        } else*/ if (type.getClassName().equals("boolean")) {
-            type.setType(null);
-            type.setClassName("bool");
-        } /*else if (type.getClassName().equals("java.lang.Integer")) {
-            type.setType(null);
-            type.setClassName("int");
-            type.setPackageName(null);
-            type.setPrimitive(true);
-            type.setIntrinsicType(true);
-        }*/ else if (type.getClassName().equals("null_type")) {
+        // java to c matching
+        if (JAVA_PRIMITIVE_TO_C_TYPE.keySet().contains(type.getClassName())) {
+            type.setClassName(JAVA_PRIMITIVE_TO_C_TYPE.get(type.getClassName()));
+        }
+        // soot internal type
+        else if (type.getClassName().equals("null_type")) {
             // void*
             type.setType(null);
             type.setClassName("void*");
             type.setPrimitive(true);
             type.setArray(false);
             type.setVoidType(true);
-        } 
-        
-        /*
-         * Magic types
-         */
-        else if (Arrays.asList(MAGIC_TYPES).contains(type.getClassName())) {
+        }        
+        // magic types are primitives
+        else if (Arrays.asList(Constants.MAGIC_TYPES).contains(type.getClassName())) {
             type.setPrimitive(true);
         }
     }

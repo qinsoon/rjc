@@ -26,13 +26,15 @@ public class CodeStringBuilder {
     
     public void append(Object o) {
         builder.append(getIndent());
-        String tmp = o.toString();
-        if (tmp.endsWith("\n")) {
-            tmp = tmp.substring(0, tmp.length() - 1);
-            tmp = tmp.replaceAll("\n", "\n" + getIndent());
-            tmp += "\n";
-        } else tmp = tmp.replaceAll("\n", "\n" + getIndent());
-        builder.append(tmp);
+        if (o != null) {
+            String tmp = o.toString();
+            if (tmp.endsWith("\n")) {
+                tmp = tmp.substring(0, tmp.length() - 1);
+                tmp = tmp.replaceAll("\n", "\n" + getIndent());
+                tmp += "\n";
+            } else tmp = tmp.replaceAll("\n", "\n" + getIndent());
+            builder.append(tmp);
+        }
     }
     
     public void appendNoIndent(Object o) {

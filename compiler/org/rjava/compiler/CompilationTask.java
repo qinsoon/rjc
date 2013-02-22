@@ -98,6 +98,10 @@ public class CompilationTask {
     	result += "\n";
     	return result;
     }
+    
+    public int size() {
+        return sources.size();
+    }
 
     public String getPath() {
         return path;

@@ -35,6 +35,12 @@ import soot.jimple.internal.JAssignStmt;
 
 public class CLanguageGenerator extends CodeGenerator {
     /*
+     * Java spec
+     */
+    public static final String JAVA_INT = "uint32_t";
+    public static final String JAVA_LONG = "uint64_t";
+    public static final String JAVA_SHORT = "uint16_t";
+    /*
      * C keyword / reserves
      */
     public static final String NEWLINE = "\n";
@@ -62,24 +68,24 @@ public class CLanguageGenerator extends CodeGenerator {
      */
     public static final String INCOMPLETE_IMPLEMENTATION = "***Incomplete Implementation***";
     
-    CLanguageNameGenerator name = new CLanguageNameGenerator(this);
-    CLanguageIntrinsicGenerator intrinsic = new CLanguageIntrinsicGenerator(this);
-    CLanguageRuntime runtime = new CLanguageRuntime(this);
+    protected CLanguageNameGenerator name = new CLanguageNameGenerator(this);
+    protected CLanguageIntrinsicGenerator intrinsic = new CLanguageIntrinsicGenerator(this);
+    protected CLanguageRuntime runtime = new CLanguageRuntime(this);
     
-    String cHeaderSource;
-    String cCodeSource;
-    RClass currentRClass;
+    protected String cHeaderSource;
+    protected String cCodeSource;
+    protected RClass currentRClass;
     
-    List<String> translatedCSource = new ArrayList<String>();
-    List<String> translatedCHeader = new ArrayList<String>();
-    String mainSource = "";
-    String mainObj = "";
+    protected List<String> translatedCSource = new ArrayList<String>();
+    protected List<String> translatedCHeader = new ArrayList<String>();
+    protected String mainSource = "";
+    protected String mainObj = "";
    
-    Map<String, CodeStringBuilder> classInitMap = new HashMap<String, CodeStringBuilder>();
+    protected Map<String, CodeStringBuilder> classInitMap = new HashMap<String, CodeStringBuilder>();
     
-    Set<String> referencedClasses;
+    protected Set<String> referencedClasses;
     
-    CLanguageGeneratorOptions options;
+    protected CLanguageGeneratorOptions options;
 
     public CLanguageGenerator(GeneratorOptions generatorOptions) {
         this.options = (CLanguageGeneratorOptions) generatorOptions;
@@ -103,6 +109,7 @@ public class CLanguageGenerator extends CodeGenerator {
             }
         
         currentRClass = klass;
+        
         if (!klass.isInterface()) {
             generateIntrinsic(klass, source);
             generateHeader(klass, source);
@@ -110,6 +117,7 @@ public class CLanguageGenerator extends CodeGenerator {
         } else {
             generateInterface(klass, source);
         }
+        return;
     }
 
     /**
@@ -168,7 +176,7 @@ public class CLanguageGenerator extends CodeGenerator {
         translatedCHeader.add(cHeaderSource);
     }
 
-    private void generateIntrinsic(RClass klass, String source) {
+    protected void generateIntrinsic(RClass klass, String source) {
         // translate intrinsic types, e.g. java.lang.String/Integer, or org.vmmagic.unboxed.Address
         for (RType type : SemanticMap.types.values()) {
             intrinsic.generate(type);
@@ -523,7 +531,7 @@ public class CLanguageGenerator extends CodeGenerator {
      * @param ext new extension for compiled file
      * @return
      */
-    private String getSource(String origin, String ext) {
+    protected String getSource(String origin, String ext) {
         String ret = origin.replace(RJavaCompiler.currentTask.getPath(), "");
         ret = ret.replace(Constants.RJAVA_EXT, ext);
         ret = ret.replaceAll("/", "_");
