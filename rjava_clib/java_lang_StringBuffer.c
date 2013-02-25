@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "rjava_crt.h"
+
 
 inline void java_lang_StringBuffer_rjinit(java_lang_StringBuffer* this_parameter) {
   this_parameter->internal = (char *) malloc (JAVA_LANG_STRINGBUFFER_INIT_SIZE);
@@ -31,9 +31,9 @@ void java_lang_StringBuffer_append_java_lang_Object(java_lang_StringBuffer* this
   strcat(this_parameter->internal, str);
 }
 
-inline void java_lang_StringBuffer_append_int(java_lang_StringBuffer* this_parameter, int i) {
+inline void java_lang_StringBuffer_append_int32_t(java_lang_StringBuffer* this_parameter, int32_t i) {
     char iStr[50];
-    sprintf (iStr, "%d", i);
+    sprintf (iStr, "%"PRId32, i);
     java_lang_StringBuffer_append_java_lang_Object(this_parameter, newStringConstant(iStr));
 }
 

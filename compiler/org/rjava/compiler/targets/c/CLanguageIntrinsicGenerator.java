@@ -27,9 +27,9 @@ public class CLanguageIntrinsicGenerator {
     public static final Map<String, String> JAVA_PRIMITIVE_TO_C_TYPE = new HashMap<String, String>();
     static {
         JAVA_PRIMITIVE_TO_C_TYPE.put("boolean", "bool");
-        JAVA_PRIMITIVE_TO_C_TYPE.put("short", "uint16_t");
-        JAVA_PRIMITIVE_TO_C_TYPE.put("int", "uint32_t");
-        JAVA_PRIMITIVE_TO_C_TYPE.put("long", "uint64_t");
+        JAVA_PRIMITIVE_TO_C_TYPE.put("short", "int16_t");
+        JAVA_PRIMITIVE_TO_C_TYPE.put("int", "int32_t");
+        JAVA_PRIMITIVE_TO_C_TYPE.put("long", "int64_t");
     }
     
     public CLanguageIntrinsicGenerator(CLanguageGenerator generator) {

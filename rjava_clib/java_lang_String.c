@@ -17,7 +17,7 @@ inline java_lang_String* newStringConstant(char* string) {
     return ret;
 }
 
-inline char java_lang_String_charAt_int(void* this_parameter, int index) {
+inline char java_lang_String_charAt_int32_t(void* this_parameter, int32_t index) {
     return ((java_lang_String*)this_parameter) -> internal[index];
 }
 

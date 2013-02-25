@@ -36,6 +36,15 @@ public class CLanguageRuntime {
         this.generator = generator;
         name = new CLanguageNameGenerator(generator);
         
+        // atomic ops lib
+        final boolean ATOMIC_OPS_PREBUILT = true;
+        if (ATOMIC_OPS_PREBUILT) {
+            STATIC_LINK.put("libatomic_ops.a", "libatomic_ops.a:\n" +
+                "\tcp prebuilt/libatomic_ops.a libatomic_ops.a\n");
+        } else STATIC_LINK.put("boehm-gc/libatomic_ops/src/atomic_ops.a", "boehm-gc/libatomic_ops/src/atomic_ops.a:\n" +
+        		"\tcd boehm-gc/libatomic_ops;./configure;make\n");
+        
+        // malloc lib
         switch (MEMORY_MANAGEMENT_SCHEME) {
         case DEFAULT_MALLOC: 
             CLanguageGenerator.MALLOC = "malloc";
@@ -66,6 +75,7 @@ public class CLanguageRuntime {
     public static final String INCLUDE_STDIO = "#include <stdio.h>";
     public static final String INCLUDE_STDLIB = "#include <stdlib.h>";
     public static final String INCLUDE_STDBOOL = "#include <stdbool.h>";
+    public static final String INCLUDE_INTTYPES = "#include <inttypes.h>";
     public static final String RJAVA_LIB_INCLUDE_FILE  = "rjava_clib.h";
     public static final String RJAVA_LIB_SOURCE_FILE = "rjava_clib.c";
     public static final String RJAVA_LIB_INCLUDE = "#include \"" + RJAVA_LIB_INCLUDE_FILE + "\"";
@@ -80,7 +90,14 @@ public class CLanguageRuntime {
         "java_lang_String",
         "java_lang_Integer",
     };
+    public static final HashMap<String, String> RJAVA_RUNTIME_DEFINE = new HashMap<String, String>();
+    static {
+        RJAVA_RUNTIME_DEFINE.put("byte", "char");
+    }
     public static final ArrayList<String> EXTRA_INCLUDE = new ArrayList<String>();
+    static {
+        EXTRA_INCLUDE.add(INCLUDE_INTTYPES);
+    }
     public static final HashMap<String, String> STATIC_LINK = new HashMap<String, String>();
     public static final String RJAVA_LIB_DIR = "rjava_clib/";
     
@@ -277,6 +294,12 @@ public class CLanguageRuntime {
         out.append("#define RJAVA_LIB_H" + NEWLINE);
         for (String inc : EXTRA_INCLUDE) {
             out.append(inc + NEWLINE);
+        }
+        out.append(NEWLINE);
+        
+        out.append(CLanguageGenerator.commentln("defines"));
+        for (String key : RJAVA_RUNTIME_DEFINE.keySet()) {
+            out.append("#define " + key + " " + RJAVA_RUNTIME_DEFINE.get(key) + NEWLINE);
         }
         out.append(NEWLINE);
         

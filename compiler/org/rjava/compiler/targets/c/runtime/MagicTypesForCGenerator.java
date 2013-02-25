@@ -14,6 +14,10 @@ import org.rjava.compiler.targets.GeneratorOptions;
 import org.rjava.compiler.targets.c.CLanguageGenerator;
 
 public class MagicTypesForCGenerator extends CLanguageGenerator {
+    public static final String[] INCLUDES = {
+        "boehm-gc/libatomic_ops/src/atomic_ops.h",
+        CLanguageRuntime.RJAVA_RUNTIME_INCLUDE_FILE};
+    
     public MagicTypesForCGenerator(GeneratorOptions generatorOptions) {
         super(generatorOptions);
     }
@@ -56,8 +60,9 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
         outInc.append("#define " + name.get(klass).toUpperCase() + "_H" + NEWLINE);
         
         // include rjava lib
-        //outInc.append(CLanguageRuntime.RJAVA_RUNTIME_INCLUDE + NEWLINE);
-        //outInc.append(CLanguageRuntime.RJAVA_LIB_INCLUDE + NEWLINE);
+        for (String inc : INCLUDES) {
+            outInc.append("#include \"" + inc + "\"" + NEWLINE);
+        }
         
         outMain.append(NEWLINE);
         
@@ -86,7 +91,7 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
                     outMain.append(",");
             }
             outMain.append(") \\" + NEWLINE);
-            outMain.append(getCExpressionFor(method));
+            outMain.append(getCMacroFor(method));
             outMain.append(NEWLINE);
             outMain.append(NEWLINE);
         }
@@ -108,7 +113,7 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
         translatedCHeader.add(cHeaderSource);
     }
 
-    private String getCExpressionFor(RMethod method) {
+    private String getCMacroFor(RMethod method) {
        String methodName = method.getName();
        String type = method.getKlass().getName();
        String param0 = FORMAL_PARAMETER + "0";

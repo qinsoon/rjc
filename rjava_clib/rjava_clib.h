@@ -8,7 +8,6 @@
 #include "java_lang_String.h"
 #include "java_lang_Integer.h"
 
-#define byte char
 void rjava_lib_init();
 
 #endif

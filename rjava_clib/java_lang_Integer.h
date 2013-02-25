@@ -2,10 +2,11 @@
 #define JAVA_LANG_INTEGER_H
 
 #include "java_lang_Object.h"
+#include "rjava_crt.h"
 
 typedef struct java_lang_Integer {
     java_lang_Object instance_header;
-    int internal;
+    int32_t internal;
 } java_lang_Integer;
 
 typedef struct java_lang_Integer_class {
@@ -14,10 +15,10 @@ typedef struct java_lang_Integer_class {
 
 java_lang_Integer_class java_lang_Integer_class_instance;
 
-inline void java_lang_Integer_rjinit_int(void* this_parameter, int i);
-inline java_lang_Integer* java_lang_Integer_valueOf_int(int i);
+inline void java_lang_Integer_rjinit_int32_t(void* this_parameter, int32_t i);
+inline java_lang_Integer* java_lang_Integer_valueOf_int32_t(int32_t i);
 inline java_lang_String* java_lang_Integer_toString(void* this_parameter);
-inline int java_lang_Integer_intValue(void* this_parameter);
-inline java_lang_Integer* newIntegerConstant(int i);
+inline int32_t java_lang_Integer_intValue(void* this_parameter);
+inline java_lang_Integer* newIntegerConstant(int32_t i);
 
 #endif
