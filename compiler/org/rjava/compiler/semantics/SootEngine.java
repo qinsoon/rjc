@@ -27,7 +27,7 @@ import soot.options.Options;
 public class SootEngine {  
     private static final boolean DEBUG = true;
     
-    public static final boolean RUN_SOOT = false;
+    public static final boolean RUN_SOOT = true;
     
     private static final String[] jdkPath = {"components/soot/jce.jar",
     "components/soot/rt.jar"};
@@ -97,7 +97,7 @@ public class SootEngine {
         Options.v().set_output_format(Options.output_format_none);
         
         // exclude java.*
-        Options.v().set_exclude(Arrays.asList("java"));
+        Options.v().set_exclude(Arrays.asList("java", "org.vmmagic"));
         Options.v().set_no_bodies_for_excluded(true);
         Options.v().set_allow_phantom_refs(true);
         

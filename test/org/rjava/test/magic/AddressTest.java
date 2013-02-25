@@ -7,8 +7,6 @@ import org.vmmagic.unboxed.Offset;
 
 @RJavaCore
 public class AddressTest {
-    public static final Offset RJAVA_ARRAY_C_HEADER = Offset.fromIntSignExtend(12);
-    public static final Offset INT_WIDTH = Offset.fromIntSignExtend(4);
     /**
      * @param args
      */
