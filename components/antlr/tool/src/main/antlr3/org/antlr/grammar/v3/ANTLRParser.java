@@ -1,4 +1,4 @@
-// $ANTLR 3.4 /Users/apple/Documents/workspace_research/RJava_Prototype/components/antlr/tool/src/main/antlr3/org/antlr/grammar/v3/ANTLR.g 2013-01-03 10:51:18
+// $ANTLR 3.4 /Users/apple/Documents/workspace_research/RJava_Prototype/components/antlr/tool/src/main/antlr3/org/antlr/grammar/v3/ANTLR.g 2013-02-27 10:13:12
 
 package org.antlr.grammar.v3;
 import org.antlr.tool.ErrorManager;
@@ -707,7 +707,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: scopes, cmt, r, optionsSpec, a, ig, gr, ts, gid
+            // elements: r, ig, ts, scopes, gr, a, optionsSpec, cmt, gid
             // token labels: cmt
             // rule labels: scopes, retval, ts, ig, r, a, gid, gr
             // token list labels: 
@@ -2965,9 +2965,9 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: ruleActions, p3, p4, throwsSpec, p1, scopes, ruleName, rt, p2, ruleAltList, optionsSpec, aa, ex
-            // token labels: p4, p3, p2, p1, aa, rt
-            // rule labels: ex, scopes, retval, ruleName
+            // elements: ruleName, ex, aa, rt, scopes, p3, ruleAltList, p1, p2, optionsSpec, p4, ruleActions, throwsSpec
+            // token labels: p4, p3, p2, p1, rt, aa
+            // rule labels: scopes, ex, retval, ruleName
             // token list labels: 
             // rule list labels: 
             // wildcard labels: 
@@ -2978,10 +2978,10 @@ public TreeAdaptor getTreeAdaptor() {
             RewriteRuleTokenStream stream_p3=new RewriteRuleTokenStream(adaptor,"token p3",p3);
             RewriteRuleTokenStream stream_p2=new RewriteRuleTokenStream(adaptor,"token p2",p2);
             RewriteRuleTokenStream stream_p1=new RewriteRuleTokenStream(adaptor,"token p1",p1);
-            RewriteRuleTokenStream stream_aa=new RewriteRuleTokenStream(adaptor,"token aa",aa);
             RewriteRuleTokenStream stream_rt=new RewriteRuleTokenStream(adaptor,"token rt",rt);
-            RewriteRuleSubtreeStream stream_ex=new RewriteRuleSubtreeStream(adaptor,"rule ex",ex!=null?ex.tree:null);
+            RewriteRuleTokenStream stream_aa=new RewriteRuleTokenStream(adaptor,"token aa",aa);
             RewriteRuleSubtreeStream stream_scopes=new RewriteRuleSubtreeStream(adaptor,"rule scopes",scopes!=null?scopes.tree:null);
+            RewriteRuleSubtreeStream stream_ex=new RewriteRuleSubtreeStream(adaptor,"rule ex",ex!=null?ex.tree:null);
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
             RewriteRuleSubtreeStream stream_ruleName=new RewriteRuleSubtreeStream(adaptor,"rule ruleName",ruleName!=null?ruleName.tree:null);
 
@@ -3542,7 +3542,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: ruleActions, idList, ACTION
+            // elements: idList, ACTION, ruleActions
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -4181,7 +4181,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: optionsSpec, block, ACTION, alternative, ruleActions
+            // elements: ACTION, ruleActions, optionsSpec, block, alternative
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -6825,7 +6825,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
                     // AST REWRITE
-                    // elements: ROOT, block
+                    // elements: block, ROOT
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -6867,7 +6867,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
                     // AST REWRITE
-                    // elements: block, BANG
+                    // elements: BANG, block
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -8785,7 +8785,7 @@ public TreeAdaptor getTreeAdaptor() {
                     if ( state.backtracking==0 ) stream_rewrite_alternative.add(rewrite_alternative163.getTree());
 
                     // AST REWRITE
-                    // elements: rewrite_alternative, rewrite_with_sempred, REWRITE
+                    // elements: rewrite_with_sempred, REWRITE, rewrite_alternative
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -10758,7 +10758,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: rewrite_template_args, id
+            // elements: id, rewrite_template_args
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -10882,7 +10882,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: rewrite_template_args, ACTION
+            // elements: ACTION, rewrite_template_args
             // token labels: 
             // rule labels: retval
             // token list labels: 

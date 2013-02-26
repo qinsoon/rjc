@@ -46,7 +46,7 @@ public final class Constants {
         MAGIC_WORD
     };
 
-    private static final String[] MAGIC_ARRAY_TYPES = {
+    public static final String[] MAGIC_ARRAY_TYPES = {
         MAGIC_ADDRESS           + MAGIC_ARRAY_SUFFIX,
         MAGIC_EXTENT            + MAGIC_ARRAY_SUFFIX,
         MAGIC_OBJECTREFERENCE   + MAGIC_ARRAY_SUFFIX,

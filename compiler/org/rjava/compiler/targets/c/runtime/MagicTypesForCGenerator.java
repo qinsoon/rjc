@@ -45,6 +45,12 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
         MAGIC_TYPE_TO_C_TYPE.put(Constants.MAGIC_OBJECTREFERENCE,   UNSIGNED_MAGIC_TYPE);
         MAGIC_TYPE_TO_C_TYPE.put(Constants.MAGIC_OFFSET,            SIGNED_MAGIC_TYPE);
         MAGIC_TYPE_TO_C_TYPE.put(Constants.MAGIC_WORD,              UNSIGNED_MAGIC_TYPE);
+        
+        MAGIC_TYPE_TO_C_TYPE.put(Constants.MAGIC_ADDRESS + Constants.MAGIC_ARRAY_SUFFIX, UNSIGNED_MAGIC_TYPE + "*");
+        MAGIC_TYPE_TO_C_TYPE.put(Constants.MAGIC_EXTENT + Constants.MAGIC_ARRAY_SUFFIX , UNSIGNED_MAGIC_TYPE + "*");
+        MAGIC_TYPE_TO_C_TYPE.put(Constants.MAGIC_OBJECTREFERENCE + Constants.MAGIC_ARRAY_SUFFIX, UNSIGNED_MAGIC_TYPE + "*");
+        MAGIC_TYPE_TO_C_TYPE.put(Constants.MAGIC_OFFSET + Constants.MAGIC_ARRAY_SUFFIX, SIGNED_MAGIC_TYPE + "*");
+        MAGIC_TYPE_TO_C_TYPE.put(Constants.MAGIC_WORD + Constants.MAGIC_ARRAY_SUFFIX, UNSIGNED_MAGIC_TYPE + "*"); 
     }
     
     private void generateMagicTypeHeader(RClass klass, String source) throws RJavaError {
@@ -112,8 +118,15 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
         
         translatedCHeader.add(cHeaderSource);
     }
+    
+    private String getBaseTypeForMagicArrayType(String arrayType) throws RJavaError {
+        if (arrayType.endsWith(Constants.MAGIC_ARRAY_SUFFIX)) {
+            return arrayType.replace(Constants.MAGIC_ARRAY_SUFFIX, "");
+        }
+        else throw new RJavaError("Can't find base type for " + arrayType);
+    }
 
-    private String getCMacroFor(RMethod method) {
+    private String getCMacroFor(RMethod method) throws RJavaError {
        String methodName = method.getName();
        String type = method.getKlass().getName();
        String param0 = FORMAL_PARAMETER + "0";
@@ -306,6 +319,26 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
        else if (methodName.equals("rsha")) {
            assert(type.equals(Constants.MAGIC_WORD));
            return "((" + SIGNED_MAGIC_TYPE + ")" + THIS_PARAMETER + ") >> " + param0;
+       }
+       /*
+        * array operations
+        */
+       else if (methodName.equals("create")) {
+           assert(type.endsWith(Constants.MAGIC_ARRAY_SUFFIX));
+           String base = getBaseTypeForMagicArrayType(type);
+           return "(" + base + "*) " + CLanguageRuntime.RJAVA_NEW_ARRAY + "(" + param0 + ", sizeof(" + base + "))";
+       }
+       else if (methodName.equals("get")) {
+           assert(type.endsWith(Constants.MAGIC_ARRAY_SUFFIX));
+           return CLanguageRuntime.RJAVA_ACCESS_ARRAY + "(" + THIS_PARAMETER + "," + param0 + ")";
+       }
+       else if (methodName.equals("set")) {
+           assert(type.endsWith(Constants.MAGIC_ARRAY_SUFFIX));
+           return CLanguageRuntime.RJAVA_ACCESS_ARRAY + "(" + THIS_PARAMETER + "," + param0 + ") = " + param1;
+       }
+       else if (methodName.equals("length")) {
+           assert(type.endsWith(Constants.MAGIC_ARRAY_SUFFIX));
+           return CLanguageRuntime.RJAVA_LENGTH_OF_ARRAY + "(" + THIS_PARAMETER + ")";
        }
        /*
         * misc
