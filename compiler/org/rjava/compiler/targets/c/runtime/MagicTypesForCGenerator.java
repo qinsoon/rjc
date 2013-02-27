@@ -326,19 +326,19 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
        else if (methodName.equals("create")) {
            assert(type.endsWith(Constants.MAGIC_ARRAY_SUFFIX));
            String base = getBaseTypeForMagicArrayType(type);
-           return "(" + base + "*) " + CLanguageRuntime.RJAVA_NEW_ARRAY + "(" + param0 + ", sizeof(" + base + "))";
+           return "(" + base + "*)" + CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_NEW_ARRAY, new String[]{param0, "sizeof("+base+")"});
        }
        else if (methodName.equals("get")) {
            assert(type.endsWith(Constants.MAGIC_ARRAY_SUFFIX));
-           return CLanguageRuntime.RJAVA_ACCESS_ARRAY + "(" + THIS_PARAMETER + "," + param0 + ")";
+           return CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_ACCESS_ARRAY, new String[]{THIS_PARAMETER, param0});
        }
        else if (methodName.equals("set")) {
            assert(type.endsWith(Constants.MAGIC_ARRAY_SUFFIX));
-           return CLanguageRuntime.RJAVA_ACCESS_ARRAY + "(" + THIS_PARAMETER + "," + param0 + ") = " + param1;
+           return CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_ACCESS_ARRAY, new String[]{THIS_PARAMETER, param0}) + " = " + param1;
        }
        else if (methodName.equals("length")) {
            assert(type.endsWith(Constants.MAGIC_ARRAY_SUFFIX));
-           return CLanguageRuntime.RJAVA_LENGTH_OF_ARRAY + "(" + THIS_PARAMETER + ")";
+           return CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_LENGTH_OF_ARRAY, new String[]{THIS_PARAMETER});
        }
        /*
         * misc

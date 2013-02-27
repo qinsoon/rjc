@@ -84,7 +84,7 @@ public class CLanguageIntrinsicGenerator {
                 ((JIdentityStmt)stmt.internal()).getLeftOp().toString().equals("args") 
                 && ((JIdentityStmt)stmt.internal()).getRightOp().toString().contains("parameter0")) {
             stmt.setIntrinsic(true);
-            stmt.setCode("args = " + CLanguageRuntime.RJAVA_INIT_ARGS + "(argc, parameter0)");
+            stmt.setCode("args = " + CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_INIT_ARGS, new String[]{"argc", "parameter0"}));
         }
     }
 

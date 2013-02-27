@@ -373,11 +373,14 @@ public class CLanguageStatementGenerator {
         String methodName = invoke.getMethod().getName();
         String base = name.fromSootLocal((Local) invoke.getBase());
         
-        ret.append("((" + name.get(interfaceClass) + "*) ");
-        ret.append(CLanguageRuntime.RJAVA_GET_INTERFACE);
-        ret.append("( ((" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)");
-        ret.append("((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*) " + base + ") -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + ") -> " + CLanguageRuntime.INTERFACE_LIST);
-        ret.append(", \"" + name.get(interfaceClass) + "\") )");
+        ret.append("(");
+        ret.append("(" + name.get(interfaceClass) + "*) ");
+        String interfaceList = "((" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)" + 
+                    "((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*) " + base + ")" +
+                    " -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + ") -> " + CLanguageRuntime.INTERFACE_LIST;
+        String interfaceName = "\"" + name.get(interfaceClass) + "\"";
+        ret.append(CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_GET_INTERFACE, new String[]{interfaceList, interfaceName}));
+        ret.append(")");
         ret.append(" -> " + methodName + "(" + base);
         
         if (invoke.getArgCount() == 0)
@@ -456,11 +459,13 @@ public class CLanguageStatementGenerator {
      * RJava array implements
      */
     private String fromSootJLengthExpr(JLengthExpr rightOp) {
-        return CLanguageRuntime.RJAVA_LENGTH_OF_ARRAY + "(" + rightOp.getOp().toString() + ")";
+        return CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_LENGTH_OF_ARRAY, new String[]{rightOp.getOp().toString() });
     }    
 
     private String fromSootJNewArrayExpr(JNewArrayExpr rightOp) {
-        return CLanguageRuntime.RJAVA_NEW_ARRAY + "(" + rightOp.getSize().toString() + ",(long) sizeof(" + name.getWithPointerIfProper(RType.initWithClassName(rightOp.getBaseType().toString())) + "))";
+        String length = rightOp.getSize().toString();
+        String eleSize = "(long) sizeof(" + name.getWithPointerIfProper(RType.initWithClassName(rightOp.getBaseType().toString())) + ")";
+        return CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_NEW_ARRAY, new String[]{length, eleSize});
     }
     
     /*

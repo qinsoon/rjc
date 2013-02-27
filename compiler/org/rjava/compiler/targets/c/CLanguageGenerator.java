@@ -225,7 +225,7 @@ public class CLanguageGenerator extends CodeGenerator {
                 outMain.append(MAIN_METHOD_SIGNATURE + " {" + NEWLINE);
                 outMain.increaseIndent();
                 // calling class_init();
-                outMain.append(CLanguageRuntime.RJAVA_CLASS_INIT + "()" + SEMICOLON + NEWLINE);
+                outMain.append(CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_CLASS_INIT, null) + SEMICOLON + NEWLINE);
                 containsMain = true;
             } else {
                 outMain.append(commentln(method.getKlass().getName() + "." + method.getName() + "()"));
@@ -326,9 +326,10 @@ public class CLanguageGenerator extends CodeGenerator {
             
             // and set its header to super class
             CodeStringBuilder classInitTemp = new CodeStringBuilder();
-            classInitTemp.append(CLanguageRuntime.RJAVA_INIT_HEADER + "(&");
-            classInitTemp.append(name.get(klass) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + ",&" + name.get(klass.getSuperClass()) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX);
-            classInitTemp.append("," + SIZE_OF + "(" + name.get(klass.getSuperClass()) + CLanguageRuntime.CLASS_STRUCT_SUFFIX + "))" + SEMICOLON + NEWLINE);
+            String thisClass = "&" + name.get(klass) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX;
+            String superClass = "&" + name.get(klass.getSuperClass()) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX;
+            String superClassSize = SIZE_OF + "(" + name.get(klass.getSuperClass()) + CLanguageRuntime.CLASS_STRUCT_SUFFIX + ")";
+            classInitTemp.append(CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_INIT_HEADER, new String[]{thisClass, superClass, superClassSize}) + SEMICOLON + NEWLINE);
             addToClassInitMap(klass.getName(), classInitTemp.toString());
         } else {
             // contains common class struct
@@ -490,14 +491,17 @@ public class CLanguageGenerator extends CodeGenerator {
         if (rewrite) {
             // rewrite
             // void rjava_alter_interface(void* interface, char* name, RJava_Common_Class* class);
-            classInitTemp.append(CLanguageRuntime.RJAVA_ALTER_INTERFACE + "(" + tempInterfaceVar + ",\"" + name.get(myInterface) + "\",");
-            classInitTemp.append("(" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)&" + name.get(klass) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + ")" + SEMICOLON + NEWLINE);
+            String tempClassVar = "(" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)&" + name.get(klass) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX;
+            String tempInterfaceName = "\"" + name.get(myInterface) + "\"";
+            classInitTemp.append(CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_ALTER_INTERFACE, new String[]{tempInterfaceVar, tempInterfaceName, tempClassVar}) + SEMICOLON + NEWLINE);
         }else {
             // add this interface to class
             // void rjava_add_interface_to_class(void* interface, int interface_size, char* name, RJava_Common_Class* class);
-            classInitTemp.append(CLanguageRuntime.RJAVA_ADD_INTERFACE_TO_CLASS + "(" + tempInterfaceVar + "," + SIZE_OF + "(" + name.get(myInterface) + "),");
-            classInitTemp.append("\"" + name.get(myInterface)+ "\",");
-            classInitTemp.append("(" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)&" + name.get(klass) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + ")" + SEMICOLON + NEWLINE);
+            String interfaceSize = SIZE_OF + "(" + name.get(myInterface) + ")";
+            String tempInterfaceName = "\"" + name.get(myInterface) + "\"";
+            String tempClassVar = "(" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)&" + name.get(klass) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX;
+            classInitTemp.append(CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_ADD_INTERFACE_TO_CLASS, 
+                    new String[]{tempInterfaceVar, interfaceSize, tempInterfaceName, tempClassVar}) + SEMICOLON + NEWLINE);
         }
         
         addToClassInitMap(klass.getName(), classInitTemp.toString());

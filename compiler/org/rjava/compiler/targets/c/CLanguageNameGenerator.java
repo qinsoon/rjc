@@ -126,7 +126,8 @@ public class CLanguageNameGenerator {
         String type = getWithPointerIfProper(RType.initWithClassName(op.getType().toString()));
         
         String ret = "*((" + type + "*)";
-        ret += CLanguageRuntime.RJAVA_ACCESS_ARRAY + "(" + op.getBase().toString() + "," + op.getIndex().toString() + "))";
+        ret += CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_ACCESS_ARRAY, new String[]{op.getBase().toString(), op.getIndex().toString()});
+        ret += ")";
         
         return ret;
     }
