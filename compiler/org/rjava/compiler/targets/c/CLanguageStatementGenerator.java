@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.rjava.compiler.RJavaCompiler;
+import org.rjava.compiler.exception.RJavaError;
 import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.semantics.representation.RLocal;
 import org.rjava.compiler.semantics.representation.RMethod;
@@ -38,6 +39,7 @@ import soot.jimple.internal.JInstanceFieldRef;
 import soot.jimple.internal.JInterfaceInvokeExpr;
 import soot.jimple.internal.JInvokeStmt;
 import soot.jimple.internal.JLengthExpr;
+import soot.jimple.internal.JLookupSwitchStmt;
 import soot.jimple.internal.JNewArrayExpr;
 import soot.jimple.internal.JNewExpr;
 import soot.jimple.internal.JNopStmt;
@@ -79,7 +81,7 @@ public class CLanguageStatementGenerator {
     /*
      * get from RStatement
      */
-    public String get(RStatement stmt) {
+    public String get(RStatement stmt) throws RJavaError {
         switch (stmt.getType()) {
             case RStatement.ASSIGN_STMT:            return destLabel(stmt) + get((RAssignStmt) stmt);
             case RStatement.BREAKPOINT_STMT:        return destLabel(stmt) + get((RBreakpointStmt) stmt);
@@ -100,7 +102,7 @@ public class CLanguageStatementGenerator {
         }
     }
 
-    private String get(RAssignStmt stmt) {
+    private String get(RAssignStmt stmt) throws RJavaError {
         JAssignStmt internal = stmt.internal();
         
         // left op -> local | field | local.field | local[imm]
@@ -118,6 +120,7 @@ public class CLanguageStatementGenerator {
         }
         else {
             System.out.println("leftOp:" + leftOp.getClass());
+            throw stmt.newIncompleteImplementationError("leftOp:" + leftOp.getClass());
         }
         
         // right op -> rvalue | imm
@@ -141,6 +144,9 @@ public class CLanguageStatementGenerator {
         } 
         else if (rightOp instanceof soot.jimple.internal.JStaticInvokeExpr) {
             rightOpStr = fromSootJStaticInvokeExpr((JStaticInvokeExpr) rightOp);
+        }
+        else if (rightOp instanceof soot.jimple.internal.JSpecialInvokeExpr) {
+            rightOpStr = fromSootJSpecialInvokeExpr((JSpecialInvokeExpr) rightOp);
         }
         else if (rightOp instanceof soot.jimple.BinopExpr) {
             rightOpStr = fromSootBinopExpr((BinopExpr) rightOp);
@@ -171,6 +177,7 @@ public class CLanguageStatementGenerator {
         }
         else {
             System.out.println("rightOp:" + rightOp.getClass());
+            throw stmt.newIncompleteImplementationError("rightOp:" + rightOp.getClass());
         }
         
         // check type
@@ -179,23 +186,23 @@ public class CLanguageStatementGenerator {
         return leftOpStr + " = " + rightOpWithCast;
     }
     
-    private String get(RBreakpointStmt stmt) {
-        return CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
+    private String get(RBreakpointStmt stmt) throws RJavaError {
+        throw stmt.newIncompleteImplementationError("BreakpointStmt");
     }
     
-    private String get(REnterMonitorStmt stmt) {
-        return CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
+    private String get(REnterMonitorStmt stmt) throws RJavaError {
+        throw stmt.newIncompleteImplementationError("EnterMonitorStmt");
     }
     
-    private String get(RExitMonitorStmt stmt) {
-        return CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
+    private String get(RExitMonitorStmt stmt) throws RJavaError {
+        throw stmt.newIncompleteImplementationError("ExitMonitorStmt");
     }
     
     private String get(RGotoStmt stmt) {
         return "goto " + jumpToLabel((AbstractStmt) stmt.internal().getTarget());
     }
     
-    private String get(RIdentityStmt stmt) {
+    private String get(RIdentityStmt stmt) throws RJavaError {
         JIdentityStmt internal = stmt.internal();
         
         String ret = CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
@@ -210,7 +217,7 @@ public class CLanguageStatementGenerator {
         } else if (rightOp instanceof soot.jimple.ThisRef) {
             ret = name.fromSootValue(internal.getLeftOp()) + " = " + CLanguageGenerator.THIS_PARAMETER;
         } else {
-
+            throw stmt.newIncompleteImplementationError("rightOp:" + rightOp.getClass());
         }
         
         return ret;
@@ -224,7 +231,7 @@ public class CLanguageStatementGenerator {
         return ret;
     }
     
-    private String get(RInvokeStmt stmt) {
+    private String get(RInvokeStmt stmt) throws RJavaError {
         JInvokeStmt internal = stmt.internal();
         InvokeExpr actualInvoke = internal.getInvokeExpr();
         
@@ -241,13 +248,10 @@ public class CLanguageStatementGenerator {
         }
         else {
             ret = CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
+            throw stmt.newIncompleteImplementationError("Invoke:" + actualInvoke.getClass());
         }
         
         return ret;
-    }
-
-    private String get(RLookupSwitchStmt stmt) {
-        return CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
     }
     
     private String get(RNopStmt stmt) {
@@ -255,8 +259,8 @@ public class CLanguageStatementGenerator {
         return CLanguageGenerator.comment("nop");
     }
     
-    private String get(RRetStmt stmt) {
-        return CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
+    private String get(RRetStmt stmt) throws RJavaError {
+        throw stmt.newIncompleteImplementationError("RetStmt");
     }
     
     private String get(RReturnStmt stmt) {
@@ -281,8 +285,22 @@ public class CLanguageStatementGenerator {
         return ret.toString();
     }
     
-    private String get(RThrowStmt stmt) {
-        return CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
+    private String get(RLookupSwitchStmt stmt) throws RJavaError {
+        JLookupSwitchStmt internal = stmt.internal();
+        StringBuilder ret = new StringBuilder();
+        
+        ret.append("switch (" + name.fromSootValue(internal.getKey()) + ") {\n");
+        for (int i = 0; i < internal.getLookupValues().size(); i++) {
+            ret.append("  case " + internal.getLookupValue(i) + ":");
+            ret.append("goto " + jumpToLabel((AbstractStmt) internal.getTarget(i)) + ";\n");
+        }
+        ret.append("  default: goto " + jumpToLabel((AbstractStmt) internal.getDefaultTarget()) + ";\n");
+        ret.append("  }");
+        return ret.toString();
+    }
+    
+    private String get(RThrowStmt stmt) throws RJavaError {
+        throw stmt.newIncompleteImplementationError("ThrowStmt");
     }
     
     /*

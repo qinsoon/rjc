@@ -2,9 +2,12 @@ package org.rjava.compiler.targets.c;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.rjava.compiler.Constants;
+import org.rjava.compiler.RJavaCompiler;
+import org.rjava.compiler.semantics.representation.RLocal;
 import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.semantics.representation.RStatement;
 import org.rjava.compiler.semantics.representation.RType;
@@ -13,14 +16,26 @@ import org.rjava.compiler.semantics.representation.stmt.RIdentityStmt;
 import org.rjava.compiler.semantics.representation.stmt.RInvokeStmt;
 import org.rjava.compiler.targets.c.runtime.CLanguageRuntime;
 
+import soot.Body;
+import soot.Local;
+import soot.PatchingChain;
 import soot.SootMethod;
+import soot.Unit;
 import soot.jimple.InvokeExpr;
+import soot.jimple.ParameterRef;
 import soot.jimple.internal.JAssignStmt;
 import soot.jimple.internal.JIdentityStmt;
+import soot.jimple.internal.JNopStmt;
+import soot.jimple.internal.JReturnStmt;
 import soot.jimple.internal.JSpecialInvokeExpr;
 import soot.jimple.internal.JVirtualInvokeExpr;
+import soot.jimple.internal.JimpleLocal;
+import soot.util.Chain;
+import soot.util.HashChain;
 
 public class CLanguageIntrinsicGenerator {
+    public static final boolean DEBUG = true;
+    
     CLanguageNameGenerator name;
     CLanguageGenerator languageGenerator;
     
@@ -89,6 +104,46 @@ public class CLanguageIntrinsicGenerator {
     }
 
     public void generate(RMethod method) {
+        // soot's helper class to dynamic load classes (including exceptions)
+        // since we won't do dynamic loading in RJava, we dont generate exceptions
+        if (method.internal().getName().equals("class$") && method.internal().getReturnType().toString().equals("java.lang.Class") 
+                && method.internal().getParameterCount() == 1 && method.internal().getParameterType(0).toString().equals("java.lang.String")) {
+            Body body = method.internal().retrieveActiveBody();
+            
+            // clear body
+            PatchingChain<Unit> units = body.getUnits();
+            Iterator<Unit> iter = units.iterator();
+            
+            Chain<Unit> newUnits = new HashChain<Unit>();
+            
+            boolean add = true;
+            while(iter.hasNext()) {
+                Unit current = iter.next();
+                if (add)
+                    newUnits.add(current);
+                if (current instanceof JReturnStmt) 
+                    add = false;
+            }
+            
+            units.clear();
+            units.addAll(newUnits);
+            method.update();
+            
+            if (DEBUG) {
+                RJavaCompiler.debug("***Intrinsic pass***");
+                RJavaCompiler.debug(method + "{");
+                RJavaCompiler.debug("Locals:");
+                for (RLocal local : method.getLocals()) {
+                    RJavaCompiler.debug(local);
+                }
+                RJavaCompiler.debug("Locals end. ");
+                for (RStatement stmt : method.getBody()) {
+                    RJavaCompiler.debug("  " + stmt);
+                }
+                RJavaCompiler.debug("}");
+            }
+        }
+        
         method.setIntrinsic(false);
     }
 }

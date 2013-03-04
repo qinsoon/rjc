@@ -101,6 +101,9 @@ public class SootEngine {
         Options.v().set_no_bodies_for_excluded(true);
         Options.v().set_allow_phantom_refs(true);
         
+        // keep line number
+        Options.v().set_keep_line_number(true);
+        
         // classpath
         String classpath = "";
         for (String path : dir)

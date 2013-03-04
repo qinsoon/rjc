@@ -484,8 +484,11 @@ public class CLanguageGenerator extends CodeGenerator {
         
         // link its function pointers
         for (RMethod interfaceMethod : myInterface.getMethods()) {
+            if (interfaceMethod.isClassInitializer() || interfaceMethod.isConstructor())
+                continue;
+            
             classInitTemp.append(tempInterfaceVar + " -> " + interfaceMethod.getName());
-            classInitTemp.append(" = " + name.get(klass.getImplenetingMethodOfAnInterfaceMethod(interfaceMethod)) + SEMICOLON + NEWLINE);
+            classInitTemp.append(" = " + name.get(klass.getImplementingMethodOfAnInterfaceMethod(interfaceMethod)) + SEMICOLON + NEWLINE);
         }
 
         if (rewrite) {
@@ -563,7 +566,7 @@ public class CLanguageGenerator extends CodeGenerator {
         return out.toString();
     }
     
-    public String getMethodBody(RMethod method) {
+    public String getMethodBody(RMethod method) throws RJavaError {
         CodeStringBuilder out = new CodeStringBuilder();
         out.increaseIndent();
         

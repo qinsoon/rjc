@@ -230,7 +230,7 @@ public class RClass {
         return internal;
     }
     
-    public RMethod getImplenetingMethodOfAnInterfaceMethod(RMethod interfaceMethod) {
+    public RMethod getImplementingMethodOfAnInterfaceMethod(RMethod interfaceMethod) {
         RClass base = this;
         do {
             for (RMethod method : base.methods) {

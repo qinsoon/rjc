@@ -3,6 +3,7 @@ package org.rjava.compiler.semantics.representation;
 import java.util.HashMap;
 
 import org.rjava.compiler.RJavaCompiler;
+import org.rjava.compiler.exception.RJavaError;
 import org.rjava.compiler.semantics.representation.stmt.*;
 
 import soot.Unit;
@@ -10,6 +11,8 @@ import soot.UnitBox;
 import soot.ValueBox;
 import soot.jimple.InvokeExpr;
 import soot.jimple.internal.AbstractStmt;
+import soot.tagkit.LineNumberTag;
+import soot.tagkit.Tag;
 
 public abstract class RStatement {
     public static final int ASSIGN_STMT = 1;
@@ -30,27 +33,29 @@ public abstract class RStatement {
     
     private static final HashMap<String, Integer> JIMPLE_STMT_MAP = new HashMap<String, Integer>();
     static {
-	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JAssignStmt", ASSIGN_STMT);
-	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JBreakpointStmt", BREAKPOINT_STMT);
-	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JEnterMonitorStmt", ENTER_MONITOR_STMT);
-	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JExitMonitorStmt", EXIT_MONITOR_STMT);
-	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JGotoStmt", GOTO_STMT);
-	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JIdentityStmt", IDENTITY_STMT);
-	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JIfStmt", IF_STMT);
-	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JInvokeStmt", INVOKE_STMT);
-	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JLookupSwitchStmt", LOOKUP_SWITCH_STMT);
-	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JNopStmt", NOP_STMT);
-	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JRetStmt", RET_STMT);
-	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JReturnStmt", RETURN_STMT);
-	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JReturnVoidStmt", RETURN_VOID_STMT);
-	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JTableSwitchStmt", TABLE_SWITCH_STMT);
-	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JThrowStmt", THROW_STMT);
+    	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JAssignStmt", ASSIGN_STMT);
+    	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JBreakpointStmt", BREAKPOINT_STMT);
+    	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JEnterMonitorStmt", ENTER_MONITOR_STMT);
+    	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JExitMonitorStmt", EXIT_MONITOR_STMT);
+    	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JGotoStmt", GOTO_STMT);
+    	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JIdentityStmt", IDENTITY_STMT);
+    	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JIfStmt", IF_STMT);
+    	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JInvokeStmt", INVOKE_STMT);
+    	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JLookupSwitchStmt", LOOKUP_SWITCH_STMT);
+    	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JNopStmt", NOP_STMT);
+    	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JRetStmt", RET_STMT);
+    	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JReturnStmt", RETURN_STMT);
+    	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JReturnVoidStmt", RETURN_VOID_STMT);
+    	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JTableSwitchStmt", TABLE_SWITCH_STMT);
+    	JIMPLE_STMT_MAP.put("class soot.jimple.internal.JThrowStmt", THROW_STMT);
     }
     
     protected RMethod method;
     
     private int type;
     protected Unit internal;
+    private int lineNumber;
+    
     /**
      * some statements are intrinsic, which means the compiler will generate its code based on predefined rules. 
      */
@@ -61,6 +66,14 @@ public abstract class RStatement {
     	super();
     	this.method = method;
     	this.internal = internal;
+    	
+    	// get line number
+    	for (Tag tag : this.internal.getTags()) {
+    	    if (tag instanceof LineNumberTag) {
+    	        this.lineNumber = ((LineNumberTag) tag).getLineNumber();
+    	    }
+    	}
+    	
     	try{
     	    type = JIMPLE_STMT_MAP.get(internal.getClass().toString());
     	} catch (Exception e) {
@@ -149,5 +162,13 @@ public abstract class RStatement {
     
     public RMethod getMethod() {
         return method;
+    }
+
+    public int getLineNumber() {
+        return lineNumber;
+    }
+    
+    public RJavaError newIncompleteImplementationError(String msg) {
+        return new RJavaError(this.getMethod().getKlass().getName() + "." + getMethod().getName() + "()," + getLineNumber() + ":" + msg); 
     }
 }

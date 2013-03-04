@@ -34,38 +34,46 @@ public class RMethod {
     	this.internal = m;
     	this.name = m.getName();
     	this.klass = rClass;
-    	this.returnType = RType.initWithClassName(m.getReturnType().toString());
-    	// get parameter
-    	for (Object o : m.getParameterTypes()) {
-    	    Type t = (Type)o;
-    	    parameters.add(RType.initWithClassName(t.toString()));
-    	}
-    	
-    	if (m.isConcrete()) {
-        	
-    	    try {
-        	    // get body
-    	        Body sootBody = null;
-    	        if (SootEngine.RUN_SOOT) {
-    	            sootBody = SootEngine.methodStorage.get(m);
-    	        }
-    	        else sootBody = m.retrieveActiveBody();
-            	    	
-            	Iterator<Unit> iter = sootBody.getUnits().iterator();
-            	while(iter.hasNext()) {
-            	    body.add(RStatement.from(this, iter.next()));
-            	}
-            	
-            	Iterator<Local> iter2 = sootBody.getLocals().iterator();
-            	while(iter2.hasNext()) {
-            	    locals.add(new RLocal(this, iter2.next()));
-            	}
-    	    } catch (Exception e) {
-    	        e.printStackTrace();
-    	    }
-    	}
-    	
-    	checkMainMethod();
+    	update();
+    }
+    
+    public void update() {
+        parameters.clear();
+        body.clear();
+        locals.clear();
+        
+        this.returnType = RType.initWithClassName(internal.getReturnType().toString());
+        // get parameter
+        for (Object o : internal.getParameterTypes()) {
+            Type t = (Type)o;
+            parameters.add(RType.initWithClassName(t.toString()));
+        }
+        
+        if (internal.isConcrete()) {
+            
+            try {
+                // get body
+                Body sootBody = null;
+                if (SootEngine.RUN_SOOT) {
+                    sootBody = SootEngine.methodStorage.get(internal);
+                }
+                else sootBody = internal.retrieveActiveBody();
+                        
+                Iterator<Unit> iter = sootBody.getUnits().iterator();
+                while(iter.hasNext()) {
+                    body.add(RStatement.from(this, iter.next()));
+                }
+                
+                Iterator<Local> iter2 = sootBody.getLocals().iterator();
+                while(iter2.hasNext()) {
+                    locals.add(new RLocal(this, iter2.next()));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+        checkMainMethod();
     }
 
     public List<RType> getParameters() {
@@ -157,5 +165,9 @@ public class RMethod {
     
     public boolean isConstructor() {
         return getName().equals("<init>");
+    }
+    
+    public boolean isClassInitializer() {
+        return getName().equals("<clinit>");
     }
 }
