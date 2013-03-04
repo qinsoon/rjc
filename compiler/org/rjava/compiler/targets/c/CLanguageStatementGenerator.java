@@ -36,10 +36,12 @@ import soot.jimple.internal.JGotoStmt;
 import soot.jimple.internal.JIdentityStmt;
 import soot.jimple.internal.JIfStmt;
 import soot.jimple.internal.JInstanceFieldRef;
+import soot.jimple.internal.JInstanceOfExpr;
 import soot.jimple.internal.JInterfaceInvokeExpr;
 import soot.jimple.internal.JInvokeStmt;
 import soot.jimple.internal.JLengthExpr;
 import soot.jimple.internal.JLookupSwitchStmt;
+import soot.jimple.internal.JNegExpr;
 import soot.jimple.internal.JNewArrayExpr;
 import soot.jimple.internal.JNewExpr;
 import soot.jimple.internal.JNopStmt;
@@ -175,6 +177,12 @@ public class CLanguageStatementGenerator {
         else if (rightOp instanceof soot.jimple.internal.JCastExpr) {
             rightOpStr = fromSootJCastExpr((soot.jimple.internal.JCastExpr) rightOp);
         }
+        else if (rightOp instanceof soot.jimple.internal.JInstanceOfExpr) {
+            rightOpStr = fromSootJInstanceOfExpr((JInstanceOfExpr) rightOp);
+        }
+        else if (rightOp instanceof soot.jimple.internal.JNegExpr) {
+            rightOpStr = fromSootJNegExpr((JNegExpr)rightOp);
+        }
         else {
             System.out.println("rightOp:" + rightOp.getClass());
             throw stmt.newIncompleteImplementationError("rightOp:" + rightOp.getClass());
@@ -185,7 +193,7 @@ public class CLanguageStatementGenerator {
         
         return leftOpStr + " = " + rightOpWithCast;
     }
-    
+
     private String get(RBreakpointStmt stmt) throws RJavaError {
         throw stmt.newIncompleteImplementationError("BreakpointStmt");
     }
@@ -216,7 +224,10 @@ public class CLanguageStatementGenerator {
             ret += CLanguageGenerator.FORMAL_PARAMETER + parameterRef.getIndex();
         } else if (rightOp instanceof soot.jimple.ThisRef) {
             ret = name.fromSootValue(internal.getLeftOp()) + " = " + CLanguageGenerator.THIS_PARAMETER;
-        } else {
+        } else if (rightOp instanceof soot.jimple.internal.JCaughtExceptionRef) {
+            ret = exceptionLabel(stmt);
+        }
+        else {
             throw stmt.newIncompleteImplementationError("rightOp:" + rightOp.getClass());
         }
         
@@ -278,7 +289,7 @@ public class CLanguageStatementGenerator {
         ret.append("switch (" + internal.getKey().toString() + ") {\n");
         for (int i = internal.getLowIndex(); i <= internal.getHighIndex(); i++) {
             ret.append("  case " + i + ":");
-            ret.append("goto " + this.jumpToLabel((AbstractStmt) internal.getTarget(i)) + ";\n");
+            ret.append("goto " + this.jumpToLabel((AbstractStmt) internal.getTarget(i - internal.getLowIndex())) + ";\n");
         }
         ret.append("  default: goto " + this.jumpToLabel((AbstractStmt) internal.getDefaultTarget()) + ";\n");
         ret.append("  }");
@@ -448,6 +459,10 @@ public class CLanguageStatementGenerator {
         return ret;
     }
     
+    private String fromSootJNegExpr(JNegExpr rightOp) {
+        return "-(" + name.fromSootValue(rightOp.getOp()) + ")";
+    }
+    
     private String fromSootConditionExpr(soot.jimple.ConditionExpr conditionExpr) {
         return name.fromSootValue(conditionExpr.getOp1()) + conditionExpr.getSymbol() + name.fromSootValue(conditionExpr.getOp2());
     }
@@ -487,6 +502,19 @@ public class CLanguageStatementGenerator {
     }
     
     /*
+     * instanceof expression
+     */
+    private String fromSootJInstanceOfExpr(JInstanceOfExpr expr) {
+        // e.g. temp instanceof org.mmtk.plan.ComplexPhase
+        // will translate to: ((RJava_Common_Instance*) temp) -> class_struct == &org_mmtk_plan_ComplexPhase_class_instance;
+        String ret = "(";
+        ret += "(" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*)" + name.fromSootValue(expr.getOp());
+        ret += ")";
+        ret += " -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + " == &" + name.fromSootType(expr.getCheckType()) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX;
+        return "(" + ret + ")";
+    }
+    
+    /*
      * jumping labels
      */
     private String jumpToLabel(AbstractStmt target) {
@@ -497,6 +525,17 @@ public class CLanguageStatementGenerator {
         jumpLabels.put(target.hashCode(), labelIndex);
         labelIndex ++;
         return ret;
+    }
+    
+    private String exceptionLabel(RStatement stmt) {
+        Integer storedLabel = jumpLabels.get(stmt.internal().hashCode());
+        if (storedLabel == null) {
+            String ret = "label" + labelIndex + ":" + CLanguageGenerator.comment("exception handler");
+            jumpLabels.put(stmt.internal().hashCode(), labelIndex);
+            labelIndex ++;
+            return ret;
+        }
+        else return "label" + storedLabel + ":" + CLanguageGenerator.comment("exception handler");
     }
     
     private String destLabel(RStatement stmt) {
