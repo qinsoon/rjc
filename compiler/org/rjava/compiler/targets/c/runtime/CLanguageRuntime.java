@@ -187,6 +187,11 @@ public class CLanguageRuntime {
      * inline int rjava_length_of_array(void* array);
      */
     public static final HelperMethod HELPER_RJAVA_LENGTH_OF_ARRAY;
+    /**
+     * used to implement new multiarray
+     * inline void* rjava_new_multiarray(int[] dimensions, int dimension_size, long ele_size);
+     */
+    public static final HelperMethod HELPER_RJAVA_NEW_MULTIARRAY;
     
     /**
      * wrap c array into an rjava c array (add header), this method is not used at the moment
@@ -386,13 +391,34 @@ public class CLanguageRuntime {
          * used to implement array.length
          * inline int rjava_length_of_array(void* array);
          */
-        HELPER_RJAVA_LENGTH_OF_ARRAY = new HelperMethod("rjava_length_of_array", "void*", new HelperVariable[]{
+        HELPER_RJAVA_LENGTH_OF_ARRAY = new HelperMethod("rjava_length_of_array", "int", new HelperVariable[]{
                                                         new HelperVariable("void*", "array")
         });
         final String RJAVA_LENGTH_OF_ARRAY_SOURCE = 
                 "return *((int*)array);" + NEWLINE;
         HELPER_RJAVA_LENGTH_OF_ARRAY.setSource(RJAVA_LENGTH_OF_ARRAY_SOURCE);
         HELPER_RJAVA_LENGTH_OF_ARRAY.setMethodDescriptor("inline");
+        
+        /**
+         * used to implement new multiarray
+         * inline void* rjava_new_multiarray(int[] dimensions, int dimension_size, long ele_size);
+         */
+        HELPER_RJAVA_NEW_MULTIARRAY = new HelperMethod("rjava_new_multiarray", "void*", new HelperVariable[]{
+                                                       new HelperVariable("int*", "dimensions"),
+                                                       new HelperVariable("int", "dimension_size"),
+                                                       new HelperVariable("long", "ele_size")
+        });
+        final String RJAVA_NEW_MULTIARRAY_SOURCE = 
+                "if (dimension_size == 1)" + NEWLINE +
+                "return " + invokeHelper(HELPER_RJAVA_NEW_ARRAY, new String[]{"dimensions[0]", "ele_size"}) + ";" + NEWLINE +
+                "void* ret = " + invokeHelper(HELPER_RJAVA_NEW_ARRAY, new String[]{"dimensions[0]", "sizeof(void*)"}) + ";" + NEWLINE +
+                "int i = 0;" + NEWLINE +
+                "for (; i < dimensions[0]; i++) {" + NEWLINE +
+                " *((char**)" + invokeHelper(HELPER_RJAVA_ACCESS_ARRAY, new String[]{"ret", "i"}) + ") = (char*) rjava_new_multiarray(&dimensions[1], dimension_size - 1, ele_size);" + NEWLINE +
+                "}" + NEWLINE + 
+                "return ret;" + NEWLINE;
+        HELPER_RJAVA_NEW_MULTIARRAY.setSource(RJAVA_NEW_MULTIARRAY_SOURCE);
+        HELPER_RJAVA_NEW_MULTIARRAY.setMethodDescriptor("inline");
         
         /**
          * wrap c array into an rjava c array (add header), this method is not used at the moment
@@ -443,6 +469,7 @@ public class CLanguageRuntime {
         CRT_HELPERS.add(HELPER_RJAVA_ACCESS_ARRAY);
         CRT_HELPERS.add(HELPER_RJAVA_LENGTH_OF_ARRAY);
         CRT_HELPERS.add(HELPER_RJAVA_INIT_ARGS);
+        CRT_HELPERS.add(HELPER_RJAVA_NEW_MULTIARRAY);
     }
     
     public void generateCRuntime() throws RJavaError {

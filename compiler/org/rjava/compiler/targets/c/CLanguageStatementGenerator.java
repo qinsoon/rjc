@@ -44,6 +44,7 @@ import soot.jimple.internal.JLookupSwitchStmt;
 import soot.jimple.internal.JNegExpr;
 import soot.jimple.internal.JNewArrayExpr;
 import soot.jimple.internal.JNewExpr;
+import soot.jimple.internal.JNewMultiArrayExpr;
 import soot.jimple.internal.JNopStmt;
 import soot.jimple.internal.JSpecialInvokeExpr;
 import soot.jimple.internal.JStaticInvokeExpr;
@@ -171,6 +172,9 @@ public class CLanguageStatementGenerator {
         else if (rightOp instanceof soot.jimple.internal.JNewArrayExpr) {
             rightOpStr = fromSootJNewArrayExpr((soot.jimple.internal.JNewArrayExpr) rightOp);
         } 
+        else if (rightOp instanceof soot.jimple.internal.JNewMultiArrayExpr) {
+            rightOpStr = fromSootJNewMultiArrayExpr((soot.jimple.internal.JNewMultiArrayExpr) rightOp);
+        }
         else if (rightOp instanceof soot.jimple.internal.JArrayRef) {
             rightOpStr = name.fromSootJArrayRef((soot.jimple.internal.JArrayRef) rightOp);
         }
@@ -499,6 +503,20 @@ public class CLanguageStatementGenerator {
         String length = rightOp.getSize().toString();
         String eleSize = "(long) sizeof(" + name.getWithPointerIfProper(RType.initWithClassName(rightOp.getBaseType().toString())) + ")";
         return CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_NEW_ARRAY, new String[]{length, eleSize});
+    }
+    
+    private String fromSootJNewMultiArrayExpr(JNewMultiArrayExpr rightOp) {
+        String dimensionArray = "(int[]){";
+        for (int i = 0; i < rightOp.getSizeCount(); i ++) {
+            dimensionArray += rightOp.getSize(i);
+            if (i != rightOp.getSizeCount() - 1)
+                dimensionArray += ",";
+        }
+        dimensionArray += "}";
+        
+        String dimensionSize = String.valueOf(rightOp.getSizeCount());
+        String eleSize = "sizeof(" + name.fromSootType(rightOp.getBaseType()) + ")";
+        return CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_NEW_MULTIARRAY, new String[]{dimensionArray, dimensionSize, eleSize});
     }
     
     /*
