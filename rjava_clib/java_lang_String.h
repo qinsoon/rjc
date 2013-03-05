@@ -25,5 +25,6 @@ inline java_lang_String* newStringConstant(char* string);
 inline bool java_lang_String_equals_java_lang_Object(void* this_parameter, void* another);
 inline java_lang_String* java_lang_String_toString(void* this_parameter);
 inline char java_lang_String_charAt_int32_t(void* this_parameter, int32_t index);
+inline void java_lang_String_rjinit_java_lang_String(void* this_parameter, java_lang_String* str);
 
 #endif

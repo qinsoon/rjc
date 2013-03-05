@@ -621,6 +621,14 @@ public class CLanguageRuntime {
             }
         }
         
+        // calling <clinit> for interfaces that need clinit
+        body.append(CLanguageGenerator.commentln("calling <clinit> for RJava interfaces (only those that need initialized"));
+        for (RClass current : SemanticMap.interfacesThatNeedInit) {
+            assert (current.getCLInitMethod() != null);
+            body.append(name.get(current.getCLInitMethod()) + "();\n");
+        }
+        body.append("\n");
+        
         // calling <clinit> for those classes
         body.append(CLanguageGenerator.commentln("calling <clinit> for RJava classes"));
         for (Tree<RClass> root : SemanticMap.hierarchy.getRoots()) {

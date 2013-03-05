@@ -29,6 +29,9 @@ public abstract class SemanticMap {
     // class hierarchy
     public static TypeHierarchy hierarchy;
     
+    // interfaces
+    public static List<RClass> interfacesThatNeedInit = new ArrayList<RClass>();
+    
     public static SootEngine engine;
 
     public static void initSemanticMap(CompilationTask task) {

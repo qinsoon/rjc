@@ -25,3 +25,8 @@ inline void java_lang_String_rjinit(void* this_parameter, char* str) {
     strcpy(((java_lang_String*) this_parameter) -> internal, str);
     (((RJava_Common_Instance*)this_parameter) -> class_struct) = &java_lang_String_class_instance;
 }
+
+inline void java_lang_String_rjinit_java_lang_String(void* this_parameter, java_lang_String* str) {
+    strcpy(((java_lang_String*) this_parameter) -> internal, str -> internal);
+    (((RJava_Common_Instance*)this_parameter) -> class_struct) = &java_lang_String_class_instance;
+}

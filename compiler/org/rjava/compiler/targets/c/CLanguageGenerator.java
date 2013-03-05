@@ -34,7 +34,7 @@ import soot.jimple.StaticFieldRef;
 import soot.jimple.internal.JAssignStmt;
 
 public class CLanguageGenerator extends CodeGenerator {
-    public static final boolean OUTPUT_JIMPLE = false;
+    public static final boolean OUTPUT_JIMPLE = true;
     public static final boolean OUTPUT_C = false;
     /*
      * Java spec
@@ -117,19 +117,73 @@ public class CLanguageGenerator extends CodeGenerator {
             generateHeader(klass, source);
             generateCode(klass, source);
         } else {
-            generateInterface(klass, source);
+            generateInterfaceHeader(klass, source);
+            generateInterfaceBody(klass, source);
         }
         return;
     }
 
     /**
+     * A Java interface will still need <clinit> to initialize its constants (static final fields)
+     * @param klass
+     * @param source
+     * @throws RJavaError 
+     */
+    private void generateInterfaceBody(RClass klass, String source) throws RJavaError {
+        RMethod clinit = klass.getCLInitMethod();
+        
+        if (clinit != null) {
+            referencedClasses = new HashSet<String>();
+            
+            CodeStringBuilder outInc = new CodeStringBuilder();
+            CodeStringBuilder outMain = new CodeStringBuilder();
+    
+            // get code source
+            cCodeSource = getSource(source, ".c");
+            
+            // include its own header
+            outInc.append("#include \"" + cHeaderSource + "\"" + NEWLINE);
+            // include c std
+            outInc.append(CLanguageRuntime.INCLUDE_STDIO + NEWLINE);
+            outInc.append(CLanguageRuntime.INCLUDE_STDLIB + NEWLINE);
+            outInc.append(CLanguageRuntime.INCLUDE_STDBOOL + NEWLINE);
+            
+            outMain.append(NEWLINE);
+            
+            // generating code for each method           
+            outMain.append(commentln(clinit.getKlass().getName() + "." + clinit.getName() + "()"));
+            outMain.append(getMethodSignature(clinit) + " {" + NEWLINE);
+            
+            outMain.increaseIndent();
+            outMain.appendNoIndent(getMethodBody(clinit));
+            outMain.decreaseIndent();
+            
+            outMain.append("}" + NEWLINE + NEWLINE);
+            
+            // get referenced
+            for (String reference : referencedClasses) {
+                outInc.append("#include \"" + reference + ".h\"" + NEWLINE);
+            }
+            
+            if (OUTPUT_C) {
+                RJavaCompiler.debug("Code output to: " + cCodeSource);
+                RJavaCompiler.debug(outInc.toString() + outMain.toString());
+            }
+            
+            writeTo(outInc.toString() + outMain.toString(), Constants.OUTPUT_DIR + cCodeSource);
+            translatedCSource.add(cCodeSource);
+            SemanticMap.interfacesThatNeedInit.add(klass);
+        }
+    }
+
+    /**
      * A Java interface will become a normal RJava-C-Class, its name will be the C-style class name (no extra suffix)
-     * A interface struct contains only function pointers. Constants become global variables (not finished yet)
+     * A interface struct contains only function pointers. Constants become global variables
      * @param klass
      * @param source
      * @throws RJavaError
      */
-    private void generateInterface(RClass klass, String source) throws RJavaError {
+    private void generateInterfaceHeader(RClass klass, String source) throws RJavaError {
         referencedClasses = new HashSet<String>();
         
         CodeStringBuilder outInc = new CodeStringBuilder();
@@ -154,12 +208,19 @@ public class CLanguageGenerator extends CodeGenerator {
         outMain.increaseIndent();
         outMain.append(commentln("function pointers"));
         for (RMethod method : klass.getMethods()) {
-            outMain.append(getFunctionPointerForMethod(method) + SEMICOLON + NEWLINE);
+            if (!method.isStatic())
+                outMain.append(getFunctionPointerForMethod(method) + SEMICOLON + NEWLINE);
         }
         outMain.decreaseIndent();
         outMain.append("} " + name.get(klass) + CLanguageRuntime.INTERFACE_STRUCT_SUFFIX + SEMICOLON + NEWLINE);
         
-        // TODO: generate other global fields
+        /*
+         * generate static final fields
+         * 
+         */
+        for (RField field : klass.getFields()) {
+            outMain.append(name.getWithPointerIfProper(field.getType()) + " " + name.get(field) + SEMICOLON + NEWLINE);
+        }
         
         outMain.append("#endif");
         
@@ -608,8 +669,8 @@ public class CLanguageGenerator extends CodeGenerator {
     }
     
     public void referencing(String refName) {
-        if (refName.startsWith("java_") || refName.startsWith("javax_"))
-            return;
+        //if (refName.startsWith("java_") || refName.startsWith("javax_"))
+        //    return;
         
         // avoid adding include for current class
         if (!name.javaNameToCName(currentRClass.getName()).equals(refName))
