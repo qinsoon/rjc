@@ -615,6 +615,7 @@ public class CLanguageRuntime {
                 RClass current = iter.next();
                 //System.out.println("Generating class init statements for " + current.getName());
                 body.append(CLanguageGenerator.commentln("init for " + name.get(current)));
+                System.out.println("trying to get class init code for:" + current.getName());
                 body.append(generator.getClassInitMap().get(current.getName()).toString());
                 body.append("\n\n");
             }

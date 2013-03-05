@@ -25,7 +25,7 @@ import soot.jimple.spark.SparkTransformer;
 import soot.options.Options;
 
 public class SootEngine {  
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     
     public static boolean RUN_SOOT = false;
     
@@ -63,7 +63,7 @@ public class SootEngine {
     	for (String className : classNames) {
     	    // resolve klass and add to map
     	    if (DEBUG)
-    		System.out.println("Resolving " + className + "...");
+    	        System.out.println("Resolving " + className + "...");
     	    SootClass klass = resolveAndGetClass(className);
     	    allClasses.put(className, klass);
     	    

@@ -128,20 +128,6 @@ public class CLanguageIntrinsicGenerator {
             units.clear();
             units.addAll(newUnits);
             method.update();
-            
-            if (DEBUG) {
-                RJavaCompiler.debug("***Intrinsic pass***");
-                RJavaCompiler.debug(method + "{");
-                RJavaCompiler.debug("Locals:");
-                for (RLocal local : method.getLocals()) {
-                    RJavaCompiler.debug(local);
-                }
-                RJavaCompiler.debug("Locals end. ");
-                for (RStatement stmt : method.getBody()) {
-                    RJavaCompiler.debug("  " + stmt);
-                }
-                RJavaCompiler.debug("}");
-            }
         }
         
         method.setIntrinsic(false);

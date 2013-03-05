@@ -34,6 +34,8 @@ import soot.jimple.StaticFieldRef;
 import soot.jimple.internal.JAssignStmt;
 
 public class CLanguageGenerator extends CodeGenerator {
+    public static final boolean OUTPUT_JIMPLE = false;
+    public static final boolean OUTPUT_C = false;
     /*
      * Java spec
      */
@@ -94,7 +96,7 @@ public class CLanguageGenerator extends CodeGenerator {
     @Override
     public void translate(RClass klass, String source)
 	    throws RJavaWarning, RJavaError {
-        if (RJavaCompiler.DEBUG)
+        if (OUTPUT_JIMPLE)
             for (RMethod method : klass.getMethods()) {
                 RJavaCompiler.debug(method + "{");
                 RJavaCompiler.debug("Locals:");
@@ -166,7 +168,7 @@ public class CLanguageGenerator extends CodeGenerator {
             outInc.append("#include \"" + reference + ".h\"" + NEWLINE);
         }
         
-        if (RJavaCompiler.DEBUG) {
+        if (OUTPUT_C) {
             RJavaCompiler.debug("Header output to: " + cHeaderSource);
             RJavaCompiler.debug(outInc.toString() + outMain.toString());
         }
@@ -246,7 +248,7 @@ public class CLanguageGenerator extends CodeGenerator {
             outInc.append("#include \"" + reference + ".h\"" + NEWLINE);
         }
         
-        if (RJavaCompiler.DEBUG) {
+        if (OUTPUT_C) {
             RJavaCompiler.debug("Code output to: " + cCodeSource);
             RJavaCompiler.debug(outInc.toString() + outMain.toString());
         }
@@ -384,19 +386,20 @@ public class CLanguageGenerator extends CodeGenerator {
         // generate other global fields (static field)
         outMain.append(commentln("static field (global)"));
         for (RField field : klass.getFields()) {
-            if (field.isStatic() && !field.isFinal()) {
+            //if (field.isStatic() && !field.isFinal()) {
+            if (field.isStatic()) {
                 outMain.append(name.getWithPointerIfProper(field.getType()) + " " + name.get(field) + SEMICOLON + NEWLINE);
             }
         }
         outMain.append(NEWLINE);
         
         // generate constants (static final)
-        outMain.append(commentln("constants"));
+        /*outMain.append(commentln("constants"));
         Map<RField, String> constantValues = getConstantValues(klass);
         if (constantValues != null)
             for (RField f : constantValues.keySet())
                 outMain.append("#define " + name.get(f) + " " + constantValues.get(f) + NEWLINE);
-        outMain.append(NEWLINE);
+        outMain.append(NEWLINE);*/
         
         // functions
         outMain.append(commentln("function definitions"));
@@ -413,7 +416,7 @@ public class CLanguageGenerator extends CodeGenerator {
             outInc.append("#include \"" + reference + ".h\"" + NEWLINE);
         }
         
-        if (RJavaCompiler.DEBUG) {
+        if (OUTPUT_C) {
             RJavaCompiler.debug("Header output to: " + cHeaderSource);
             RJavaCompiler.debug(outInc.toString() + outMain.toString());
         }
