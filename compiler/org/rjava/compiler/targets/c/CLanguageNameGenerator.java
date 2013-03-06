@@ -54,7 +54,7 @@ public class CLanguageNameGenerator {
     public String get(RField field) {
         if (!field.isStatic())
             return field.getName();
-        else return get(field.getDeclaringClass()) + "_" + field.getName();
+        else return CLanguageGenerator.C_GLOBAL_VAR_PREFIX + get(field.getDeclaringClass()) + "_" + field.getName();
     }
     
     /**
@@ -72,7 +72,7 @@ public class CLanguageNameGenerator {
     public String fromSootStaticFieldRef(soot.jimple.StaticFieldRef ref) {
         String className = fromSootClass(ref.getField().getDeclaringClass());
         String refName = ref.getField().getName();
-        return javaNameToCName(className + "." + refName);
+        return CLanguageGenerator.C_GLOBAL_VAR_PREFIX + javaNameToCName(className + "." + refName);
     }
     
     public String fromSootMethod(soot.SootMethod method) {
@@ -84,6 +84,29 @@ public class CLanguageNameGenerator {
             methodName = CLanguageGenerator.RJAVA_CLINIT;
         
         String ret = classPrefix + "_" + methodName;
+        
+        // add args type into method name to fake overloading
+        for (int i = 0; i < method.getParameterCount(); i++) {
+            ret += "_" + fromSootType(method.getParameterType(i));
+            if (RType.initWithClassName(method.getParameterType(i).toString()).isArray())
+                ret += "array";
+        }
+        
+        return ret;
+    }
+    
+    public String getFunctionPointerName(RMethod method) {
+        return getFunctionPointerNameFromSootMethod(method.internal());
+    }
+    
+    public String getFunctionPointerNameFromSootMethod(soot.SootMethod method) {
+        String methodName = method.getName();
+        if (methodName.equals("<init>"))
+            methodName = CLanguageGenerator.RJAVA_INIT;
+        else if (methodName.equals("<clinit>"))
+            methodName = CLanguageGenerator.RJAVA_CLINIT;
+        
+        String ret = methodName;
         
         // add args type into method name to fake overloading
         for (int i = 0; i < method.getParameterCount(); i++) {

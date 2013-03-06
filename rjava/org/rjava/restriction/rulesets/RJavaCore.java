@@ -5,6 +5,8 @@ import org.rjava.restriction.rules.NoCastOnMagicType;
 import org.rjava.restriction.rules.NoDynamicLoading;
 import org.rjava.restriction.rules.NoException;
 import org.rjava.restriction.rules.NoReflection;
+import org.rjava.restriction.rules.NoExplicitLibrary;
+import org.rjava.restriction.rules.NoEnum;
 
 @RestrictionRuleset
 
@@ -12,6 +14,8 @@ import org.rjava.restriction.rules.NoReflection;
 @NoReflection
 @NoException
 @NoCastOnMagicType
+@NoExplicitLibrary
+@NoEnum
 public @interface RJavaCore {
 
 }

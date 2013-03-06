@@ -3,6 +3,6 @@
 
 #include "java_io_PrintStream.h"
 
-java_io_PrintStream* java_lang_System_out;
+java_io_PrintStream* var_java_lang_System_out;
 
 #endif

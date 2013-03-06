@@ -65,6 +65,8 @@ public class CLanguageGenerator extends CodeGenerator {
     public static final String RJAVA_INIT = "rjinit";
     public static final String RJAVA_CLINIT = "rjclinit";
     
+    public static final String C_GLOBAL_VAR_PREFIX = "var_";
+    
     /*
      * stylish
      */
@@ -428,7 +430,7 @@ public class CLanguageGenerator extends CodeGenerator {
                 CodeStringBuilder classInitTemp = new CodeStringBuilder();
                 classInitTemp.append("((" + name.get(target) + CLanguageRuntime.CLASS_STRUCT_SUFFIX + "*)");
                 classInitTemp.append("(&" + name.get(klass) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + "))");
-                classInitTemp.append(" -> " + method.getName() + " = " + name.get(method) + SEMICOLON + NEWLINE);
+                classInitTemp.append(" -> " + name.getFunctionPointerName(method) + " = " + name.get(method) + SEMICOLON + NEWLINE);
                 addToClassInitMap(klass.getName(), classInitTemp.toString());
             }
         }
@@ -438,13 +440,13 @@ public class CLanguageGenerator extends CodeGenerator {
         
         outMain.append(NEWLINE);
         
-        // global variable
+        // class_instance as global variable
         outMain.append(commentln("class instance"));
         outMain.append(name.get(klass) + CLanguageRuntime.CLASS_STRUCT_SUFFIX + " ");
         outMain.append(name.get(klass) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + SEMICOLON + NEWLINE);
         outMain.append(NEWLINE);
         
-        // generate other global fields (static field)
+        // generate global fields (static field)
         outMain.append(commentln("static field (global)"));
         for (RField field : klass.getFields()) {
             //if (field.isStatic() && !field.isFinal()) {
@@ -551,7 +553,7 @@ public class CLanguageGenerator extends CodeGenerator {
             if (interfaceMethod.isClassInitializer() || interfaceMethod.isConstructor())
                 continue;
             
-            classInitTemp.append(tempInterfaceVar + " -> " + interfaceMethod.getName());
+            classInitTemp.append(tempInterfaceVar + " -> " + name.getFunctionPointerName(interfaceMethod));
             classInitTemp.append(" = " + name.get(klass.getImplementingMethodOfAnInterfaceMethod(interfaceMethod)) + SEMICOLON + NEWLINE);
         }
 
@@ -584,7 +586,7 @@ public class CLanguageGenerator extends CodeGenerator {
        // return
        out.append(name.getWithPointerIfProper(method.getReturnType()) + " ");
        // function ptr name
-       out.append("(*" + name.get(method) + ") ");
+       out.append("(*" + name.getFunctionPointerNameFromSootMethod(method.internal()) + ") ");
        // parameter list
        out.append("(");
        out.append(VOID + POINTER + " " + THIS_PARAMETER);

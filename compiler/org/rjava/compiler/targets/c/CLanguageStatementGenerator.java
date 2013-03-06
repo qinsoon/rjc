@@ -32,6 +32,7 @@ import soot.jimple.StringConstant;
 import soot.jimple.internal.AbstractStmt;
 import soot.jimple.internal.JAssignStmt;
 import soot.jimple.internal.JCastExpr;
+import soot.jimple.internal.JCmpExpr;
 import soot.jimple.internal.JGotoStmt;
 import soot.jimple.internal.JIdentityStmt;
 import soot.jimple.internal.JIfStmt;
@@ -369,7 +370,7 @@ public class CLanguageStatementGenerator {
         RClass targetClass = RClass.whoOwnsMethodInTypeHierarchy(baseClass, virtualInvoke.getMethod());
         
         // use class_struct to get function ptr
-        String methodName = name.fromSootMethod(virtualInvoke.getMethod());
+        String methodName = name.getFunctionPointerNameFromSootMethod(virtualInvoke.getMethod());
         String base = name.fromSootLocal((Local) virtualInvoke.getBase());
         
         StringBuilder ret = new StringBuilder();
@@ -403,7 +404,7 @@ public class CLanguageStatementGenerator {
         
         // get the interface name first
         RClass interfaceClass = RClass.fromClassName(invoke.getBase().getType().toString());
-        String methodName = name.fromSootMethod(invoke.getMethod());
+        String methodName = name.getFunctionPointerNameFromSootMethod(invoke.getMethod());
         String base = name.fromSootLocal((Local) invoke.getBase());
         
         ret.append("(");
@@ -472,6 +473,9 @@ public class CLanguageStatementGenerator {
     }
     
     private String fromSootBinopExpr(soot.jimple.BinopExpr binopExpr) {
+        if (binopExpr instanceof JCmpExpr) {
+            return name.fromSootValue(binopExpr.getOp1()) + " - " + name.fromSootValue(binopExpr.getOp2());
+        }
         return binopExpr.toString();
     }
     

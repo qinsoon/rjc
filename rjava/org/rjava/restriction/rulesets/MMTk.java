@@ -6,7 +6,7 @@ import org.rjava.restriction.rules.*;
 @RestrictionRuleset
 
 @RJavaCore
-@NoClassLibrary
+@NoExplicitLibrary
 @NoRuntimeAllocation
 @Uninterruptible
 public @interface MMTk {

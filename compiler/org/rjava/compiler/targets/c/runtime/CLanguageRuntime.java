@@ -669,7 +669,7 @@ public class CLanguageRuntime {
      * @return
      */
     public static String invokeHelper(HelperMethod method, String[] args) {
-        assert (args.length == method.getParameters().size());
+        assert (args == null || args.length == method.getParameters().size());
         
         String ret = method.getMethodName() + "(";
         if (args != null)
