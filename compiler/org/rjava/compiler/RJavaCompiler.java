@@ -1,8 +1,12 @@
 package org.rjava.compiler;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.rjava.compiler.exception.RJavaError;
 import org.rjava.compiler.exception.RJavaRestrictionViolation;
@@ -108,50 +112,70 @@ public class RJavaCompiler {
      * @param args @see usage()
      */
     public static void main(String[] args) {
-	if (args.length < 2)
-	    usage();
-	
-	List<CompilationTask> tasks = new ArrayList<CompilationTask>();
-	
-	// input as source dir, i.e. -dir source_dir
-	String dir = "";
-	if (args.length >= 2 && args[0].equals("-dir")) {
-	    File sourceDir = new File(args[1]);
-	    if (!sourceDir.isDirectory())
-	        usage();
-	    
-	    dir = args[1];
-	} else usage();
-	
-	if (args.length >= 3) {
-        CompilationTask task = null;
-	    // get the rest args as files
-	    for (int i = 2; i < args.length; i ++) {
-	        try {
-	            if (task == null)
-                 task = CompilationTask.newTaskFromFile(dir, args[i]);
-	            else task.addSource(args[i]);
-            } catch (RJavaWarning e) {
-                warning(e);
+        String baseDir = null;
+        Set<String> sources = new HashSet<String>();
+        
+        int i = 0;
+        try{
+            while(i < args.length) {
+                if (args[i].equals("-dir")) {
+                    baseDir = args[i+1];
+                    i++;
+                } else if (args[i].equals("-l")) {
+                    String input = args[i+1];
+                    i++;
+                    BufferedReader br = new BufferedReader(new FileReader(input));
+                    String line = br.readLine();
+                    while(line != null) {
+                        sources.add(line);
+                        line = br.readLine();
+                    }
+                    br.close();
+                } else {
+                    sources.add(args[i]);
+                }
+                
+                i++;
             }
-	    }
-	    tasks.add(task);
-	} else {
-	    try {
-            tasks.add(CompilationTask.newTaskFromDir(dir));
-        } catch (RJavaWarning e) {
-            warning(e);
+            
+            // check if args are valid
+            if (baseDir == null)
+                throw new RuntimeException("Didn't name a base directory. Use -dir");
+            
+            if (!new File(baseDir).isDirectory())
+                throw new RuntimeException("Base directory is not a correct directory name. ");
+            
+            // add all files in the base directory
+            if (sources.size() == 0) {
+                List<String> temp = new ArrayList<String>();
+                CompilationTask.addFileToListRecursively(new File(baseDir), temp);
+                sources.addAll(temp);
+                
+                if (sources.size() == 0)
+                    throw new RuntimeException("Didn't name source list. And base directory doesn't contain any source files");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            usage();
         }
-	}
-
-	// should have only one compilation task here.
-	assert (tasks.size() <= 1);
-	
-	// compile all tasks
-	for (CompilationTask t : tasks) {
-	    if (DEBUG) debug(t);
+        
+        CompilationTask task = null;
+        try {
+            for (String source : sources) {
+                if (task == null)
+                    task = CompilationTask.newTaskFromFile(baseDir, source);
+                else task.addSource(source);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        assert (task != null);
+        
+        // compile all tasks
+	    if (DEBUG) debug(task);
 	    
-	    RJavaCompiler compiler = newRJavaCompiler(t);
+	    RJavaCompiler compiler = newRJavaCompiler(task);
 	    try {
 	        compiler.compile();
 	    } catch (RJavaWarning e) {
@@ -159,7 +183,6 @@ public class RJavaCompiler {
 	    } catch (RJavaError e) {
 	        error(e);
 	    }
-	}
     }
     
     private static RJavaCompiler singleton;

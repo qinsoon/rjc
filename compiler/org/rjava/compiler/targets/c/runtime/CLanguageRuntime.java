@@ -54,14 +54,14 @@ public class CLanguageRuntime {
             break;
         case GC_MALLOC:
             CLanguageGenerator.MALLOC = "GC_malloc";
-            EXTRA_INCLUDE.add("#include \"boehm-gc/include/gc.h\"");
+            EXTRA_INCLUDE.add(includeNonStandardHeader("boehm-gc/include/gc.h"));
             MAKE_SUBTASK.put("boehm-gc.a", "boehm-gc.a:\n" +
                     "\tcd boehm-gc;autoreconf -vif;automake --add-missing;./configure;make -f Makefile.direct\n" +
             		"\tcp boehm-gc/gc.a boehm-gc.a\n");
             break;
         case GC_MALLOC_PREBUILT:
             CLanguageGenerator.MALLOC = "GC_malloc";
-            EXTRA_INCLUDE.add("#include \"boehm-gc/include/gc.h\"");
+            EXTRA_INCLUDE.add(includeNonStandardHeader("boehm-gc/include/gc.h"));
             MAKE_SUBTASK.put("boehm-gc.a", "boehm-gc.a:\n" +
                     "\tcp prebuilt/boehm-gc.a boehm-gc.a\n");
             break;
@@ -75,17 +75,15 @@ public class CLanguageRuntime {
     /*
      * RJava's C implementation helpers
      */
-    public static final String INCLUDE_STDIO = "#include <stdio.h>";
-    public static final String INCLUDE_STDLIB = "#include <stdlib.h>";
-    public static final String INCLUDE_STDBOOL = "#include <stdbool.h>";
-    public static final String INCLUDE_INTTYPES = "#include <inttypes.h>";
-    public static final String RJAVA_LIB_INCLUDE_FILE  = "rjava_clib.h";
-    public static final String RJAVA_LIB_SOURCE_FILE = "rjava_clib.c";
-    public static final String RJAVA_LIB_INCLUDE = "#include \"" + RJAVA_LIB_INCLUDE_FILE + "\"";
-    public static final String RJAVA_RUNTIME_INCLUDE_FILE = "rjava_crt.h";
-    public static final String RJAVA_RUNTIME_SOURCE_FILE = "rjava_crt.c";
-    public static final String RJAVA_RUNTIME_INCLUDE = "#include \"" + RJAVA_RUNTIME_INCLUDE_FILE + "\"";
-    public static final String[] RJAVA_LIB = {
+    public static final String[] C_STD_LIB_HEADER = {
+        "stdio.h",
+        "stdlib.h",
+        "stdbool.h",
+        "inttypes.h"
+    };
+    public static final String RJAVA_LIB = "rjava_clib";
+    public static final String RJAVA_CRT = "rjava_crt";
+    public static final String[] JAVA_LIB = {
         "java_io_PrintStream",
         "java_lang_Object",
         "java_lang_System",
@@ -98,9 +96,6 @@ public class CLanguageRuntime {
         RJAVA_RUNTIME_DEFINE.put("byte", "char");
     }
     public static final ArrayList<String> EXTRA_INCLUDE = new ArrayList<String>();
-    static {
-        EXTRA_INCLUDE.add(INCLUDE_INTTYPES);
-    }
     public static final HashMap<String, String> MAKE_SUBTASK = new HashMap<String, String>();
     public static final String RJAVA_LIB_DIR = "rjava_clib/";
     
@@ -473,12 +468,17 @@ public class CLanguageRuntime {
     }
     
     public void generateCRuntime() throws RJavaError {
-        // generating lib include
+        /*
+         *  generating crt header
+         */
         CodeStringBuilder out = new CodeStringBuilder();
-        out.append("#ifndef RJAVA_LIB_H" + NEWLINE);
-        out.append("#define RJAVA_LIB_H" + NEWLINE);
+        out.append("#ifndef RJAVA_CRT_H" + NEWLINE);
+        out.append("#define RJAVA_CRT_H" + NEWLINE);
         for (String inc : EXTRA_INCLUDE) {
             out.append(inc + NEWLINE);
+        }
+        for (String inc : C_STD_LIB_HEADER) {
+            out.append(includeStandardHeader(inc) + NEWLINE);
         }
         out.append(NEWLINE);
         
@@ -519,12 +519,6 @@ public class CLanguageRuntime {
         
         out.append(NEWLINE);
         
-        //out.append("#define RJAVA_STR char *" + NEWLINE);
-        out.append("#endif" + NEWLINE);
-        
-        out.append("#ifndef RJAVA_APP_H" + NEWLINE);
-        out.append("#define RJAVA_APP_H" + NEWLINE);
-        
         // helper methods
         out.append(signatureHelper(HELPER_RJAVA_CLASS_INIT) + SEMICOLON + NEWLINE);
         for (HelperMethod method : CRT_HELPERS)
@@ -532,17 +526,16 @@ public class CLanguageRuntime {
         
         out.append("#endif" + NEWLINE);
         
-        generator.writeTo(out.toString(), Constants.OUTPUT_DIR + RJAVA_RUNTIME_INCLUDE_FILE);
+        generator.writeTo(out.toString(), Constants.OUTPUT_DIR + RJAVA_CRT + ".h");
         
-        // generating runtime source - for class init()
+        /*
+         *  generating runtime source - for class init()
+         */
         CodeStringBuilder crtSource = new CodeStringBuilder();
-        crtSource.append(RJAVA_RUNTIME_INCLUDE + NEWLINE);
-        crtSource.append(RJAVA_LIB_INCLUDE + NEWLINE);
-        crtSource.append(INCLUDE_STDIO + NEWLINE);
-        crtSource.append(INCLUDE_STDLIB + NEWLINE);
-        crtSource.append(INCLUDE_STDBOOL + NEWLINE);
+        crtSource.append(includeNonStandardHeader(RJAVA_CRT + ".h") + NEWLINE);
+        crtSource.append(includeNonStandardHeader(RJAVA_LIB + ".h") + NEWLINE);
         for (String app : generator.getTranslatedCHeader()) {
-            crtSource.append("#include \"" + app + "\"" + NEWLINE);
+            crtSource.append(includeNonStandardHeader(app) + NEWLINE);
         }
         crtSource.append(NEWLINE);
         
@@ -560,7 +553,7 @@ public class CLanguageRuntime {
             crtSource.appendWithIndent(method.getSource());
             crtSource.append("}" + NEWLINE);
         }
-        generator.writeTo(crtSource.toString(), Constants.OUTPUT_DIR + RJAVA_RUNTIME_SOURCE_FILE);
+        generator.writeTo(crtSource.toString(), Constants.OUTPUT_DIR + RJAVA_CRT + ".c");
         
         // copy lib files
         try {
@@ -585,14 +578,20 @@ public class CLanguageRuntime {
         String fileList = "";
         for (String c : generator.getTranslatedCSource())
             fileList += c + " ";
-        for (String l : RJAVA_LIB)
+        for (String l : JAVA_LIB)
             fileList += l + ".c ";
-        fileList += RJAVA_RUNTIME_SOURCE_FILE + " ";
-        fileList += RJAVA_LIB_SOURCE_FILE + " ";
+        fileList += RJAVA_CRT + ".c" + " ";
+        fileList += RJAVA_LIB + ".c" + " ";
         for (String link : MAKE_SUBTASK.keySet())
             fileList += link + " ";
         
-        makeFile.append("\tgcc -O3 -o " + generator.getMainObj() + " ");
+        if (generator.getMainObj() == null) {
+            // lib
+            makeFile.append("\tgcc -O3 -c -fPIC ");
+        } else {
+            // executable
+            makeFile.append("\tgcc -O3 -o " + generator.getMainObj() + " ");
+        }
         makeFile.append(fileList);
         makeFile.append(" -I .");
         makeFile.append(NEWLINE);
@@ -679,5 +678,23 @@ public class CLanguageRuntime {
             }
         ret += ")";
         return ret;
+    }
+    
+    /**
+     * #include <header>
+     * @param header
+     * @return
+     */
+    public static String includeStandardHeader(String header) {
+        return "#include <" + header + ">";
+    }
+    
+    /**
+     * #include "header"
+     * @param header
+     * @return
+     */
+    public static String includeNonStandardHeader(String header) {
+        return "#include \"" + header + "\"";
     }
 }

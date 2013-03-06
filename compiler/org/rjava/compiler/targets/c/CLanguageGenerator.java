@@ -81,7 +81,7 @@ public class CLanguageGenerator extends CodeGenerator {
     protected List<String> translatedCSource = new ArrayList<String>();
     protected List<String> translatedCHeader = new ArrayList<String>();
     protected String mainSource = "";
-    protected String mainObj = "";
+    protected String mainObj;
    
     protected Map<String, CodeStringBuilder> classInitMap = new HashMap<String, CodeStringBuilder>();
     
@@ -144,9 +144,9 @@ public class CLanguageGenerator extends CodeGenerator {
             // include its own header
             outInc.append("#include \"" + cHeaderSource + "\"" + NEWLINE);
             // include c std
-            outInc.append(CLanguageRuntime.INCLUDE_STDIO + NEWLINE);
-            outInc.append(CLanguageRuntime.INCLUDE_STDLIB + NEWLINE);
-            outInc.append(CLanguageRuntime.INCLUDE_STDBOOL + NEWLINE);
+            for (String cStd : CLanguageRuntime.C_STD_LIB_HEADER) {
+                outInc.append(CLanguageRuntime.includeStandardHeader(cStd) + NEWLINE);
+            }
             
             outMain.append(NEWLINE);
             
@@ -196,7 +196,7 @@ public class CLanguageGenerator extends CodeGenerator {
         outInc.append("#define " + name.get(klass).toUpperCase() + "_H" + NEWLINE);
         
         // include rjava lib
-        outInc.append(CLanguageRuntime.RJAVA_RUNTIME_INCLUDE + NEWLINE);
+        outInc.append(CLanguageRuntime.includeNonStandardHeader(CLanguageRuntime.RJAVA_CRT + ".h") + NEWLINE);
         
         outMain.append(NEWLINE);
         
@@ -276,9 +276,9 @@ public class CLanguageGenerator extends CodeGenerator {
         // include its own header
         outInc.append("#include \"" + cHeaderSource + "\"" + NEWLINE);
         // include c std
-        outInc.append(CLanguageRuntime.INCLUDE_STDIO + NEWLINE);
-        outInc.append(CLanguageRuntime.INCLUDE_STDLIB + NEWLINE);
-        outInc.append(CLanguageRuntime.INCLUDE_STDBOOL + NEWLINE);
+        for (String cStd : CLanguageRuntime.C_STD_LIB_HEADER) {
+            outInc.append(CLanguageRuntime.includeStandardHeader(cStd) + NEWLINE);
+        }
         
         outMain.append(NEWLINE);
         
@@ -341,8 +341,8 @@ public class CLanguageGenerator extends CodeGenerator {
         outInc.append("#define " + name.get(klass).toUpperCase() + "_H" + NEWLINE);
         
         // include rjava lib
-        outInc.append(CLanguageRuntime.RJAVA_RUNTIME_INCLUDE + NEWLINE);
-        outInc.append(CLanguageRuntime.RJAVA_LIB_INCLUDE + NEWLINE);
+        outInc.append(CLanguageRuntime.includeNonStandardHeader(CLanguageRuntime.RJAVA_CRT + ".h") + NEWLINE);
+        outInc.append(CLanguageRuntime.includeNonStandardHeader(CLanguageRuntime.RJAVA_LIB + ".h") + NEWLINE);
         
         outMain.append(NEWLINE);
         /*

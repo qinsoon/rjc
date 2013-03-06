@@ -45,7 +45,7 @@ public class CompilationTask {
         buildClassList();
     }
     
-    private static void addFileToListRecursively(File dir, List<String> list) {
+    public static void addFileToListRecursively(File dir, List<String> list) {
     	File[] all = dir.listFiles();
     	for (File f : all) {
     	    if (f.isFile() && f.getName().endsWith(Constants.RJAVA_EXT))

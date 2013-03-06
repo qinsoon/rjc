@@ -16,7 +16,7 @@ import org.rjava.compiler.targets.c.CLanguageGenerator;
 public class MagicTypesForCGenerator extends CLanguageGenerator {
     public static final String[] INCLUDES = {
         "boehm-gc/libatomic_ops/src/atomic_ops.h",
-        CLanguageRuntime.RJAVA_RUNTIME_INCLUDE_FILE};
+        CLanguageRuntime.RJAVA_CRT + ".h"};
     
     public MagicTypesForCGenerator(GeneratorOptions generatorOptions) {
         super(generatorOptions);
