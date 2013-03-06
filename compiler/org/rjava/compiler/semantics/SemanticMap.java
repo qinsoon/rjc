@@ -52,6 +52,12 @@ public abstract class SemanticMap {
     	hierarchy = TypeHierarchy.init();
     	if (DEBUG)
     	    hierarchy.printHierarchy();
+    	
+    	// check twins
+    	for (RClass klass : classes.values()) {
+    	    for (RMethod method : klass.getMethods())
+    	        method.checkTwin();
+    	}
     }
 
     public static Map<String, RClass> getAllClasses() {
@@ -60,5 +66,18 @@ public abstract class SemanticMap {
 
     public static Map<String, String> getSources() {
         return sources;
+    }
+    
+    public static RType getRTypeFromRClass(RClass klass) {
+        return types.get(klass.getName());
+    }
+    
+    public static RClass getRClassFromRType(RType type) {
+        if (RJavaCompiler.ENABLE_ASSERTION)
+            RJavaCompiler.assertion(type.isReferenceType(), type + " should be reference type");
+        RClass ret = classes.get(type.getClassName());
+        if (RJavaCompiler.ENABLE_ASSERTION)
+            RJavaCompiler.assertion(ret != null, "cannot find " + type.getClassName() + " in semantic map");
+        return ret;
     }
 }

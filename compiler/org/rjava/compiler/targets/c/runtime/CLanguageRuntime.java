@@ -474,11 +474,13 @@ public class CLanguageRuntime {
         CodeStringBuilder out = new CodeStringBuilder();
         out.append("#ifndef RJAVA_CRT_H" + NEWLINE);
         out.append("#define RJAVA_CRT_H" + NEWLINE);
-        for (String inc : EXTRA_INCLUDE) {
-            out.append(inc + NEWLINE);
-        }
+        out.append(CLanguageGenerator.commentln("c std lib"));
         for (String inc : C_STD_LIB_HEADER) {
             out.append(includeStandardHeader(inc) + NEWLINE);
+        }
+        out.append(CLanguageGenerator.commentln("extra header"));
+        for (String inc : EXTRA_INCLUDE) {
+            out.append(inc + NEWLINE);
         }
         out.append(NEWLINE);
         

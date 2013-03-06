@@ -215,4 +215,13 @@ public class RJavaCompiler {
     	System.out.println("RJava compiler error: " + o);
     	System.exit(-1);
     }
+    
+    public static final boolean ENABLE_ASSERTION = true;
+    public static void assertion(boolean a, String message) {
+        if (ENABLE_ASSERTION == false)
+            error("Assertion must be guarded by ENABLE_ASSERTION");
+        
+        if (!a)
+            error("Assertion failed: " + message);
+    }
 }

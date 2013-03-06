@@ -80,7 +80,20 @@ public class RClass {
 
     private void fetchMethods() {
     	for (SootMethod m : internal.getMethods()) {
-    	    methods.add(new RMethod(this, m));
+    	    RMethod tmp = new RMethod(this, m);
+    	    
+    	    // a method maybe a twin for another method. See twin in RMethod
+    	    boolean validMethod = true;
+    	    for (RMethod method : methods) {
+    	        if (method.isTwin(tmp)) {
+    	            System.err.println("Found twin method");
+    	            method.setTwin(tmp);
+    	            validMethod = false;
+    	        }
+    	    }
+    	    
+    	    if (validMethod)
+    	        methods.add(tmp);
     	}
     }
 
@@ -317,5 +330,18 @@ public class RClass {
     
     public boolean isAppClass() {
         return !name.startsWith("java.") && !name.startsWith("javax.");
+    }
+    
+    public boolean equals(Object o) {
+        return this.internal.equals(((RClass) o).internal);
+    }
+    
+    public boolean isDescendanceof(RClass another) {
+        if (getSuperClass() == null)
+            return false;
+        
+        if (getSuperClass().equals(another))
+            return true;
+        else return getSuperClass().isDescendanceof(another);
     }
 }

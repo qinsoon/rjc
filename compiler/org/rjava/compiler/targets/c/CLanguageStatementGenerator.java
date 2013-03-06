@@ -54,7 +54,7 @@ import soot.jimple.internal.JimpleLocal;
 
 public class CLanguageStatementGenerator {
     CLanguageNameGenerator name;
-    CLanguageGenerator generator;    
+    CLanguageGenerator generator;
     
     private int labelIndex = 0;
     // <target.hashCode(), labelIndex>
@@ -369,7 +369,7 @@ public class CLanguageStatementGenerator {
         RClass targetClass = RClass.whoOwnsMethodInTypeHierarchy(baseClass, virtualInvoke.getMethod());
         
         // use class_struct to get function ptr
-        String methodName = virtualInvoke.getMethod().getName();
+        String methodName = name.fromSootMethod(virtualInvoke.getMethod());
         String base = name.fromSootLocal((Local) virtualInvoke.getBase());
         
         StringBuilder ret = new StringBuilder();
@@ -403,7 +403,7 @@ public class CLanguageStatementGenerator {
         
         // get the interface name first
         RClass interfaceClass = RClass.fromClassName(invoke.getBase().getType().toString());
-        String methodName = invoke.getMethod().getName();
+        String methodName = name.fromSootMethod(invoke.getMethod());
         String base = name.fromSootLocal((Local) invoke.getBase());
         
         ret.append("(");

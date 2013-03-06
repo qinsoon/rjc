@@ -356,7 +356,7 @@ public class CLanguageGenerator extends CodeGenerator {
         // if this class doesnt have super class, we use common instance struct
         if (klass.hasSuperClass()) {
             outMain.append(commentln("contains super instance struct"));
-            outMain.append(name.get(klass.getSuperClass()) + " " + CLanguageRuntime.EMBED_SUPER_OBJECT + SEMICOLON + NEWLINE);
+            outMain.append(name.getStruct(klass.getSuperClass()) + " " + CLanguageRuntime.EMBED_SUPER_OBJECT + SEMICOLON + NEWLINE);
         } else {
             outMain.append(commentln("contains common instance struct"));
             outMain.append(CLanguageRuntime.COMMON_INSTANCE_STRUCT + " " + CLanguageRuntime.EMBED_SUPER_OBJECT + SEMICOLON + NEWLINE);
@@ -584,7 +584,7 @@ public class CLanguageGenerator extends CodeGenerator {
        // return
        out.append(name.getWithPointerIfProper(method.getReturnType()) + " ");
        // function ptr name
-       out.append("(*" + method.getName() + ") ");
+       out.append("(*" + name.get(method) + ") ");
        // parameter list
        out.append("(");
        out.append(VOID + POINTER + " " + THIS_PARAMETER);

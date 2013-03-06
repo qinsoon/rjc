@@ -32,6 +32,10 @@ public class CLanguageNameGenerator {
         return ret;
     }
     
+    public String getStruct(RClass klass) {
+        return "struct " + get(klass);
+    }
+    
     public String get(RMethod method) {
         return fromSootMethod(method.internal());
     }
@@ -44,7 +48,7 @@ public class CLanguageNameGenerator {
     }
     
     public String getWithPointerIfProper(RType type) {
-        return get(type) + (type.isReferenceType()? "*":"") + (type.isArray() ? "*" : ""); 
+        return (type.isReferenceType() ? "struct " : "") + get(type) + (type.isReferenceType()? "*":"") + (type.isArray() ? "*" : ""); 
     }
     
     public String get(RField field) {

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.util.Tree;
+import org.rjava.compiler.util.TreeBreadthFirstIterator;
 
 /**
  * This class stores the type hierarchy. This info is used to generate class_init(), since parent class should be inited before child. 
@@ -54,6 +55,23 @@ public class TypeHierarchy {
     
     public List<Tree<RClass>> getRoots() {
         return internal;
+    }
+    
+    /**
+     * is possibleChild the descendance of possibleParent
+     * @param possibleParent
+     * @param possibleChild
+     * @return
+     */
+    public boolean isDescendanceOf(RClass possibleChild, RClass possibleParent) {
+        Tree<RClass> parentTree = getTree(possibleParent);
+        TreeBreadthFirstIterator<RClass> iter = parentTree.getBreadthFirstIterator();
+        while(iter.hasNext()) {
+            RClass curr = iter.next();
+            if (curr.equals(possibleChild))
+                return true;
+        }
+        return false;
     }
 
     private Tree<RClass> getTree(RClass superClass) {
