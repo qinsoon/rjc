@@ -69,6 +69,10 @@ public class CLanguageIntrinsicGenerator {
         // magic types are primitives
         else if (Arrays.asList(Constants.MAGIC_TYPES).contains(type.getClassName())) {
             type.setPrimitive(true);
+            type.setMagicType(true);
+        } else if (Arrays.asList(Constants.MAGIC_ARRAY_TYPES).contains(type.getClassName())) {
+            type.setPrimitive(true);
+            type.setMagicType(true);
         }
     }
 
@@ -77,22 +81,12 @@ public class CLanguageIntrinsicGenerator {
             InvokeExpr invoke = stmt.internal().getInvokeExpr();
             // remove any call to object
             if (invoke instanceof JSpecialInvokeExpr && invoke.getMethod().getDeclaringClass().getName().equals("java.lang.Object")) {
-                stmt.setIntrinsic(true);
-                stmt.setCode(CLanguageGenerator.comment(stmt.toString()));
+                //stmt.setIntrinsic(true);
+                //stmt.setCode(CLanguageGenerator.comment(stmt.toString()));
             } else if (invoke instanceof JVirtualInvokeExpr && invoke.getMethod().getDeclaringClass().getName().equals("java.lang.Object")) {
-                stmt.setIntrinsic(true);
-                stmt.setCode(CLanguageGenerator.comment(stmt.toString()));
+                //stmt.setIntrinsic(true);
+                //stmt.setCode(CLanguageGenerator.comment(stmt.toString()));
             }
-            
-            // rewrite boxed primitive type init
-            /*else if (invoke instanceof JSpecialInvokeExpr && invoke.getMethod().getName().equals("<init>") && invoke.getMethod().getDeclaringClass().getName().startsWith("java.lang")) {
-                if (invoke.getMethod().getDeclaringClass().getName().equals("java.lang.Integer")) {
-                    if (invoke.getMethod().getSignature().equals("<java.lang.Integer: void <init>(int)>")) {
-                        stmt.setIntrinsic(true);
-                        stmt.setCode(name.fromSootValue(((JSpecialInvokeExpr) invoke).getBase()) + " = " + name.fromSootValue(invoke.getArg(0))); 
-                    }
-                }
-            }*/
         } 
         // transform char** args into an 'rjava' array
         else if (stmt instanceof RIdentityStmt && stmt.getMethod().isMainMethod() && 

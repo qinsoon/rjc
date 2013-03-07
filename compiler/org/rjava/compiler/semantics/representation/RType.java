@@ -20,6 +20,7 @@ public class RType {
     private String type;
     private String className;
     private String packageName;
+    private boolean magicType = false;
     private boolean primitive = false;
     private boolean array = false;
     private boolean voidType = false;
@@ -246,5 +247,13 @@ public class RType {
         int index2 = PRIMITIVE_TYPES.indexOf(primitive);
         
         return index1 != -1 && index1 == index2;
+    }
+
+    public boolean isMagicType() {
+        return magicType;
+    }
+
+    public void setMagicType(boolean magicType) {
+        this.magicType = magicType;
     }
 }

@@ -90,6 +90,9 @@ public class CLanguageRuntime {
         "java_lang_StringBuffer",
         "java_lang_String",
         "java_lang_Integer",
+        "java_lang_Class",
+        "java_lang_Throwable",
+        "java_lang_Exception"
     };
     public static final HashMap<String, String> RJAVA_RUNTIME_DEFINE = new HashMap<String, String>();
     static {

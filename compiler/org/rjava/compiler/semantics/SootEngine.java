@@ -87,6 +87,7 @@ public class SootEngine {
 
     private void runSoot() {
         List<String> sootArgs = new ArrayList<String>();
+        
         // whole program
         Options.v().set_whole_program(true);
         

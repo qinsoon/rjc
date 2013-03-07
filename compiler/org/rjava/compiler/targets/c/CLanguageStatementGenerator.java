@@ -33,6 +33,8 @@ import soot.jimple.internal.AbstractStmt;
 import soot.jimple.internal.JAssignStmt;
 import soot.jimple.internal.JCastExpr;
 import soot.jimple.internal.JCmpExpr;
+import soot.jimple.internal.JCmpgExpr;
+import soot.jimple.internal.JCmplExpr;
 import soot.jimple.internal.JGotoStmt;
 import soot.jimple.internal.JIdentityStmt;
 import soot.jimple.internal.JIfStmt;
@@ -50,6 +52,7 @@ import soot.jimple.internal.JNopStmt;
 import soot.jimple.internal.JSpecialInvokeExpr;
 import soot.jimple.internal.JStaticInvokeExpr;
 import soot.jimple.internal.JTableSwitchStmt;
+import soot.jimple.internal.JUshrExpr;
 import soot.jimple.internal.JVirtualInvokeExpr;
 import soot.jimple.internal.JimpleLocal;
 
@@ -473,8 +476,11 @@ public class CLanguageStatementGenerator {
     }
     
     private String fromSootBinopExpr(soot.jimple.BinopExpr binopExpr) {
-        if (binopExpr instanceof JCmpExpr) {
+        if (binopExpr instanceof JCmpExpr || binopExpr instanceof JCmpgExpr || binopExpr instanceof JCmplExpr) {
             return name.fromSootValue(binopExpr.getOp1()) + " - " + name.fromSootValue(binopExpr.getOp2());
+        }
+        if (binopExpr instanceof JUshrExpr) {
+            return "(unsigned int)(" + name.fromSootValue(binopExpr.getOp1()) + " >> " + name.fromSootValue(binopExpr.getOp2()) + ")";
         }
         return binopExpr.toString();
     }

@@ -2,6 +2,7 @@
 #define ORG_VMMAGIC_UNBOXED_OBJECTREFERENCE_H
 #include "boehm-gc/libatomic_ops/src/atomic_ops.h"
 #include "rjava_crt.h"
+#include "java_lang_Object.h"
 
 #define org_vmmagic_unboxed_ObjectReference uintptr_t
 

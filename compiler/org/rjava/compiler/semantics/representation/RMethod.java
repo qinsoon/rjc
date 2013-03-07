@@ -58,6 +58,7 @@ public class RMethod {
      */
     private RType twinReturnType;
     private List<RStatement> twinBody;
+    private List<RLocal> twinLocals;
     
     public RMethod(RClass rClass, SootMethod m) {
     	this.internal = m;
@@ -82,6 +83,7 @@ public class RMethod {
             
             try {
                 // get body
+                // FIXME: seems to be a problem if we call update() from intrinsic pass. are we getting the modified body?
                 Body sootBody = null;
                 if (SootEngine.RUN_SOOT) {
                     sootBody = SootEngine.methodStorage.get(internal);
@@ -93,9 +95,28 @@ public class RMethod {
                     body.add(RStatement.from(this, iter.next()));
                 }
                 
+                // soot may have two locals with the same name, we need to fix this
                 Iterator<Local> iter2 = sootBody.getLocals().iterator();
                 while(iter2.hasNext()) {
-                    locals.add(new RLocal(this, iter2.next()));
+                    Local l = iter2.next();
+                    
+                    /*
+                     * if we have several locals as 'int a'. the second one will be 'int a_rjmagiclocal2', the third one will be 'int a_rjmagiclocal3'
+                     */
+                    int existingLocalsWithSameName = 0;
+                    for (RLocal existingLocal : locals) {
+                        if (existingLocal.getName().equals(l.getName()) ||    // the second local with the same name
+                                                                              // the subsequent local with the same name) 
+                                existingLocal.getName().startsWith(l.getName() + "_rjmagiclocal"))   {
+                            existingLocalsWithSameName++;                        
+                        }
+                    }
+                    if (existingLocalsWithSameName != 0) {
+                        // need renaming
+                        l.setName(l.getName() + "_rjmagiclocal" + (existingLocalsWithSameName+1));
+                    }
+                    
+                    locals.add(new RLocal(this, l));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -217,14 +238,17 @@ public class RMethod {
                 return false;
         
         // should be a twin, but we need to check if this method is already a twin for other method (that shouldn't happen)
-        assert (twinReturnType == null && twinBody == null);
+        if (RJavaCompiler.ENABLE_ASSERTION)
+            RJavaCompiler.assertion((twinReturnType == null && twinBody == null && twinLocals == null), "twin method already set for " + getName());
         return true;
     }
     
     public void setTwin(RMethod twin) {
-        assert (twinReturnType == null && twinBody == null);
+        if (RJavaCompiler.ENABLE_ASSERTION)
+            RJavaCompiler.assertion((twinReturnType == null && twinBody == null && twinLocals == null), "twin method already set for " + getName());
         this.twinReturnType = twin.returnType;
         this.twinBody = twin.body;
+        this.twinLocals = twin.locals;
     }
     
     public void checkTwin() {
@@ -245,6 +269,10 @@ public class RMethod {
             List xhg = twinBody;
             twinBody = body;
             body = xhg;
+            
+            List xhg2 = twinLocals;
+            twinLocals = locals;
+            locals = xhg2;
         }
     }
 }

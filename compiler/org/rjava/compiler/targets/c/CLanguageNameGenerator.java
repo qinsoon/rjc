@@ -42,7 +42,7 @@ public class CLanguageNameGenerator {
     
     public String get(RType type) {
         String ret = javaNameToCName(type.getClassName());
-        if (type.isReferenceType())
+        if (type.isReferenceType() || type.isMagicType())
             generator.referencing(ret);
         return ret;
     }
