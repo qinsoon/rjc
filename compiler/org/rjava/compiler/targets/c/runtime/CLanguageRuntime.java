@@ -83,17 +83,11 @@ public class CLanguageRuntime {
     };
     public static final String RJAVA_LIB = "rjava_clib";
     public static final String RJAVA_CRT = "rjava_crt";
-    public static final String[] JAVA_LIB = {
-        "java_io_PrintStream",
-        "java_lang_Object",
-        "java_lang_System",
-        "java_lang_StringBuffer",
-        "java_lang_String",
-        "java_lang_Integer",
-        "java_lang_Class",
-        "java_lang_Throwable",
-        "java_lang_Exception"
-    };
+    public static final String[] JAVA_LANG_PACKAGE = new String[Constants.RJAVA_JAVA_LANG.length];
+    static {
+        for (int i = 0; i < JAVA_LANG_PACKAGE.length; i++)
+            JAVA_LANG_PACKAGE[i] = Constants.RJAVA_JAVA_LANG[i].replace('.', '_');
+    }
     public static final HashMap<String, String> RJAVA_RUNTIME_DEFINE = new HashMap<String, String>();
     static {
         RJAVA_RUNTIME_DEFINE.put("byte", "char");
@@ -583,7 +577,7 @@ public class CLanguageRuntime {
         String fileList = "";
         for (String c : generator.getTranslatedCSource())
             fileList += c + " ";
-        for (String l : JAVA_LIB)
+        for (String l : JAVA_LANG_PACKAGE)
             fileList += l + ".c ";
         fileList += RJAVA_CRT + ".c" + " ";
         fileList += RJAVA_LIB + ".c" + " ";

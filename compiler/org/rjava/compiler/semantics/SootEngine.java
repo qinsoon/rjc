@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.rjava.compiler.CompilationTask;
+import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.representation.RClass;
 
 import static org.rjava.compiler.Constants.*;
@@ -25,7 +26,7 @@ import soot.jimple.spark.SparkTransformer;
 import soot.options.Options;
 
 public class SootEngine {  
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
     
     public static boolean RUN_SOOT = false;
     
@@ -98,7 +99,15 @@ public class SootEngine {
         Options.v().set_output_format(Options.output_format_none);
         
         // exclude java.*
-        Options.v().set_exclude(Arrays.asList("java", "org.vmmagic"));
+        if (RJavaCompiler.isInternalCompiling() == RJavaCompiler.INTERNAL_COMPILE_LIB) {
+            // as long as we are not compiling lib, we set those as excludes
+            Options.v().set_exclude(Arrays.asList("org.vmmagic"));
+        } else if (RJavaCompiler.isInternalCompiling() == RJavaCompiler.INTERNAL_COMPILE_MAGIC_TYPES) {
+            // do not set anything
+        } else {
+            Options.v().set_exclude(Arrays.asList("java", "org.vmmagic"));
+        }
+        
         Options.v().set_no_bodies_for_excluded(true);
         Options.v().set_allow_phantom_refs(true);
         
@@ -109,8 +118,9 @@ public class SootEngine {
         String classpath = "";
         for (String path : dir)
             classpath += path + ":";
-        for (String path : jdkPath)
-            classpath += path + ":";
+        if (RJavaCompiler.isInternalCompiling() != RJavaCompiler.INTERNAL_COMPILE_LIB)
+            for (String path : jdkPath)
+                classpath += path + ":";
         classpath += RJAVA_ANNOTATION_DIR + ":"; 
         classpath += ".";
         Options.v().set_soot_classpath(classpath);

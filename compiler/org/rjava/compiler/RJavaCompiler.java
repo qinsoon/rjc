@@ -224,4 +224,7 @@ public class RJavaCompiler {
         if (!a)
             error("Assertion failed: " + message);
     }
+    public static void fail(String message) {
+        error("Fail: " + message);
+    }
 }

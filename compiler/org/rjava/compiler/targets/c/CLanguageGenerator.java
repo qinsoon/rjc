@@ -99,6 +99,7 @@ public class CLanguageGenerator extends CodeGenerator {
     public void translate(RClass klass, String source)
 	    throws RJavaWarning, RJavaError {
         if (OUTPUT_JIMPLE)
+            RJavaCompiler.debug("Methods for " + klass.getName());
             for (RMethod method : klass.getMethods()) {
                 RJavaCompiler.debug(method + "{");
                 RJavaCompiler.debug("Locals:");
@@ -709,5 +710,13 @@ public class CLanguageGenerator extends CodeGenerator {
 
     public Map<String, CodeStringBuilder> getClassInitMap() {
         return classInitMap;
+    }
+
+    public CLanguageIntrinsicGenerator getIntrinsic() {
+        return intrinsic;
+    }
+
+    public void setIntrinsic(CLanguageIntrinsicGenerator intrinsic) {
+        this.intrinsic = intrinsic;
     }
 }

@@ -54,6 +54,17 @@ public final class Constants {
         MAGIC_WORD              + MAGIC_ARRAY_SUFFIX
     };
 
+    public static final String[] RJAVA_JAVA_LANG = {
+        "java.lang.Class",
+        "java.lang.Exception",
+        "java.lang.Integer",
+        "java.lang.Object",
+        "java.lang.String",
+        "java.lang.StringBuffer",
+        "java.lang.System",
+        "java.lang.Throwable"
+    };
+    public static final String RJAVA_LIB_IMPL_DIR = "rjava_clib_impl/";
     
     private Constants(){}
 }

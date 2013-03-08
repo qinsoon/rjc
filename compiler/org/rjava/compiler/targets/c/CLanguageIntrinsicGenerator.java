@@ -36,8 +36,8 @@ import soot.util.HashChain;
 public class CLanguageIntrinsicGenerator {
     public static final boolean DEBUG = true;
     
-    CLanguageNameGenerator name;
-    CLanguageGenerator languageGenerator;
+    protected CLanguageNameGenerator name;
+    protected CLanguageGenerator languageGenerator;
     
     public static final Map<String, String> JAVA_PRIMITIVE_TO_C_TYPE = new HashMap<String, String>();
     static {
