@@ -41,9 +41,9 @@ public class StaticRestrictionChecker {
 	}
 	
 	if (violations.size() > 0) {
-	    System.out.println("Restriction violations:");
+	    RJavaCompiler.warning("Restriction violations:");
     	for (int i = 0; i < violations.size(); i++) {
-    	    System.out.println((i+1) + ". " + violations.get(i).getMessage());
+    	    RJavaCompiler.warning((i+1) + ". " + violations.get(i).getMessage());
     	}
         // throw new RJavaError("Static check failed on " + klass.getName() + ", please check output log. ");	
     }

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.util.Tree;
 import org.rjava.compiler.util.TreeBreadthFirstIterator;
@@ -89,8 +90,8 @@ public class TypeHierarchy {
     
     public void printHierarchy() {
         for (Tree<RClass> root : internal) {
-            System.out.println("Tree:");
-            System.out.println(root.printTree(0));
+            RJavaCompiler.debug("Tree:");
+            RJavaCompiler.debug(root.printTree(0));
         }
         System.out.println();
     }

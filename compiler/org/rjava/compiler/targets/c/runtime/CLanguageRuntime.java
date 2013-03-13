@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.rjava.compiler.Constants;
+import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.exception.RJavaError;
 import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RClass;
@@ -613,7 +614,8 @@ public class CLanguageRuntime {
                 RClass current = iter.next();
                 //System.out.println("Generating class init statements for " + current.getName());
                 body.append(CLanguageGenerator.commentln("init for " + name.get(current)));
-                System.out.println("trying to get class init code for:" + current.getName());
+                if (RJavaCompiler.DEBUG)
+                    RJavaCompiler.debug("trying to get class init code for:" + current.getName());
                 body.append(generator.getClassInitMap().get(current.getName()).toString());
                 body.append("\n\n");
             }

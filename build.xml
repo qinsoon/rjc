@@ -22,7 +22,6 @@
     </path>
     <target depends="clean" name="init">
         <mkdir dir="bin"/>
-
     </target>
     <target name="clean">
         <delete dir="bin"/>

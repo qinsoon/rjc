@@ -77,7 +77,7 @@ public abstract class RStatement {
     	try{
     	    type = JIMPLE_STMT_MAP.get(internal.getClass().toString());
     	} catch (Exception e) {
-    	    System.err.println("Cannot recognize statement type: " + internal.getClass());
+    	    RJavaCompiler.error("Cannot recognize statement type: " + internal.getClass());
     	}
     }
     

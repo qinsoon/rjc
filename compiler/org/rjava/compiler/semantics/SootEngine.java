@@ -64,7 +64,7 @@ public class SootEngine {
     	for (String className : classNames) {
     	    // resolve klass and add to map
     	    if (DEBUG)
-    	        System.out.println("Resolving " + className + "...");
+    	        RJavaCompiler.debug("Resolving " + className + "...");
     	    SootClass klass = resolveAndGetClass(className);
     	    allClasses.put(className, klass);
     	    
@@ -78,9 +78,9 @@ public class SootEngine {
     	}
     	
     	if (DEBUG) {
-    	    System.out.println("---Classes---");
+    	    RJavaCompiler.debug("---Classes---");
     	    for (Map.Entry<String, SootClass> entry : allClasses.entrySet()) {
-    		System.out.println("(" + entry.getKey() + ", " + entry.getValue() + ")");
+    	        RJavaCompiler.debug("(" + entry.getKey() + ", " + entry.getValue() + ")");
     	    }
     	    System.out.println();
     	}

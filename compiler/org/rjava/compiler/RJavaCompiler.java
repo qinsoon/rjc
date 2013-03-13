@@ -69,27 +69,27 @@ public class RJavaCompiler {
     	codeGenerator.preTranslationWork();
     	
     	for (int i = 0; i < task.getSources().size(); i ++) {
-    	    System.out.println("Compiling [" + task.getClasses().get(i) + "]: " + task.getSources().get(i));
+    	    RJavaCompiler.println("Compiling [" + task.getClasses().get(i) + "]: " + task.getSources().get(i));
     	    String source = task.getSources().get(i);
     	    String className = task.getClasses().get(i);
     	    RClass klass = SemanticMap.getAllClasses().get(className);
     	    
     	    // for each class, check restriction compliance first
     	    try {
-    		checker.comply(klass);
+    	        checker.comply(klass);
     	    } catch (RJavaError e) {
-    		error(e);
+    	        error(e);
     	    } catch (RJavaWarning e) {
-    		warning(e);
+    	        warning(e);
     	    } 
     	    
     	    // then compiles the class	    
     	    try {
-    		codeGenerator.translate(klass, source);
+    	        codeGenerator.translate(klass, source);
     	    } catch (RJavaError e) {
-    		error(e);
+    	        error(e);
     	    } catch (RJavaWarning e) {
-    		warning(e);
+    	        warning(e);
     	    }
     	}
     	
@@ -131,7 +131,10 @@ public class RJavaCompiler {
                         line = br.readLine();
                     }
                     br.close();
-                } else {
+                } else if (args[i].equals("-m")) {
+                    mute = true;
+                }
+                else {
                     sources.add(args[i]);
                 }
                 
@@ -196,14 +199,15 @@ public class RJavaCompiler {
     public static int isInternalCompiling() {
         return singleton.internalCompile;
     }
-    public static void debug(Object o) {
-        System.out.println(o);
-    }
     
     public static void usage() {
     	String usage = "RJava compiler usage:\n";
     	usage += "1. Compiler -dir base_dir file1 file2 ...\n";
     	usage += "2. Compiler -dir source_dir_to_be_compiled\n";
+    	usage += "\n";
+    	usage += "Options:\n";
+    	usage += "-m\t\tmakes compiler mute (output nothing except warning/error)\n";
+    	usage += "-l [file_name]\t\ttakes source files from the file named\n";
     	error(usage);
     }
 
@@ -212,8 +216,25 @@ public class RJavaCompiler {
     }
     
     public static void error(Object o) {
-    	System.out.println("RJava compiler error: " + o);
+        System.out.println("RJava compiler error: " + o);
     	System.exit(-1);
+    }
+    
+    public static void debug(Object o) {
+        RJavaCompiler.println(o);
+    }
+    
+    /*
+     * wrap standard out, so the compiler can be completely mute. 
+     */
+    public static boolean mute = false;
+    public static void print(Object o) {
+        if (!mute)
+            System.out.print(o);
+    }
+    public static void println(Object o) {
+        if (!mute)
+            System.out.println(o);
     }
     
     public static final boolean ENABLE_ASSERTION = true;

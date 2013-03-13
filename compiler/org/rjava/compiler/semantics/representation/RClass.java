@@ -86,7 +86,6 @@ public class RClass {
     	    boolean validMethod = true;
     	    for (RMethod method : methods) {
     	        if (method.isTwin(tmp)) {
-    	            System.err.println("Found twin method");
     	            method.setTwin(tmp);
     	            validMethod = false;
     	        }

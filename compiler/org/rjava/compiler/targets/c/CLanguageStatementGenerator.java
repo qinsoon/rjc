@@ -126,7 +126,7 @@ public class CLanguageStatementGenerator {
             leftOpStr = name.fromSootJArrayRef((soot.jimple.internal.JArrayRef) leftOp);
         }
         else {
-            System.out.println("leftOp:" + leftOp.getClass());
+            RJavaCompiler.println("leftOp:" + leftOp.getClass());
             throw stmt.newIncompleteImplementationError("leftOp:" + leftOp.getClass());
         }
         
@@ -192,7 +192,7 @@ public class CLanguageStatementGenerator {
             rightOpStr = fromSootJNegExpr((JNegExpr)rightOp);
         }
         else {
-            System.out.println("rightOp:" + rightOp.getClass());
+            RJavaCompiler.println("rightOp:" + rightOp.getClass());
             throw stmt.newIncompleteImplementationError("rightOp:" + rightOp.getClass());
         }
         
