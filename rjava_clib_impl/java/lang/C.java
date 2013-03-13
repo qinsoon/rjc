@@ -12,9 +12,10 @@ public abstract class C {
     
     public static native Address malloc(int size);
     
-    public static native int sprintf(Address str, String format, Object... arguments);
+    public static native int sprintf(Address str, String format, Object arguments);
     
-    public static native int printf(String format, Object... arguments);
+    public static native int printf(String format);
+    public static native int printf(String format, Object arguments);
     
     public static native Address strcpy(Address dest, Address source);
     public static native int strlen(Address str);

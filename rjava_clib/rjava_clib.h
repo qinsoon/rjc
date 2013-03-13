@@ -7,6 +7,9 @@
 #include "java_lang_StringBuffer.h"
 #include "java_lang_String.h"
 #include "java_lang_Integer.h"
+#include "java_lang_Class.h"
+#include "java_lang_Throwable.h"
+#include "java_lang_Exception.h"
 
 #include "org_vmmagic_unboxed_Address.h"
 #include "org_vmmagic_unboxed_AddressArray.h"

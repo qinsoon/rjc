@@ -19,7 +19,10 @@ public abstract class CodeGenerator {
      */
     public void preTranslationWork() throws RJavaError{
         try {
-            FileUtils.cleanDirectory(new File(Constants.OUTPUT_DIR));
+            File outputDir = new File(Constants.OUTPUT_DIR);
+            if (!outputDir.exists())
+                outputDir.mkdir();
+            FileUtils.cleanDirectory(outputDir);
         } catch (IOException e) {
             throw new RJavaError("Error when cleaning output dir : " + e.getMessage());
         }

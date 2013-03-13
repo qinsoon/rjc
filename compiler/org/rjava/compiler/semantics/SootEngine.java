@@ -102,6 +102,7 @@ public class SootEngine {
         if (RJavaCompiler.isInternalCompiling() == RJavaCompiler.INTERNAL_COMPILE_LIB) {
             // as long as we are not compiling lib, we set those as excludes
             Options.v().set_exclude(Arrays.asList("org.vmmagic"));
+            Options.v().set_include(Arrays.asList("java"));
         } else if (RJavaCompiler.isInternalCompiling() == RJavaCompiler.INTERNAL_COMPILE_MAGIC_TYPES) {
             // do not set anything
         } else {

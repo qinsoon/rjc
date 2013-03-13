@@ -1,6 +1,7 @@
 #ifndef JAVA_LANG_CLASS_H
 #define JAVA_LANG_CLASS_H
 
+#include "java_lang_Object.h"
 #include "rjava_crt.h"
 
 typedef struct java_lang_Class {

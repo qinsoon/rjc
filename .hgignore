@@ -5,3 +5,4 @@ syntax: regexp
 output\\*
 c_test\\*
 mmtk\\*
+build\\*

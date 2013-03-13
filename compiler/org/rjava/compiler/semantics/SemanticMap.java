@@ -10,8 +10,6 @@ import java.util.Map;
 
 import javax.swing.tree.TreeModel;
 
-import org.antlr.runtime.ANTLRInputStream;
-import org.antlr.runtime.CommonTokenStream;
 import org.rjava.compiler.CompilationTask;
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.representation.*;

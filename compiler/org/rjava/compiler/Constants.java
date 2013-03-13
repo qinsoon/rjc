@@ -55,6 +55,7 @@ public final class Constants {
     };
 
     public static final String[] RJAVA_JAVA_LANG = {
+        "java.io.PrintStream",
         "java.lang.Class",
         "java.lang.Exception",
         "java.lang.Integer",
