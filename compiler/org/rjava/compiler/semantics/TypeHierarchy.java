@@ -2,8 +2,10 @@ package org.rjava.compiler.semantics;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.representation.RClass;
@@ -56,6 +58,22 @@ public class TypeHierarchy {
     
     public List<Tree<RClass>> getRoots() {
         return internal;
+    }
+    
+    public Set<RClass> getAncestorsOf(RClass klass) {
+        Set<RClass> ret = new HashSet<RClass>();
+        Tree<RClass> tree = getTree(klass);
+        if (tree != null) {
+            while(tree.getParent() != null) {
+                RClass parent = tree.getParent().getHead();
+                if (parent != null) {
+                    ret.add(parent);
+                    tree = tree.getParent();
+                }
+                else return ret;
+            }
+        }
+        return ret;
     }
     
     /**

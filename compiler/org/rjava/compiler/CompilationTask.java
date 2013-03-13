@@ -4,17 +4,20 @@ import static org.rjava.compiler.Constants.RJAVA_EXT;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.rjava.compiler.exception.RJavaError;
 import org.rjava.compiler.exception.RJavaWarning;
 
 public class CompilationTask {
-    String path;
+    String baseDir;
     List<String> sources;
     List<String> classes;
     String main;
     
-    public static CompilationTask newTaskFromFile(String dir, String file) throws RJavaWarning {
+    public static CompilationTask newTaskFromFile(String dir, String file) throws RJavaError {
     	File f = new File(file);
     	File dirFile = new File(dir);
     	if (f.exists())
@@ -22,10 +25,10 @@ public class CompilationTask {
     	if (f.exists() && f.isFile())
     	    return new CompilationTask(dirFile.getAbsolutePath(), f.getAbsolutePath());
     	
-    	throw new RJavaWarning("File doesn't exist: " + file);
+    	throw new RJavaError("File doesn't exist: " + file);
     }
     
-    public static CompilationTask newTaskFromDir(String dir) throws RJavaWarning {
+    public static CompilationTask newTaskFromDir(String dir) throws RJavaError {
     	File d = new File(dir);
     	if (d.exists())
     	    d = d.getAbsoluteFile();
@@ -35,7 +38,7 @@ public class CompilationTask {
     	    return new CompilationTask(d.getAbsolutePath(), sources);
     	}
     	
-    	throw new RJavaWarning("Directory doesn't exist: " + dir);
+    	throw new RJavaError("Directory doesn't exist: " + dir);
     }
     
     public void addSource(String file) {
@@ -45,32 +48,46 @@ public class CompilationTask {
         buildClassList();
     }
     
-    public static void addFileToListRecursively(File dir, List<String> list) {
+    /**
+     * assume we will find the class for this class name
+     * @param className
+     */
+    public void addClass(String className) {
+        String file = className.replace('.', '/');
+        file += Constants.RJAVA_EXT;
+        file = baseDir + file;
+        
+        //addSource(className);
+        sources.add(file);
+        classes.add(className);
+    }
+    
+    public static void addFileToListRecursively(File dir, List<String> sources2) {
     	File[] all = dir.listFiles();
     	for (File f : all) {
     	    if (f.isFile() && f.getName().endsWith(Constants.RJAVA_EXT))
-    	        list.add(f.getAbsolutePath());
+    	        sources2.add(f.getAbsolutePath());
     	    else if (f.isDirectory())
-    	    	addFileToListRecursively(f, list);
+    	    	addFileToListRecursively(f, sources2);
     	}
     }
 
-    protected CompilationTask(String path, String file) {
+    protected CompilationTask(String baseDir, String file) {
     	super();
-    	if (!path.endsWith("/"))
-    	    path += "/";
-    	this.path = path;
+    	if (!baseDir.endsWith("/"))
+    	    baseDir += "/";
+    	this.baseDir = baseDir;
     	this.sources = new ArrayList<String>();
     	this.sources.add(file);
     	
     	buildClassList();
     }
     
-    protected CompilationTask(String path, List<String> sources) {
+    protected CompilationTask(String baseDir, List<String> sources) {
     	super();
-    	if (!path.endsWith("/"))
-    	    path += "/";
-    	this.path = path;
+    	if (!baseDir.endsWith("/"))
+    	    baseDir += "/";
+    	this.baseDir = baseDir;
     	this.sources = sources;
     	
     	buildClassList();
@@ -83,7 +100,7 @@ public class CompilationTask {
     	classes = new ArrayList<String>();
     	for (String source : sources) {
     	    // change test/org/rjava/HelloWorld.java -> org.rjava.HelloWorld
-    	    source = source.replaceAll(path, "");
+    	    source = source.replaceAll(baseDir, "");
     	    String className = source.substring(0, source.length() - RJAVA_EXT.length());
     	    className = className.replaceAll("/", ".");
     	    classes.add(className);
@@ -91,7 +108,7 @@ public class CompilationTask {
     }
     
     public String toString() {
-    	String result = "Compilation Task: " + path + "\n";
+    	String result = "Compilation Task: " + baseDir + "\n";
     	for (String s : sources) {
     	    result += "-" + s + "\n";
     	}
@@ -104,11 +121,11 @@ public class CompilationTask {
     }
 
     public String getPath() {
-        return path;
+        return baseDir;
     }
 
     public void setPath(String path) {
-        this.path = path;
+        this.baseDir = path;
     }
 
     public List<String> getSources() {

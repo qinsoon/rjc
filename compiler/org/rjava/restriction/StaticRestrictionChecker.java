@@ -18,25 +18,25 @@ public class StaticRestrictionChecker {
 	for (RRestriction restriction : klass.getRestrictions()) {
 	    //System.out.print("Checking " + restriction.getName() + " on " + klass.getName() + "...");
 	    try {
-		Class checkClass = Class.forName(restriction.getName() + CHECK_RULE_SUFFIX);
-		Method checkMethod = checkClass.getDeclaredMethod(CHECK_CLASS_METHOD, CHECK_CLASS_PARA);  
-		Object[] para = new Object[] {klass};
-		Boolean pass = (Boolean) checkMethod.invoke(null, para);
+    		Class checkClass = Class.forName(restriction.getName() + CHECK_RULE_SUFFIX);
+    		Method checkMethod = checkClass.getDeclaredMethod(CHECK_CLASS_METHOD, CHECK_CLASS_PARA);  
+    		Object[] para = new Object[] {klass};
+    		Boolean pass = (Boolean) checkMethod.invoke(null, para);
 	    }
 	    
 	    // reflection exception
 	    catch (IllegalArgumentException e) {
-		throw new RJavaError("Fail to invoke restriction checking: " + e.getMessage());
+	        throw new RJavaError("Fail to invoke restriction checking: " + e.getMessage());
 	    } catch (IllegalAccessException e) {
-		throw new RJavaError("Fail to invoke restriction checking: " + e.getMessage());
+	        throw new RJavaError("Fail to invoke restriction checking: " + e.getMessage());
 	    } catch (InvocationTargetException e) {
-		throw new RJavaError("Fail to invoke restriction checking: " + e.getMessage());
+	        throw new RJavaError("Fail to invoke restriction checking: " + e.getMessage());
 	    } catch (ClassNotFoundException e) {
-		throw new RJavaError("Didn't find restriction class: " + e.getMessage());
+	        throw new RJavaError("Didn't find restriction class: " + e.getMessage());
 	    } catch (SecurityException e) {
-		throw new RJavaError("Fail to invoke restriction checking: " + e.getMessage());
+	        throw new RJavaError("Fail to invoke restriction checking: " + e.getMessage());
 	    } catch (NoSuchMethodException e) {
-		throw new RJavaError("Fail to invoke restriction checking: " + e.getMessage());
+	        throw new RJavaError("Fail to invoke restriction checking: " + e.getMessage());
 	    }
 	}
 	

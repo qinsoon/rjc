@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.tree.TreeModel;
 
@@ -40,16 +41,26 @@ public abstract class SemanticMap {
     	engine = new SootEngine(task);
     	engine.buildSemanticMap();
     	
-    	// map class name with source files
-    	sources = new HashMap<String, String>();
-    	for (int i = 0; i < task.getClasses().size(); i++) {
-    	    sources.put(task.getClasses().get(i), task.getSources().get(i));
-    	}
-    	
     	// init hierarchy
     	hierarchy = TypeHierarchy.init();
     	if (DEBUG)
     	    hierarchy.printHierarchy();
+    	// TODO: if one class is named to be compiled, we have to compile all its ancestor
+    	for (int i = 0; i < task.getClasses().toArray().length; i++) {
+    	    String className = (String) task.getClasses().toArray()[i];
+    	    Set<RClass> needToCompile = hierarchy.getAncestorsOf(classes.get(className));
+    	    
+    	    for (RClass klass : needToCompile) {
+    	        if (!task.getClasses().contains(klass.getName()))
+    	            task.addClass(klass.getName());
+    	    }
+    	}
+    	
+        // map class name with source files
+        sources = new HashMap<String, String>();
+        for (int i = 0; i < task.getClasses().toArray().length; i++) {
+            sources.put((String)task.getClasses().toArray()[i], (String)task.getSources().toArray()[i]);
+        }
     	
     	// check twins
     	for (RClass klass : classes.values()) {

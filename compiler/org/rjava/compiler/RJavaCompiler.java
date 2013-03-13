@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -37,6 +38,8 @@ public class RJavaCompiler {
     
     public static CompilationTask currentTask;
     
+    public static String namedOutput = null;
+    
     private RJavaCompiler(CompilationTask task) {
     	this.task = task;
     	
@@ -68,10 +71,10 @@ public class RJavaCompiler {
     	
     	codeGenerator.preTranslationWork();
     	
-    	for (int i = 0; i < task.getSources().size(); i ++) {
-    	    RJavaCompiler.println("Compiling [" + task.getClasses().get(i) + "]: " + task.getSources().get(i));
-    	    String source = task.getSources().get(i);
-    	    String className = task.getClasses().get(i);
+    	for (int i = 0; i < task.getSources().toArray().length; i ++) {
+    	    RJavaCompiler.println("Compiling [" + task.getClasses().toArray()[i] + "]: " + task.getSources().toArray()[i]);
+    	    String source = (String) task.getSources().toArray()[i];
+    	    String className = (String) task.getClasses().toArray()[i];
     	    RClass klass = SemanticMap.getAllClasses().get(className);
     	    
     	    // for each class, check restriction compliance first
@@ -133,6 +136,9 @@ public class RJavaCompiler {
                     br.close();
                 } else if (args[i].equals("-m")) {
                     mute = true;
+                } else if (args[i].equals("-o")) {
+                    namedOutput = args[i+1];
+                    i++;
                 }
                 else {
                     sources.add(args[i]);
@@ -206,8 +212,8 @@ public class RJavaCompiler {
     	usage += "2. Compiler -dir source_dir_to_be_compiled\n";
     	usage += "\n";
     	usage += "Options:\n";
-    	usage += "-m\t\tmakes compiler mute (output nothing except warning/error)\n";
-    	usage += "-l [file_name]\t\ttakes source files from the file named\n";
+    	usage += "-m\t\t\tmakes compiler mute (output nothing except warning/error)\n";
+    	usage += "-l [file_name]\t\t\ttakes source files from the file named\n";
     	error(usage);
     }
 

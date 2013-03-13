@@ -93,6 +93,7 @@ public class CLanguageGenerator extends CodeGenerator {
 
     public CLanguageGenerator(GeneratorOptions generatorOptions) {
         this.options = (CLanguageGeneratorOptions) generatorOptions;
+        this.mainObj = RJavaCompiler.namedOutput;
     }
 
     @Override
@@ -321,7 +322,7 @@ public class CLanguageGenerator extends CodeGenerator {
         translatedCSource.add(cCodeSource);
         if (containsMain) {
             mainSource = cCodeSource;
-            mainObj = name.get(klass);
+            setMainObj(name.get(klass));
         }
     }
 
@@ -705,6 +706,11 @@ public class CLanguageGenerator extends CodeGenerator {
     }
 
     public void setMainObj(String mainObj) {
+        if (this.mainObj != null) {
+            RJavaCompiler.warning("overwriting mainObj from " + this.mainObj + " to " + mainObj);
+            return;
+        }
+        
         this.mainObj = mainObj;
     }
 
