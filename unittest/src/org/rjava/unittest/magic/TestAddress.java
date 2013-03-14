@@ -14,6 +14,15 @@ public class TestAddress extends UnitTest{
         
         start("Address offset store/load");
         check(TestAddressOffsetStoreLoad());
+        
+        start("Address plus/minus int");
+        check(TestAddressPlusMinusInt());
+        
+        start("Address isZero");
+        check(TestAddressIsZero());
+        
+        start("Address fromSignedInt");
+        check(TestAddressFromSignedInt());
     }
 
     public static boolean TestAddressStoreLoad() {
@@ -33,5 +42,34 @@ public class TestAddress extends UnitTest{
         int load = addr.loadInt(offset);
         
         return load == 100;        
+    }
+    
+    public static boolean TestAddressPlusMinusInt() {
+        Integer i = new Integer(99);
+        Address addr = ObjectReference.fromObject(i).toAddress();
+        
+        addr = addr.plus(1);
+        addr = addr.minus(1);
+        
+        Integer i2 = (Integer) addr.toObjectReference().toObject();
+        
+        return i2 == 99;
+    }
+    
+    public static boolean TestAddressIsZero() {
+        Address addr = Address.zero();
+        addr = addr.plus(1);
+        addr = addr.minus(1);
+        return addr.isZero();
+    }
+    
+    public static boolean TestAddressFromSignedInt() {
+        Address addr = Address.fromIntSignExtend(1);
+        addr = addr.minus(1);
+        
+        Address addr2 = Address.fromIntSignExtend(-1);
+        addr = addr.plus(1);
+        
+        return addr.isZero() && addr2.isZero();
     }
 }

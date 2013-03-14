@@ -275,7 +275,7 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
         */
        else if (methodName.equals("fromObject")) {
            assert(type.equals(Constants.MAGIC_OBJECTREFERENCE));
-           return "(" + UNSIGNED_MAGIC_TYPE + ")" + param0;
+           return "(" + UNSIGNED_MAGIC_TYPE + ") " + param0;
        }
        else if (methodName.equals("nullReference")) {
            assert(type.equals(Constants.MAGIC_OBJECTREFERENCE));
@@ -283,7 +283,7 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
        }
        else if (methodName.equals("toObject")) {
            assert(type.equals(Constants.MAGIC_OBJECTREFERENCE));
-           return "(void*)" + THIS_PARAMETER;
+           return "((void*)" + THIS_PARAMETER + ")";
        }
        else if (methodName.equals("isNull")) {
            return THIS_PARAMETER + " == (" + UNSIGNED_MAGIC_TYPE + ") NULL";

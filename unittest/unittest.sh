@@ -13,36 +13,40 @@ my $rjc = "org.rjava.compiler.RJavaCompiler";
 my $mute = "> /dev/null 2>&1";
 #my $mute = "";
 
-print "generating compiler jar..."
+print "generating compiler jar...";
 system("ant -file ../mybuild.xml $mute") == 0
 or die "Failed to build RJava Compiler";
-print "done\n"
+print "done\n";
 
 print "\nstart unit testing\n\n";
 
 my $unit_test_base = "../unittest/src";
 my @unit_tests = (
 	"$unit_test_base/org/rjava/unittest/magic/TestAddress.java",
-	"$unit_test_base/org/rjava/unittest/magic/TestAddressArray.java"
+	"$unit_test_base/org/rjava/unittest/magic/TestAddressArray.java",
+	"$unit_test_base/org/rjava/unittest/magic/TestObjectReference.java"
 );
 
-my $failed_compile = 0;
-my $failed_exec = 0;
+my $success_compile = 0;
+my $total_compile = 0;
+my $success_exec = 0;
+my $fail_exec = 0;
 
 foreach (@unit_tests) {
 	chdir($build_path);
 	run_test($_);
 }
 
-print "\n===compilation fail x$failed_compile, execution fail x$failed_exec===\n";
+my $total_exec = $success_exec + $fail_exec;
+print "\n===compilation $success_compile / $total_compile, execution $success_exec / $total_exec ===\n";
 
 sub run_test() {
 	print "Compilation for $_\n";
 	
 	# compile RJava to C
 	print " -> C ";
+	$total_compile ++;
 	if (system("java -cp $rjc_jar:. $rjc -dir $unit_test_base -o test $_[0] $mute") != 0) {
-		$failed_compile ++;
 		print "(fail)\n";
 		return;
 	} else {
@@ -60,19 +64,23 @@ sub run_test() {
 		print "(pass)\n";
 	}
 	
+	$success_compile ++;
+	
 	@out = `./test`;
 	my $local_fail = 0;
 	my $local_succ = 0;
 	foreach (@out) {
 		($test_name, $result) = ($_ =~ m/(.*):(.*)/);
 		if ($result eq "success") {
+			$success_exec ++;
 			$local_succ ++;
 		} else {
 			print "*$test_name:$result\n";
-			$failed_exec ++;
+			$fail_exec ++;
 			$local_fail ++;
 		}
 	}
 	
-	print "---success x$local_succ, fail x$local_fail---\n";
+	my $local_total = $local_succ + $local_fail;
+	print "---success $local_succ / $local_total ---\n";
 }

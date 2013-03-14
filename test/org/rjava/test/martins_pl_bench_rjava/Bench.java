@@ -43,7 +43,7 @@ public class Bench {
     final static int K_DEV = 1000;
     final static int K_WORK = 1001;
     
-    static String alphabet = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    static String alphabet = "0ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     static AddressArray tasktab = AddressArray.create(11);
     static {
         tasktab.set(0, Address.fromLong(10L));
@@ -134,15 +134,22 @@ public class Bench {
         System.out.println("\nend of run");
     }
 
-    public static void append(Packet pkt, Address ptr) {
+    // TODO:
+    public static Address append(Packet pkt, Address ptr) {
         System.out.println("append()");
         pkt.p_link = null;
-        Packet a = (Packet) ptr.loadObjectReference().toObject();
-        System.out.println("in append(), load done");
-        while(a.p_link != null) {
-            a = a.p_link;
+        
+        if (ptr.isZero())
+            return ObjectReference.fromObject(pkt).toAddress();
+        
+        Packet p = (Packet) ptr.toObjectReference().toObject();
+        Packet q = p;
+        while(p.p_link != null) {
+            p = p.p_link;
         }
-        a.p_link = pkt;
+        p.p_link = pkt;
+        System.out.println("append() returns");
+        return ObjectReference.fromObject(q).toAddress();
     }
     
     public static void createtask(int id, int pri, Packet wkq, int state, int fn, Address v1, Address v2) {
@@ -189,12 +196,14 @@ public class Bench {
             
             switch (tcb.t_state) {
             case S_WAITPKT:
+                System.out.println("schedule():S_WAITPKT");
                 pkt = tcb.t_wkq;
                 tcb.t_wkq = pkt.p_link;
                 tcb.t_state = (tcb.t_wkq == null? S_RUN : S_RUNPKT);
                 
             case S_RUN:
             case S_RUNPKT:
+                System.out.println("schedule():S_RUN");
                 taskid = tcb.t_id;
                 v1 = tcb.t_v1;
                 v2 = tcb.t_v2;
@@ -212,6 +221,7 @@ public class Bench {
             case S_HOLDPKT:
             case S_HOLDWAIT:
             case S_HOLDWAITPKT:
+                System.out.println("schedule():S_WAIT");
                 tcb = tcb.t_link;
                 break;
                 
@@ -238,11 +248,11 @@ public class Bench {
         System.out.println("findtcb()");
         Task t = null;
         
-        if (1 <= id && id <= tasktab.get(0).loadLong())
-            t = (Task) tasktab.get(id).loadObjectReference().toObject();
+        if (1 <= id && id <= tasktab.get(0).toLong())
+            t = (Task) tasktab.get(id).toObjectReference().toObject();
         
         if (t == null) {
-            System.out.print("Bad task id");
+            System.out.print("Bad task id ");
             System.out.println(id);
         }
         return t;
@@ -276,7 +286,9 @@ public class Bench {
             if (t.t_pri > tcb.t_pri)
                 return t;
         } else {
-            append(pkt, ObjectReference.fromObject(t.t_wkq).toAddress());
+            // TODO: 
+            Address tmp = append(pkt, ObjectReference.fromObject(t.t_wkq).toAddress());
+            t.t_wkq = (Packet) tmp.toObjectReference().toObject();
         }
         
         return tcb;
@@ -318,21 +330,24 @@ public class Bench {
     public static Task handlerfn(Packet pkt) {
         System.out.println("handlerfn()");
         if (pkt != null)
-            append(pkt, pkt.p_kind == K_WORK ? v1 : v2);
+            // TODO: it seems this line is not well matched with C
+            if (pkt.p_kind == K_WORK)
+                v1 = append(pkt, v1);
+            else v2 = append(pkt, v2);
         
         if (!v1.isZero()) {
             int count;
-            Packet workpkt = (Packet) v1.loadObjectReference().toObject();
+            Packet workpkt = (Packet) v1.toObjectReference().toObject();
             count  = workpkt.p_a1;
             
             if (count > BUFSIZE) {
-                v1 = ObjectReference.fromObject(((Packet)v1.loadObjectReference().toObject()).p_link).toAddress();
+                v1 = ObjectReference.fromObject(((Packet)v1.toObjectReference().toObject()).p_link).toAddress();
                 return (qpkt(workpkt));
             }
             
             if (!v2.isZero()) {
-                Packet devpkt = (Packet) v2.loadObjectReference().toObject();
-                v2 = ObjectReference.fromObject(((Packet)v1.loadObjectReference().toObject()).p_link).toAddress();
+                Packet devpkt = (Packet) v2.toObjectReference().toObject();
+                v2 = ObjectReference.fromObject(((Packet)v1.toObjectReference().toObject()).p_link).toAddress();
                 devpkt.p_a1 = workpkt.p_a2[count];
                 workpkt.p_a1 = count+1;
                 return qpkt(devpkt);
@@ -346,7 +361,7 @@ public class Bench {
         System.out.println("devfn()");
         if (pkt == null) {
             if (v1.isZero()) return my_wait();
-            pkt = (Packet) v1.loadObjectReference().toObject();
+            pkt = (Packet) v1.toObjectReference().toObject();
             v1 = Address.zero();
             return qpkt(pkt);
         } else {
