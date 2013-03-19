@@ -8,7 +8,7 @@ typedef struct java_lang_Exception {
 } java_lang_Exception;
 
 typedef struct java_lang_Exception_class {
-	java_lang_Throwable_class class_header;
+	java_lang_Throwable class_header;
 } java_lang_Exception_class;
 
 java_lang_Exception_class java_lang_Exception_class_instance;

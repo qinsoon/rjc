@@ -318,6 +318,8 @@ public class RClass {
      */
     public boolean hasOverridingMethodsFromInterface(RClass myInterface) {
         for (RMethod method : methods) {
+            if (method.isClassInitializer())
+                continue;
             for (RMethod interfaceMethod : myInterface.getMethods()) {
                 if (method.internal.getName().equals(interfaceMethod.internal.getName()) &&
                         method.internal.getParameterTypes().equals(interfaceMethod.internal.getParameterTypes()))

@@ -545,8 +545,10 @@ public class CLanguageGenerator extends CodeGenerator {
     private void getInterfaceInitCode(RClass klass, RClass myInterface, boolean rewrite) {
         CodeStringBuilder classInitTemp = new CodeStringBuilder();
         
-        // create the C interface for this klass
         String tempInterfaceVar = name.get(myInterface) + "_implemented_on_" + name.get(klass); 
+        
+        // create the C interface for this klass
+        // we have already allocated the interface before, thus we skip
         classInitTemp.append(name.get(myInterface) + CLanguageRuntime.INTERFACE_STRUCT_SUFFIX + "* " + tempInterfaceVar + " = ");
         classInitTemp.append(MALLOC + "(sizeof(" + name.get(myInterface) + CLanguageRuntime.INTERFACE_STRUCT_SUFFIX + "))" + SEMICOLON + NEWLINE);
         

@@ -57,8 +57,10 @@ public final class Constants {
     public static final String[] RJAVA_JAVA_LANG = {
         "java.io.PrintStream",
         "java.lang.Class",
+        "java.lang.ClassNotFoundException",
         "java.lang.Exception",
         "java.lang.Integer",
+        "java.lang.NoClassDefFoundError",
         "java.lang.Object",
         "java.lang.String",
         "java.lang.StringBuffer",

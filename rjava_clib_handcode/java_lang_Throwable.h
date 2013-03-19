@@ -1,6 +1,8 @@
 #ifndef JAVA_LANG_THROWABLE_H
 #define JAVA_LANG_THROWABLE_H
 
+#include "java_lang_Object.h"
+
 typedef struct java_lang_Throwable {
   java_lang_Object instance_header;
 } java_lang_Throwable;
