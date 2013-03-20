@@ -23,6 +23,12 @@ public class TestAddress extends UnitTest{
         
         start("Address fromSignedInt");
         check(TestAddressFromSignedInt());
+        
+        start("Address EQ");
+        check(TestAddressEQ());
+        
+        start("Address zero.EQ(null)");
+        check(TestAddressZeroFromNull());
     }
 
     public static boolean TestAddressStoreLoad() {
@@ -71,5 +77,20 @@ public class TestAddress extends UnitTest{
         addr = addr.plus(1);
         
         return addr.isZero() && addr2.isZero();
+    }
+    
+    public static boolean TestAddressEQ() {
+        Integer i = new Integer(1);
+        Address addr = ObjectReference.fromObject(i).toAddress();
+        Address addr2 = ObjectReference.fromObject(i).toAddress();
+        
+        return addr.EQ(addr2);
+    }
+    
+    public static boolean TestAddressZeroFromNull() {
+        Address zeroAddr = Address.zero();
+        Address fromNull = ObjectReference.fromObject(null).toAddress();
+        
+        return zeroAddr.EQ(fromNull);
     }
 }

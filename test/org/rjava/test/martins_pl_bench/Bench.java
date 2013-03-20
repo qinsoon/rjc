@@ -23,6 +23,7 @@ import java.io.*;
 import java.lang.*;
 
 import org.rjava.restriction.rulesets.RJavaCore;
+import org.vmmagic.unboxed.Address;
 
 @RJavaCore
 public class Bench {
@@ -70,8 +71,8 @@ public class Bench {
     static Task tasklist = null;
     static Task tcb;
     static int taskid;
-    static Object v1; // These are meant to be like CPU registers, ie
-    static Object v2; // saved as part of the task state.
+    static Address v1; // These are meant to be like CPU registers, ie
+    static Address v2; // saved as part of the task state.
     static int qpktcount = 0;
     static int holdcount = 0;
     static boolean tracing = false;
@@ -98,28 +99,28 @@ public class Bench {
 
         System.out.println("Bench mark starting");
 
-        new IdleTask(I_IDLE, 0, wkq, S_RUN, 1, Count);
+        new IdleTask(I_IDLE, 0, wkq, S_RUN, Address.fromIntZeroExtend(1), Address.fromIntZeroExtend(Count));
 
         wkq = new Packet(null, 0, K_WORK);
         wkq = new Packet(wkq, 0, K_WORK);
 
-        new WorkTask(I_WORK, 1000, wkq, S_WAITPKT, I_HANDLERA, 0);
+        new WorkTask(I_WORK, 1000, wkq, S_WAITPKT, Address.fromIntZeroExtend(I_HANDLERA), Address.zero());
 
         wkq = new Packet(null, I_DEVA, K_DEV);
         wkq = new Packet(wkq, I_DEVA, K_DEV);
         wkq = new Packet(wkq, I_DEVA, K_DEV);
 
-        new HandlerTask(I_HANDLERA, 2000, wkq, S_WAITPKT, null, null);
+        new HandlerTask(I_HANDLERA, 2000, wkq, S_WAITPKT, Address.zero(), Address.zero());
 
         wkq = new Packet(null, I_DEVB, K_DEV);
         wkq = new Packet(wkq, I_DEVB, K_DEV);
         wkq = new Packet(wkq, I_DEVB, K_DEV);
 
-        new HandlerTask(I_HANDLERB, 3000, wkq, S_WAITPKT, null, null);
+        new HandlerTask(I_HANDLERB, 3000, wkq, S_WAITPKT, Address.zero(), Address.zero());
 
         wkq = null;
-        new DevTask(I_DEVA, 4000, wkq, S_WAIT, 0, 0);
-        new DevTask(I_DEVB, 5000, wkq, S_WAIT, 0, 0);
+        new DevTask(I_DEVA, 4000, wkq, S_WAIT, Address.zero(), Address.zero());
+        new DevTask(I_DEVB, 5000, wkq, S_WAIT, Address.zero(), Address.zero());
 
         tcb = tasklist;
 

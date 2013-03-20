@@ -14,6 +14,9 @@ public class TestObjectReference extends UnitTest{
         
         start("ObjectReference toAddress");
         check(TestObjectReferenceToAddress());
+        
+        start("ObjectReference isNull");
+        check(TestObjectReferenceIsNull());
     }
 
     public static boolean TestObjectReferenceFromObjectToObject() {
@@ -33,5 +36,13 @@ public class TestObjectReference extends UnitTest{
         Integer i2 = (Integer) addr.toObjectReference().toObject();
         
         return i2 == 99;
+    }
+    
+    public static boolean TestObjectReferenceIsNull() {
+        Integer i = null;
+        ObjectReference ref = ObjectReference.fromObject(i);
+        ObjectReference nullRef = ObjectReference.nullReference();
+        
+        return ref.isNull() && ref.toAddress().EQ(nullRef.toAddress());
     }
 }

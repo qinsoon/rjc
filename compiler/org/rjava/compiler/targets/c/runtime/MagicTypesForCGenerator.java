@@ -156,10 +156,10 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
         *  conversions
         */
        else if (methodName.equals("fromIntSignExtend")) {
-           return param0 + " >> 31 == 0 ? " + param0 + " & 0x0000ffffl : " + param0 + " | 0xffff0000l"; 
+           return param0 + " >> 31 == 0 ? " + param0 + " & 0x00000000ffffffffl : " + param0 + " | 0xffffffff00000000l"; 
        } 
        else if (methodName.equals("fromIntZeroExtend")) {
-           return param0 + " & 0x0000ffffl";
+           return param0 + " & 0x00000000ffffffffl";
        } 
        else if (methodName.equals("toInt")) {
            return "(uint32_t) " + THIS_PARAMETER;

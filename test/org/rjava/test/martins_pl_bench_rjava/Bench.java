@@ -44,12 +44,7 @@ public class Bench {
     final static int K_WORK = 1001;
     
     static String alphabet = "0ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    static AddressArray tasktab = AddressArray.create(11);
-    static {
-        tasktab.set(0, Address.fromLong(10L));
-        for (int i = 1; i < 11; i++)
-            tasktab.set(i, Address.zero());
-    }
+    static Tasktab tasktab = new Tasktab(11);
     
     static Task tasklist = null;
     static Task tcb;
@@ -154,7 +149,7 @@ public class Bench {
     
     public static void createtask(int id, int pri, Packet wkq, int state, int fn, Address v1, Address v2) {
         Task t = new Task();
-        tasktab.set(id, ObjectReference.fromObject(t).toAddress());
+        tasktab.v[id] = t;
         t.t_link = tasklist;
         t.t_id = id;
         t.t_pri = pri;
@@ -248,8 +243,8 @@ public class Bench {
         System.out.println("findtcb()");
         Task t = null;
         
-        if (1 <= id && id <= tasktab.get(0).toLong())
-            t = (Task) tasktab.get(id).toObjectReference().toObject();
+        if (1 <= id && id <= tasktab.upb)
+            t = tasktab.v[id];
         
         if (t == null) {
             System.out.print("Bad task id ");

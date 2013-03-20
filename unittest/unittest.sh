@@ -13,10 +13,12 @@ my $rjc = "org.rjava.compiler.RJavaCompiler";
 my $mute = "> /dev/null 2>&1";
 #my $mute = "";
 
+if ($ARGV[0] ne "-skip-compile") {
 print "generating compiler jar...";
 system("ant -file ../mybuild.xml $mute") == 0
 or die "Failed to build RJava Compiler";
 print "done\n";
+}
 
 print "\nstart unit testing\n\n";
 
