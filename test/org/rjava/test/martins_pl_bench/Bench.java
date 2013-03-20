@@ -75,22 +75,15 @@ public class Bench {
     static Address v2; // saved as part of the task state.
     static int qpktcount = 0;
     static int holdcount = 0;
-    static boolean tracing = false;
     static int layout = 0;
 
     public static void main(String[] args) {
-        tracing = false;
         for (int i = 0; i < args.length; i++) {
 
             if (args[i].equals("-100")) {
                 Count = Count100;
                 Qpktcountval = Qpktcountval100;
                 Holdcountval = Holdcountval100;
-                continue;
-            }
-
-            if (args[i].equals("-t")) {
-                tracing = true;
                 continue;
             }
         }
@@ -165,11 +158,6 @@ public class Bench {
                 taskid = tcb.id;
                 v1 = tcb.sv1;
                 v2 = tcb.sv2;
-                if (tracing) {
-                    // trace('T');
-                    trace(taskid + '0');
-                    // trace(' ');
-                }
                 newtcb = tcb.fn(pkt);
                 tcb.sv1 = v1;
                 tcb.sv2 = v2;

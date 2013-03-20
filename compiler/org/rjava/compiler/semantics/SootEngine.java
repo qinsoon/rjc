@@ -29,7 +29,7 @@ import soot.options.Options;
 public class SootEngine {  
     private static final boolean DEBUG = true;
     
-    public static boolean RUN_SOOT = false;
+    public static boolean RUN_SOOT = true;
     
     private static final String[] jdkPath = {"components/soot/jce.jar",
     "components/soot/rt.jar"};

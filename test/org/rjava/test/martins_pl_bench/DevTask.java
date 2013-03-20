@@ -20,11 +20,6 @@ class DevTask extends Task {
             return Bench.qpkt(pkt);
         } else {
             Bench.v1 = ObjectReference.fromObject(pkt).toAddress();
-            if (Bench.tracing) {
-                // Bench.trace('K');
-                Bench.trace((int) pkt.a1);
-                // Bench.trace(' ');
-            }
             return Bench.holdself();
         }
     }
