@@ -2,15 +2,16 @@
 #define ORG_VMMAGIC_UNBOXED_EXTENT_H
 #include "boehm-gc/libatomic_ops/src/atomic_ops.h"
 #include "rjava_crt.h"
+#include "org_vmmagic_unboxed_Word.h"
 
 #define org_vmmagic_unboxed_Extent uintptr_t
 
 /* function definitions */
 #define org_vmmagic_unboxed_Extent_fromIntSignExtend_int32_t(parameter0) \
-parameter0 >> 31 == 0 ? parameter0 & 0x0000ffffl : parameter0 | 0xffff0000l
+((uintptr_t) ((intptr_t)parameter0))
 
 #define org_vmmagic_unboxed_Extent_fromIntZeroExtend_int32_t(parameter0) \
-parameter0 & 0x0000ffffl
+((uintptr_t) ((uintptr_t)parameter0))
 
 #define org_vmmagic_unboxed_Extent_zero() \
 0

@@ -2,6 +2,7 @@
 #define ORG_VMMAGIC_UNBOXED_OFFSETARRAY_H
 #include "boehm-gc/libatomic_ops/src/atomic_ops.h"
 #include "rjava_crt.h"
+#include "org_vmmagic_unboxed_Offset.h"
 
 #define org_vmmagic_unboxed_OffsetArray intptr_t*
 

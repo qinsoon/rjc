@@ -74,7 +74,7 @@ public class TestAddress extends UnitTest{
         addr = addr.minus(1);
         
         Address addr2 = Address.fromIntSignExtend(-1);
-        addr = addr.plus(1);
+        addr2 = addr2.plus(1);
         
         return addr.isZero() && addr2.isZero();
     }

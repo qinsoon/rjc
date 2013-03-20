@@ -2,6 +2,7 @@
 #define ORG_VMMAGIC_UNBOXED_EXTENTARRAY_H
 #include "boehm-gc/libatomic_ops/src/atomic_ops.h"
 #include "rjava_crt.h"
+#include "org_vmmagic_unboxed_Extent.h"
 
 #define org_vmmagic_unboxed_ExtentArray uintptr_t*
 

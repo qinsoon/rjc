@@ -8,13 +8,13 @@
 
 /* function definitions */
 #define org_vmmagic_unboxed_ObjectReference_fromObject_java_lang_Object(parameter0) \
-(uintptr_t)parameter0
+(uintptr_t) parameter0
 
 #define org_vmmagic_unboxed_ObjectReference_nullReference() \
 (uintptr_t) NULL
 
 #define org_vmmagic_unboxed_ObjectReference_toObject(this_parameter) \
-(void*)this_parameter
+((void*)this_parameter)
 
 #define org_vmmagic_unboxed_ObjectReference_toAddress(this_parameter) \
 this_parameter

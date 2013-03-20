@@ -2,6 +2,10 @@
 #define ORG_VMMAGIC_UNBOXED_ADDRESS_H
 #include "boehm-gc/libatomic_ops/src/atomic_ops.h"
 #include "rjava_crt.h"
+#include "org_vmmagic_unboxed_Word.h"
+#include "org_vmmagic_unboxed_Offset.h"
+#include "org_vmmagic_unboxed_Extent.h"
+#include "org_vmmagic_unboxed_ObjectReference.h"
 
 #define org_vmmagic_unboxed_Address uintptr_t
 
@@ -19,10 +23,10 @@ UINTPTR_MAX
 this_parameter == UINTPTR_MAX
 
 #define org_vmmagic_unboxed_Address_fromIntSignExtend_int32_t(parameter0) \
-parameter0 >> 31 == 0 ? parameter0 & 0x00000000ffffffffl : parameter0 | 0xffffffff00000000l
+((uintptr_t) ((intptr_t)parameter0))
 
 #define org_vmmagic_unboxed_Address_fromIntZeroExtend_int32_t(parameter0) \
-parameter0 & 0x00000000ffffffffl
+((uintptr_t) ((uintptr_t)parameter0))
 
 #define org_vmmagic_unboxed_Address_fromLong_int64_t(parameter0) \
 (uintptr_t)parameter0
