@@ -261,12 +261,16 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
            return ret;
        }
        else if (methodName.equals("attempt")) {
-           String AO_CAS = "AO_compare_and_swap";
-           String ret = AO_CAS + "(" + THIS_PARAMETER;
+           String CAS = "__sync_bool_compare_and_swap";
+           String ptrType = name.get(method.getParameters().get(0));
+           String ret = CAS + "( (" + ptrType + "*)" + THIS_PARAMETER;
+           
+           // offset
            if (method.getParameters().size() == 3)
                ret += " + " + FORMAL_PARAMETER + "2";
+           
            ret += ",";
-           ret += param0 + "," + param1 + ") != 0";
+           ret += param0 + "," + param1 + ")";
            return ret;
        }
        

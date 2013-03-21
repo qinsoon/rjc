@@ -236,27 +236,27 @@ __builtin_prefetch((void*)this_parameter)
 *((int32_t*)this_parameter + parameter0)
 
 #define org_vmmagic_unboxed_Address_attempt_int32_t_int32_t(this_parameter,parameter0,parameter1) \
-AO_compare_and_swap(this_parameter,parameter0,parameter1) != 0
+__sync_bool_compare_and_swap( (int32_t*)this_parameter,parameter0,parameter1)
 
 #define org_vmmagic_unboxed_Address_attempt_int32_t_int32_t_org_vmmagic_unboxed_Offset(this_parameter,parameter0,parameter1,parameter2) \
-AO_compare_and_swap(this_parameter + parameter2,parameter0,parameter1) != 0
+__sync_bool_compare_and_swap( (int32_t*)this_parameter + parameter2,parameter0,parameter1)
 
 #define org_vmmagic_unboxed_Address_attempt_org_vmmagic_unboxed_Word_org_vmmagic_unboxed_Word(this_parameter,parameter0,parameter1) \
-AO_compare_and_swap(this_parameter,parameter0,parameter1) != 0
+__sync_bool_compare_and_swap( (org_vmmagic_unboxed_Word*)this_parameter,parameter0,parameter1)
 
 #define org_vmmagic_unboxed_Address_attempt_org_vmmagic_unboxed_Word_org_vmmagic_unboxed_Word_org_vmmagic_unboxed_Offset(this_parameter,parameter0,parameter1,parameter2) \
-AO_compare_and_swap(this_parameter + parameter2,parameter0,parameter1) != 0
+__sync_bool_compare_and_swap( (org_vmmagic_unboxed_Word*)this_parameter + parameter2,parameter0,parameter1)
 
 #define org_vmmagic_unboxed_Address_attempt_org_vmmagic_unboxed_ObjectReference_org_vmmagic_unboxed_ObjectReference(this_parameter,parameter0,parameter1) \
-AO_compare_and_swap(this_parameter,parameter0,parameter1) != 0
+__sync_bool_compare_and_swap( (org_vmmagic_unboxed_ObjectReference*)this_parameter,parameter0,parameter1)
 
 #define org_vmmagic_unboxed_Address_attempt_org_vmmagic_unboxed_ObjectReference_org_vmmagic_unboxed_ObjectReference_org_vmmagic_unboxed_Offset(this_parameter,parameter0,parameter1,parameter2) \
-AO_compare_and_swap(this_parameter + parameter2,parameter0,parameter1) != 0
+__sync_bool_compare_and_swap( (org_vmmagic_unboxed_ObjectReference*)this_parameter + parameter2,parameter0,parameter1)
 
 #define org_vmmagic_unboxed_Address_attempt_org_vmmagic_unboxed_Address_org_vmmagic_unboxed_Address(this_parameter,parameter0,parameter1) \
-AO_compare_and_swap(this_parameter,parameter0,parameter1) != 0
+__sync_bool_compare_and_swap( (org_vmmagic_unboxed_Address*)this_parameter,parameter0,parameter1)
 
 #define org_vmmagic_unboxed_Address_attempt_org_vmmagic_unboxed_Address_org_vmmagic_unboxed_Address_org_vmmagic_unboxed_Offset(this_parameter,parameter0,parameter1,parameter2) \
-AO_compare_and_swap(this_parameter + parameter2,parameter0,parameter1) != 0
+__sync_bool_compare_and_swap( (org_vmmagic_unboxed_Address*)this_parameter + parameter2,parameter0,parameter1)
 
 #endif

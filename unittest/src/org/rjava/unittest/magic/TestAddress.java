@@ -29,6 +29,9 @@ public class TestAddress extends UnitTest{
         
         start("Address zero.EQ(null)");
         check(TestAddressZeroFromNull());
+        
+        start("Address prepare/attempt int");
+        check(TestAddressAttemptInt());
     }
 
     public static boolean TestAddressStoreLoad() {
@@ -92,5 +95,20 @@ public class TestAddress extends UnitTest{
         Address fromNull = ObjectReference.fromObject(null).toAddress();
         
         return zeroAddr.EQ(fromNull);
+    }
+    
+    public static boolean TestAddressAttemptInt() {
+        Integer i = new Integer(1);
+        
+        Address addr = ObjectReference.fromObject(i).toAddress();
+        addr.store(1);
+        
+        int oldValue, newValue;
+        do {
+            oldValue = addr.prepareInt();
+            newValue = 9;
+        } while (!addr.attempt(oldValue, newValue));
+        
+        return addr.loadInt() == 9;
     }
 }
