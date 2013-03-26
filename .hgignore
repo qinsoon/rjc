@@ -4,5 +4,6 @@ syntax: regexp
 ?\.DS_Store
 output\\*
 c_test\\*
-mmtk\\*
+mmtk/mmtk/\\*
+mmtk/common/\\*
 build\\*
