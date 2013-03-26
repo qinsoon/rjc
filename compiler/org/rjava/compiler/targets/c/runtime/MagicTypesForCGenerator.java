@@ -23,13 +23,13 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
     }
     
     @Override
-    public void translate(RClass klass, String source) throws RJavaError {
+    public void translate(RClass klass) throws RJavaError {
         currentRClass = klass;
         
         assert (RJavaCompiler.isInternalCompiling() == RJavaCompiler.INTERNAL_COMPILE_MAGIC_TYPES);
         
-        generateIntrinsic(klass, source);
-        generateMagicTypeHeader(klass, source);
+        generateIntrinsic(klass);
+        generateMagicTypeHeader(klass);
     }
     
     public static final String UNSIGNED_MAGIC_TYPE  = "uintptr_t";
@@ -53,13 +53,13 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
         MAGIC_TYPE_TO_C_TYPE.put(Constants.MAGIC_WORD + Constants.MAGIC_ARRAY_SUFFIX, UNSIGNED_MAGIC_TYPE + "*"); 
     }
     
-    private void generateMagicTypeHeader(RClass klass, String source) throws RJavaError {
+    private void generateMagicTypeHeader(RClass klass) throws RJavaError {
         referencedClasses = new HashSet<String>();
         
         CodeStringBuilder outInc = new CodeStringBuilder();
         CodeStringBuilder outMain = new CodeStringBuilder();
         
-        cHeaderSource = getSource(source, ".h");
+        cHeaderSource = getSource(klass.getName(), ".h");
         
         // include guard
         outInc.append("#ifndef " + name.get(klass).toUpperCase() + "_H" + NEWLINE);

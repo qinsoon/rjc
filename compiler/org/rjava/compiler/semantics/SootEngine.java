@@ -168,4 +168,8 @@ public class SootEngine {
     
     public static void ensureResolved(SootClass sootClass) {
     }
+    
+    public SootClass[] getAllAppClassesInScene() {
+        return (SootClass[]) Scene.v().getApplicationClasses().toArray(new SootClass[0]);
+    }
 }

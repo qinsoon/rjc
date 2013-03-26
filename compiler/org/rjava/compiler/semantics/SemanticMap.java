@@ -16,13 +16,15 @@ import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.representation.*;
 import org.rjava.compiler.util.Tree;
 
+import soot.SootClass;
+
 public abstract class SemanticMap {
     public static final boolean DEBUG = true;
     
     // task.class <-> RClass
     public static Map<String, RClass> classes;
     // task.class <-> task.sources
-    public static Map<String, String> sources;
+    //public static Map<String, String> sources;
     public static Map<String, RType> types;
     
     // class hierarchy
@@ -40,27 +42,32 @@ public abstract class SemanticMap {
     	// get class-level info
     	engine = new SootEngine(task);
     	engine.buildSemanticMap();
+    	// all nested classes are added in this way (?)
+    	for (SootClass klass : engine.getAllAppClassesInScene()) {
+    	    String name = klass.getName();
+    	    if (!isRJavaLib(name) && classes.get(name) == null) {
+    	        // add to semantic map
+    	        RClass.fromSootClass(klass);
+    	        // add to compilation task
+    	        task.addClassByClassName(name);
+    	    }
+    	}
     	
     	// init hierarchy
     	hierarchy = TypeHierarchy.init();
     	if (DEBUG)
     	    hierarchy.printHierarchy();
-    	// TODO: if one class is named to be compiled, we have to compile all its ancestor
+
+    	// if one class is named to be compiled, we have to compile all its ancestor    	
     	for (int i = 0; i < task.getClasses().toArray().length; i++) {
     	    String className = (String) task.getClasses().toArray()[i];
     	    Set<RClass> needToCompile = hierarchy.getAncestorsOf(classes.get(className));
     	    
     	    for (RClass klass : needToCompile) {
     	        if (!task.getClasses().contains(klass.getName()))
-    	            task.addClass(klass.getName());
+    	            task.addClassByClassName(klass.getName());
     	    }
     	}
-    	
-        // map class name with source files
-        sources = new HashMap<String, String>();
-        for (int i = 0; i < task.getClasses().toArray().length; i++) {
-            sources.put((String)task.getClasses().toArray()[i], (String)task.getSources().toArray()[i]);
-        }
     	
     	// check twins
     	for (RClass klass : classes.values()) {
@@ -73,9 +80,9 @@ public abstract class SemanticMap {
         return classes;
     }
 
-    public static Map<String, String> getSources() {
+    /*public static Map<String, String> getSources() {
         return sources;
-    }
+    }*/
     
     public static RType getRTypeFromRClass(RClass klass) {
         return types.get(klass.getName());
@@ -88,5 +95,9 @@ public abstract class SemanticMap {
         if (RJavaCompiler.ENABLE_ASSERTION)
             RJavaCompiler.assertion(ret != null, "cannot find " + type.getClassName() + " in semantic map");
         return ret;
+    }
+    
+    public static boolean isRJavaLib(String className) {
+        return className.startsWith("org.rjava.restriction") || className.startsWith("org.vmmagic");
     }
 }

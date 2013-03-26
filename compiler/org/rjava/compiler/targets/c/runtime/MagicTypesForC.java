@@ -32,7 +32,7 @@ public class MagicTypesForC {
             for (int i = 0; i < unboxedTypesFiles.size(); i++) {                
                 if (i == 0) {
                     compileUnboxedTypes = CompilationTask.newTaskFromFile(Constants.RJAVA_MAGIC_DIR, unboxedTypesFiles.get(i));
-                } else compileUnboxedTypes.addSource(unboxedTypesFiles.get(i));
+                } else compileUnboxedTypes.addClassBySource(unboxedTypesFiles.get(i));
             }
             
             SootEngine.RUN_SOOT = false;

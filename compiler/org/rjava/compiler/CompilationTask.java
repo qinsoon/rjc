@@ -13,8 +13,8 @@ import org.rjava.compiler.exception.RJavaWarning;
 
 public class CompilationTask {
     String baseDir;
-    List<String> sources;
-    List<String> classes;
+    //List<String> sources;
+    List<String> classes = new ArrayList<String>();
     String main;
     
     public static CompilationTask newTaskFromFile(String dir, String file) throws RJavaError {
@@ -41,24 +41,20 @@ public class CompilationTask {
     	throw new RJavaError("Directory doesn't exist: " + dir);
     }
     
-    public void addSource(String file) {
+    public void addClassBySource(String file) {
         File f = new File(file);
-        this.sources.add(f.getAbsoluteFile().getAbsolutePath());
-        
-        buildClassList();
+        String absPath = f.getAbsoluteFile().getAbsolutePath();
+        String className = absPath.replaceAll(baseDir, "");
+        className = className.substring(0, className.length() - RJAVA_EXT.length());
+        className = className.replaceAll("/", ".");
+        classes.add(className);
     }
     
     /**
      * assume we will find the class for this class name
      * @param className
      */
-    public void addClass(String className) {
-        String file = className.replace('.', '/');
-        file += Constants.RJAVA_EXT;
-        file = baseDir + file;
-        
-        //addSource(className);
-        sources.add(file);
+    public void addClassByClassName(String className) {
         classes.add(className);
     }
     
@@ -77,10 +73,7 @@ public class CompilationTask {
     	if (!baseDir.endsWith("/"))
     	    baseDir += "/";
     	this.baseDir = baseDir;
-    	this.sources = new ArrayList<String>();
-    	this.sources.add(file);
-    	
-    	buildClassList();
+    	this.addClassBySource(file);
     }
     
     protected CompilationTask(String baseDir, List<String> sources) {
@@ -88,28 +81,13 @@ public class CompilationTask {
     	if (!baseDir.endsWith("/"))
     	    baseDir += "/";
     	this.baseDir = baseDir;
-    	this.sources = sources;
-    	
-    	buildClassList();
-    }
-    
-    /**
-     * change source files into class names
-     */	    
-    private void buildClassList() {
-    	classes = new ArrayList<String>();
-    	for (String source : sources) {
-    	    // change test/org/rjava/HelloWorld.java -> org.rjava.HelloWorld
-    	    source = source.replaceAll(baseDir, "");
-    	    String className = source.substring(0, source.length() - RJAVA_EXT.length());
-    	    className = className.replaceAll("/", ".");
-    	    classes.add(className);
-    	}
+    	for (String source : sources)
+    	    this.addClassBySource(source);
     }
     
     public String toString() {
     	String result = "Compilation Task: " + baseDir + "\n";
-    	for (String s : sources) {
+    	for (String s : classes) {
     	    result += "-" + s + "\n";
     	}
     	result += "\n";
@@ -117,7 +95,7 @@ public class CompilationTask {
     }
     
     public int size() {
-        return sources.size();
+        return classes.size();
     }
 
     public String getPath() {
@@ -126,14 +104,6 @@ public class CompilationTask {
 
     public void setPath(String path) {
         this.baseDir = path;
-    }
-
-    public List<String> getSources() {
-        return sources;
-    }
-
-    public void setSources(List<String> sources) {
-        this.sources = sources;
     }
 
     public List<String> getClasses() {

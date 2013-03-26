@@ -71,10 +71,9 @@ public class RJavaCompiler {
     	
     	codeGenerator.preTranslationWork();
     	
-    	for (int i = 0; i < task.getSources().toArray().length; i ++) {
-    	    RJavaCompiler.println("Compiling [" + task.getClasses().toArray()[i] + "]: " + task.getSources().toArray()[i]);
-    	    String source = (String) task.getSources().toArray()[i];
-    	    String className = (String) task.getClasses().toArray()[i];
+    	for (int i = 0; i < task.getClasses().size(); i ++) {
+    	    RJavaCompiler.println("Compiling [" + task.getClasses().toArray()[i] + "]: ");
+    	    String className = (String) task.getClasses().get(i);
     	    RClass klass = SemanticMap.getAllClasses().get(className);
     	    
     	    // for each class, check restriction compliance first
@@ -88,7 +87,7 @@ public class RJavaCompiler {
     	    
     	    // then compiles the class	    
     	    try {
-    	        codeGenerator.translate(klass, source);
+    	        codeGenerator.translate(klass);
     	    } catch (RJavaError e) {
     	        error(e);
     	    } catch (RJavaWarning e) {
@@ -173,7 +172,7 @@ public class RJavaCompiler {
             for (String source : sources) {
                 if (task == null)
                     task = CompilationTask.newTaskFromFile(baseDir, source);
-                else task.addSource(source);
+                else task.addClassBySource(source);
             }
         } catch (Exception e) {
             e.printStackTrace();

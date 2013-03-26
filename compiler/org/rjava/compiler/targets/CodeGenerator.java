@@ -6,13 +6,14 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.rjava.compiler.Constants;
+import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.exception.*;
 import org.rjava.compiler.semantics.SemanticMap;
 
 public abstract class CodeGenerator {
 
-    public abstract void translate(RClass klass, String source) throws RJavaWarning, RJavaError;
+    public abstract void translate(RClass klass) throws RJavaWarning, RJavaError;
     
     /**
      * e.g. clean up output dir
@@ -34,6 +35,31 @@ public abstract class CodeGenerator {
      * @throws RJavaError
      */
     public abstract void postTranslationWork() throws RJavaWarning, RJavaError;
+    
+    /**
+     * Generate source path for compiled file
+     * @param origin source stored in CompilationTask
+     * @param ext new extension for compiled file
+     * @return
+     */
+    protected String getSource(String className, String ext) {
+        String ret = className.replaceAll("\\.", "_");
+        ret += ext;
+        return escapeDollarInFileName(ret);
+    }   
+    
+    /**
+     * Nested classes has $ in its name. 
+     * GNU Make doesn't accept $ sign in file name. We replace $ for _NESTED_
+     * This method is called from two places: 
+     * 1. getSource() for getting generated file name for classes 
+     * 2. referencing() for generating includes 
+     * @param fileName
+     * @return
+     */
+    public static final String escapeDollarInFileName(String fileName) {
+        return fileName.replaceAll("\\$", "_NESTED_");
+    }
 
     public void writeTo(String out, String file) throws RJavaError {
         FileOutputStream os = null;

@@ -34,8 +34,8 @@ import soot.jimple.StaticFieldRef;
 import soot.jimple.internal.JAssignStmt;
 
 public class CLanguageGenerator extends CodeGenerator {
-    public static final boolean OUTPUT_JIMPLE = true;
-    public static final boolean OUTPUT_C = false;
+    public static final boolean OUTPUT_JIMPLE = false;
+    public static final boolean OUTPUT_C = true;
     /*
      * Java spec
      */
@@ -97,7 +97,7 @@ public class CLanguageGenerator extends CodeGenerator {
     }
 
     @Override
-    public void translate(RClass klass, String source)
+    public void translate(RClass klass)
 	    throws RJavaWarning, RJavaError {
         if (OUTPUT_JIMPLE)
             RJavaCompiler.debug("Methods for " + klass.getName());
@@ -117,12 +117,12 @@ public class CLanguageGenerator extends CodeGenerator {
         currentRClass = klass;
         
         if (!klass.isInterface()) {
-            generateIntrinsic(klass, source);
-            generateHeader(klass, source);
-            generateCode(klass, source);
+            generateIntrinsic(klass);
+            generateHeader(klass);
+            generateCode(klass);
         } else {
-            generateInterfaceHeader(klass, source);
-            generateInterfaceBody(klass, source);
+            generateInterfaceHeader(klass);
+            generateInterfaceBody(klass);
         }
         return;
     }
@@ -130,10 +130,9 @@ public class CLanguageGenerator extends CodeGenerator {
     /**
      * A Java interface will still need <clinit> to initialize its constants (static final fields)
      * @param klass
-     * @param source
      * @throws RJavaError 
      */
-    private void generateInterfaceBody(RClass klass, String source) throws RJavaError {
+    private void generateInterfaceBody(RClass klass) throws RJavaError {
         RMethod clinit = klass.getCLInitMethod();
         
         if (clinit != null) {
@@ -143,7 +142,7 @@ public class CLanguageGenerator extends CodeGenerator {
             CodeStringBuilder outMain = new CodeStringBuilder();
     
             // get code source
-            cCodeSource = getSource(source, ".c");
+            cCodeSource = getSource(klass.getName(), ".c");
             
             // include its own header
             outInc.append("#include \"" + cHeaderSource + "\"" + NEWLINE);
@@ -184,16 +183,15 @@ public class CLanguageGenerator extends CodeGenerator {
      * A Java interface will become a normal RJava-C-Class, its name will be the C-style class name (no extra suffix)
      * A interface struct contains only function pointers. Constants become global variables
      * @param klass
-     * @param source
      * @throws RJavaError
      */
-    private void generateInterfaceHeader(RClass klass, String source) throws RJavaError {
+    private void generateInterfaceHeader(RClass klass) throws RJavaError {
         referencedClasses = new HashSet<String>();
         
         CodeStringBuilder outInc = new CodeStringBuilder();
         CodeStringBuilder outMain = new CodeStringBuilder();
         
-        cHeaderSource = getSource(source, ".h");
+        cHeaderSource = getSource(klass.getName(), ".h");
         
         // include guard
         outInc.append("#ifndef " + name.get(klass).toUpperCase() + "_H" + NEWLINE);
@@ -243,7 +241,7 @@ public class CLanguageGenerator extends CodeGenerator {
         translatedCHeader.add(cHeaderSource);
     }
 
-    protected void generateIntrinsic(RClass klass, String source) {
+    protected void generateIntrinsic(RClass klass) {
         // translate intrinsic types, e.g. java.lang.String/Integer, or org.vmmagic.unboxed.Address
         for (RType type : SemanticMap.types.values()) {
             intrinsic.generate(type);
@@ -264,10 +262,9 @@ public class CLanguageGenerator extends CodeGenerator {
     /**
      * A Java Class will become a C header and a C source file. The source file is generated here. 
      * @param klass
-     * @param source
      * @throws RJavaError
      */
-    private void generateCode(RClass klass, String source) throws RJavaError {
+    private void generateCode(RClass klass) throws RJavaError {
         referencedClasses = new HashSet<String>();
         boolean containsMain = false;
         
@@ -275,7 +272,7 @@ public class CLanguageGenerator extends CodeGenerator {
         CodeStringBuilder outMain = new CodeStringBuilder();
 
         // get code source
-        cCodeSource = getSource(source, ".c");
+        cCodeSource = getSource(klass.getName(), ".c");
         
         // include its own header
         outInc.append("#include \"" + cHeaderSource + "\"" + NEWLINE);
@@ -329,16 +326,15 @@ public class CLanguageGenerator extends CodeGenerator {
     /**
      * A Java Class will become a C header and a C source file. The header is generated here. 
      * @param klass
-     * @param source
      * @throws RJavaError
      */
-    private void generateHeader(RClass klass, String source) throws RJavaError {
+    private void generateHeader(RClass klass) throws RJavaError {
         referencedClasses = new HashSet<String>();
         
         CodeStringBuilder outInc = new CodeStringBuilder();
         CodeStringBuilder outMain = new CodeStringBuilder();
         
-        cHeaderSource = getSource(source, ".h");
+        cHeaderSource = getSource(klass.getName(), ".h");
         
         // include guard
         outInc.append("#ifndef " + name.get(klass).toUpperCase() + "_H" + NEWLINE);
@@ -601,19 +597,6 @@ public class CLanguageGenerator extends CodeGenerator {
        out.append(")");
        return out.toString();
     }
-
-    /**
-     * Generate source path for compiled file
-     * @param origin source stored in CompilationTask
-     * @param ext new extension for compiled file
-     * @return
-     */
-    protected String getSource(String origin, String ext) {
-        String ret = origin.replace(RJavaCompiler.currentTask.getPath(), "");
-        ret = ret.replace(Constants.RJAVA_EXT, ext);
-        ret = ret.replaceAll("/", "_");
-        return ret;
-    }   
     
     public String getMethodSignature(RMethod method) {
         CodeStringBuilder out = new CodeStringBuilder();
@@ -672,6 +655,8 @@ public class CLanguageGenerator extends CodeGenerator {
     @Override
     public void postTranslationWork() throws RJavaWarning, RJavaError {
         runtime.generateCRuntime();
+        runtime.copyJavaLibrary();
+        runtime.generateGNUMakefile();
     }
     
     public void referencing(String refName) {
@@ -680,7 +665,7 @@ public class CLanguageGenerator extends CodeGenerator {
         
         // avoid adding include for current class
         if (!name.javaNameToCName(currentRClass.getName()).equals(refName))
-            referencedClasses.add(refName);
+            referencedClasses.add(CodeGenerator.escapeDollarInFileName(refName));
     }
     
     private void addToClassInitMap(String rClassName, String initStmt) {

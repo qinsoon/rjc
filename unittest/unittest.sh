@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 
 use Cwd;
+use File::Find;
 
 my $rjava_base = getcwd."/..";
 my $build_path = "$rjava_base/build";
@@ -22,12 +23,9 @@ print "done\n";
 
 print "\nstart unit testing\n\n";
 
-my $unit_test_base = "../unittest/src";
-my @unit_tests = (
-	"$unit_test_base/org/rjava/unittest/magic/TestAddress.java",
-	"$unit_test_base/org/rjava/unittest/magic/TestAddressArray.java",
-	"$unit_test_base/org/rjava/unittest/magic/TestObjectReference.java"
-);
+my $unit_test_base = "$rjava_base/unittest/src";
+my @unit_tests;
+find(\&add_to_unit_test, $unit_test_base);
 
 my $success_compile = 0;
 my $total_compile = 0;
@@ -85,4 +83,13 @@ sub run_test() {
 	
 	my $local_total = $local_succ + $local_fail;
 	print "---success $local_succ / $local_total ---\n";
+}
+
+sub add_to_unit_test() {
+	my $unit_test = $File::Find::name if(/\.java$/i);
+	if ($unit_test =~ m/org/rjava/unittest/UnitTest.java/) {
+		return;
+	} else {
+		push @unit_tests, $File::Find::name if(/\.java$/i);
+	}
 }

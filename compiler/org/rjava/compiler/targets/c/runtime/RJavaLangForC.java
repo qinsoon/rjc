@@ -29,7 +29,7 @@ public class RJavaLangForC {
             for (int i = 0; i < javaLangPackage.size(); i++) {
                 if (i == 0) {
                     compileJavaLang = CompilationTask.newTaskFromFile(Constants.RJAVA_LIB_IMPL_DIR, javaLangPackage.get(i));
-                } else compileJavaLang.addSource(javaLangPackage.get(i));
+                } else compileJavaLang.addClassBySource(javaLangPackage.get(i));
             }
             
             SootEngine.RUN_SOOT = false;
