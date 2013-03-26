@@ -1,7 +1,9 @@
 package org.rjava.unittest.lang;
 
+import org.rjava.restriction.rulesets.RJavaCore;
 import org.rjava.unittest.UnitTest;
 
+@RJavaCore
 public class TestNestedClass extends UnitTest {
     static class NestedClass {
         int instanceField = 1;

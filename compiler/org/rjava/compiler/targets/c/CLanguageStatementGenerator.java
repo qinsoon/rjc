@@ -155,6 +155,9 @@ public class CLanguageStatementGenerator {
         else if (rightOp instanceof soot.jimple.internal.JSpecialInvokeExpr) {
             rightOpStr = fromSootJSpecialInvokeExpr((JSpecialInvokeExpr) rightOp);
         }
+        else if (rightOp instanceof soot.jimple.internal.JInterfaceInvokeExpr) {
+            rightOpStr = fromSootJInterfaceInvokeExpr((JInterfaceInvokeExpr) rightOp);
+        }
         else if (rightOp instanceof soot.jimple.BinopExpr) {
             rightOpStr = fromSootBinopExpr((BinopExpr) rightOp);
         } 

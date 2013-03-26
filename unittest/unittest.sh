@@ -87,7 +87,7 @@ sub run_test() {
 
 sub add_to_unit_test() {
 	my $unit_test = $File::Find::name if(/\.java$/i);
-	if ($unit_test =~ m/org/rjava/unittest/UnitTest.java/) {
+	if ($unit_test =~ m#org/rjava/unittest/UnitTest.java#) {
 		return;
 	} else {
 		push @unit_tests, $File::Find::name if(/\.java$/i);

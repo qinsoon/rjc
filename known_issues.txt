@@ -1,6 +1,7 @@
 1. [SOLVED]Do not support anonymous(nested) class at the moment. 
 2. [SOLVED]Class needs to be compiled by a top-down order in type hierarchy
-3. Not sure if interface can have subinterface (currently I don't maintain typehierarchy for interfaces)
+3. An interface cannot have subinterface - this is for implementation ease at the moment. 
+   If we want subinterface, we need to class_init interfaces, and maintain its hierarchy
 4. Current implementation is very x86\mac os\gcc specific
    4.1 gcc: buildin_prefetch/CAS in magic types
    4.2 mac os: prebuilt boehm_gc.a
