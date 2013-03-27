@@ -21,7 +21,7 @@
 0
 
 #define org_vmmagic_unboxed_Word_one() \
-org_vmmagic_unboxed_Word_fromIntSignExtend_uint32_t(1)
+org_vmmagic_unboxed_Word_fromIntSignExtend_int32_t(1)
 
 #define org_vmmagic_unboxed_Word_max() \
 UINTPTR_MAX

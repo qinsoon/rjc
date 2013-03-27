@@ -39,6 +39,10 @@ public abstract class SemanticMap {
     	classes = new HashMap<String, RClass>();
     	types = new HashMap<String, RType>();
     	
+    	// force a few primitive types in the map
+    	for (String primitive : RType.PRIMITIVE_TYPES)
+    	    types.put(primitive, RType.initWithClassName(primitive));
+    	
     	// get class-level info
     	engine = new SootEngine(task);
     	engine.buildSemanticMap();
@@ -98,6 +102,15 @@ public abstract class SemanticMap {
     }
     
     public static boolean isRJavaLib(String className) {
-        return className.startsWith("org.rjava.restriction") || className.startsWith("org.vmmagic");
+        return className.startsWith("org.rjava.restriction") || 
+                className.startsWith("org.vmmagic") ||
+                className.startsWith("org.rjava.nativeext");
+    }
+    
+    public static void dumpTypes() {
+        RJavaCompiler.println("RTypes at the point:");
+        for (String key : types.keySet()) {
+            RJavaCompiler.println(key + "->" + types.get(key).toString());
+        }
     }
 }

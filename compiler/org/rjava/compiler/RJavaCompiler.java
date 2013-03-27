@@ -98,15 +98,6 @@ public class RJavaCompiler {
     	// copy library etc.
     	if (internalCompile == INTERNAL_COMPILE_NONE)
     	    codeGenerator.postTranslationWork();
-    	
-    	if (SemanticMap.DEBUG) {
-    	    debug("Types:");
-    	    for (RType type : SemanticMap.types.values())
-    	        debug(type);
-    	    debug("Classes:");
-    	    for (RClass klass : SemanticMap.classes.values())
-    	        debug(klass.getName());
-    	}
     }
     
     /**

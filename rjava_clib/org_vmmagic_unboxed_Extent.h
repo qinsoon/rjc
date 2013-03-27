@@ -17,7 +17,7 @@
 0
 
 #define org_vmmagic_unboxed_Extent_one() \
-org_vmmagic_unboxed_Extent_fromIntSignExtend_uint32_t(1)
+org_vmmagic_unboxed_Extent_fromIntSignExtend_int32_t(1)
 
 #define org_vmmagic_unboxed_Extent_max() \
 UINTPTR_MAX

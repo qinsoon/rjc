@@ -35,13 +35,13 @@ import soot.jimple.internal.JAssignStmt;
 
 public class CLanguageGenerator extends CodeGenerator {
     public static final boolean OUTPUT_JIMPLE = false;
-    public static final boolean OUTPUT_C = true;
+    public static final boolean OUTPUT_C = false;
     /*
      * Java spec
      */
-    public static final String JAVA_INT = "uint32_t";
-    public static final String JAVA_LONG = "uint64_t";
-    public static final String JAVA_SHORT = "uint16_t";
+    public static final String JAVA_INT = "int32_t";
+    public static final String JAVA_LONG = "int64_t";
+    public static final String JAVA_SHORT = "int16_t";
     /*
      * C keyword / reserves
      */
@@ -99,7 +99,7 @@ public class CLanguageGenerator extends CodeGenerator {
     @Override
     public void translate(RClass klass)
 	    throws RJavaWarning, RJavaError {
-        if (OUTPUT_JIMPLE)
+        if (OUTPUT_JIMPLE) {
             RJavaCompiler.debug("Methods for " + klass.getName());
             for (RMethod method : klass.getMethods()) {
                 RJavaCompiler.debug(method + "{");
@@ -113,6 +113,7 @@ public class CLanguageGenerator extends CodeGenerator {
                 }
                 RJavaCompiler.debug("}");
             }
+        }
         
         currentRClass = klass;
         
@@ -121,6 +122,7 @@ public class CLanguageGenerator extends CodeGenerator {
             generateHeader(klass);
             generateCode(klass);
         } else {
+            generateIntrinsic(klass);
             generateInterfaceHeader(klass);
             generateInterfaceBody(klass);
         }
@@ -241,6 +243,7 @@ public class CLanguageGenerator extends CodeGenerator {
         translatedCHeader.add(cHeaderSource);
     }
 
+    private boolean needTypeMapping = true;
     protected void generateIntrinsic(RClass klass) {
         // translate intrinsic types, e.g. java.lang.String/Integer, or org.vmmagic.unboxed.Address
         for (RType type : SemanticMap.types.values()) {

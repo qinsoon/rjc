@@ -28,7 +28,7 @@ public class RMethod {
     
     SootMethod internal;
     
-    private boolean intrinsic;
+    private boolean intrinsic = false;
     private String code;
     
     /**

@@ -123,7 +123,5 @@ public class CLanguageIntrinsicGenerator {
             units.addAll(newUnits);
             method.update();
         }
-        
-        method.setIntrinsic(false);
     }
 }

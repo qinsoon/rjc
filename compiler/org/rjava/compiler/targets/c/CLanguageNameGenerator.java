@@ -1,5 +1,6 @@
 package org.rjava.compiler.targets.c;
 
+import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.semantics.representation.RField;
 import org.rjava.compiler.semantics.representation.RMethod;
