@@ -2,11 +2,18 @@ package testbed.mmtkext;
 
 import org.mmtk.policy.ImmortalSpace;
 import org.mmtk.vm.Memory;
+import org.rjava.nativeext.RawMemory;
 import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.pragma.Inline;
 import org.vmmagic.pragma.Interruptible;
 import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.Extent;
+import org.vmmagic.unboxed.Offset;
+
+import testbed.Configuration;
+import testbed.Constants;
+import testbed.Main;
+import testbed.TestbedRuntime;
 
 @RJavaCore
 public class MemoryExt extends Memory {
@@ -14,148 +21,138 @@ public class MemoryExt extends Memory {
     @Override
     @Interruptible
     public ImmortalSpace getVMSpace() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public void globalPrepareVMSpace() {
-        // TODO Auto-generated method stub
-
+        
     }
 
     @Override
     public void collectorPrepareVMSpace() {
-        // TODO Auto-generated method stub
-
+        
     }
 
     @Override
     public void collectorReleaseVMSpace() {
-        // TODO Auto-generated method stub
-
+        
     }
 
     @Override
     public void globalReleaseVMSpace() {
-        // TODO Auto-generated method stub
-
+        
     }
 
     @Override
     public void setHeapRange(int id, Address start, Address end) {
-        // TODO Auto-generated method stub
-
+        TestbedRuntime.heap.setStart(start);
+        TestbedRuntime.heap.setEnd(end);
     }
 
     @Override
     public int dzmmap(Address start, int size) {
-        // TODO Auto-generated method stub
-        return 0;
+       int prot = RawMemory.PROT_READ | RawMemory.PROT_WRITE | RawMemory.PROT_EXEC;
+       int flags = RawMemory.MAP_ANONYMOUS | RawMemory.MAP_PRIVATE | RawMemory.MAP_FIXED;
+       Address ret = RawMemory.mmap(start, Extent.fromIntZeroExtend(size), prot, flags, -1, Offset.zero());
+       if (ret.EQ(start))
+           return 0;
+       else return ret.toInt();
     }
 
     @Override
     public boolean mprotect(Address start, int size) {
-        // TODO Auto-generated method stub
-        return false;
+        return RawMemory.mprotect(start, Extent.fromIntZeroExtend(size), RawMemory.PROT_NONE) == 0;
     }
 
     @Override
     public boolean munprotect(Address start, int size) {
-        // TODO Auto-generated method stub
-        return false;
+        return RawMemory.mprotect(start, 
+                Extent.fromIntZeroExtend(size), 
+                RawMemory.PROT_READ | RawMemory.PROT_WRITE | RawMemory.PROT_EXEC) == 0;
     }
 
     @Override
+    /**
+     * currently ignoring useNT argument
+     */
     public void zero(boolean useNT, Address start, Extent len) {
-        // TODO Auto-generated method stub
-
+        RawMemory.memset(start, 0x00, len);
     }
 
     @Override
     public void dumpMemory(Address start, int beforeBytes, int afterBytes) {
-        // TODO Auto-generated method stub
-
+        // TODO: should dump memory here
+        Main.warn("should dump memory here");
     }
 
     @Override
     @Inline
     public void sync() {
-        // TODO Auto-generated method stub
-
+        // TODO: on intel machine dont need to do anything
     }
 
     @Override
     @Inline
     public void isync() {
-        // TODO Auto-generated method stub
-
+        // TODO: on intel machine dont need to do anything
     }
 
     @Override
     protected Address getHeapStartConstant() {
-        // TODO Auto-generated method stub
-        return null;
+        return Constants.HEAP_START;
     }
 
     @Override
     protected Address getHeapEndConstant() {
-        // TODO Auto-generated method stub
-        return null;
+        return Constants.HEAP_END;
     }
 
     @Override
     protected Address getAvailableStartConstant() {
-        // TODO Auto-generated method stub
-        return null;
+        return Constants.CONTIGUOUS_START;
     }
 
     @Override
     protected Address getAvailableEndConstant() {
-        // TODO Auto-generated method stub
-        return null;
+        return Constants.HEAP_END;
     }
 
     @Override
     protected byte getLogBytesInAddressConstant() {
-        // TODO Auto-generated method stub
-        return 0;
+        return Constants.LOG_BYTES_IN_ADDRESS;
     }
 
     @Override
     protected byte getLogBytesInWordConstant() {
-        // TODO Auto-generated method stub
-        return 0;
+        return Constants.LOG_BYTES_IN_WORD;
     }
 
     @Override
     protected byte getLogBytesInPageConstant() {
-        // TODO Auto-generated method stub
-        return 0;
+        return Constants.LOG_BYTES_IN_PAGE;
     }
 
     @Override
     protected byte getLogMinAlignmentConstant() {
-        // TODO Auto-generated method stub
-        return 0;
+        return Constants.LOG_MIN_ALIGNMENT;
     }
 
     @Override
     protected byte getMaxAlignmentShiftConstant() {
-        // TODO Auto-generated method stub
-        return 0;
+        return (Configuration.BUILD_FOR_IA32 ? 1 : 0)
+                + Constants.LOG_BYTES_IN_LONG 
+                - Constants.LOG_BYTES_IN_INT;
     }
 
     @Override
     protected int getMaxBytesPaddingConstant() {
-        // TODO Auto-generated method stub
-        return 0;
+        return Constants.BYTES_IN_DOUBLE;
     }
 
     @Override
     protected int getAlignmentValueConstant() {
-        // TODO Auto-generated method stub
-        return 0;
+        return Constants.ALIGNMENT_VALUE;
     }
 
 }

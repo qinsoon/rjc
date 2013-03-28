@@ -7,7 +7,8 @@ public class Main {
     public static final boolean DEBUG = true;
 
     public static void main(String[] args) {
-
+        TestbedRuntime.boot();
+        TestbedRuntime.run();
     }
     
     public static void warn(String message) {

@@ -17,6 +17,9 @@ public class TestRawMemory extends UnitTest {
         
         start("Test mprotect");
         check(testMProtect());
+        
+        start("Test memset");
+        check(testMemset());
     }
     
     public static boolean testMalloc() {
@@ -43,5 +46,10 @@ public class TestRawMemory extends UnitTest {
             return false;
         
         return RawMemory.mprotect(ret, length, RawMemory.PROT_READ | RawMemory.PROT_WRITE) == 0;
+    }
+    
+    public static boolean testMemset() {
+        Address start = RawMemory.malloc(500);
+        return RawMemory.memset(start, 0x00, Extent.fromIntZeroExtend(500)).EQ(start);
     }
 }

@@ -24,6 +24,8 @@ public class MMTkContext {
         this.slot = contextCount;
         contextCount ++;        
         allContexts[slot] = this;
+        
+        currentContext = this;
     }
     
     public MutatorContext mutator() {

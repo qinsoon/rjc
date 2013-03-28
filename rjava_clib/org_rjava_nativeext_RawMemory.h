@@ -5,6 +5,7 @@
 #include "org_vmmagic_unboxed_Extent.h"
 #include "org_vmmagic_unboxed_Offset.h"
 #include <sys/mman.h>
+#include <string.h>
 
 #define var_org_rjava_nativeext_RawMemory_PROT_NONE 0
 #define var_org_rjava_nativeext_RawMemory_PROT_READ 1
@@ -23,8 +24,10 @@
 #define org_rjava_nativeext_RawMemory_mprotect_org_vmmagic_unboxed_Address_org_vmmagic_unboxed_Extent_int32_t(start, length, prot) \
 mprotect((void*) start, length, prot)
 
-
 #define org_rjava_nativeext_RawMemory_malloc_int32_t(size) \
-(org_vmmagic_unboxed_Address) malloc(size);
+(org_vmmagic_unboxed_Address) malloc(size)
+
+#define org_rjava_nativeext_RawMemory_memset_org_vmmagic_unboxed_Address_int32_t_org_vmmagic_unboxed_Extent(start, c, length) \
+(org_vmmagic_unboxed_Address) memset((void*) start, c, length)
 
 #endif

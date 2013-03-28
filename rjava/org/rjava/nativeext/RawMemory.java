@@ -21,6 +21,10 @@ public abstract class RawMemory {
     
     public static final int MAP_FAILED = -1;
     
+    /**
+     * system call: mmap
+     * @return RawMemory.MAP_FAILED if fail. Otherwise success 
+     */
     public static native Address mmap(
             Address start, 
             Extent length, 
@@ -29,8 +33,21 @@ public abstract class RawMemory {
             int fd, 
             Offset offset);
     
+    /**
+     * system call: mprotect
+     * @return 0 if success. Otherwise fail 
+     */
     public static native int mprotect(
             Address start, 
             Extent length, 
             int prot);
+    
+    /**
+     * system call: memset
+     * @return return value equals to start if success. Otherwise fail 
+     */
+    public static native Address memset(
+            Address start,
+            int c,
+            Extent length);
 }
