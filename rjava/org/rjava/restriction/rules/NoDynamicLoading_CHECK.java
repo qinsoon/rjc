@@ -19,7 +19,7 @@ public class NoDynamicLoading_CHECK {
     
     public static Boolean checkClass (RClass klass) throws RJavaRestrictionViolation {
     	boolean pass = true;
-    	for (RMethod method : klass.getMethods()) {
+    	/*for (RMethod method : klass.getMethods()) {
     	    for (RStatement statement : method.getBody()) {
     		if (statement.internal().containsInvokeExpr()) {
     		    InvokeExpr invoke = statement.internal().getInvokeExpr();
@@ -42,7 +42,7 @@ public class NoDynamicLoading_CHECK {
     		    }
     		}
     	}
-	}
+	}*/
 	
 	return pass;
     }

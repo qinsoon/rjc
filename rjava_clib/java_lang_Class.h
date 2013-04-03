@@ -16,4 +16,10 @@ typedef struct java_lang_Class_class {
 
 java_lang_Class_class java_lang_Class_class_instance;
 
+java_lang_Class* newClassConstant(RJava_Common_Class* internal);
+
+/* this is an intrinsic method */
+java_lang_Class* java_lang_Class_forName(RJava_Common_Class* class_instance);
+java_lang_Object* java_lang_Class_newInstance(java_lang_Class* this_parameter);
+
 #endif

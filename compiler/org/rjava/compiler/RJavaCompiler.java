@@ -165,8 +165,9 @@ public class RJavaCompiler {
                     task = CompilationTask.newTaskFromFile(baseDir, source);
                 else task.addClassBySource(source);
             }
-        } catch (Exception e) {
+        } catch (RJavaError e) {
             e.printStackTrace();
+            fail(e.getMessage());
         }
         
         assert (task != null);

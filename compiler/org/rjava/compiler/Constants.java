@@ -65,7 +65,8 @@ public final class Constants {
         "java.lang.String",
         "java.lang.StringBuffer",
         "java.lang.System",
-        "java.lang.Throwable"
+        "java.lang.Throwable",
+        "java.lang.Boolean"
     };
     public static final String RJAVA_LIB_IMPL_DIR = "rjava_clib_impl/";
     

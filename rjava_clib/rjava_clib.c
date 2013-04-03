@@ -12,6 +12,10 @@ void rjava_lib_init() {
     rjava_init_header(&java_lang_Integer_class_instance, &java_lang_Object_class_instance, sizeof(java_lang_Object_class));
     ((java_lang_Object_class*)(&java_lang_Integer_class_instance)) -> toString = java_lang_Integer_toString;
     
+    /* init for java_lang_Boolean */
+    rjava_init_header(&java_lang_Boolean_class_instance, &java_lang_Object_class_instance, sizeof(java_lang_Object_class));
+    ((java_lang_Object_class*)(&java_lang_Boolean_class_instance)) -> toString = java_lang_Boolean_toString;
+    
     /* init for java_lang_String */
     rjava_init_header(&java_lang_String_class_instance, &java_lang_Object_class_instance, sizeof(java_lang_Object_class));
     ((java_lang_Object_class*)(&java_lang_String_class_instance)) -> toString = java_lang_String_toString;

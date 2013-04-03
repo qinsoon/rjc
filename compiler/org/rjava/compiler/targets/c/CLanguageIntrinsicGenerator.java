@@ -28,6 +28,7 @@ import soot.jimple.internal.JIdentityStmt;
 import soot.jimple.internal.JNopStmt;
 import soot.jimple.internal.JReturnStmt;
 import soot.jimple.internal.JSpecialInvokeExpr;
+import soot.jimple.internal.JStaticInvokeExpr;
 import soot.jimple.internal.JVirtualInvokeExpr;
 import soot.jimple.internal.JimpleLocal;
 import soot.util.Chain;
@@ -86,6 +87,24 @@ public class CLanguageIntrinsicGenerator {
             } else if (invoke instanceof JVirtualInvokeExpr && invoke.getMethod().getDeclaringClass().getName().equals("java.lang.Object")) {
                 //stmt.setIntrinsic(true);
                 //stmt.setCode(CLanguageGenerator.comment(stmt.toString()));
+            } else if (invoke instanceof JStaticInvokeExpr && invoke.getMethod().getDeclaringClass().getName().equals("java.lang.Class") && invoke.getMethod().getName().equals("forName")) {
+                stmt.setIntrinsic(true);
+                
+                // intrinsic code
+                String code = "java_lang_Class_forName(";
+                
+                // get the class_instance for such RJava class
+                // className holds something like "java.lang.Integer"
+                String classInstance = invoke.getArg(0).toString();
+                // remove double quotes
+                classInstance = classInstance.substring(1, classInstance.length() - 1);
+                // convert className to &java_lang_Integer_class_instance
+                classInstance = classInstance.replace('.', '_');
+                classInstance += CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX;
+                
+                code += "&" + classInstance + ")";
+                
+                stmt.setCode(code);
             }
         } 
         // transform char** args into an 'rjava' array
