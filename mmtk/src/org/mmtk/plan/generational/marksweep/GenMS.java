@@ -13,6 +13,7 @@
 package org.mmtk.plan.generational.marksweep;
 
 import org.mmtk.plan.generational.Gen;
+import org.mmtk.plan.CollectorContext;
 import org.mmtk.plan.Trace;
 import org.mmtk.plan.TransitiveClosure;
 import org.mmtk.policy.MarkSweepSpace;
@@ -143,7 +144,13 @@ public class GenMS extends Gen {
   @Override
   @Interruptible
   protected void registerSpecializedMethods() {
-    TransitiveClosure.registerSpecializedScan(SCAN_MATURE, GenMSMatureTraceLocal.class);
+    TransitiveClosure.registerSpecializedScan(SCAN_MATURE, "org.mmtk.plan.generational.marksweep.GenMSMatureTraceLocal");
     super.registerSpecializedMethods();
   }
+
+@Override
+@Interruptible
+public CollectorContext newCollectorContext() {
+    return new GenMSCollector();
+}
 }

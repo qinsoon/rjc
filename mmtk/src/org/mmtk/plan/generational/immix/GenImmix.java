@@ -13,6 +13,7 @@
 package org.mmtk.plan.generational.immix;
 
 import org.mmtk.plan.generational.Gen;
+import org.mmtk.plan.CollectorContext;
 import org.mmtk.plan.Trace;
 import org.mmtk.plan.TransitiveClosure;
 import org.mmtk.policy.immix.ImmixSpace;
@@ -174,8 +175,14 @@ public class GenImmix extends Gen {
   @Override
   @Interruptible
   protected void registerSpecializedMethods() {
-    TransitiveClosure.registerSpecializedScan(SCAN_IMMIX, GenImmixMatureTraceLocal.class);
+    TransitiveClosure.registerSpecializedScan(SCAN_IMMIX, "org.mmtk.plan.generational.immix.GenImmixMatureTraceLocal");
 //    TransitiveClosure.registerSpecializedScan(SCAN_DEFRAG, GenImmixMatureDefragTraceLocal.class);
     super.registerSpecializedMethods();
   }
+
+@Override
+@Interruptible
+public CollectorContext newCollectorContext() {
+    return new GenImmixCollector();
+}
 }

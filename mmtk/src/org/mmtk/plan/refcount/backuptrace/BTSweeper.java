@@ -14,7 +14,6 @@ package org.mmtk.plan.refcount.backuptrace;
 
 import org.mmtk.plan.refcount.RCHeader;
 import org.mmtk.policy.ExplicitFreeListSpace;
-import org.mmtk.policy.FreeListSpaceSweeper;
 
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
@@ -24,7 +23,7 @@ import org.vmmagic.unboxed.*;
  * closure over the heap graph.
  */
 @Uninterruptible
-public final class BTSweeper extends FreeListSpaceSweeper {
+public final class BTSweeper extends ExplicitFreeListSpace.Sweeper {
 
   @Override
   public boolean sweepCell(ObjectReference object) {

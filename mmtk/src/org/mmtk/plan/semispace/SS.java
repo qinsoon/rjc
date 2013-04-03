@@ -181,7 +181,13 @@ public class SS extends StopTheWorld {
   @Override
   @Interruptible
   protected void registerSpecializedMethods() {
-    TransitiveClosure.registerSpecializedScan(SCAN_SS, SSTraceLocal.class);
+    TransitiveClosure.registerSpecializedScan(SCAN_SS, "org.mmtk.plan.semispace.SSTraceLocal");
     super.registerSpecializedMethods();
   }
+
+@Override
+@Interruptible
+public CollectorContext newCollectorContext() {
+    return new SSCollector();
+}
 }

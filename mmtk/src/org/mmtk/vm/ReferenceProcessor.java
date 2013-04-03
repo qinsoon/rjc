@@ -21,6 +21,9 @@ import org.vmmagic.pragma.Uninterruptible;
  */
 @Uninterruptible
 public abstract class ReferenceProcessor {
+  public static final int SOFT_REFERENCE = 0;
+  public static final int WEAK_REFERENCE = 1;
+  public static final int PHANTOM_REFERENCE = 2;
 
   /**
    * Clear the contents of the table. This is called when reference types are

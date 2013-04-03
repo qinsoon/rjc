@@ -88,7 +88,7 @@ public class CLanguageIntrinsicGenerator {
                 //stmt.setIntrinsic(true);
                 //stmt.setCode(CLanguageGenerator.comment(stmt.toString()));
             } else if (invoke instanceof JStaticInvokeExpr && invoke.getMethod().getDeclaringClass().getName().equals("java.lang.Class") && invoke.getMethod().getName().equals("forName")) {
-                stmt.setIntrinsic(true);
+                /*stmt.setIntrinsic(true);
                 
                 // intrinsic code
                 String code = "java_lang_Class_forName(";
@@ -104,7 +104,7 @@ public class CLanguageIntrinsicGenerator {
                 
                 code += "&" + classInstance + ")";
                 
-                stmt.setCode(code);
+                stmt.setCode(code);*/
             }
         } 
         // transform char** args into an 'rjava' array

@@ -15,6 +15,7 @@ package org.mmtk.plan.generational.copying;
 import org.mmtk.policy.CopySpace;
 import org.mmtk.policy.Space;
 import org.mmtk.plan.generational.*;
+import org.mmtk.plan.CollectorContext;
 import org.mmtk.plan.Trace;
 import org.mmtk.plan.TransitiveClosure;
 import org.mmtk.utility.heap.VMRequest;
@@ -212,7 +213,13 @@ import org.vmmagic.pragma.*;
   @Override
   @Interruptible
   protected void registerSpecializedMethods() {
-    TransitiveClosure.registerSpecializedScan(SCAN_MATURE, GenCopyMatureTraceLocal.class);
+    TransitiveClosure.registerSpecializedScan(SCAN_MATURE, "org.mmtk.plan.generational.copying.GenCopyMatureTraceLocal");
     super.registerSpecializedMethods();
   }
+
+@Override
+@Interruptible
+public CollectorContext newCollectorContext() {
+    return new GenCopyCollector();
+}
 }

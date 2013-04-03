@@ -12,6 +12,7 @@
  */
 package org.mmtk.plan.refcount;
 
+import org.mmtk.plan.CollectorContext;
 import org.mmtk.plan.Phase;
 import org.mmtk.plan.StopTheWorld;
 import org.mmtk.plan.Trace;
@@ -39,7 +40,7 @@ import org.vmmagic.unboxed.ObjectReference;
  * collection strategy used by this collector.
  */
 @Uninterruptible
-public class RCBase extends StopTheWorld {
+public abstract class RCBase extends StopTheWorld {
   public static final short PROCESS_OLDROOTBUFFER  = Phase.createSimple("old-root");
   public static final short PROCESS_NEWROOTBUFFER  = Phase.createSimple("new-root");
   public static final short PROCESS_MODBUFFER      = Phase.createSimple("mods");

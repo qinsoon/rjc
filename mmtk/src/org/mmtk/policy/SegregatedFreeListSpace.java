@@ -669,7 +669,7 @@ public abstract class SegregatedFreeListSpace extends Space implements Constants
   /**
    * Sweep all blocks for free objects.
    */
-  public void sweepCells(FreeListSpaceSweeper sweeper) {
+  public void sweepCells(Sweeper sweeper) {
     for (int sizeClass = 0; sizeClass < sizeClassCount(); sizeClass++) {
       Address availableHead = Address.zero();
       /* Flushed blocks */
@@ -697,7 +697,7 @@ public abstract class SegregatedFreeListSpace extends Space implements Constants
    * Sweep a block, freeing it and adding to the list given by availableHead
    * if it contains no free objects.
    */
-  private Address sweepCells(FreeListSpaceSweeper sweeper, Address block, int sizeClass, Address availableHead) {
+  private Address sweepCells(Sweeper sweeper, Address block, int sizeClass, Address availableHead) {
     boolean liveBlock = sweepCells(sweeper, block, sizeClass);
     if (!liveBlock) {
       BlockAllocator.setNext(block, Address.zero());
@@ -715,7 +715,7 @@ public abstract class SegregatedFreeListSpace extends Space implements Constants
    *
    * This is designed to be called in parallel by multiple collector threads.
    */
-  public void parallelSweepCells(FreeListSpaceSweeper sweeper) {
+  public void parallelSweepCells(Sweeper sweeper) {
     for (int sizeClass = 0; sizeClass < sizeClassCount(); sizeClass++) {
       Address block;
       while(!(block = getSweepBlock(sizeClass)).isZero()) {
@@ -770,7 +770,7 @@ public abstract class SegregatedFreeListSpace extends Space implements Constants
    * Does this block contain any live cells?
    */
   @Inline
-  public boolean sweepCells(FreeListSpaceSweeper sweeper, Address block, int sizeClass) {
+  public boolean sweepCells(Sweeper sweeper, Address block, int sizeClass) {
     Extent blockSize = Extent.fromIntSignExtend(BlockAllocator.blockSize(blockSizeClass[sizeClass]));
     Address cursor = block.plus(blockHeaderSize[sizeClass]);
     Address end = block.plus(blockSize);
@@ -792,6 +792,14 @@ public abstract class SegregatedFreeListSpace extends Space implements Constants
       cursor = cursor.plus(cellExtent);
     }
     return containsLive;
+  }
+
+  /**
+   * A callback used to perform sweeping of a free list space.
+   */
+  @Uninterruptible
+  public abstract static class Sweeper {
+    public abstract boolean sweepCell(ObjectReference object);
   }
 
   /****************************************************************************

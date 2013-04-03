@@ -76,18 +76,18 @@ public class ParallelCollectorGroup implements Constants {
    * @param klass The type of collector context to create.
    */
   @Interruptible
-  public void initGroup(int size, Class<? extends ParallelCollector> klass) {
+  public void initGroup(int size, Plan plan) {
     this.lock = VM.newHeavyCondLock("CollectorContextGroup");
     this.triggerCount = 1;
     this.contexts = new ParallelCollector[size];
     for(int i = 0; i < size; i++) {
       try {
-        contexts[i] = klass.newInstance();
+        contexts[i] = (ParallelCollector) plan.newCollectorContext();
         contexts[i].group = this;
         contexts[i].workerOrdinal = i;
         VM.collection.spawnCollectorContext(contexts[i]);
       } catch (Throwable t) {
-        VM.assertions.fail("Error creating collector context '" + klass.getName() + "' for group '" + name + "': " + t.toString());
+        VM.assertions.fail("Error creating collector context for group '" + name + "': " + t.toString());
       }
     }
   }

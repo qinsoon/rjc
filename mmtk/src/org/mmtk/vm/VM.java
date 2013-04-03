@@ -147,9 +147,9 @@ public final class VM {
     memory = factory.newMemory();
     objectModel = factory.newObjectModel();
     Options.set = factory.getOptionSet();
-    weakReferences = factory.newReferenceProcessor(Semantics.WEAK);
-    softReferences = factory.newReferenceProcessor(Semantics.SOFT);
-    phantomReferences = factory.newReferenceProcessor(Semantics.PHANTOM);
+    weakReferences = factory.newReferenceProcessor(ReferenceProcessor.WEAK_REFERENCE);
+    softReferences = factory.newReferenceProcessor(ReferenceProcessor.SOFT_REFERENCE);
+    phantomReferences = factory.newReferenceProcessor(ReferenceProcessor.PHANTOM_REFERENCE);
     finalizableProcessor = factory.newFinalizableProcessor();
     scanning = factory.newScanning();
     statistics = factory.newStatistics();

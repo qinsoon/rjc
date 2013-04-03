@@ -174,7 +174,7 @@ public class CopyMS extends StopTheWorld {
   @Override
   @Interruptible
   protected void registerSpecializedMethods() {
-    TransitiveClosure.registerSpecializedScan(SCAN_COPYMS, CopyMSTraceLocal.class);
+    TransitiveClosure.registerSpecializedScan(SCAN_COPYMS, "org.mmtk.plan.copyms.CopyMSTraceLocal");
     super.registerSpecializedMethods();
   }
 
@@ -184,4 +184,11 @@ public class CopyMS extends StopTheWorld {
     super.fullyBooted();
     nurserySpace.setZeroingApproach(Options.nurseryZeroing.getNonTemporal(), Options.nurseryZeroing.getConcurrent());
   }
+
+
+@Override
+@Interruptible
+public CollectorContext newCollectorContext() {
+    return new CopyMSCollector();
+}
 }

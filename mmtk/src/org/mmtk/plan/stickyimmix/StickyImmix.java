@@ -207,7 +207,7 @@ public class StickyImmix extends Immix {
   @Override
   @Interruptible
   protected void registerSpecializedMethods() {
-    TransitiveClosure.registerSpecializedScan(SCAN_NURSERY, StickyImmixNurseryTraceLocal.class);
+    TransitiveClosure.registerSpecializedScan(SCAN_NURSERY, "org.mmtk.plan.stickyimmix.StickyImmixNurseryTraceLocal");
     super.registerSpecializedMethods();
   }
 }

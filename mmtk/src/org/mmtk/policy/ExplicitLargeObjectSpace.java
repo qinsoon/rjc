@@ -163,7 +163,7 @@ public final class ExplicitLargeObjectSpace extends BaseLargeObjectSpace {
    * @param sweeper The sweeper callback to use.
    */
   @Inline
-  public void sweep(LargeObjectSpaceSweeper sweeper) {
+  public void sweep(Sweeper sweeper) {
     Address cell = cells.getHead();
     while (!cell.isZero()) {
       Address next = cells.getNext(cell);
@@ -185,5 +185,13 @@ public final class ExplicitLargeObjectSpace extends BaseLargeObjectSpace {
     Address cell = getSuperPage(VM.objectModel.refToAddress(object));
     cells.remove(cell);
     release(cell);
+  }
+
+  /**
+   * A callback used to perform sweeping of the large object space.
+   */
+  @Uninterruptible
+  public abstract static class Sweeper {
+    public abstract boolean sweepLargeObject(ObjectReference object);
   }
 }

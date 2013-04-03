@@ -127,7 +127,13 @@ public class MS extends StopTheWorld {
   @Interruptible
   @Override
   protected void registerSpecializedMethods() {
-    TransitiveClosure.registerSpecializedScan(SCAN_MARK, MSTraceLocal.class);
+    TransitiveClosure.registerSpecializedScan(SCAN_MARK, "org.mmtk.plan.marksweep.MSTraceLocal");
     super.registerSpecializedMethods();
   }
+
+@Override
+@Interruptible
+public CollectorContext newCollectorContext() {
+    return new MSCollector();
+}
 }

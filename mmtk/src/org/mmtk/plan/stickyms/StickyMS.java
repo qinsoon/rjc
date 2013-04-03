@@ -188,7 +188,7 @@ public class StickyMS extends MS {
   @Override
   @Interruptible
   protected void registerSpecializedMethods() {
-    TransitiveClosure.registerSpecializedScan(SCAN_NURSERY, StickyMSNurseryTraceLocal.class);
+    TransitiveClosure.registerSpecializedScan(SCAN_NURSERY, "org.mmtk.plan.stickyms.StickyMSNurseryTraceLocal");
     super.registerSpecializedMethods();
   }
 }

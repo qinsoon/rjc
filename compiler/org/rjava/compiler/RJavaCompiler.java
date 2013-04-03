@@ -100,6 +100,10 @@ public class RJavaCompiler {
     	    codeGenerator.postTranslationWork();
     }
     
+    public void success() {
+        RJavaCompiler.println("\nCompilation successful");
+    }
+    
     /**
      * main method for RJava compile
      * @param args @see usage()
@@ -178,6 +182,7 @@ public class RJavaCompiler {
 	    RJavaCompiler compiler = newRJavaCompiler(task);
 	    try {
 	        compiler.compile();
+	        compiler.success();
 	    } catch (RJavaWarning e) {
 	        warning(e);
 	    } catch (RJavaError e) {

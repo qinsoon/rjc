@@ -105,4 +105,10 @@ public class CMS extends Concurrent {
       return true;
     return super.willNeverMove(object);
   }
+
+@Override
+@Interruptible
+public CollectorContext newCollectorContext() {
+    return new CMSCollector();
+}
 }

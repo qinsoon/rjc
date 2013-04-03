@@ -150,7 +150,7 @@ public abstract class Plan implements Constants {
   public static final SanityChecker sanityChecker = new SanityChecker();
 
   /** Default collector context */
-  protected final Class<? extends ParallelCollector> defaultCollectorContext;
+  //protected final Class<? extends ParallelCollector> defaultCollectorContext;
 
   /****************************************************************************
    * Constructor.
@@ -174,13 +174,14 @@ public abstract class Plan implements Constants {
     Options.sanityCheck = new SanityCheck();
     Options.debugAddress = new DebugAddress();
     Options.perfEvents = new PerfEvents();
+    Options.useReturnBarrier = new UseReturnBarrier();
     Options.threads = new Threads();
     Options.cycleTriggerThreshold = new CycleTriggerThreshold();
     Map.finalizeStaticSpaceMap();
     registerSpecializedMethods();
 
     // Determine the default collector context.
-    Class<? extends Plan> mmtkPlanClass = this.getClass().asSubclass(Plan.class);
+    /*Class<? extends Plan> mmtkPlanClass = this.getClass().asSubclass(Plan.class);
     while(!mmtkPlanClass.getName().startsWith("org.mmtk.plan")) {
       mmtkPlanClass = mmtkPlanClass.getSuperclass().asSubclass(Plan.class);
     }
@@ -192,7 +193,7 @@ public abstract class Plan implements Constants {
       t.printStackTrace();
       System.exit(-1);
     }
-    defaultCollectorContext = mmtkCollectorClass;
+    defaultCollectorContext = mmtkCollectorClass;*/
   }
 
   /****************************************************************************
@@ -229,6 +230,9 @@ public abstract class Plan implements Constants {
     if (Options.eagerMmapSpaces.getValue()) Space.eagerlyMmapMMTkSpaces();
     pretenureThreshold = (int) ((Options.nurserySize.getMaxNursery()<<LOG_BYTES_IN_PAGE) * Options.pretenureThresholdFraction.getValue());
   }
+  
+  @Interruptible
+  public abstract CollectorContext newCollectorContext();
 
   /**
    * The enableCollection method is called by the runtime after it is
@@ -240,11 +244,11 @@ public abstract class Plan implements Constants {
     Options.threads.updateDefaultValue(VM.collection.getDefaultThreads());
 
     // Create our parallel workers
-    parallelWorkers.initGroup(Options.threads.getValue(), defaultCollectorContext);
+    parallelWorkers.initGroup(Options.threads.getValue(), this);
 
     // Create the concurrent worker threads.
     if (VM.activePlan.constraints().needsConcurrentWorkers()) {
-      concurrentWorkers.initGroup(Options.threads.getValue(), defaultCollectorContext);
+      concurrentWorkers.initGroup(Options.threads.getValue(), this);
     }
 
     // Create our control thread.
@@ -975,7 +979,7 @@ public abstract class Plan implements Constants {
   /**
    * Get the specialized scan with the given id.
    */
-  public final Class<?> getSpecializedScanClass(int id) {
+  public final String getSpecializedScanClass(int id) {
     return TransitiveClosure.getSpecializedScanClass(id);
   }
 }

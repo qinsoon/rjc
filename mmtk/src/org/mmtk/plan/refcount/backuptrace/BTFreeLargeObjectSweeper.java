@@ -14,7 +14,6 @@ package org.mmtk.plan.refcount.backuptrace;
 
 import org.mmtk.plan.refcount.RCHeader;
 import org.mmtk.policy.ExplicitLargeObjectSpace;
-import org.mmtk.policy.LargeObjectSpaceSweeper;
 
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
@@ -23,7 +22,7 @@ import org.vmmagic.unboxed.*;
  * This class implements the freeing of large objects during a backup trace.
  */
 @Uninterruptible
-public final class BTFreeLargeObjectSweeper extends LargeObjectSpaceSweeper {
+public final class BTFreeLargeObjectSweeper extends ExplicitLargeObjectSpace.Sweeper {
 
   @Override
   public boolean sweepLargeObject(ObjectReference object) {

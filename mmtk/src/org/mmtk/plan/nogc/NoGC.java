@@ -97,4 +97,10 @@ public class NoGC extends Plan {
   protected void registerSpecializedMethods() {
     super.registerSpecializedMethods();
   }
+
+@Override
+@Interruptible
+public CollectorContext newCollectorContext() {
+    return new NoGCCollector();
+}
 }

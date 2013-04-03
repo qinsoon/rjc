@@ -162,8 +162,14 @@ public class Immix extends StopTheWorld {
   @Override
   @Interruptible
   protected void registerSpecializedMethods() {
-    TransitiveClosure.registerSpecializedScan(SCAN_IMMIX, ImmixTraceLocal.class);
-    TransitiveClosure.registerSpecializedScan(SCAN_DEFRAG, ImmixDefragTraceLocal.class);
+    TransitiveClosure.registerSpecializedScan(SCAN_IMMIX, "org.mmtk.plan.immix.ImmixTraceLocal");
+    TransitiveClosure.registerSpecializedScan(SCAN_DEFRAG, "org.mmtk.plan.immix.ImmixDefragTraceLocal");
     super.registerSpecializedMethods();
   }
+
+@Override
+@Interruptible
+public CollectorContext newCollectorContext() {
+    return new ImmixCollector();
+}
 }

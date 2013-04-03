@@ -207,6 +207,8 @@ public class RMethod {
      * @return
      */
     public boolean isOverridingMethod() {
+        if (!klass.hasSuperClass())
+            return false;
         SootClass superClass = internal.getDeclaringClass().getSuperclass();
         if (superClass != null && superClass.declaresMethod(internal.getName(), internal.getParameterTypes()))
             return true;

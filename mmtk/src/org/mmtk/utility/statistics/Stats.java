@@ -278,8 +278,19 @@ public class Stats {
   private static void closeStatXml() {
     Xml.closeMinorTag();
   }
+ 
+  static class Phase {
+    public static Phase MUTATOR = new Phase("mu");
+    public static Phase GC = new Phase("gc");
+    public static Phase COMBINED = new Phase("all");
 
-
+    private final String name;
+    Phase(String name) {
+      this.name = name;
+    }
+    @Override
+    public String toString() { return name; }
+  }
 
   /**
    * Print out statistics totals in Xml format
@@ -308,7 +319,7 @@ public class Stats {
    * @param phase The phase
    */
   @Interruptible
-  private static void printTotalXml(Counter c, int phase) {
+  private static void printTotalXml(Counter c, Phase phase) {
     openStatXml(c.getName());
     Xml.attribute("suffix", c.getColumnSuffix());
     Xml.openAttribute("value");
@@ -318,7 +329,7 @@ public class Stats {
       c.printTotal(phase == Phase.MUTATOR);
       Xml.closeAttribute();
       Xml.openAttribute("phase");
-      Log.write(Phase.getName(phase));
+      Log.write(phase.toString());
     }
     Xml.closeAttribute();
     closeStatXml();
@@ -332,7 +343,7 @@ public class Stats {
    * @param phase The phase (null, "mu" or "gc")
    */
   @Interruptible
-  private static void printPhaseStatXml(Counter c, int p, int phase) {
+  private static void printPhaseStatXml(Counter c, int p, Phase phase) {
     openStatXml(c.getName());
     Xml.attribute("suffix", c.getColumnSuffix());
     Xml.openAttribute("value");
@@ -342,7 +353,7 @@ public class Stats {
       c.printCount(p);
       Xml.closeAttribute();
       Xml.openAttribute("phase");
-      Log.write(Phase.getName(phase));
+      Log.write(phase.name);
    }
     Xml.closeAttribute();
     closeStatXml();

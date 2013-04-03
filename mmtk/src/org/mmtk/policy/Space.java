@@ -450,7 +450,11 @@ public abstract class Space implements Constants {
    * @return The address of the new discontiguous space.
    */
   public Address growDiscontiguousSpace(int chunks) {
-    return headDiscontiguousRegion = Map.allocateContiguousChunks(descriptor, this, chunks, headDiscontiguousRegion);
+    Address newHead = Map.allocateContiguousChunks(descriptor, this, chunks, headDiscontiguousRegion);
+    if (newHead.isZero()) {
+      return Address.zero();
+    }
+    return headDiscontiguousRegion = newHead;
   }
 
   /**
@@ -564,6 +568,13 @@ public abstract class Space implements Constants {
     }
     Log.write("  AVAILABLE_END "); Log.writeln(AVAILABLE_END);
     Log.write("       HEAP_END "); Log.writeln(HEAP_END);
+  }
+
+  /**
+   * Interface to use to implement the Visitor Pattern for Spaces.
+   */
+  public static interface SpaceVisitor {
+    void visit(Space s);
   }
 
   /**

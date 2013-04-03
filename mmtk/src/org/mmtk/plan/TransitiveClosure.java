@@ -29,7 +29,7 @@ import org.vmmagic.unboxed.*;
 public abstract class TransitiveClosure {
 
   /** Database of specialized scan classes. */
-  private static final Class<?>[] specializedScans = new Class[VM.activePlan.constraints().numSpecializedScans()];
+  private static final String[] specializedScans = new String[VM.activePlan.constraints().numSpecializedScans()];
 
   /**
    * A transitive closure has been created that is designed to work with a specialized scan method. We must
@@ -39,14 +39,14 @@ public abstract class TransitiveClosure {
    * @param specializedScanClass The class to register.
    */
   @Interruptible
-  public static synchronized void registerSpecializedScan(int id, Class<?> specializedScanClass) {
+  public static synchronized void registerSpecializedScan(int id, String specializedScanClass) {
     specializedScans[id] = specializedScanClass;
   }
 
   /**
    * Get the specialized scan with the given id.
    */
-  public static Class<?> getSpecializedScanClass(int id) {
+  public static String getSpecializedScanClass(int id) {
     if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(specializedScans[id] != null);
     return specializedScans[id];
   }
@@ -68,9 +68,6 @@ public abstract class TransitiveClosure {
    */
   protected TransitiveClosure(int specializedScan) {
     this.specializedScan = specializedScan;
-    if (specializedScan >= 0) {
-      if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(getClass() == getSpecializedScanClass(specializedScan));
-    }
   }
 
   /**

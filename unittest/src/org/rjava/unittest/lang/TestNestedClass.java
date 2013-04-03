@@ -14,6 +14,9 @@ public class TestNestedClass extends UnitTest {
         public static int staticMethod() {
             return 102;
         }
+        public String toString() {
+            return "string";
+        }
     }
     
     public static void main(String[] args) {
@@ -29,10 +32,17 @@ public class TestNestedClass extends UnitTest {
         start("Test nested class instance method");
         check(testNestedClassInstanceMethod());
         
+        start("Test nested class overriding instance method");
+        check(testNestedClassOverridingInstanceMethod());
+        
         start("Test nested class static method");
         check(testNestedClassStaticMethod());
     }
     
+    private static boolean testNestedClassOverridingInstanceMethod() {
+        return new NestedClass().toString().equals("string");
+    }
+
     public static boolean testNestedClass() {
         new NestedClass();
         return true;

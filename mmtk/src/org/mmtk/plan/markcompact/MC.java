@@ -203,8 +203,14 @@ import org.vmmagic.unboxed.ObjectReference;
   @Override
   @Interruptible
   protected void registerSpecializedMethods() {
-    TransitiveClosure.registerSpecializedScan(SCAN_MARK, MCMarkTraceLocal.class);
-    TransitiveClosure.registerSpecializedScan(SCAN_FORWARD, MCForwardTraceLocal.class);
+    TransitiveClosure.registerSpecializedScan(SCAN_MARK, "org.mmtk.plan.markcompact.MCMarkTraceLocal");
+    TransitiveClosure.registerSpecializedScan(SCAN_FORWARD, "org.mmtk.plan.markcompact.MCForwardTraceLocal");
     super.registerSpecializedMethods();
   }
+
+@Override
+@Interruptible
+public CollectorContext newCollectorContext() {
+    return new MCCollector();
+}
 }
