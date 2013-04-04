@@ -7,16 +7,23 @@ import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.ObjectReference;
 
 import testbed.Configuration;
+import testbed.Main;
 import testbed.TestbedRuntime;
 import testbed.runtime.TestbedObject;
 
 @RJavaCore
 public class MemoryManager {
     public static void boot() {
+        Main.print("-Set heap\n");
         HeapGrowthManager.boot(TestbedRuntime.heap.getHeapSize(), TestbedRuntime.heap.getHeapSize());
+        
+        Main.print("-Process options\n");
         Configuration.activePlan.processOptions();
         
+        Main.print("-Enable allocation\n");
         Configuration.activePlan.enableAllocation();
+        
+        Main.print("-Enable collection\n");
         Configuration.activePlan.enableCollection();
     }
     

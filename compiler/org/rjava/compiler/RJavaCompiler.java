@@ -38,7 +38,10 @@ public class RJavaCompiler {
     
     public static CompilationTask currentTask;
     
+    // the executable will be named under this name, instead of the class name where main method exists
     public static String namedOutput = null;
+    // allow the generated code in debug mode (if C is the target, use -g in gcc flags) 
+    public static boolean debugTarget = false;
     
     private RJavaCompiler(CompilationTask task) {
     	this.task = task;
@@ -133,6 +136,8 @@ public class RJavaCompiler {
                 } else if (args[i].equals("-o")) {
                     namedOutput = args[i+1];
                     i++;
+                } else if (args[i].equals("-dt")) {
+                    debugTarget = true;
                 }
                 else {
                     sources.add(args[i]);

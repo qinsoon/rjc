@@ -568,6 +568,7 @@ public class CLanguageRuntime {
     }
 
     public void generateGNUMakefile() throws RJavaError {
+        final String C_FLAGS = "-I . " + (RJavaCompiler.debugTarget ? "-g" : "-O3");
         /*
          *  generate makefile
          */
@@ -590,7 +591,7 @@ public class CLanguageRuntime {
         makeFile.append("C_FILES := $(wildcard *.c)" + NEWLINE);
         makeFile.append("OBJS := $(patsubst %.c, %.o, $(C_FILES))" + NEWLINE);
         makeFile.append("CC = gcc" + NEWLINE);
-        makeFile.append("CFLAGS = -I . -O3" + NEWLINE);
+        makeFile.append("CFLAGS = " + C_FLAGS + NEWLINE);
         makeFile.append("LDFLAGS = " + NEWLINE);
         makeFile.append(NEWLINE);
         

@@ -7,12 +7,20 @@ public class Main {
     public static final boolean DEBUG = true;
 
     public static void main(String[] args) {
+        print("[BOOT]...\n");
         TestbedRuntime.boot();
+        print("DONE.\n");
+        
+        print("[RUN]...\n");
         TestbedRuntime.run();
     }
     
+    public static void print(String message) {
+        System.out.print(message);
+    }
+    
     public static void warn(String message) {
-        System.out.println("Warning" + message);
+        System.out.println("[Warning]" + message);
     }
     
     public static void _assert(boolean expect, String message) {
