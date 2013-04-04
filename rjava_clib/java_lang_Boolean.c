@@ -7,7 +7,7 @@ inline void java_lang_Boolean_rjinit_bool(void* this_parameter, bool i) {
 	((RJava_Common_Instance*)this_parameter) -> class_struct = &java_lang_Boolean_class_instance;
 }
 
-inline java_lang_Boolean* java_lang_Boolean_parseBoolean(java_lang_String* str) {
+inline java_lang_Boolean* java_lang_Boolean_parseBoolean_java_lang_String(java_lang_String* str) {
 	if (strcmp(str->internal, "true") == 0) {
 		return newBooleanConstant(true);
 	} else {

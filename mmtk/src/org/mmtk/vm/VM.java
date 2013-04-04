@@ -17,6 +17,8 @@ import org.vmmagic.pragma.Untraced;
 import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.Offset;
 
+import testbed.mmtkext.FactoryExt;
+
 /**
  * This class is responsible for all VM-specific functionality required
  * by MMTk.<p>
@@ -118,7 +120,7 @@ public final class VM {
    * classes.
    */
   private static final Factory factory;
-  private static final String vmFactory;
+  //private static final String vmFactory;
 
   /**
    * This class initializer establishes a VM-specific factory class
@@ -129,7 +131,7 @@ public final class VM {
    */
   static {
     /* Identify the VM-specific factory using reflection */
-    vmFactory = System.getProperty("mmtk.hostjvm");
+    /*vmFactory = System.getProperty("mmtk.hostjvm");
     Factory xfa = null;
     try {
       xfa = (Factory) Class.forName(vmFactory).newInstance();
@@ -137,7 +139,9 @@ public final class VM {
       e.printStackTrace();
       System.exit(-1);     // we must *not* go on if the above has failed
     }
-    factory = xfa;
+    factory = xfa;*/
+    // TODO: the following code should be configurable
+    factory = new FactoryExt();
 
     /* Now instantiate the singletons using the factory */
     activePlan = factory.newActivePlan();

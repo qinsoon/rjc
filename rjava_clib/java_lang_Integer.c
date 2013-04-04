@@ -28,3 +28,7 @@ inline java_lang_Integer* newIntegerConstant(int32_t i) {
 java_lang_Integer_rjinit_int32_t(ret, i);
     return ret;
 }
+
+inline int32_t java_lang_Integer_parseInt_java_lang_String(java_lang_String* str) {
+    return (int32_t)(atol(str->internal));
+}

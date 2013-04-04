@@ -37,6 +37,12 @@ inline void java_lang_StringBuffer_append_int32_t(java_lang_StringBuffer* this_p
     java_lang_StringBuffer_append_java_lang_Object(this_parameter, newStringConstant(iStr));
 }
 
+inline void java_lang_StringBuffer_append_int64_t(java_lang_StringBuffer* this_parameter, int64_t i) {
+    char iStr[50];
+    sprintf (iStr, "%"PRId64, i);
+    java_lang_StringBuffer_append_java_lang_Object(this_parameter, newStringConstant(iStr));
+}
+
 inline java_lang_String* java_lang_StringBuffer_toString(java_lang_StringBuffer* this_parameter) {
   return newStringConstant(this_parameter->internal);
 }

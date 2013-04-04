@@ -30,3 +30,11 @@ inline void java_lang_String_rjinit_java_lang_String(void* this_parameter, java_
     strcpy(((java_lang_String*) this_parameter) -> internal, str -> internal);
     (((RJava_Common_Instance*)this_parameter) -> class_struct) = &java_lang_String_class_instance;
 }
+
+inline int32_t java_lang_String_length(void* this_parameter) {
+    return (int32_t) strlen(((java_lang_String*)this_parameter)->internal);
+}
+
+inline byte* java_lang_String_getBytes(void* this_parameter) {
+    return ((java_lang_String*)this_parameter)->internal;
+}

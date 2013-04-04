@@ -27,3 +27,6 @@ inline void java_io_PrintStream_println_int32_t(java_io_PrintStream* this_parame
 inline void java_io_PrintStream_print_int32_t(java_io_PrintStream* this_parameter, int32_t i) {
     printf("%"PRId32, i);
 }
+inline void java_io_PrintStream_println_int64_t(java_io_PrintStream* this_parameter, int64_t i) {
+    printf("%"PRId64"\n", i);
+}
