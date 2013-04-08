@@ -233,6 +233,10 @@ public class RType {
     public boolean isIntrinsicType() {
         return intrinsicType;
     }
+    
+    public boolean isAppType() {
+        return SemanticMap.isApplicationClass(getClassName());
+    }
 
     public void setIntrinsicType(boolean intrinsicType) {
         this.intrinsicType = intrinsicType;

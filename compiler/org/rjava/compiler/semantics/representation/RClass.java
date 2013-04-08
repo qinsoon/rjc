@@ -330,7 +330,7 @@ public class RClass {
     }
     
     public boolean isAppClass() {
-        return !name.startsWith("java.") && !name.startsWith("javax.");
+        return SemanticMap.isApplicationClass(name);
     }
     
     public boolean equals(Object o) {

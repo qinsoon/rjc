@@ -1,15 +1,23 @@
 package org.rjava.compiler.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.rjava.compiler.RJavaCompiler;
+
 public class DirectedGraph<T> {
-    GraphNode<T> root;
+    public DirectedGraph() {
+        
+    }
     
-    GraphNode<T> getRoot() {
-        return root;
+    public DirectedGraph(DirectedGraph<T> copy) {        
+        for (GraphNode<T> node : copy.nodeCache.values()) 
+            for (GraphNode<T> toNode : node.getPointToSet())
+                this.addEdge(node.value, toNode.value);
     }
     
     /**
@@ -25,12 +33,7 @@ public class DirectedGraph<T> {
         
         GraphNode<T> fromNode = getNode(from);
         if (fromNode == null) {
-            // 'from' must be root then
-            if (root == null) {
-                fromNode = new GraphNode<T>(from);
-                root = fromNode;
-            }
-            else throw new RuntimeException("adding an edge(" + from.toString() + " -> " + to.toString() + ") to the graph where its fromNode cannot be found");
+            fromNode = new GraphNode<T>(from);
         }
         
         // actually add the edge
@@ -40,14 +43,14 @@ public class DirectedGraph<T> {
     }
     
     public boolean isAdjacent(T from, T to) {
-        for (T node : pointToSetOf(from))
+        for (T node : getPointToSetOf(from))
             if (node.equals(to))
                 return true;
         
         return false;
     }
     
-    public Set<T> pointToSetOf(T from) {
+    public Set<T> getPointToSetOf(T from) {
         GraphNode<T> fromNode = getNode(from);
         if (fromNode == null)
             throw new RuntimeException("trying to get pointToSet of " + from.toString() + " but the node cannot be found");
@@ -86,14 +89,38 @@ public class DirectedGraph<T> {
         }
     }
     
+    public void removeNode(T node) {
+        Set<GraphNode<T>> outGoingNodes = new HashSet<GraphNode<T>>(getNode(node).pointToSet);
+        // 1. remove all the edges coming out of this node
+        for (GraphNode<T> to : outGoingNodes)
+            removeEdge(node, to.value);
+        
+        // 2. remove all the incoming edges
+        if (indegreeOf(node) == 0) {
+            // no edges pointing to this node, we just delete it
+            deleteFromCache(getNode(node));
+        } else {
+            // traverse through the graph
+            // find nodes that point to this node, and delete the edges
+            DirectedGraphIterator<T> iter = getSimpleIterator();
+            while(iter.hasNext()) {
+                T current = iter.next();
+                // if it is an incoming edge, we delete it
+                for (T to : getPointToSetOf(current))
+                    if (to.equals(node))
+                        removeEdge(current, to);
+            }
+        }
+    }
+    
     public int indegreeOf(T node) {
         int indegree = 0;
         // traverse through the graph
-        DirectedGraphBreadthFirstIterator<T> iter = getBreadthFirstIterator();
+        DirectedGraphIterator<T> iter = getSimpleIterator();
         while(iter.hasNext()) {
             T current = iter.next();
             // if 'node' appear in its pointToSet, then indegree++
-            for (T to : pointToSetOf(current))
+            for (T to : getPointToSetOf(current))
                 if (to.equals(node))
                     indegree++;
         }
@@ -101,31 +128,37 @@ public class DirectedGraph<T> {
     }
     
     public int outDegreeOf(T node) {
-        return pointToSetOf(node).size();
+        return getPointToSetOf(node).size();
     }
     
-    /**
-     * use depth first iterator, so cycles can be tracked.
-     * @return
-     */
-    @Deprecated
-    public DirectedGraphBreadthFirstIterator<T> getBreadthFirstIterator() {
-        return new DirectedGraphBreadthFirstIterator<T>(this);
-    }
-    
-    public DirectedGraphDepthFirstIterator<T> getDepthFirstIterator() {
+    /*public DirectedGraphDepthFirstIterator<T> getDepthFirstIterator() {
         return new DirectedGraphDepthFirstIterator<T>(this, true);
+    }*/
+    
+    public DirectedGraphIterator<T> getSimpleIterator() {
+        return new DirectedGraphIterator<T>(this);
+    }
+    
+    public DirectedGraphSinkNodeFirstIterator<T> getSinkNodeFirstIterator() {
+        return new DirectedGraphSinkNodeFirstIterator<T>(this);
     }
     
     public void printGraph() {
         System.out.println("Graph:");
-        //DirectedGraphBreathFirstIterator<T> iter = getBreathFirstIterator();
-        DirectedGraphDepthFirstIterator<T> iter = getDepthFirstIterator();
+        DirectedGraphIterator<T> iter = getSimpleIterator();
         while(iter.hasNext()) {
             T current = iter.next();
-            for (T to : pointToSetOf(current))
-                System.out.println(current + "->" + to);
+            for (T to : getPointToSetOf(current))
+                System.out.println(getNode(current) + "->" + getNode(to));
         }
+    }
+    
+    public boolean contains(T value) {
+        return getNode(value) != null;
+    }
+    
+    public int size() {
+        return nodeCache.size();
     }
     
     Map<T, GraphNode<T>> nodeCache = new HashMap<T, GraphNode<T>>();
@@ -138,12 +171,14 @@ public class DirectedGraph<T> {
     private void deleteFromCache(GraphNode<T> node) {
         nodeCache.remove(node.value);
     }
+    boolean isValidNode(GraphNode<T> node) {
+        return node != null && nodeCache.containsKey(node.value);
+    }
     
     static class GraphNode<T> {
         T value;
-        Set<GraphNode<T>> pointToSet = new HashSet<GraphNode<T>>();
-        //boolean dfsVisited = false;
-        //int dfsNextExploringEdge = 0;
+        private Set<GraphNode<T>> pointToSet = new HashSet<GraphNode<T>>();
+        boolean dead = false;   // in sinkNodeFirstIterator, we cannot remove a node, so we mark it dead
         
         public GraphNode(T value) {
             this.value = value;
@@ -154,12 +189,12 @@ public class DirectedGraph<T> {
         }
         
         public void removeFromPointToSet(GraphNode<T> to) {
-            Set<GraphNode<T>> newSet = new HashSet<GraphNode<T>>();
-            for (GraphNode<T> node : pointToSet)
-                if (!node.value.equals(to.value))
-                    newSet.add(node);
-            
-            pointToSet = newSet;
+            pointToSet.remove(to);
+        }
+        
+        @Override 
+        public String toString() {
+            return value.toString() + "(OD:" + pointToSet.size() + ")";
         }
         
         @Override
@@ -179,12 +214,21 @@ public class DirectedGraph<T> {
         graph.addEdge("A3", "A2");
         graph.addEdge("A3", "A4");
         graph.addEdge("A3", "A5");
+        graph.addEdge("A6", "A3");
         graph.printGraph();
         
-        graph.removeEdge("A1", "A3");
-        graph.printGraph();
+        DirectedGraph<String> graph2 = new DirectedGraph<String>(graph);
+        graph2.printGraph();
         
-        graph.addEdge("A2", "A1");
+        graph2.removeNode("A3");
+        graph2.printGraph();
+        
+        System.out.println("Sink node first traverse:");
+        DirectedGraphSinkNodeFirstIterator<String> iter = graph.getSinkNodeFirstIterator();
+        while(iter.hasNext()) {
+            System.out.println(iter.next());
+        }
+        
         graph.printGraph();
     }
 }

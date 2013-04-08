@@ -33,6 +33,9 @@ public abstract class SemanticMap {
     // interfaces
     public static List<RClass> interfacesThatNeedInit = new ArrayList<RClass>();
     
+    // class initialization dependency
+    public static DependencyGraph classInitDependencyGraph;
+    
     public static SootEngine engine;
 
     public static void initSemanticMap(CompilationTask task) {
@@ -61,6 +64,9 @@ public abstract class SemanticMap {
     	hierarchy = TypeHierarchy.init();
     	if (DEBUG)
     	    hierarchy.printHierarchy();
+    	
+    	// init class initialization dependency
+    	classInitDependencyGraph = new DependencyGraph();
 
     	// if one class is named to be compiled, we have to compile all its ancestor    	
     	for (int i = 0; i < task.getClasses().toArray().length; i++) {
@@ -88,17 +94,40 @@ public abstract class SemanticMap {
         return sources;
     }*/
     
+    /**
+     * havent tested this method much. Suggest not using it.
+     * @param klass
+     * @return
+     */
+    @Deprecated
     public static RType getRTypeFromRClass(RClass klass) {
         return types.get(klass.getName());
     }
     
+    /**
+     * 
+     * @param type
+     * @return null if type cannot be found or if type isnt an app type (we do not have its RClass)
+     */
     public static RClass getRClassFromRType(RType type) {
+        // if type is not an application, we dont have its RClass then
+        if (!type.isAppType())
+            return null;
+        
         if (RJavaCompiler.ENABLE_ASSERTION)
             RJavaCompiler.assertion(type.isReferenceType(), type + " should be reference type");
         RClass ret = classes.get(type.getClassName());
         if (RJavaCompiler.ENABLE_ASSERTION)
             RJavaCompiler.assertion(ret != null, "cannot find " + type.getClassName() + " in semantic map");
         return ret;
+    }
+    
+    public static boolean isApplicationClass(String className) {
+        return !isJavaLib(className) && !isRJavaLib(className);
+    }
+    
+    public static boolean isJavaLib(String className) {
+        return className.startsWith("java.") || className.startsWith("javax.");
     }
     
     public static boolean isRJavaLib(String className) {

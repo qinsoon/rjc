@@ -29,7 +29,7 @@ public class CLanguageNameGenerator {
      */
     public String get(RClass klass) {
         String ret = javaNameToCName(klass.getName());
-        generator.referencing(ret);
+        generator.referencing(klass, ret);
         return ret;
     }
     
@@ -44,7 +44,7 @@ public class CLanguageNameGenerator {
     public String get(RType type) {
         String ret = javaNameToCName(type.getClassName());
         if (type.isReferenceType() || type.isMagicType())
-            generator.referencing(ret);
+            generator.referencing(SemanticMap.getRClassFromRType(type), ret);
         return ret;
     }
     

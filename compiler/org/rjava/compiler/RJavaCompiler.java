@@ -224,6 +224,7 @@ public class RJavaCompiler {
     
     public static void error(Object o) {
         System.out.println("RJava compiler error: " + o);
+        Thread.dumpStack();
     	System.exit(-1);
     }
     

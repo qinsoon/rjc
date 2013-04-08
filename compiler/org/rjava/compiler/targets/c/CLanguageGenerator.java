@@ -622,7 +622,16 @@ public class CLanguageGenerator extends CodeGenerator {
         return out.toString();
     }
     
+    /**
+     * if we are generating class initializer code, we need to record its reference
+     * so we can determine the order to call <clinit>
+     */
+    private boolean inCLInit = false;
+    
     public String getMethodBody(RMethod method) throws RJavaError {
+        if (method.isClassInitializer())
+            inCLInit = true;
+        
         CodeStringBuilder out = new CodeStringBuilder();
         out.increaseIndent();
         
@@ -644,6 +653,10 @@ public class CLanguageGenerator extends CodeGenerator {
             
             out.appendNoIndent(SEMICOLON + NEWLINE);
         }
+        
+        if (method.isClassInitializer())
+            inCLInit = false;
+        
         return out.toString();
     }
     
@@ -662,13 +675,21 @@ public class CLanguageGenerator extends CodeGenerator {
         runtime.generateGNUMakefile();
     }
     
-    public void referencing(String refName) {
+    public void referencing(RClass klass, String refName) {
         //if (refName.startsWith("java_") || refName.startsWith("javax_"))
         //    return;
         
         // avoid adding include for current class
-        if (!name.javaNameToCName(currentRClass.getName()).equals(refName))
+        if (!name.javaNameToCName(currentRClass.getName()).equals(refName)) {
             referencedClasses.add(CodeGenerator.escapeDollarInFileName(refName));
+            
+            // if we are generating clinit code, we need to record the reference
+            // so <clinit> will be called in a determined order
+            if (inCLInit) {
+                if (klass != null && klass.isAppClass())
+                    SemanticMap.classInitDependencyGraph.addEdge(currentRClass, klass);
+            }
+        }
     }
     
     private void addToClassInitMap(String rClassName, String initStmt) {

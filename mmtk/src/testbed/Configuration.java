@@ -23,7 +23,7 @@ public abstract class Configuration {
     // used by BuildTimeConfigExt
     public static final TestbedProperty properties = new TestbedProperty();
     static {
-        
+        properties.put("mmtk.headerMarkBit", "true");
     }
     public static class TestbedProperty {
         final int MAX = 100;
