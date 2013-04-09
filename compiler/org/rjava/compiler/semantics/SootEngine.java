@@ -24,11 +24,16 @@ import soot.SootMethod;
 import soot.SootResolver;
 import soot.Transform;
 import soot.jimple.spark.SparkTransformer;
+import soot.jimple.toolkits.callgraph.CHATransformer;
 import soot.options.Options;
 
 public class SootEngine {  
     private static final boolean DEBUG = true;
     
+    /**
+     * do not turn on this options now. 
+     * TODO: update soot version
+     */
     public static boolean RUN_SOOT = false;
     
     private static final String[] jdkPath = {"components/soot/jce.jar",
@@ -54,8 +59,10 @@ public class SootEngine {
     }
     
     private void init() {
-        runSoot();        
+        List<String> sootArgs = initSoot();  
     	resolveClasses();
+    	if (RUN_SOOT)
+    	    runSoot(sootArgs);
     }
 
     private void resolveClasses() {
@@ -87,7 +94,7 @@ public class SootEngine {
     	}
     }
 
-    private void runSoot() {
+    private List<String> initSoot() {
         List<String> sootArgs = new ArrayList<String>();
         
         // whole program
@@ -140,18 +147,49 @@ public class SootEngine {
             sootArgs.add(className);
         }
         
-        if (RUN_SOOT) {
-            // get jimple body
-            PackManager.v().getPack("jop").add(new Transform("jop.getbody", new soot.BodyTransformer() {
-                @Override
-                protected void internalTransform(Body body, String phase, Map arg2) {
-                    methodStorage.put(body.getMethod(), body);
-                }
-            }));
-
-            soot.Main.main(sootArgs.toArray(new String[0]));
-        }
+        return sootArgs;
     }
+
+    public void runSoot(List<String> sootArgs) {
+        // get jimple body
+        PackManager.v().getPack("jop").add(new Transform("jop.getbody", new soot.BodyTransformer() {
+            @Override
+            protected void internalTransform(Body body, String phase, Map arg2) {
+                methodStorage.put(body.getMethod(), body);
+            }
+        }));
+        
+        // get call graph
+        PackManager.v().getPack("wjtp").add(new Transform("wjtp.myTrans", new SceneTransformer() {
+            @Override
+            protected void internalTransform(String phaseName, Map options) {
+              CHATransformer.v().transform();
+            }
+          }));
+        Scene.v().setEntryPoints(getAllMethods());
+        Scene.v().loadNecessaryClasses(); 
+
+
+        soot.Main.main(sootArgs.toArray(new String[0]));
+    }
+    
+
+    private List<SootMethod> getAllMethods() {
+        ArrayList<SootMethod> entrypoints = new ArrayList<SootMethod>();
+        for (String klassName : allClasses.keySet()) {
+            // klassName such as org.abc.MyClass
+            Scene.v().forceResolve(klassName, SootClass.SIGNATURES);
+            SootClass klass = Scene.v().getSootClass(klassName);
+    
+            // adding all non-abstract method as entrypoint
+            for (SootMethod m : klass.getMethods()) {
+              if (!m.isAbstract()) {
+                entrypoints.add(m);
+              }
+            }
+          }
+        return entrypoints;
+    } 
 
     public void buildSemanticMap() {
     	// pass classes

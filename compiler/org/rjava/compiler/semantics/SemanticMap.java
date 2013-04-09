@@ -34,7 +34,12 @@ public abstract class SemanticMap {
     public static List<RClass> interfacesThatNeedInit = new ArrayList<RClass>();
     
     // class initialization dependency
-    public static DependencyGraph classInitDependencyGraph;
+    // FIXME: do not use it until code generation is done (use it in post-translation)
+    public static InitializationDependency classInitDependencyGraph;
+    
+    // call graph
+    // FIXME: do not use it until code generation is done (use it in post-translation)
+    public static CallGraph callGraph;
     
     public static SootEngine engine;
 
@@ -66,7 +71,10 @@ public abstract class SemanticMap {
     	    hierarchy.printHierarchy();
     	
     	// init class initialization dependency
-    	classInitDependencyGraph = new DependencyGraph();
+    	classInitDependencyGraph = new InitializationDependency();
+    	
+    	// init call graph
+    	callGraph = new CallGraph();
 
     	// if one class is named to be compiled, we have to compile all its ancestor    	
     	for (int i = 0; i < task.getClasses().toArray().length; i++) {

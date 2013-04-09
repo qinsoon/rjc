@@ -20,8 +20,6 @@ import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.targets.CodeStringBuilder;
 import org.rjava.compiler.targets.c.CLanguageGenerator;
 import org.rjava.compiler.targets.c.CLanguageNameGenerator;
-import org.rjava.compiler.util.DirectedGraph;
-import org.rjava.compiler.util.DirectedGraphSinkNodeFirstIterator;
 import org.rjava.compiler.util.HelperMethod;
 import org.rjava.compiler.util.HelperVariable;
 import org.rjava.compiler.util.Tree;
@@ -657,7 +655,6 @@ public class CLanguageRuntime {
             TreeBreadthFirstIterator<RClass> iter = root.getBreadthFirstIterator();
             while (iter.hasNext()) {
                 RClass current = iter.next();
-                //System.out.println("Generating class init statements for " + current.getName());
                 body.append(CLanguageGenerator.commentln("init for " + name.get(current)));
                 body.append(generator.getClassInitMap().get(current.getName()).toString());
                 body.append("\n\n");
@@ -674,8 +671,6 @@ public class CLanguageRuntime {
 
         
         // calling <clinit> for those classes
-        /*
-         * the code is to init classes based on its hierarchy
         body.append(CLanguageGenerator.commentln("calling <clinit> for RJava classes"));
         for (Tree<RClass> root : SemanticMap.hierarchy.getRoots()) {
             TreeBreadthFirstIterator<RClass> iter = root.getBreadthFirstIterator();
@@ -685,14 +680,6 @@ public class CLanguageRuntime {
                     body.append(name.get(current.getCLInitMethod()) + "();\n");
                 }
             }
-        }*/
-        SemanticMap.classInitDependencyGraph.dumpDependencyGraph();
-        body.append(CLanguageGenerator.commentln("calling <clinit> for RJava classes"));
-        DirectedGraphSinkNodeFirstIterator<RClass> iter = SemanticMap.classInitDependencyGraph.getClassGraph().getSinkNodeFirstIterator();
-        while(iter.hasNext()) {
-            RClass current = iter.next();
-            if (current.getCLInitMethod() != null)
-                body.append(name.get(current.getCLInitMethod()) + "();\n");
         }
 
         return body.toString();
