@@ -286,6 +286,8 @@ public class RMethod {
     
     @Override
     public boolean equals(Object o) {
-        return internal.equals(((RMethod)o).internal);
+        if (o.getClass().equals(RMethod.class) && internal.equals(((RMethod)o).internal))
+            return true;
+        else return false;
     }
 }

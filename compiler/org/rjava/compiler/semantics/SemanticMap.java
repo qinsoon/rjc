@@ -12,6 +12,8 @@ import java.util.Set;
 import org.rjava.compiler.CompilationTask;
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.representation.*;
+import org.rjava.compiler.util.JGraphTUtils;
+
 import soot.SootClass;
 
 public abstract class SemanticMap {
@@ -86,14 +88,20 @@ public abstract class SemanticMap {
         // init call graph
         callGraph = new CallGraph();
         buildCallGraph();
+        if (CallGraph.DEBUG)
+            callGraph.dumpGraph();
         
         // init class initialization dependency
         classInitDependencyGraph = new InitializationDependencyGraph();
-        buildClassInitDependencyGraph();
+        //buildClassInitDependencyGraph();
         
-        classInitDependencyGraph.visualize("graph.png");
+        //classInitDependencyGraph.visualize("graph.png");
     }
     
+    /**
+     * build class init dependency based on call graph. This dependency is not complete by now. 
+     * during code generation, we will complete it by also adding dependency based on referencing. 
+     */
     private static void buildClassInitDependencyGraph() {
         for (RClass klass : classes.values()) {
             for (RMethod method : klass.getMethods()) {
@@ -118,13 +126,16 @@ public abstract class SemanticMap {
                             allReferencedClasses.add(current.getKlass());
                         
                             // 2. add all its callees to the traverseQueue
+                            // FIXME: need to consider the situation of recursive call
                             traverseQueue.addAll(callGraph.getCalleesOf(current));
                         }
                     }
                     
                     // add edge (klass->referencedClass) to class init dependency graph
-                    for (RClass referenced : allReferencedClasses)
-                        classInitDependencyGraph.addDependencyEdge(klass, referenced);
+                    for (RClass referenced : allReferencedClasses) {
+                        if (!klass.equals(referenced))
+                            classInitDependencyGraph.addDependencyEdge(klass, referenced);
+                    }
                 }
             }
         }

@@ -337,7 +337,9 @@ public class RClass {
     }
     
     public boolean equals(Object o) {
-        return this.internal.equals(((RClass) o).internal);
+        if (o.getClass().equals(RClass.class))
+            return this.internal.equals(((RClass) o).internal);
+        else return false;
     }
     
     public boolean isDescendanceof(RClass another) {
