@@ -21,6 +21,10 @@ public class CallGraph {
         cg.addEdge(from, to);
     }
     
+    public boolean containsMethod(RMethod method) {
+        return cg.containsVertex(method);
+    }
+    
     public Set<RMethod> getCallersOf(RMethod method) {
         Set<RMethod> ret = new HashSet<RMethod>();
         Set<DefaultEdge> incomingEdges = cg.incomingEdgesOf(method);

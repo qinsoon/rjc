@@ -98,7 +98,14 @@ public abstract class SemanticMap {
         for (RClass klass : classes.values()) {
             for (RMethod method : klass.getMethods()) {
                 if (method.isClassInitializer()) {
-                    // all the classes that are directly or subsequently referenced by a <clinit> need to be initialized first
+                    // if this <clinit> is not calling anything else, we just add it
+                    if (!callGraph.containsMethod(method)) {
+                        classInitDependencyGraph.addClass(klass);
+                        continue;
+                    }
+                    
+                    // find out all the classes that are directly or subsequently referenced by this <clinit>
+                    // those classes need to be initialized before this class
                     Set<RClass> allReferencedClasses = new HashSet<RClass>();
                     
                     Queue<RMethod> traverseQueue = new LinkedList<RMethod>();

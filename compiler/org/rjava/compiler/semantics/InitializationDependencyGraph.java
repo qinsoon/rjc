@@ -20,9 +20,11 @@ import org.rjava.restriction.rulesets.RJavaCore;
 
 public class InitializationDependencyGraph {
     ListenableGraph<RClass, DefaultEdge> classGraph = new ListenableDirectedGraph<RClass, DefaultEdge>(DefaultEdge.class);
+    private JGraph jgraph;
     
     InitializationDependencyGraph() {
-        
+        JGraphModelAdapter<RClass, DefaultEdge> adapter = new JGraphModelAdapter<RClass, DefaultEdge>(classGraph);
+        jgraph = new JGraph(adapter);    
     }
     
     public void addDependencyEdge(RClass from, RClass to) {
@@ -34,6 +36,11 @@ public class InitializationDependencyGraph {
         classGraph.addEdge(from, to);
     }
     
+    public void addClass(RClass klass) {
+        if (!classGraph.containsVertex(klass))
+            classGraph.addVertex(klass);
+    }
+    
     public ListenableGraph<RClass, DefaultEdge> getClassGraph() {
         return classGraph;
     }
@@ -43,9 +50,7 @@ public class InitializationDependencyGraph {
     }
     
     public void visualize(String fileName) {
-        JGraphModelAdapter<RClass, DefaultEdge> adapter = new JGraphModelAdapter<RClass, DefaultEdge>(classGraph);
-        
-        JGraph jgraph = new JGraph(adapter);    
+
         final Color     DEFAULT_BG_COLOR = Color.decode( "#FAFBFF" );
         final Dimension DEFAULT_SIZE = new Dimension( 530, 320 );
         jgraph.setPreferredSize(DEFAULT_SIZE);
