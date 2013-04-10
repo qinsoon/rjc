@@ -243,7 +243,6 @@ public class CLanguageGenerator extends CodeGenerator {
         translatedCHeader.add(cHeaderSource);
     }
 
-    private boolean needTypeMapping = true;
     protected void generateIntrinsic(RClass klass) {
         // translate intrinsic types, e.g. java.lang.String/Integer, or org.vmmagic.unboxed.Address
         for (RType type : SemanticMap.types.values()) {
@@ -648,6 +647,8 @@ public class CLanguageGenerator extends CodeGenerator {
             if (rStmt.isIntrinsic())
                 out.append(rStmt.getCode());
             else {
+                // init class_struct here
+                // FIXME: should be moved to somewhere else. 
                 if (method.isConstructor() && rStmt.isReturnStmt()) 
                     out.append("((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*)" + THIS_LOCAL + ") -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + " = &" + name.get(method.getKlass()) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + SEMICOLON + NEWLINE);
                 out.append(stmt.get(rStmt));

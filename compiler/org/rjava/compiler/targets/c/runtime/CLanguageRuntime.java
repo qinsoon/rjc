@@ -669,12 +669,12 @@ public class CLanguageRuntime {
             body.append(name.get(current.getCLInitMethod()) + "();\n");
         }
         body.append("\n");
-
         
         // calling <clinit> for those classes
         SemanticMap.classInitDependencyGraph.checkCycle();
-        if (InitializationDependencyGraph.DEBUG)
-            SemanticMap.classInitDependencyGraph.dumpGraph();
+        if (InitializationDependencyGraph.DEBUG) {
+            SemanticMap.classInitDependencyGraph.visualize("classgraph.gv");
+        }
         
         body.append(CLanguageGenerator.commentln("calling <clinit> for RJava classes"));
         for (RClass klass : SemanticMap.classInitDependencyGraph.getInitializationOrder()) {

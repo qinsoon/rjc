@@ -97,49 +97,6 @@ public abstract class SemanticMap {
         
         //classInitDependencyGraph.visualize("graph.png");
     }
-    
-    /**
-     * build class init dependency based on call graph. This dependency is not complete by now. 
-     * during code generation, we will complete it by also adding dependency based on referencing. 
-     */
-    private static void buildClassInitDependencyGraph() {
-        for (RClass klass : classes.values()) {
-            for (RMethod method : klass.getMethods()) {
-                if (method.isClassInitializer()) {
-                    // if this <clinit> is not calling anything else, we just add it
-                    if (!callGraph.containsMethod(method)) {
-                        classInitDependencyGraph.addClass(klass);
-                        continue;
-                    }
-                    
-                    // find out all the classes that are directly or subsequently referenced by this <clinit>
-                    // those classes need to be initialized before this class
-                    Set<RClass> allReferencedClasses = new HashSet<RClass>();
-                    
-                    Queue<RMethod> traverseQueue = new LinkedList<RMethod>();
-                    traverseQueue.addAll(callGraph.getCalleesOf(method));
-                    while(!traverseQueue.isEmpty()) {
-                        RMethod current = traverseQueue.poll();
-                        
-                        if (current.getKlass().isAppClass()) {
-                            // 1. add its class to referencedClasses
-                            allReferencedClasses.add(current.getKlass());
-                        
-                            // 2. add all its callees to the traverseQueue
-                            // FIXME: need to consider the situation of recursive call
-                            traverseQueue.addAll(callGraph.getCalleesOf(current));
-                        }
-                    }
-                    
-                    // add edge (klass->referencedClass) to class init dependency graph
-                    for (RClass referenced : allReferencedClasses) {
-                        if (!klass.equals(referenced))
-                            classInitDependencyGraph.addDependencyEdge(klass, referenced);
-                    }
-                }
-            }
-        }
-    }
 
     private static void buildCallGraph() {
         for (RClass klass : classes.values()) {

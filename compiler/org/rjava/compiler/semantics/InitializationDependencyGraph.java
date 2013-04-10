@@ -3,21 +3,26 @@ package org.rjava.compiler.semantics;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 
 import org.jgraph.JGraph;
 import org.jgrapht.ListenableGraph;
 import org.jgrapht.alg.CycleDetector;
+import org.jgrapht.alg.StrongConnectivityInspector;
 import org.jgrapht.ext.JGraphModelAdapter;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.ListenableDirectedGraph;
+import org.jgrapht.traverse.BreadthFirstIterator;
 import org.jgrapht.traverse.TopologicalOrderIterator;
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.representation.RClass;
@@ -33,7 +38,9 @@ public class InitializationDependencyGraph {
  
     }
     
-    public void addDependencyEdge(RClass from, RClass to) {
+    // FIXME: one problem is, if from->to, but from and to do not have <clinit>, there is no point to have them here
+    // besides, they have much higher possibility to bring circles
+    public void addDependencyEdge(RClass from, RClass to) {        
         if (!classGraph.containsVertex(from))
             classGraph.addVertex(from);
         if (!classGraph.containsVertex(to))
@@ -57,34 +64,41 @@ public class InitializationDependencyGraph {
         if (cycleDetector.detectCycles()) {
             RJavaCompiler.warning("Detected cycles in class initialization graph. Check the following classes (especially their <clinit>):");
 
-            for (RClass klass : cycleDetector.findCycles())
-                RJavaCompiler.println(klass);
+            List<Set<RClass>> stronglyConnectedSets = new StrongConnectivityInspector<RClass, DefaultEdge>(classGraph).stronglyConnectedSets(); 
+            for (int i = 0; i < stronglyConnectedSets.size(); i++) {
+                if (stronglyConnectedSets.get(i).size() <= 1)
+                    continue;
+                
+                RJavaCompiler.println("Set " + i);
+                for (RClass klass : stronglyConnectedSets.get(i))
+                    RJavaCompiler.println("-" + klass);
+                RJavaCompiler.println("");
+            }
         }
         RJavaCompiler.println("");
     }
     
-    /**
-     * it does not work
-     * @param fileName
-     */
     public void visualize(String fileName) {
-        JGraphModelAdapter<RClass, DefaultEdge> adapter = new JGraphModelAdapter<RClass, DefaultEdge>(classGraph);
-        JGraph jgraph = new JGraph(adapter);   
-
-        final Color     DEFAULT_BG_COLOR = Color.decode( "#FAFBFF" );
-        final Dimension DEFAULT_SIZE = new Dimension( 530, 320 );
-        jgraph.setPreferredSize(DEFAULT_SIZE);
-        jgraph.setBackground(DEFAULT_BG_COLOR);
-        
+        BreadthFirstIterator<RClass, DefaultEdge> iter = new BreadthFirstIterator<RClass, DefaultEdge>(classGraph);
         try {
-        OutputStream out = new FileOutputStream(fileName); // Replace with your output stream
-        Color bg = null; // Use this to make the background transparent
-        BufferedImage img = jgraph.getImage(bg, 0);
-        ImageIO.write(img, ".png", out);
-        out.flush();
-        out.close();
+            FileOutputStream fos = new FileOutputStream(fileName);
+            PrintWriter writer = new PrintWriter(fos);
+            writer.append("digraph G {\n");
+            while(iter.hasNext()) {
+                RClass next = iter.next();
+                for (DefaultEdge edge : classGraph.outgoingEdgesOf(next)) {
+                    String from = next.toString().replace('.', '_');
+                    from = from.replace('$', '_');
+                    String to = classGraph.getEdgeTarget(edge).toString().replace('.', '_');
+                    to = to.replace('$', '_');
+                    writer.append(from + " -> " + to + ";\n");
+                }
+            }
+            writer.append("}\n");
+            writer.close();
+            fos.close();
         } catch (Exception e) {
-            RJavaCompiler.fail("Failed to visualize clinit graph: " + e.getMessage());
+            RJavaCompiler.fail("Failed to visualize class graph: " + e.getMessage());
         }
     }
     
