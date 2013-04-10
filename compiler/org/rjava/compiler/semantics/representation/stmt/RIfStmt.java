@@ -8,7 +8,7 @@ import soot.jimple.internal.*;
 
 public class RIfStmt extends RStatement {
 
-    public RIfStmt(RMethod method, Unit internal) {
+    public RIfStmt(RMethod method, AbstractStmt internal) {
 	super(method, internal);
 	// TODO Auto-generated constructor stub
     }

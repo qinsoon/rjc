@@ -15,6 +15,7 @@ import soot.SootMethod;
 import soot.Type;
 import soot.Unit;
 import soot.UnitBox;
+import soot.jimple.internal.AbstractStmt;
 
 public class RMethod {
     private List<RType> parameters = new ArrayList<RType>();
@@ -92,7 +93,7 @@ public class RMethod {
                         
                 Iterator<Unit> iter = sootBody.getUnits().iterator();
                 while(iter.hasNext()) {
-                    body.add(RStatement.from(this, iter.next()));
+                    body.add(RStatement.from(this, (AbstractStmt)iter.next()));
                 }
                 
                 // soot may have two locals with the same name, we need to fix this
@@ -139,7 +140,7 @@ public class RMethod {
     }
     
     public String toString() {
-	String ret = "<" + returnType.toString() + " " + name + "(";
+	String ret = "<" + returnType.toString() + " " + getKlass().getName() + "." + name + "(";
 	for (int i = 0; i < parameters.size(); i++) {
 	    ret += parameters.get(i).toString();
 	    if (i != parameters.size() - 1)
@@ -276,5 +277,15 @@ public class RMethod {
             twinLocals = locals;
             locals = xhg2;
         }
+    }
+    
+    public static RMethod getFromSootMethod(SootMethod method) {
+        RClass rClass = RClass.fromSootClass(method.getDeclaringClass());
+        return rClass.getMethodByMatchingNameAndParameters(method);
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        return internal.equals(((RMethod)o).internal);
     }
 }

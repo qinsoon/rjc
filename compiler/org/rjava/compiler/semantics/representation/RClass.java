@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.SootEngine;
 
@@ -262,6 +263,8 @@ public class RClass {
                     method.internal.getParameterTypes().equals(sootMethod.getParameterTypes()))
                 return method;
         }
+        
+        RJavaCompiler.fail("failed to get method [" + sootMethod + "] from class [" + name + "]");
         return null;
     }
     

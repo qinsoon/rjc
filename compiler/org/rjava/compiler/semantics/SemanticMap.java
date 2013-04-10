@@ -1,21 +1,17 @@
 package org.rjava.compiler.semantics;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
-
-import javax.swing.tree.TreeModel;
 
 import org.rjava.compiler.CompilationTask;
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.representation.*;
-import org.rjava.compiler.util.Tree;
-
 import soot.SootClass;
 
 public abstract class SemanticMap {
@@ -23,8 +19,8 @@ public abstract class SemanticMap {
     
     // task.class <-> RClass
     public static Map<String, RClass> classes;
+    
     // task.class <-> task.sources
-    //public static Map<String, String> sources;
     public static Map<String, RType> types;
     
     // class hierarchy
@@ -35,7 +31,7 @@ public abstract class SemanticMap {
     
     // class initialization dependency
     // FIXME: do not use it until code generation is done (use it in post-translation)
-    public static InitializationDependency classInitDependencyGraph;
+    public static InitializationDependencyGraph classInitDependencyGraph;
     
     // call graph
     // FIXME: do not use it until code generation is done (use it in post-translation)
@@ -53,7 +49,7 @@ public abstract class SemanticMap {
     	
     	// get class-level info
     	engine = new SootEngine(task);
-    	engine.buildSemanticMap();
+    	engine.addAllClasses();
     	// all nested classes are added in this way (?)
     	for (SootClass klass : engine.getAllAppClassesInScene()) {
     	    String name = klass.getName();
@@ -70,12 +66,6 @@ public abstract class SemanticMap {
     	if (DEBUG)
     	    hierarchy.printHierarchy();
     	
-    	// init class initialization dependency
-    	classInitDependencyGraph = new InitializationDependency();
-    	
-    	// init call graph
-    	callGraph = new CallGraph();
-
     	// if one class is named to be compiled, we have to compile all its ancestor    	
     	for (int i = 0; i < task.getClasses().toArray().length; i++) {
     	    String className = (String) task.getClasses().toArray()[i];
@@ -92,6 +82,61 @@ public abstract class SemanticMap {
     	    for (RMethod method : klass.getMethods())
     	        method.checkTwin();
     	}
+    	
+        // init call graph
+        callGraph = new CallGraph();
+        buildCallGraph();
+        
+        // init class initialization dependency
+        classInitDependencyGraph = new InitializationDependencyGraph();
+        buildClassInitDependencyGraph();
+        
+        classInitDependencyGraph.visualize("graph.png");
+    }
+    
+    private static void buildClassInitDependencyGraph() {
+        for (RClass klass : classes.values()) {
+            for (RMethod method : klass.getMethods()) {
+                if (method.isClassInitializer()) {
+                    // all the classes that are directly or subsequently referenced by a <clinit> need to be initialized first
+                    Set<RClass> allReferencedClasses = new HashSet<RClass>();
+                    
+                    Queue<RMethod> traverseQueue = new LinkedList<RMethod>();
+                    traverseQueue.addAll(callGraph.getCalleesOf(method));
+                    while(!traverseQueue.isEmpty()) {
+                        RMethod current = traverseQueue.poll();
+                        
+                        if (current.getKlass().isAppClass()) {
+                            // 1. add its class to referencedClasses
+                            allReferencedClasses.add(current.getKlass());
+                        
+                            // 2. add all its callees to the traverseQueue
+                            traverseQueue.addAll(callGraph.getCalleesOf(current));
+                        }
+                    }
+                    
+                    // add edge (klass->referencedClass) to class init dependency graph
+                    for (RClass referenced : allReferencedClasses)
+                        classInitDependencyGraph.addDependencyEdge(klass, referenced);
+                }
+            }
+        }
+    }
+
+    private static void buildCallGraph() {
+        for (RClass klass : classes.values()) {
+            for (RMethod method : klass.getMethods()) {
+                for (RStatement stmt : method.getBody()) {
+                    if (stmt.containsInvokeExpr()) {
+                        RMethod target = stmt.getInvokeExpr().getTargetMethod();
+                        
+                        // we only care about application classes
+                        if (target != null)
+                            callGraph.addCallEdge(method, target);
+                    }
+                }
+            }
+        }
     }
 
     public static Map<String, RClass> getAllClasses() {

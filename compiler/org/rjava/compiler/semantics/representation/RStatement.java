@@ -52,8 +52,10 @@ public abstract class RStatement {
     
     protected RMethod method;
     
+    protected RInvokeExpr invokeExpr;
+    
     private int type;
-    protected Unit internal;
+    protected AbstractStmt internal;
     private int lineNumber;
     
     /**
@@ -62,7 +64,7 @@ public abstract class RStatement {
     private boolean intrinsic;
     private String code;        // if a statement is intrinsic, we store its code here (it might be generated in a different pass rather than normal code generation)
 
-    protected RStatement(RMethod method, Unit internal) {
+    protected RStatement(RMethod method, AbstractStmt internal) {
     	super();
     	this.method = method;
     	this.internal = internal;
@@ -79,9 +81,12 @@ public abstract class RStatement {
     	} catch (Exception e) {
     	    RJavaCompiler.error("Cannot recognize statement type: " + internal.getClass());
     	}
+    	
+    	if (internal.containsInvokeExpr())
+    	    invokeExpr = new RInvokeExpr(internal.getInvokeExpr());
     }
     
-    public static RStatement from(RMethod method, Unit jimpleUnit) {
+    public static RStatement from(RMethod method, AbstractStmt jimpleUnit) {
         int type = JIMPLE_STMT_MAP.get(jimpleUnit.getClass().toString());
     	switch(type) {
         	case ASSIGN_STMT: 		return new RAssignStmt(method, jimpleUnit);
@@ -124,7 +129,7 @@ public abstract class RStatement {
         	    ret += " " + b.getClass() + ": " + b.toString() + "\n";
         	}
         	ret += "unit boxes: \n";
-        	for (UnitBox b : internal.getUnitBoxes()) {
+        	for (Object b : internal.getUnitBoxes()) {
         	    ret += " " + b.getClass() + ": " + b.toString() + "\n";
         	}
 	}
@@ -170,5 +175,13 @@ public abstract class RStatement {
     
     public RJavaError newIncompleteImplementationError(String msg) {
         return new RJavaError(this.getMethod().getKlass().getName() + "." + getMethod().getName() + "()," + getLineNumber() + ":" + msg); 
+    }
+    
+    public boolean containsInvokeExpr() {
+        return ((AbstractStmt)internal).containsInvokeExpr();
+    }
+    
+    public RInvokeExpr getInvokeExpr() {
+        return invokeExpr;
     }
 }

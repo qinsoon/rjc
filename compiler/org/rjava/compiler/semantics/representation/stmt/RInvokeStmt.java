@@ -4,12 +4,13 @@ import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.semantics.representation.RStatement;
 
 import soot.Unit;
+import soot.jimple.internal.AbstractStmt;
 import soot.jimple.internal.JInvokeStmt;
 import soot.jimple.internal.JSpecialInvokeExpr;
 
 public class RInvokeStmt extends RStatement {
 
-    public RInvokeStmt(RMethod method, Unit internal) {
+    public RInvokeStmt(RMethod method, AbstractStmt internal) {
 	super(method, internal);
 	// TODO Auto-generated constructor stub
     }

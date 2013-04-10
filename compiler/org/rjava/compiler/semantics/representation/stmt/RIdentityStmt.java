@@ -4,11 +4,12 @@ import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.semantics.representation.RStatement;
 
 import soot.Unit;
+import soot.jimple.internal.AbstractStmt;
 import soot.jimple.internal.JIdentityStmt;
 
 public class RIdentityStmt extends RStatement {
 
-    public RIdentityStmt(RMethod method, Unit internal) {
+    public RIdentityStmt(RMethod method, AbstractStmt internal) {
     	super(method, internal);
     	// TODO Auto-generated constructor stub
     }

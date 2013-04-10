@@ -191,7 +191,7 @@ public class SootEngine {
         return entrypoints;
     } 
 
-    public void buildSemanticMap() {
+    public void addAllClasses() {
     	// pass classes
     	for (Map.Entry<String, SootClass> entry : allClasses.entrySet()) {
     	    RClass.fromSootClass(entry.getValue());
