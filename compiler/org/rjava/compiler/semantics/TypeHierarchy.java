@@ -56,6 +56,20 @@ public class TypeHierarchy {
         }
     }
     
+    public List<RClass> getLeafChildrenOf(RClass klass) {
+        List<RClass> ret = new ArrayList<RClass>();
+        
+        Tree<RClass> tree = getTree(klass);
+        TreeBreadthFirstIterator<RClass> iter = tree.getBreadthFirstIterator();
+        while(iter.hasNext()) {
+            RClass current = iter.next();
+            if (tree.getSuccessors(current) == null || tree.getSuccessors(current).size() == 0)
+                ret.add(current);
+        }
+        
+        return ret;
+    }
+    
     public List<Tree<RClass>> getRoots() {
         return internal;
     }
