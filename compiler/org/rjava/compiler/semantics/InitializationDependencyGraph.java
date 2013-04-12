@@ -179,13 +179,18 @@ public class InitializationDependencyGraph {
                 if (candidate != -1) {
                     System.out.println("Add all classes from strongly connected component[" + candidate + "], size:" + stronglyConnectedSets.get(candidate).size() + ", outgoing target:" + candidateOutgoingTargets);
                     // we add classes, among those classes, the order is arbitrary
-                    int smallestOutdegree = Integer.MAX_VALUE;
-                    for (RClass klass : stronglyConnectedSets.get(candidate)) 
-                        if (graphCopy.outDegreeOf(klass) < smallestOutdegree)
-                            smallestOutdegree = graphCopy.outDegreeOf(klass);
+                    
+                    int smallestInternalOD = Integer.MAX_VALUE;
+                    Set<RClass> candidateSet = stronglyConnectedSets.get(candidate);
+                    for (RClass klass : candidateSet) {
+                        int internalOutgoingEdges = internalOD(klass, candidateSet, graphCopy);
+                        if (internalOutgoingEdges < smallestInternalOD)
+                            smallestInternalOD = internalOutgoingEdges;
+                    }
+                    
                     for (RClass klass : stronglyConnectedSets.get(candidate)) {
-                        if (graphCopy.outDegreeOf(klass) == smallestOutdegree) {
-                            System.out.println(klass + ", OD:" + graphCopy.outDegreeOf(klass));
+                        if (graphCopy.outDegreeOf(klass) == smallestInternalOD) {
+                            System.out.println(klass + ", OD:" + smallestInternalOD);
                             ret.add(klass);
                             graphCopy.removeVertex(klass);
                         }
@@ -195,6 +200,16 @@ public class InitializationDependencyGraph {
             // circles are removed by now
         }
         return ret;
+    }
+    
+    private int internalOD(RClass node, Set<RClass> set, DefaultDirectedGraph<RClass, DefaultEdge> graph) {
+        Set<DefaultEdge> edges = graph.outgoingEdgesOf(node);
+        int ret = 0;
+        for (DefaultEdge edge : edges) 
+            if (set.contains(graph.getEdgeTarget(edge)))
+                ret ++;
+        return ret;
+               
     }
     
     private DefaultDirectedGraph<RClass, DefaultEdge> copyClassGraph() {
