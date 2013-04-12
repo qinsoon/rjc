@@ -15,11 +15,19 @@ public class Main {
         TestbedRuntime.run();
     }
     
-    public static void print(String message) {
+    public static void println(Object message) {
+        System.out.println(message);
+    }
+    
+    public static void println() {
+        System.out.println();
+    }
+    
+    public static void print(Object message) {
         System.out.print(message);
     }
     
-    public static void warn(String message) {
+    public static void warn(Object message) {
         System.out.println("[Warning]" + message);
     }
     
@@ -31,5 +39,9 @@ public class Main {
     public static void sysFail(String message) {
         System.out.println("Fail: " + message);
         System.exit(1);
+    }
+    
+    public static void sysExit(int code) {
+        System.exit(code);
     }
 }

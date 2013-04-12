@@ -29,4 +29,11 @@ inline void java_lang_String_rjinit_java_lang_String(void* this_parameter, java_
 inline int32_t java_lang_String_length(void* this_parameter);
 inline byte* java_lang_String_getBytes(void* this_parameter);
 
+java_lang_String* java_lang_String_substring_int32_t(void* this_parameter, int32_t index);
+java_lang_String* java_lang_String_substring_int32_t_int32_t(void* this_parameter, int32_t start, int32_t end);
+
+inline int32_t java_lang_String_indexOf_int32_t(void* this_parameter, int32_t ch);
+inline int32_t java_lang_String_indexOf_int32_t_int32_t(void* this_parameter, int32_t ch, int32_t from);
+java_lang_String* java_lang_String_toLowerCase(void* this_parameter);
+
 #endif

@@ -38,3 +38,40 @@ inline int32_t java_lang_String_length(void* this_parameter) {
 inline byte* java_lang_String_getBytes(void* this_parameter) {
     return ((java_lang_String*)this_parameter)->internal;
 }
+
+java_lang_String* java_lang_String_substring_int32_t(void* this_parameter, int32_t start) {
+    return java_lang_String_substring_int32_t_int32_t(this_parameter, start, java_lang_String_length(this_parameter));
+}
+
+java_lang_String* java_lang_String_substring_int32_t_int32_t(void* this_parameter, int32_t start, int32_t end) {
+    char* str = ((java_lang_String*)this_parameter)->internal;
+    int substr_len = end - start;
+    char* substr = (char*) malloc(substr_len + 1);
+    strncpy(substr, str + start, substr_len);
+    substr[substr_len] = '\0';
+    return newStringConstant(substr);
+}
+
+
+inline int32_t java_lang_String_indexOf_int32_t(void* this_parameter, int32_t ch) {
+    return java_lang_String_indexOf_int32_t_int32_t(this_parameter, ch, 0);
+}
+
+inline int32_t java_lang_String_indexOf_int32_t_int32_t(void* this_parameter, int32_t ch, int32_t from) {
+    char* c_str = (((java_lang_String*)this_parameter) -> internal) + from;
+    char *found = strchr(c_str, ch);
+    if (found)
+        return found - c_str;
+    else return -1;
+}
+
+java_lang_String* java_lang_String_toLowerCase(void* this_parameter) {
+    char* old_str = ((java_lang_String*)this_parameter)->internal;
+    char* lower = (char*) malloc(strlen(old_str) + 1);
+    int i = 0;
+    for (; i < strlen(old_str); i++) {
+        lower[i] = tolower(old_str[i]);
+    }
+    lower[i] = '\0';
+    return newStringConstant(lower);
+}

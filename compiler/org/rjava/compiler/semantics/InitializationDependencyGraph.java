@@ -156,6 +156,7 @@ public class InitializationDependencyGraph {
                 // we add them first, then go back to check vertices outdegree
                 int candidate = -1;
                 int candidateOutgoingTargets = Integer.MAX_VALUE;
+                int candidateSize = Integer.MAX_VALUE;
                 for (int i = 0; i < stronglyConnectedSets.size(); i++) {
                     Set<RClass> currentSet = stronglyConnectedSets.get(i);
                     // compute its outgoing edges
@@ -167,19 +168,27 @@ public class InitializationDependencyGraph {
                         }
                     }
                     
-                    if (outgoingTargets.size() < candidateOutgoingTargets) {
+                    if ((outgoingTargets.size() < candidateOutgoingTargets) 
+                            || (outgoingTargets.size() == candidateOutgoingTargets && currentSet.size() < candidateSize)) {
                         candidate = i;
                         candidateOutgoingTargets = outgoingTargets.size();
+                        candidateSize = currentSet.size();
                     }
                 }
                 
                 if (candidate != -1) {
                     System.out.println("Add all classes from strongly connected component[" + candidate + "], size:" + stronglyConnectedSets.get(candidate).size() + ", outgoing target:" + candidateOutgoingTargets);
                     // we add classes, among those classes, the order is arbitrary
+                    int smallestOutdegree = Integer.MAX_VALUE;
+                    for (RClass klass : stronglyConnectedSets.get(candidate)) 
+                        if (graphCopy.outDegreeOf(klass) < smallestOutdegree)
+                            smallestOutdegree = graphCopy.outDegreeOf(klass);
                     for (RClass klass : stronglyConnectedSets.get(candidate)) {
-                        System.out.println(klass);
-                        ret.add(klass);
-                        graphCopy.removeVertex(klass);
+                        if (graphCopy.outDegreeOf(klass) == smallestOutdegree) {
+                            System.out.println(klass + ", OD:" + graphCopy.outDegreeOf(klass));
+                            ret.add(klass);
+                            graphCopy.removeVertex(klass);
+                        }
                     }
                 }
             }

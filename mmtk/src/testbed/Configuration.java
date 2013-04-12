@@ -15,7 +15,7 @@ public abstract class Configuration {
     public static final boolean BUILD_FOR_IA32 = true;
     
     // Option set, used by FactoryExt
-    public static OptionSet gcOptions;
+    public static OptionSet gcOptions = new GCOptionSet("-X:gc");
     static {
         
     }

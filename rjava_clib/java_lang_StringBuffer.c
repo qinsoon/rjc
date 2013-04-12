@@ -11,7 +11,12 @@ inline void java_lang_StringBuffer_rjinit(java_lang_StringBuffer* this_parameter
   this_parameter->curr_buffer_size = JAVA_LANG_STRINGBUFFER_INIT_SIZE;
 }
 
-void java_lang_StringBuffer_append_java_lang_Object(java_lang_StringBuffer* this_parameter, void* obj) {
+inline void java_lang_StringBuffer_rjinit_java_lang_String(java_lang_StringBuffer* this_parameter, java_lang_String* str) {
+    java_lang_StringBuffer_rjinit(this_parameter);
+    java_lang_StringBuffer_append_java_lang_Object(this_parameter, str);
+}
+
+java_lang_StringBuffer* java_lang_StringBuffer_append_java_lang_Object(java_lang_StringBuffer* this_parameter, java_lang_Object* obj) {
     char *str;
     
     if (obj == NULL)
@@ -31,13 +36,13 @@ void java_lang_StringBuffer_append_java_lang_Object(java_lang_StringBuffer* this
   strcat(this_parameter->internal, str);
 }
 
-inline void java_lang_StringBuffer_append_int32_t(java_lang_StringBuffer* this_parameter, int32_t i) {
+inline java_lang_StringBuffer* java_lang_StringBuffer_append_int32_t(java_lang_StringBuffer* this_parameter, int32_t i) {
     char iStr[50];
     sprintf (iStr, "%"PRId32, i);
     java_lang_StringBuffer_append_java_lang_Object(this_parameter, newStringConstant(iStr));
 }
 
-inline void java_lang_StringBuffer_append_int64_t(java_lang_StringBuffer* this_parameter, int64_t i) {
+inline java_lang_StringBuffer* java_lang_StringBuffer_append_int64_t(java_lang_StringBuffer* this_parameter, int64_t i) {
     char iStr[50];
     sprintf (iStr, "%"PRId64, i);
     java_lang_StringBuffer_append_java_lang_Object(this_parameter, newStringConstant(iStr));

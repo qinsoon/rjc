@@ -12,10 +12,11 @@ int curr_buffer_size;
 
 #define JAVA_LANG_STRINGBUFFER_INIT_SIZE 1024
 
+inline void java_lang_StringBuffer_rjinit_java_lang_String(java_lang_StringBuffer* this_parameter, java_lang_String* str);
 inline void java_lang_StringBuffer_rjinit(java_lang_StringBuffer* this_parameter);
-void java_lang_StringBuffer_append_java_lang_Object(java_lang_StringBuffer* this_parameter, void* obj);
-inline void java_lang_StringBuffer_append_int32_t(java_lang_StringBuffer* this_parameter, int32_t i);
-inline void java_lang_StringBuffer_append_int64_t(java_lang_StringBuffer* this_parameter, int64_t i);
+java_lang_StringBuffer* java_lang_StringBuffer_append_java_lang_Object(java_lang_StringBuffer* this_parameter, java_lang_Object* obj);
+inline java_lang_StringBuffer* java_lang_StringBuffer_append_int32_t(java_lang_StringBuffer* this_parameter, int32_t i);
+inline java_lang_StringBuffer* java_lang_StringBuffer_append_int64_t(java_lang_StringBuffer* this_parameter, int64_t i);
 inline java_lang_String* java_lang_StringBuffer_toString(java_lang_StringBuffer* this_parameter);
 
 #endif
