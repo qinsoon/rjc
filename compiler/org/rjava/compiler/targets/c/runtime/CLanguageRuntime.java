@@ -656,19 +656,21 @@ public class CLanguageRuntime {
             TreeBreadthFirstIterator<RClass> iter = root.getBreadthFirstIterator();
             while (iter.hasNext()) {
                 RClass current = iter.next();
-                body.append(CLanguageGenerator.commentln("init for " + name.get(current)));
-                body.append(generator.getClassInitMap().get(current.getName()).toString());
-                body.append("\n\n");
+                if (generator.getClassInitMap().containsKey(current.getName())) {
+                    body.append(CLanguageGenerator.commentln("init for " + name.get(current)));
+                    body.append(generator.getClassInitMap().get(current.getName()).toString());
+                    body.append("\n\n");
+                }
             }
         }
         
         // calling <clinit> for interfaces that need clinit
-        body.append(CLanguageGenerator.commentln("calling <clinit> for RJava interfaces (only those that need initialized"));
+        /*body.append(CLanguageGenerator.commentln("calling <clinit> for RJava interfaces (only those that need initialized"));
         for (RClass current : SemanticMap.interfacesThatNeedInit) {
             assert (current.getCLInitMethod() != null);
             body.append(name.get(current.getCLInitMethod()) + "();\n");
         }
-        body.append("\n");
+        body.append("\n");*/
         
         // calling <clinit> for those classes
         SemanticMap.classInitDependencyGraph.checkCycle();

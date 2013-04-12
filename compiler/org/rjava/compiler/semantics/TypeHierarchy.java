@@ -37,8 +37,8 @@ public class TypeHierarchy {
         if (contains(klass))
             return;
         
-        if (klass.isInterface())
-            return;
+        /*if (klass.isInterface())
+            return;*/
         
         // we need to add this klass
         
@@ -56,6 +56,11 @@ public class TypeHierarchy {
         }
     }
     
+    /**
+     * 
+     * @param klass
+     * @return the leaf children of such class. If this class is the leaf childer, return it.
+     */
     public List<RClass> getLeafChildrenOf(RClass klass) {
         List<RClass> ret = new ArrayList<RClass>();
         
@@ -66,6 +71,9 @@ public class TypeHierarchy {
             if (tree.getSuccessors(current) == null || tree.getSuccessors(current).size() == 0)
                 ret.add(current);
         }
+        
+        if (ret.size() == 0)
+            ret.add(klass);
         
         return ret;
     }

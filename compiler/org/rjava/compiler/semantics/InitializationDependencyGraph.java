@@ -40,27 +40,46 @@ public class InitializationDependencyGraph {
     }
     
     public void addDependencyEdge(RClass from, RClass to) {
-        if (!classGraph.containsVertex(from))
-            classGraph.addVertex(from);
-        if (!classGraph.containsVertex(to))
-            classGraph.addVertex(to);
+        addClassWithHierarchy(from);
+        addClassWithHierarchy(to);
         
-        if (!classGraph.containsEdge(from, to))
-            classGraph.addEdge(from, to);
+        // get the most parent of from
+        RClass mostParent = from.getSuperMostClass();
+        // get all leaf children of to class
+        List<RClass> childClasses = SemanticMap.hierarchy.getLeafChildrenOf(to);
+        for (RClass child : childClasses) {
+            //System.out.println("adding " + mostParent + (classGraph.containsVertex(mostParent) ? "(exist)":"(not exist)") + "->" + child + (classGraph.containsVertex(child)? "(exist)":"(not exist)"));
+            classGraph.addEdge(mostParent, child);
+        }
     }
     
     /**
      * for a RClass 'klass', we add all its children and parents. A child class always depends on parent.
      * @param klass
+     * @param returnParent
+     * @return return parent if the parameter 'returnParent' is true, otherwise return child
      */
     public void addClassWithHierarchy(RClass klass) {
         List<RClass> childClasses = SemanticMap.hierarchy.getLeafChildrenOf(klass);
-        RClass child = null;
-        for (RClass cursor : childClasses) {
-            
-        }
-        if (!classGraph.containsVertex(klass))
+        
+        if (childClasses.size() == 1 && childClasses.get(0).equals(klass))
             classGraph.addVertex(klass);
+        
+        // we need to go through type hierarchy to add child->parent dependency
+        for (RClass child : childClasses) {
+            RClass cursor = child;
+            while(cursor.hasSuperClass()) {
+                RClass parent = cursor.getSuperClass();
+                addEdgeWithVertices(cursor, parent);
+                cursor = parent;
+            }
+        }
+    }
+    
+    private void addEdgeWithVertices(RClass from, RClass to) {
+        classGraph.addVertex(from);
+        classGraph.addVertex(to);
+        classGraph.addEdge(from, to);
     }
     
     public DefaultDirectedGraph<RClass, DefaultEdge> getClassGraph() {

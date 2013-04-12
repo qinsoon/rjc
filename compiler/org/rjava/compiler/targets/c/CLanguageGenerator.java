@@ -685,7 +685,9 @@ public class CLanguageGenerator extends CodeGenerator {
         
         if (referencingClassNeedsInitFirst)
             // klass might be null if it is not a valid application class
-            if (klass != null && klass.isAppClass() && !klass.equals(currentRClass))
+            if (klass != null && klass.isAppClass() 
+                // we do not reference itself
+                && !klass.equals(currentRClass))
                 SemanticMap.classInitDependencyGraph.addDependencyEdge(currentRClass, klass);
     }
     

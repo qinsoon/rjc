@@ -2,6 +2,7 @@ syntax: regexp
 
 ?\.class
 ?\.DS_Store
+?\.gv
 output\\*
 c_test\\*
 mmtk/mmtk/\\*
