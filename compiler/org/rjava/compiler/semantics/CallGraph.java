@@ -69,6 +69,13 @@ public class CallGraph {
         return false;
     }
     
+    public boolean isTransitivelyCalledByMain(RMethod method) {
+        for (RMethod caller : getAllTransitiveCallersOf(method))
+            if (caller.isMainMethod())
+                return true;
+        return false;
+    }
+    
     /**
      * get methods that directly or transitivly calls this method
      * @param method

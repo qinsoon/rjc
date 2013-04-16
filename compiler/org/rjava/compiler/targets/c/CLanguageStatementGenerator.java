@@ -75,7 +75,7 @@ public class CLanguageStatementGenerator {
     public String get(RLocal local) {
         String ret = "";
         RType localType = local.getType();
-        ret += name.get(localType);
+        ret += name.get(localType, true);
         // array to pointer
         if (localType.isArray())
             ret += CLanguageGenerator.POINTER;
@@ -381,7 +381,7 @@ public class CLanguageStatementGenerator {
         
         StringBuilder ret = new StringBuilder();
         ret.append("(");
-        ret.append("(" + name.get(targetClass) + CLanguageRuntime.CLASS_STRUCT_SUFFIX + "*)");
+        ret.append("(" + name.get(targetClass, true) + CLanguageRuntime.CLASS_STRUCT_SUFFIX + "*)");
         ret.append("(((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*) " + base + ")");
         ret.append(" -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + "))");
         ret.append(" -> " + methodName + "(" + base);   //base is the first parameter
@@ -414,11 +414,11 @@ public class CLanguageStatementGenerator {
         String base = name.fromSootLocal((Local) invoke.getBase());
         
         ret.append("(");
-        ret.append("(" + name.get(interfaceClass) + "*) ");
+        ret.append("(" + name.get(interfaceClass, true) + "*) ");
         String interfaceList = "((" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)" + 
                     "((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*) " + base + ")" +
                     " -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + ") -> " + CLanguageRuntime.INTERFACE_LIST;
-        String interfaceName = "\"" + name.get(interfaceClass) + "\"";
+        String interfaceName = "\"" + name.get(interfaceClass, true) + "\"";
         ret.append(CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_GET_INTERFACE, new String[]{interfaceList, interfaceName}));
         ret.append(")");
         ret.append(" -> " + methodName + "(" + base);
@@ -494,7 +494,7 @@ public class CLanguageStatementGenerator {
             return "0";
         
         // otherwise, we malloc
-        String type = name.fromSootType(newExpr.getType());
+        String type = name.fromSootType(newExpr.getType(), true);
         String ret = "(" + type + CLanguageGenerator.POINTER + ") " + CLanguageGenerator.MALLOC + "(";
         ret += CLanguageGenerator.SIZE_OF + "(" + type + "))";
         return ret;
@@ -502,7 +502,7 @@ public class CLanguageStatementGenerator {
     
 
     private String fromSootJCastExpr(JCastExpr castExpr) {
-        return "(" + name.getWithPointerIfProper(RType.initWithClassName(castExpr.getCastType().toString())) + ")" + castExpr.getOp().toString();
+        return "(" + name.getWithPointerIfProper(RType.initWithClassName(castExpr.getCastType().toString()), true) + ")" + castExpr.getOp().toString();
     }
     
     /*
@@ -514,7 +514,7 @@ public class CLanguageStatementGenerator {
 
     private String fromSootJNewArrayExpr(JNewArrayExpr rightOp) {
         String length = rightOp.getSize().toString();
-        String eleSize = "(long) sizeof(" + name.getWithPointerIfProper(RType.initWithClassName(rightOp.getBaseType().toString())) + ")";
+        String eleSize = "(long) sizeof(" + name.getWithPointerIfProper(RType.initWithClassName(rightOp.getBaseType().toString()), false) + ")";
         return CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_NEW_ARRAY, new String[]{length, eleSize});
     }
     
@@ -528,7 +528,7 @@ public class CLanguageStatementGenerator {
         dimensionArray += "}";
         
         String dimensionSize = String.valueOf(rightOp.getSizeCount());
-        String eleSize = "sizeof(" + name.fromSootType(rightOp.getBaseType()) + ")";
+        String eleSize = "sizeof(" + name.fromSootType(rightOp.getBaseType(), false) + ")";
         return CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_NEW_MULTIARRAY, new String[]{dimensionArray, dimensionSize, eleSize});
     }
     
@@ -541,7 +541,7 @@ public class CLanguageStatementGenerator {
         String ret = "(";
         ret += "(" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*)" + name.fromSootValue(expr.getOp());
         ret += ")";
-        ret += " -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + " == &" + name.fromSootType(expr.getCheckType()) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX;
+        ret += " -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + " == &" + name.fromSootType(expr.getCheckType(), false) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX;
         return "(" + ret + ")";
     }
     
@@ -615,7 +615,7 @@ public class CLanguageStatementGenerator {
         // type cast
         // TODO: check type cast
         else if (expectRType.isReferenceType()) 
-            expr = "(" + name.getWithPointerIfProper(expectRType) + ")" + value;
+            expr = "(" + name.getWithPointerIfProper(expectRType, true) + ")" + value;
         
         return expr;
     }
