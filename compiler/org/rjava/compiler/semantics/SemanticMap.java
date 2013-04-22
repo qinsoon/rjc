@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.rjava.compiler.CompilationTask;
 import org.rjava.compiler.RJavaCompiler;
+import org.rjava.compiler.pass.DependencyGraphPass;
 import org.rjava.compiler.semantics.representation.*;
 import org.rjava.compiler.util.JGraphTUtils;
 
@@ -33,7 +34,7 @@ public abstract class SemanticMap {
     
     // class initialization dependency
     // FIXME: do not use it until code generation is done (use it in post-translation)
-    public static InitializationDependencyGraph classInitDependencyGraph;
+    public static DependencyGraph dependencyGraph;
     
     // call graph
     // FIXME: do not use it until code generation is done (use it in post-translation)
@@ -92,10 +93,12 @@ public abstract class SemanticMap {
             callGraph.dumpGraph();
         
         // init class initialization dependency
-        classInitDependencyGraph = new InitializationDependencyGraph();
-        //buildClassInitDependencyGraph();
-        
-        //classInitDependencyGraph.visualize("graph.png");
+        dependencyGraph = new DependencyGraph();
+        DependencyGraphPass pass = new DependencyGraphPass();
+        pass.start();
+        dependencyGraph.generateClassDependencyGraph();
+        dependencyGraph.visualizeEdgeRelationGraph("edge-relation.gv");
+        dependencyGraph.visualizeClassGraph("class-graph.gv");
     }
 
     private static void buildCallGraph() {

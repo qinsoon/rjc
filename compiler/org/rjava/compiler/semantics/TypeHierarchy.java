@@ -115,7 +115,7 @@ public class TypeHierarchy {
         return false;
     }
 
-    private Tree<RClass> getTree(RClass superClass) {
+    public Tree<RClass> getTree(RClass superClass) {
         for (Tree<RClass> root : internal) {
             Tree<RClass> ret = root.getTree(superClass);
             if (ret != null)

@@ -5,7 +5,10 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.rjava.compiler.CompilationUnit;
 import org.rjava.compiler.RJavaCompiler;
+import org.rjava.compiler.pass.CompilationPass;
+import org.rjava.compiler.semantics.DependencyEdgeNode;
 import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.SootEngine;
 
@@ -16,7 +19,7 @@ import soot.tagkit.AnnotationTag;
 import soot.tagkit.Tag;
 import soot.tagkit.VisibilityAnnotationTag;
 
-public class RClass {
+public class RClass implements DependencyEdgeNode, CompilationUnit{
     SootClass internal;
     private String name;
     
@@ -256,7 +259,11 @@ public class RClass {
             else return null;
         } while(true);
     }
-    
+    /**
+     * 
+     * @param sootMethod
+     * @return null if cannot find such method
+     */
     public RMethod getMethodByMatchingNameAndParameters(SootMethod sootMethod) {
         for (RMethod method : methods) {
             if (method.internal.getName().equals(sootMethod.getName()) && 
@@ -264,7 +271,6 @@ public class RClass {
                 return method;
         }
         
-        RJavaCompiler.fail("failed to get method [" + sootMethod + "] from class [" + name + "]");
         return null;
     }
     
@@ -349,5 +355,22 @@ public class RClass {
         if (getSuperClass().equals(another))
             return true;
         else return getSuperClass().isDescendanceof(another);
+    }
+
+    @Override
+    public void accept(CompilationPass pass) {
+        pass.visit(this);
+        for (RMethod method : methods)
+            method.accept(pass);
+    }
+
+    @Override
+    public boolean isCLInitNode() {
+        return false;
+    }
+
+    @Override
+    public boolean isClassNode() {
+        return true;
     }
 }

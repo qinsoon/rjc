@@ -15,7 +15,6 @@ import org.apache.commons.io.FileUtils;
 import org.rjava.compiler.Constants;
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.exception.RJavaError;
-import org.rjava.compiler.semantics.InitializationDependencyGraph;
 import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.targets.CodeStringBuilder;
@@ -664,22 +663,9 @@ public class CLanguageRuntime {
             }
         }
         
-        // calling <clinit> for interfaces that need clinit
-        /*body.append(CLanguageGenerator.commentln("calling <clinit> for RJava interfaces (only those that need initialized"));
-        for (RClass current : SemanticMap.interfacesThatNeedInit) {
-            assert (current.getCLInitMethod() != null);
-            body.append(name.get(current.getCLInitMethod()) + "();\n");
-        }
-        body.append("\n");*/
-        
-        // calling <clinit> for those classes
-        SemanticMap.classInitDependencyGraph.checkCycle();
-        if (InitializationDependencyGraph.DEBUG) {
-            SemanticMap.classInitDependencyGraph.visualize("classgraph.gv");
-        }
-        
+        // calling <clinit> for those classes        
         body.append(CLanguageGenerator.commentln("calling <clinit> for RJava classes"));
-        for (RClass klass : SemanticMap.classInitDependencyGraph.getInitializationOrder()) {
+        for (RClass klass : SemanticMap.dependencyGraph.getClassInitializationOrder()) {
             System.out.print("will init [" + klass + "]");
             if (klass.getCLInitMethod() != null) {
                 body.append(name.get(klass.getCLInitMethod()) + "();\n");

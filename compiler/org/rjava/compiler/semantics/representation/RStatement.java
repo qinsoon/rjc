@@ -2,8 +2,10 @@ package org.rjava.compiler.semantics.representation;
 
 import java.util.HashMap;
 
+import org.rjava.compiler.CompilationUnit;
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.exception.RJavaError;
+import org.rjava.compiler.pass.CompilationPass;
 import org.rjava.compiler.semantics.representation.stmt.*;
 
 import soot.Unit;
@@ -14,7 +16,7 @@ import soot.jimple.internal.AbstractStmt;
 import soot.tagkit.LineNumberTag;
 import soot.tagkit.Tag;
 
-public abstract class RStatement {
+public abstract class RStatement implements CompilationUnit{
     public static final int ASSIGN_STMT = 1;
     public static final int BREAKPOINT_STMT = 2;
     public static final int ENTER_MONITOR_STMT = 3;
@@ -83,7 +85,7 @@ public abstract class RStatement {
     	}
     	
     	if (internal.containsInvokeExpr())
-    	    invokeExpr = new RInvokeExpr(internal.getInvokeExpr());
+    	    invokeExpr = new RInvokeExpr(internal.getInvokeExpr(), this);
     }
     
     public static RStatement from(RMethod method, AbstractStmt jimpleUnit) {
@@ -183,5 +185,12 @@ public abstract class RStatement {
     
     public RInvokeExpr getInvokeExpr() {
         return invokeExpr;
+    }
+    
+    @Override
+    public void accept(CompilationPass pass) {
+        pass.visit(this);
+        if (containsInvokeExpr())
+            invokeExpr.accept(pass);
     }
 }

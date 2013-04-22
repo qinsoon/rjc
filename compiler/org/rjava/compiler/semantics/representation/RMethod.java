@@ -4,9 +4,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.rjava.compiler.CompilationUnit;
 import org.rjava.compiler.RJavaCompiler;
+import org.rjava.compiler.pass.CompilationPass;
+import org.rjava.compiler.semantics.DependencyEdgeNode;
 import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.SootEngine;
+import org.rjava.compiler.util.Tree;
+import org.rjava.compiler.util.TreeBreadthFirstIterator;
 
 import soot.Body;
 import soot.Local;
@@ -17,7 +22,7 @@ import soot.Unit;
 import soot.UnitBox;
 import soot.jimple.internal.AbstractStmt;
 
-public class RMethod {
+public class RMethod implements DependencyEdgeNode, CompilationUnit{
     private List<RType> parameters = new ArrayList<RType>();
     private String name;
     private RType returnType;
@@ -279,8 +284,32 @@ public class RMethod {
         }
     }
     
+    /**
+     * get all overriding method of this method
+     * @return
+     */
+    public List<RMethod> getOverridingMethod() {
+        List<RMethod> ret = new ArrayList<RMethod>();
+        
+        Tree<RClass> subclasses = SemanticMap.hierarchy.getTree(klass);
+        TreeBreadthFirstIterator<RClass> iter = subclasses.getBreadthFirstIterator();
+        while(iter.hasNext()) {
+            RClass cursor = iter.next();
+            RMethod overridingMethod = cursor.getMethodByMatchingNameAndParameters(internal);
+            if (overridingMethod != null)
+                ret.add(overridingMethod);
+        }
+        
+        return ret;
+    }
+    
     public static RMethod getFromSootMethod(SootMethod method) {
         RClass rClass = RClass.fromSootClass(method.getDeclaringClass());
+        while(rClass.getMethodByMatchingNameAndParameters(method) == null) {
+            if (rClass.hasSuperClass())
+                rClass = rClass.getSuperClass();
+            else RJavaCompiler.error("Trying to get soot method: " + method + ", but we cannot find it");
+        }
         return rClass.getMethodByMatchingNameAndParameters(method);
     }
     
@@ -289,5 +318,22 @@ public class RMethod {
         if (o.getClass().equals(RMethod.class) && internal.equals(((RMethod)o).internal))
             return true;
         else return false;
+    }
+
+    @Override
+    public void accept(CompilationPass pass) {
+        pass.visit(this);
+        for (RStatement stmt : getBody())
+            stmt.accept(pass);
+    }
+
+    @Override
+    public boolean isCLInitNode() {
+        return isClassInitializer();
+    }
+
+    @Override
+    public boolean isClassNode() {
+        return false;
     }
 }

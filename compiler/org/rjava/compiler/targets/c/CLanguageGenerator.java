@@ -621,18 +621,7 @@ public class CLanguageGenerator extends CodeGenerator {
         return out.toString();
     }
     
-    /**
-     * we are trying to decide class init order. If a method is called by A's <clinit>, all the referenced classes in the method needs to be initialized before A.
-     * So if a method is called by any <clinit>, we set this flag as true. And in referencing(), we add dependency. 
-     */
-    private boolean referencingClassNeedsInitFirst = false;
-    
-    public String getMethodBody(RMethod method) throws RJavaError {
-        // if this method is a <clinit> or this method is called by a <clinit>
-        // then all the classes referenced by the method needs to be initialized before the class of the method
-        if (method.isClassInitializer() || SemanticMap.callGraph.isTransitivelyCalledByCLInit(method) || SemanticMap.callGraph.isTransitivelyCalledByMain(method))
-            referencingClassNeedsInitFirst = true;
-        
+    public String getMethodBody(RMethod method) throws RJavaError {      
         CodeStringBuilder out = new CodeStringBuilder();
         out.increaseIndent();
         
@@ -656,9 +645,7 @@ public class CLanguageGenerator extends CodeGenerator {
             
             out.appendNoIndent(SEMICOLON + NEWLINE);
         }
-        
-        if (referencingClassNeedsInitFirst)
-            referencingClassNeedsInitFirst = false;
+
         return out.toString();
     }
     
@@ -688,13 +675,6 @@ public class CLanguageGenerator extends CodeGenerator {
         if (!name.javaNameToCName(currentRClass.getName()).equals(refName)) {
             referencedClasses.add(CodeGenerator.escapeDollarInFileName(refName));
         }
-        
-        if (referencingClassNeedsInitFirst && initDependency)
-            // klass might be null if it is not a valid application class
-            if (klass != null && klass.isAppClass() 
-                // we do not reference itself
-                && !klass.equals(currentRClass))
-                SemanticMap.classInitDependencyGraph.addDependencyEdge(currentRClass, klass);
     }
     
     private void addToClassInitMap(String rClassName, String initStmt) {
