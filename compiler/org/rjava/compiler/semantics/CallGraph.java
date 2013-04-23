@@ -13,7 +13,7 @@ import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.util.JGraphTUtils;
 
 public class CallGraph {
-    public static final boolean DEBUG = true && RJavaCompiler.DEBUG;
+    public static final boolean DEBUG = false && RJavaCompiler.DEBUG;
     DefaultDirectedGraph<RMethod, DefaultEdge> cg = new DefaultDirectedGraph<RMethod, DefaultEdge>(DefaultEdge.class);
     
     public void addCallEdge(RMethod from, RMethod to) {

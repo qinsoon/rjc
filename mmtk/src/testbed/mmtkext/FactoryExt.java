@@ -24,10 +24,15 @@ import org.vmutil.options.OptionSet;
 import testbed.Configuration;
 
 public class FactoryExt extends Factory {
+    // Option set, used by FactoryExt
+    public static OptionSet gcOptions = new GCOptionSet("-X:gc");
+    static {
+        
+    }
 
     @Override
     public OptionSet getOptionSet() {
-        return Configuration.gcOptions;
+        return gcOptions;
     }
 
     @Override

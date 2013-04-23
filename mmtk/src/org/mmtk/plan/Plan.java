@@ -56,6 +56,13 @@ import org.vmmagic.unboxed.*;
  */
 @Uninterruptible
 public abstract class Plan implements Constants {
+  /*
+   * FIXME: This part should be auto-generated
+   */
+  public static final String activePlanName = "org.mmtk.plan.nogc.NoGC";
+  public static final Plan activePlan = new org.mmtk.plan.nogc.NoGC();
+    
+    
   /****************************************************************************
    * Constants
    */

@@ -26,6 +26,8 @@ import org.rjava.compiler.util.JGraphTUtils;
  *
  */
 public class DependencyGraph {
+    public static final boolean DEBUG = true && RJavaCompiler.DEBUG;
+    
     /**
      * the first part of the algorithm: to build a edge relation -> whose vertices are classes and methods. 
      * It is decided by:
@@ -47,14 +49,20 @@ public class DependencyGraph {
     }
     
     public void addEdgeRelation(DependencyEdgeNode from, DependencyEdgeNode to) {
-        if (!edgeRelation.containsVertex(from))
-            edgeRelation.addVertex(from);
-        
-        if (!edgeRelation.containsVertex(to))
-            edgeRelation.addVertex(to);
-        
-        if (!edgeRelation.containsEdge(from, to))
-            edgeRelation.addEdge(from, to);
+        try {
+            if (!edgeRelation.containsVertex(from))
+                edgeRelation.addVertex(from);
+            
+            if (!edgeRelation.containsVertex(to))
+                edgeRelation.addVertex(to);
+            
+            if (!edgeRelation.containsEdge(from, to))
+                edgeRelation.addEdge(from, to);
+        } catch (Exception e) {
+            e.printStackTrace();
+            this.visualizeEdgeRelationGraph("edge-relation-interrupted.gv");
+            RJavaCompiler.error("Found bad circularity when adding (" + from.toString() + ")->(" + to.toString() + ") during generating edge relation graph");
+        }
     }
     
     public void generateClassDependencyGraph() {
@@ -62,10 +70,17 @@ public class DependencyGraph {
         classGraph = new DefaultDirectedGraph<RClass, DefaultEdge>(DefaultEdge.class);
         
         // compute transitive closure on edge relation
+        // JGraphTUtils.checkCycle(edgeRelation, "edge relation graph");
         try {
             SimpleDirectedGraph<DependencyEdgeNode, DefaultEdge> edgeRelationCopy = copyEdgeRelationGraph();
+            if (DEBUG) {
+                visualizeEdgeRelationGraph("edge-relation.gv");
+                RJavaCompiler.debug("computing transitive closure on edge relation...");
+            }
             TransitiveClosure.INSTANCE.closeSimpleDirectedGraph(edgeRelationCopy);
             
+            if (DEBUG)
+                RJavaCompiler.debug("generating class initialization graph...");
             for (DefaultEdge edge : edgeRelationCopy.edgeSet()) {
                 DependencyEdgeNode from = edgeRelationCopy.getEdgeSource(edge);
                 DependencyEdgeNode to = edgeRelationCopy.getEdgeTarget(edge);
@@ -91,24 +106,9 @@ public class DependencyGraph {
             e.printStackTrace();
             RJavaCompiler.fail(e.getMessage());
         }
-        
-        CycleDetector<RClass, DefaultEdge> cycleDetector = new CycleDetector<RClass, DefaultEdge>(classGraph);
-        if (cycleDetector.detectCycles()) {
-            RJavaCompiler.warning("Detected cycles in class initialization graph. Check the following classes (especially their <clinit>):");
-
-            List<Set<RClass>> stronglyConnectedSets = new StrongConnectivityInspector<RClass, DefaultEdge>(classGraph).stronglyConnectedSets(); 
-            for (int i = 0; i < stronglyConnectedSets.size(); i++) {
-                if (stronglyConnectedSets.get(i).size() <= 1)
-                    continue;
-                
-                RJavaCompiler.println("Set " + i);
-                for (RClass klass : stronglyConnectedSets.get(i))
-                    RJavaCompiler.println("-" + klass);
-                RJavaCompiler.println("");
-            }
-            
-            RJavaCompiler.fail("Found bad circularity in initialization graph");
-        }
+        if (DEBUG)
+            visualizeClassGraph("class-graph.gv");
+        JGraphTUtils.checkCycle(classGraph, "class initialization graph");
     }
     
     public List<RClass> getClassInitializationOrder() {
@@ -137,12 +137,6 @@ public class DependencyGraph {
     
     public void visualizeEdgeRelationGraph(String fileName) {
         JGraphTUtils.visualizeGraph(edgeRelation, fileName);
-    }
-    
-    public void dumpGraph() {
-        RJavaCompiler.println("\n---Class Initialization Dependency");
-        JGraphTUtils.dumpGraph(classGraph);
-        RJavaCompiler.println("");
     }
     
     private SimpleDirectedGraph<DependencyEdgeNode, DefaultEdge> copyEdgeRelationGraph() {

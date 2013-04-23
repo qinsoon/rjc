@@ -22,6 +22,11 @@ import org.vmmagic.pragma.*;
  * issues with ordering of static initialization.
  */
 @Uninterruptible public abstract class PlanConstraints {
+  /*
+   * FIXME: This part should be auto-generated
+   */
+  public static final PlanConstraints activeConstraints = new org.mmtk.plan.nogc.NoGCConstraints();
+    
   /** @return {@code true} if this Plan requires read barriers on java.lang.reference types. */
   public boolean needsJavaLangReferenceReadBarrier() { return false; }
 

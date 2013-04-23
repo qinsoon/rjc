@@ -1,4 +1,4 @@
-package testbed;
+package testbed.mmtkext;
 
 import org.vmmagic.pragma.Uninterruptible;
 import org.vmmagic.unboxed.Extent;
@@ -14,10 +14,13 @@ import org.vmutil.options.OptionSet;
 import org.vmutil.options.PagesOption;
 import org.vmutil.options.StringOption;
 
+import testbed.Constants;
+import testbed.Main;
+
 public class GCOptionSet extends OptionSet {
     private String prefix;
     
-    GCOptionSet(String prefix) {
+    public GCOptionSet(String prefix) {
         this.prefix = prefix;
     }
 

@@ -2,11 +2,16 @@ package org.rjava.compiler.util;
 
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
+import java.util.List;
+import java.util.Set;
 
 import org.jgrapht.DirectedGraph;
+import org.jgrapht.alg.CycleDetector;
+import org.jgrapht.alg.StrongConnectivityInspector;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.traverse.BreadthFirstIterator;
 import org.rjava.compiler.RJavaCompiler;
+import org.rjava.compiler.semantics.representation.RClass;
 
 public class JGraphTUtils {
     public static <V, E> void dumpGraph(DirectedGraph<V, E> graph) {
@@ -35,6 +40,26 @@ public class JGraphTUtils {
             fos.close();
         } catch (Exception e) {
             RJavaCompiler.fail("Failed to visualize class graph: " + e.getMessage());
+        }
+    }
+    
+    public static <V, E> void checkCycle(DirectedGraph<V, E> graph, String graphName) {
+        CycleDetector<V, E> cycleDetector = new CycleDetector<V, E>(graph);
+        if (cycleDetector.detectCycles()) {
+            RJavaCompiler.warning("Detected cycles in " + graphName + ". Check the following elements:");
+
+            List<Set<V>> stronglyConnectedSets = new StrongConnectivityInspector<V, E>(graph).stronglyConnectedSets(); 
+            for (int i = 0; i < stronglyConnectedSets.size(); i++) {
+                if (stronglyConnectedSets.get(i).size() <= 1)
+                    continue;
+                
+                RJavaCompiler.println("Set " + i);
+                for (V klass : stronglyConnectedSets.get(i))
+                    RJavaCompiler.println("-" + klass);
+                RJavaCompiler.println("");
+            }
+            
+            RJavaCompiler.fail("Found bad cycle in graph " + graphName);
         }
     }
 }

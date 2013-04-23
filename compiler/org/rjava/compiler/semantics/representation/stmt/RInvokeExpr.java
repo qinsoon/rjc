@@ -34,6 +34,10 @@ public class RInvokeExpr implements CompilationUnit{
     public InvokeExpr getInternal() {
         return internal;
     }
+    
+    public String toString() {
+        return internal.toString();
+    }
 
     @Override
     public void accept(CompilationPass pass) {

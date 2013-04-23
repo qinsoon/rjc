@@ -16,12 +16,12 @@ import testbed.mminterface.MMTkContext;
 public class ActivePlanExt extends ActivePlan {
     @Override
     public Plan global() {
-        return Configuration.activePlan;
+        return Plan.activePlan;
     }
 
     @Override
     public PlanConstraints constraints() {
-        return Configuration.activeConstraints;
+        return PlanConstraints.activeConstraints;
     }
 
     @Override

@@ -97,8 +97,6 @@ public abstract class SemanticMap {
         DependencyGraphPass pass = new DependencyGraphPass();
         pass.start();
         dependencyGraph.generateClassDependencyGraph();
-        dependencyGraph.visualizeEdgeRelationGraph("edge-relation.gv");
-        dependencyGraph.visualizeClassGraph("class-graph.gv");
     }
 
     private static void buildCallGraph() {

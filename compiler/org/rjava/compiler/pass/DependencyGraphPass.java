@@ -26,6 +26,7 @@ import org.rjava.compiler.semantics.representation.stmt.RTableSwitchStmt;
 import org.rjava.compiler.semantics.representation.stmt.RThrowStmt;
 
 import soot.jimple.StaticFieldRef;
+import soot.jimple.internal.JVirtualInvokeExpr;
 
 public class DependencyGraphPass extends CompilationPass {
     Stack<RMethod> stack = new Stack<RMethod>();
@@ -43,7 +44,7 @@ public class DependencyGraphPass extends CompilationPass {
         
         while(!stack.isEmpty()) {
             RMethod f = stack.pop();
-            if (!processed.contains(f))
+            if (processed.contains(f))
                 continue;
             
             f.accept(this);
@@ -163,7 +164,7 @@ public class DependencyGraphPass extends CompilationPass {
 
     /**
      * 2) if f is a static or instance method of app class, and f calls another static or instance method g of app class, then f->g.
-     * In addition, if g is instance method and is overriden as g', then f->g'
+     * In addition, if g is invoked by invokevirtual and is overriden as g', then f->g'
      */
     @Override
     public void visit(RInvokeExpr expr) {
@@ -174,12 +175,21 @@ public class DependencyGraphPass extends CompilationPass {
             return;
         
         RMethod callee = RMethod.getFromSootMethod(expr.getInternal().getMethod());
+        
+        if (caller.equals(callee))
+            return;
+        
         SemanticMap.dependencyGraph.addEdgeRelation(caller, callee);
         stack.push(callee);
         
-        for (RMethod overridingMethod : callee.getOverridingMethod()) {
-            SemanticMap.dependencyGraph.addEdgeRelation(caller, overridingMethod);
-            stack.push(overridingMethod);
+        if (expr.getInternal() instanceof JVirtualInvokeExpr) {
+            for (RMethod overridingMethod : callee.getOverridingMethod()) {
+                if (caller.equals(overridingMethod))
+                    continue;
+                
+                SemanticMap.dependencyGraph.addEdgeRelation(caller, overridingMethod);
+                stack.push(overridingMethod);
+            }
         }
     }
 
@@ -188,10 +198,11 @@ public class DependencyGraphPass extends CompilationPass {
      */
     @Override
     public void visit(RStatement stmt, StaticFieldRef staticRef) {
-        RClass klass = RClass.fromSootClass(staticRef.getField().getDeclaringClass());
-        if (!klass.isAppClass())
+        RClass stmtClass = stmt.getMethod().getKlass();
+        RClass referencedClass = RClass.fromSootClass(staticRef.getField().getDeclaringClass());
+        if (!referencedClass.isAppClass() || stmtClass.equals(referencedClass))
             return;
         
-        SemanticMap.dependencyGraph.addEdgeRelation(stmt.getMethod(), klass);
+        SemanticMap.dependencyGraph.addEdgeRelation(stmt.getMethod(), referencedClass);
     }
 }

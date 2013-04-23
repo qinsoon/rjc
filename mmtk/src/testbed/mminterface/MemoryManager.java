@@ -1,6 +1,7 @@
 package testbed.mminterface;
 
 import org.mmtk.plan.MutatorContext;
+import org.mmtk.plan.Plan;
 import org.mmtk.utility.heap.HeapGrowthManager;
 import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.unboxed.Address;
@@ -18,18 +19,18 @@ public class MemoryManager {
         HeapGrowthManager.boot(TestbedRuntime.heap.getHeapSize(), TestbedRuntime.heap.getHeapSize());
         
         Main.print("-Process options\n");
-        Configuration.activePlan.processOptions();
+        Plan.activePlan.processOptions();
         
         Main.print("-Enable allocation\n");
-        Configuration.activePlan.enableAllocation();
+        Plan.activePlan.enableAllocation();
         
         Main.print("-Enable collection\n");
-        Configuration.activePlan.enableCollection();
+        Plan.activePlan.enableCollection();
     }
     
     public static Address alloc(TestbedObject object) {
-        int allocator = Configuration.activePlan.ALLOC_DEFAULT;
-        int site = Configuration.activePlan.getAllocationSite(false);
+        int allocator = Plan.activePlan.ALLOC_DEFAULT;
+        int site = Plan.activePlan.getAllocationSite(false);
         int align = 0;  // we dont need to align
         int offset = 0;
         int size = object.getSize();
