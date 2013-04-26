@@ -62,10 +62,11 @@ inline int32_t java_lang_String_indexOf_int32_t(void* this_parameter, int32_t ch
 }
 
 inline int32_t java_lang_String_indexOf_int32_t_int32_t(void* this_parameter, int32_t ch, int32_t from) {
-    char* c_str = (((java_lang_String*)this_parameter) -> internal) + from;
-    char *found = strchr(c_str, ch);
+    char* orig = (((java_lang_String*)this_parameter)->internal);
+    char* str = orig + from;
+    char *found = strchr(str, ch);
     if (found)
-        return found - c_str;
+        return (found - orig);
     else return -1;
 }
 

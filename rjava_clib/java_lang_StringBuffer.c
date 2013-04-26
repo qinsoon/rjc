@@ -16,7 +16,11 @@ inline void java_lang_StringBuffer_rjinit_java_lang_String(java_lang_StringBuffe
     java_lang_StringBuffer_append_java_lang_Object(this_parameter, str);
 }
 
-java_lang_StringBuffer* java_lang_StringBuffer_append_java_lang_Object(java_lang_StringBuffer* this_parameter, java_lang_Object* obj) {
+java_lang_StringBuffer* java_lang_StringBuffer_append_java_lang_String(java_lang_StringBuffer* this_parameter, java_lang_String* str) {
+    return java_lang_StringBuffer_append_java_lang_Object(this_parameter, str);
+}
+
+java_lang_StringBuffer* java_lang_StringBuffer_append_java_lang_Object(java_lang_StringBuffer* this_parameter, void* obj) {
     char *str;
     
     if (obj == NULL)
@@ -26,14 +30,21 @@ java_lang_StringBuffer* java_lang_StringBuffer_append_java_lang_Object(java_lang
         str = (char*) malloc(sizeof(char) * 1000);
         strcpy(str, ((java_lang_Object_class*)(((RJava_Common_Instance*)obj) -> class_struct)) -> toString(obj) -> internal);
     }
-  if ((strlen(str) + strlen(this_parameter->internal)) + 1> this_parameter->curr_buffer_size) {
-    char* old = this_parameter->internal;
-    this_parameter->internal = (char *) malloc (this_parameter->curr_buffer_size * 2);
-    this_parameter->curr_buffer_size = this_parameter->curr_buffer_size * 2;
-    strcpy(this_parameter->internal, old);
-  }
-
-  strcat(this_parameter->internal, str);
+    int size_needed = (strlen(str) + strlen(this_parameter->internal)) + 1;
+    if (size_needed > this_parameter->curr_buffer_size) {
+        char* old = this_parameter->internal;
+        int new_size = this_parameter->curr_buffer_size * 2;
+        while (new_size < size_needed) {
+            new_size = new_size * 2;
+        }
+        this_parameter->internal = (char *) malloc (size_needed);
+        this_parameter->curr_buffer_size = size_needed;
+        strcpy(this_parameter->internal, old);
+    }
+    
+    strcat(this_parameter->internal, str);
+    
+    return this_parameter;
 }
 
 inline java_lang_StringBuffer* java_lang_StringBuffer_append_int32_t(java_lang_StringBuffer* this_parameter, int32_t i) {

@@ -70,7 +70,7 @@ public class TestJavaLangString extends UnitTest {
     
     public static boolean testIndexOf() {
         String literal = "123123123";
-        return literal.indexOf('2') == 1 && literal.indexOf('2', 3) == 4;
+        return literal.indexOf('2') == 1 && literal.indexOf('2', 3) == 4 && literal.indexOf('4') == -1;
     }
     
     public static boolean testToLowerCase() {
