@@ -67,7 +67,8 @@ public final class Constants {
         "java.lang.System",
         "java.lang.Throwable",
         "java.lang.Boolean",
-        "java.lang.Float"
+        "java.lang.Float",
+        "java.lang.Thread"
     };
     public static final String RJAVA_LIB_IMPL_DIR = "rjava_clib_impl/";
     

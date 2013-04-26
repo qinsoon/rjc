@@ -38,6 +38,7 @@ public class Main {
 
     public static void sysFail(String message) {
         System.out.println("Fail: " + message);
+        Thread.dumpStack();
         System.exit(1);
     }
     
