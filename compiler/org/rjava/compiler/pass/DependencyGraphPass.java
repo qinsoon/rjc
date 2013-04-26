@@ -200,7 +200,7 @@ public class DependencyGraphPass extends CompilationPass {
     public void visit(RStatement stmt, StaticFieldRef staticRef) {
         RClass stmtClass = stmt.getMethod().getKlass();
         RClass referencedClass = RClass.fromSootClass(staticRef.getField().getDeclaringClass());
-        if (!referencedClass.isAppClass() || stmtClass.equals(referencedClass))
+        if (!referencedClass.isAppClass())
             return;
         
         SemanticMap.dependencyGraph.addEdgeRelation(stmt.getMethod(), referencedClass);

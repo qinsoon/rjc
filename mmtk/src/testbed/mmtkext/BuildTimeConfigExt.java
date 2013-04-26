@@ -4,6 +4,7 @@ import org.mmtk.vm.BuildTimeConfig;
 import org.rjava.restriction.rulesets.RJavaCore;
 
 import testbed.Configuration;
+import testbed.mminterface.select.PlanSelect;
 
 
 @RJavaCore
@@ -42,7 +43,7 @@ public class BuildTimeConfigExt extends BuildTimeConfig {
 
     @Override
     public String getPlanName() {
-        return Plan.activePlanName;
+        return PlanSelect.getName();
     }
 
     @Override

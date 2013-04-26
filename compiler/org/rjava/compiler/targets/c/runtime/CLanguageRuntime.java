@@ -463,6 +463,7 @@ public class CLanguageRuntime {
         CRT_HELPERS.add(HELPER_RJAVA_LENGTH_OF_ARRAY);
         CRT_HELPERS.add(HELPER_RJAVA_INIT_ARGS);
         CRT_HELPERS.add(HELPER_RJAVA_NEW_MULTIARRAY);
+        CRT_HELPERS.add(HELPER_RJAVA_C_ARRAY_TO_RJAVA_ARRAY);
     }
     
     public void generateCRuntime() throws RJavaError {

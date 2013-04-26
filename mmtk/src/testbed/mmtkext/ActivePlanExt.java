@@ -11,17 +11,19 @@ import org.rjava.restriction.rulesets.RJavaCore;
 import testbed.Configuration;
 import testbed.Main;
 import testbed.mminterface.MMTkContext;
+import testbed.mminterface.select.ConstraintsSelect;
+import testbed.mminterface.select.PlanSelect;
 
 @RJavaCore
 public class ActivePlanExt extends ActivePlan {
     @Override
     public Plan global() {
-        return Plan.activePlan;
+        return PlanSelect.getPlan();
     }
 
     @Override
     public PlanConstraints constraints() {
-        return PlanConstraints.activeConstraints;
+        return ConstraintsSelect.getConstraints();
     }
 
     @Override

@@ -1,3 +1,6 @@
+mmtk/src/testbed/mminterface/select/CollectorSelect.java
+mmtk/src/testbed/mminterface/select/ConstraintsSelect.java
+mmtk/src/testbed/mminterface/select/PlanSelect.java
 mmtk/src/org/mmtk/plan/nogc/NoGC.java
 mmtk/src/org/mmtk/plan/nogc/NoGCCollector.java
 mmtk/src/org/mmtk/plan/nogc/NoGCConstraints.java

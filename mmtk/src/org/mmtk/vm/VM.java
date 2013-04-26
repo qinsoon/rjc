@@ -120,7 +120,7 @@ public final class VM {
    * classes.
    */
   private static final Factory factory;
-  private static final String factoryName;
+  private static final String factoryName = null;
 
   /**
    * This class initializer establishes a VM-specific factory class
@@ -131,7 +131,7 @@ public final class VM {
    */
   static {
     /* Identify the VM-specific factory using reflection */
-    factoryName = System.getProperty("mmtk.hostjvm");
+    /*factoryName = System.getProperty("mmtk.hostjvm");
     Factory xfa = null;
     try {
       xfa = (Factory) Class.forName(factoryName).newInstance();
@@ -139,9 +139,9 @@ public final class VM {
       e.printStackTrace();
       System.exit(-1);     // we must *not* go on if the above has failed
     }
-    factory = xfa;
+    factory = xfa;*/
     // TODO: the following code should be configurable
-    // factory = new FactoryExt();
+    factory = new FactoryExt();
 
     /* Now instantiate the singletons using the factory */
     activePlan = factory.newActivePlan();

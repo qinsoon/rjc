@@ -5,10 +5,11 @@ import org.rjava.restriction.rulesets.RJavaCore;
 
 import testbed.Configuration;
 import testbed.Constants;
+import testbed.mminterface.select.ConstraintsSelect;
 
 @RJavaCore
 public class MMTkConstants {
     public static final int GC_HEADER_BYTES() {
-        return PlanConstraints.activeConstraints.gcHeaderWords() << Constants.LOG_BYTES_IN_WORD;
+        return ConstraintsSelect.getConstraints().gcHeaderWords() << Constants.LOG_BYTES_IN_WORD;
     }
 }

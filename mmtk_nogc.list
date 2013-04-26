@@ -1,5 +1,0 @@
-mmtk/src/org/mmtk/plan/nogc/NoGC.java
-mmtk/src/org/mmtk/plan/nogc/NoGCCollector.java
-mmtk/src/org/mmtk/plan/nogc/NoGCConstraints.java
-mmtk/src/org/mmtk/plan/nogc/NoGCMutator.java
-mmtk/src/org/mmtk/plan/nogc/NoGCTraceLocal.java

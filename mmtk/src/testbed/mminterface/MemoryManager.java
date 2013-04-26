@@ -10,6 +10,7 @@ import org.vmmagic.unboxed.ObjectReference;
 import testbed.Configuration;
 import testbed.Main;
 import testbed.TestbedRuntime;
+import testbed.mminterface.select.PlanSelect;
 import testbed.runtime.TestbedObject;
 
 @RJavaCore
@@ -19,18 +20,18 @@ public class MemoryManager {
         HeapGrowthManager.boot(TestbedRuntime.heap.getHeapSize(), TestbedRuntime.heap.getHeapSize());
         
         Main.print("-Process options\n");
-        Plan.activePlan.processOptions();
+        PlanSelect.getPlan().processOptions();
         
         Main.print("-Enable allocation\n");
-        Plan.activePlan.enableAllocation();
+        PlanSelect.getPlan().enableAllocation();
         
         Main.print("-Enable collection\n");
-        Plan.activePlan.enableCollection();
+        PlanSelect.getPlan().enableCollection();
     }
     
     public static Address alloc(TestbedObject object) {
-        int allocator = Plan.activePlan.ALLOC_DEFAULT;
-        int site = Plan.activePlan.getAllocationSite(false);
+        int allocator = PlanSelect.getPlan().ALLOC_DEFAULT;
+        int site = PlanSelect.getPlan().getAllocationSite(false);
         int align = 0;  // we dont need to align
         int offset = 0;
         int size = object.getSize();

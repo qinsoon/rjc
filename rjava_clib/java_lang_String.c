@@ -36,7 +36,11 @@ inline int32_t java_lang_String_length(void* this_parameter) {
 }
 
 inline byte* java_lang_String_getBytes(void* this_parameter) {
-    return ((java_lang_String*)this_parameter)->internal;
+    java_lang_String* param = (java_lang_String*) this_parameter;
+    int length = strlen(param->internal);
+    long ele_size = sizeof(byte);
+    byte* ret = (byte*) rjava_c_array_to_rjava_array(length, ele_size, param->internal);
+    return ret;
 }
 
 java_lang_String* java_lang_String_substring_int32_t(void* this_parameter, int32_t start) {
