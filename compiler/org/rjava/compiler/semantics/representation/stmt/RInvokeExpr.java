@@ -38,6 +38,16 @@ public class RInvokeExpr implements CompilationUnit{
     public String toString() {
         return internal.toString();
     }
+    
+    public boolean isCallingSuperConstructor() {
+        boolean isConstructor = internal.getMethod().isConstructor();
+        if (!isConstructor)
+            return false;
+        
+        RClass targetClass = RClass.fromSootClass(internal.getMethod().getDeclaringClass());
+        RClass currentClass = stmt.getMethod().getKlass();
+        return currentClass.hasSuperClass() && currentClass.getSuperClass().equals(targetClass);
+    }
 
     @Override
     public void accept(CompilationPass pass) {
