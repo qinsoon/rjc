@@ -641,7 +641,7 @@ public class CLanguageGenerator extends CodeGenerator {
 
             
             if (rStmt.isIntrinsic())
-                out.append(rStmt.getCode());
+                out.append(rStmt.getCode() + SEMICOLON + NEWLINE);
             else {
                 // if this method is a constructor, we set class_struct for this instance first
                 if (firstStmt && method.isConstructor()) {
@@ -655,7 +655,6 @@ public class CLanguageGenerator extends CodeGenerator {
                 if (rStmt.containsInvokeExpr() && rStmt.getInvokeExpr().isCallingSuperConstructor())
                     out.append("((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*)" + THIS_PARAMETER + ") -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + " = &" + name.get(method.getKlass(), true) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + SEMICOLON + NEWLINE);
             }            
-            out.appendNoIndent(SEMICOLON + NEWLINE);
         }
 
         return out.toString();

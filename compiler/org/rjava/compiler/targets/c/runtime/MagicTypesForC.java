@@ -12,7 +12,9 @@ import org.rjava.compiler.semantics.SootEngine;
 
 public class MagicTypesForC {
 
-    public static void main(String[] args) {        
+    public static void main(String[] args) {
+        System.out.println("This implementation is broken. Quit");
+        System.exit(-1);
         try {
             // unboxed types
             List<String> unboxedTypesFiles = new ArrayList<String>();

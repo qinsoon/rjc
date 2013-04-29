@@ -1,6 +1,7 @@
 package testbed.mmtkext;
 
 import org.mmtk.policy.ImmortalSpace;
+import org.mmtk.utility.heap.VMRequest;
 import org.mmtk.vm.Memory;
 import org.rjava.nativeext.RawMemory;
 import org.rjava.restriction.rulesets.RJavaCore;
@@ -17,11 +18,15 @@ import testbed.TestbedRuntime;
 
 @RJavaCore
 public class MemoryExt extends Memory {
-
+    private static ImmortalSpace vmSpace = null;
+    private static Extent VMSPACE_SIZE = Extent.fromIntZeroExtend(0x10000000);
     @Override
     @Interruptible
     public ImmortalSpace getVMSpace() {
-        return null;
+        if (vmSpace == null)
+            vmSpace = new ImmortalSpace("vm", VMRequest.create(VMSPACE_SIZE, false));
+        
+        return vmSpace;
     }
 
     @Override

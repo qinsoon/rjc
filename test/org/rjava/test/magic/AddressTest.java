@@ -11,26 +11,27 @@ public class AddressTest {
      * @param args
      */
     public static void main(String[] args) {
-        Integer i = new Integer(1);
-        Address i_address = ObjectReference.fromObject(i).toAddress();
-        i_address.store(2);
-        int after = i_address.loadInt();
-        System.out.println(after);
+        System.out.println("Zero extend");
+        Address addr = Address.fromIntZeroExtend(0x80000000);
+        System.out.println(addr.toLong());
+        addr = addr.minus(1);
+        System.out.println(addr.toLong());
         
-        final Offset RJAVA_ARRAY_C_HEADER = Offset.fromIntSignExtend(12);
-        final Offset INT_WIDTH = Offset.fromIntSignExtend(4);
+        Address addr3 = Address.fromIntZeroExtend(0);
+        System.out.println(addr3.toLong());
+        addr3 = addr3.minus(1);
+        System.out.println(addr3.toLong());
         
-        int[] array = new int[5];
-        Address array_addr = ObjectReference.fromObject(array).toAddress();
-        array_addr = array_addr.plus(RJAVA_ARRAY_C_HEADER);
-        array_addr.store(0);
-        for (int j = 1; j < 5; j++) {
-            array_addr = array_addr.plus(INT_WIDTH);
-            array_addr.store(j);
-        }
-        for (int k = 0; k < 5; k++) {
-            System.out.println(array[k]);
-        }
+        System.out.println("Sign extend");
+        Address addr2 = Address.fromIntSignExtend(0x80000000);
+        System.out.println(addr2.toLong());
+        addr2 = addr2.minus(1);
+        System.out.println(addr2.toLong());
+        
+        Address addr4 = Address.fromIntSignExtend(0);
+        System.out.println(addr4.toLong());
+        addr4 = addr4.minus(1);
+        System.out.println(addr4.toLong());
     }
 
 }

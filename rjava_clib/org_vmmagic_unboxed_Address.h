@@ -26,7 +26,7 @@ this_parameter == UINTPTR_MAX
 ((uintptr_t) ((intptr_t)parameter0))
 
 #define org_vmmagic_unboxed_Address_fromIntZeroExtend_int32_t(parameter0) \
-((uintptr_t) ((uintptr_t)parameter0))
+(((uintptr_t) parameter0) & 0x00000000FFFFFFFF)
 
 #define org_vmmagic_unboxed_Address_fromLong_int64_t(parameter0) \
 (uintptr_t)parameter0
