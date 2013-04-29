@@ -34,8 +34,9 @@ import soot.jimple.StaticFieldRef;
 import soot.jimple.internal.JAssignStmt;
 
 public class CLanguageGenerator extends CodeGenerator {
-    public static final boolean OUTPUT_JIMPLE = false;
-    public static final boolean OUTPUT_C = false;
+    public static final boolean OUTPUT_JIMPLE_TO_CONSOLE = false;
+    public static final boolean OUTPUT_C_TO_CONSOLE = false;
+    public static final boolean OUTPUT_JIMPLE_TO_SOURCE = true;
     /*
      * Java spec
      */
@@ -99,7 +100,7 @@ public class CLanguageGenerator extends CodeGenerator {
     @Override
     public void translate(RClass klass)
 	    throws RJavaWarning, RJavaError {
-        if (OUTPUT_JIMPLE) {
+        if (OUTPUT_JIMPLE_TO_CONSOLE) {
             RJavaCompiler.debug("Methods for " + klass.getName());
             for (RMethod method : klass.getMethods()) {
                 RJavaCompiler.debug(method + "{");
@@ -170,7 +171,7 @@ public class CLanguageGenerator extends CodeGenerator {
                 outInc.append("#include \"" + reference + ".h\"" + NEWLINE);
             }
             
-            if (OUTPUT_C) {
+            if (OUTPUT_C_TO_CONSOLE) {
                 RJavaCompiler.debug("Code output to: " + cCodeSource);
                 RJavaCompiler.debug(outInc.toString() + outMain.toString());
             }
@@ -233,7 +234,7 @@ public class CLanguageGenerator extends CodeGenerator {
             outInc.append("#include \"" + reference + ".h\"" + NEWLINE);
         }
         
-        if (OUTPUT_C) {
+        if (OUTPUT_C_TO_CONSOLE) {
             RJavaCompiler.debug("Header output to: " + cHeaderSource);
             RJavaCompiler.debug(outInc.toString() + outMain.toString());
         }
@@ -312,7 +313,7 @@ public class CLanguageGenerator extends CodeGenerator {
             outInc.append("#include \"" + reference + ".h\"" + NEWLINE);
         }
         
-        if (OUTPUT_C) {
+        if (OUTPUT_C_TO_CONSOLE) {
             RJavaCompiler.debug("Code output to: " + cCodeSource);
             RJavaCompiler.debug(outInc.toString() + outMain.toString());
         }
@@ -479,7 +480,7 @@ public class CLanguageGenerator extends CodeGenerator {
             outInc.append("#include \"" + reference + ".h\"" + NEWLINE);
         }
         
-        if (OUTPUT_C) {
+        if (OUTPUT_C_TO_CONSOLE) {
             RJavaCompiler.debug("Header output to: " + cHeaderSource);
             RJavaCompiler.debug(outInc.toString() + outMain.toString());
         }
@@ -632,18 +633,30 @@ public class CLanguageGenerator extends CodeGenerator {
         }
         out.append(NEWLINE);
         out.append(commentln("stmts"));
+        
+        boolean firstStmt = true;
         for (RStatement rStmt : method.getBody()) {
+            if (OUTPUT_JIMPLE_TO_SOURCE)
+                out.append(commentln("[" + rStmt.internal().getClass().toString() + "]" + rStmt.internal().toString()));
+
+            
             if (rStmt.isIntrinsic())
                 out.append(rStmt.getCode());
             else {
-                // init class_struct here
-                // FIXME: should be moved to somewhere else. 
-                if (method.isConstructor() && rStmt.isReturnStmt()) 
-                    out.append("((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*)" + THIS_LOCAL + ") -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + " = &" + name.get(method.getKlass(), true) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + SEMICOLON + NEWLINE);
-                out.append(stmt.get(rStmt));
-            }
-            
+                // if this method is a constructor, we set class_struct for this instance first
+                if (firstStmt && method.isConstructor()) {
+                    out.append("((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*)" + THIS_PARAMETER + ") -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + " = &" + name.get(method.getKlass(), true) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + SEMICOLON + NEWLINE);
+                    firstStmt = false;
+                }
+                
+                out.append(stmt.get(rStmt) + SEMICOLON + NEWLINE);                
+                
+                // if we called super constructor, then will need to set class_struct back
+                if (rStmt.containsInvokeExpr() && rStmt.getInvokeExpr().isCallingSuperConstructor())
+                    out.append("((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*)" + THIS_PARAMETER + ") -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + " = &" + name.get(method.getKlass(), true) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + SEMICOLON + NEWLINE);
+            }            
             out.appendNoIndent(SEMICOLON + NEWLINE);
+
         }
 
         return out.toString();
