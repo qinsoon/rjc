@@ -479,8 +479,47 @@ public class CLanguageStatementGenerator {
     }
     
     private String fromSootBinopExpr(soot.jimple.BinopExpr binopExpr) {
-        if (binopExpr instanceof JCmpExpr || binopExpr instanceof JCmpgExpr || binopExpr instanceof JCmplExpr) {
-            return name.fromSootValue(binopExpr.getOp1()) + " - " + name.fromSootValue(binopExpr.getOp2());
+        if (binopExpr instanceof JCmpExpr || binopExpr instanceof JCmpgExpr) {
+            // Java:
+            // a < b in java
+            
+            // Jimple:
+            // int result = a cmpg b
+            // if (result < 0) goto true_stmt
+            // goto false_stmt
+            
+            // Java:
+            // a == b in java
+            
+            // Jimple:
+            // int result = a cmpg b
+            // if (result == 0) goto true_stmt
+            // goto false_stmt
+            
+            // So translated C:
+            // int result = (a < b) ? -1 : ((a == b) ? 0 : 1)
+            
+            String op1 = name.fromSootValue(binopExpr.getOp1());
+            String op2 = name.fromSootValue(binopExpr.getOp2());
+            
+            String ret = "(" + op1 + "<" + op2 + ") ? -1 : ((" + op1 + "==" + op2 + ") ? 0 : 1)";  
+            return ret;
+        }
+        if (binopExpr instanceof JCmplExpr) {
+            // Java:
+            // a > b
+            
+            // Jimple:
+            // int result = a cmpl b
+            // if (result > 0) goto true_stmt
+            // goto false_stmt
+            
+            // So translated C:
+            // int result = (a > b) ? : 1 ((a == b) ? 0 : -1)
+            String op1 = name.fromSootValue(binopExpr.getOp1());
+            String op2 = name.fromSootValue(binopExpr.getOp2());
+            String ret = "(" + op1 + ">" + op2 + ") ? 1 : ((" + op1 + "==" + op2 + ") ? 0 : 1)";
+            return ret;
         }
         if (binopExpr instanceof JUshrExpr) {
             return "(unsigned int)(" + name.fromSootValue(binopExpr.getOp1()) + " >> " + name.fromSootValue(binopExpr.getOp2()) + ")";

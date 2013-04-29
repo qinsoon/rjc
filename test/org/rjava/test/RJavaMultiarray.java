@@ -9,26 +9,49 @@ public class RJavaMultiarray {
      * @param args
      */
     public static void main(String[] args) {
-        int[][] multi_table = new int[2][3];
-        for (int i = 0; i < 2; i ++)
-            for (int j = 0; j < 3; j++)
-                multi_table[i][j] = i * j;
+        final double[][] function = {{0.00, 0.00, 0.10, 0.30, 0.60, 0.80, 1.00},
+            { 0.00, 0.90, 0.90, 0.95, 1.00, 1.00, 1.00 },
+            { 0.02, 0.90, 0.90, 0.95, 1.00, 1.00, 1.00 },
+            { 0.05, 0.95, 0.95, 1.00, 1.00, 1.00, 1.00 },
+            { 0.15, 1.00, 1.00, 1.10, 1.15, 1.20, 1.20 },
+            { 0.30, 1.00, 1.00, 1.20, 1.25, 1.35, 1.30 },
+            { 0.50, 1.00, 1.00, 1.25, 1.30, 1.50, 1.50 },
+            { 1.00, 1.00, 1.00, 1.25, 1.30, 1.50, 1.50 } };
         
-        for (int pi = 0; pi < 2; pi ++) {
-            for (int pj = 0; pj < 3; pj++) {
-                System.out.print(multi_table[pi][pj]);
-                System.out.print("|");
-            }
-            System.out.println();
+        System.out.println("Check live ratio");
+        // Check live ratio
+        double[] liveRatio = function[0];
+        _assert(liveRatio[1]);
+        _assert(liveRatio[liveRatio.length-1]);
+        for (int i = 2; i < liveRatio.length; i++) {
+          _assert(liveRatio[i-1]);
+          _assert(liveRatio[i]);
+          for (int j = 1; j < function.length; j++) {
+            _assert(function[j][i]);
+          }
         }
-        
-        System.out.println("length:");
-        System.out.println(multi_table.length);
-        
-        int[] multi_table_row1 = multi_table[0];
-        
-        System.out.println("row 1 length:");
-        System.out.println(multi_table_row1.length);
-    }
 
+        System.out.println("Check GC load");
+        // Check GC load
+        _assert(function[1][0]);
+        int len = function.length;
+        _assert(function[len-1][0]);
+        for (int i = 2; i < len; i++) {
+          _assert(function[i-1][0]);
+          _assert(function[i][0]);
+        }
+
+        System.out.println("Check rectangular matrix");
+        // Check that we have a rectangular matrix
+        for (int i = 1; i < function.length; i++) {
+          _assert(function[i-1].length);
+          _assert(function[i].length);
+        }
+    }
+    public static void _assert(int a) {
+        System.out.println(a);
+    }
+    public static void _assert(double a) {
+        System.out.println(a);
+    }
 }

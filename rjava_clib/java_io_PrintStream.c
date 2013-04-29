@@ -30,9 +30,20 @@ inline void java_io_PrintStream_print_java_lang_Object(java_io_PrintStream* this
 inline void java_io_PrintStream_println_int32_t(java_io_PrintStream* this_parameter, int32_t i) {
     printf("%"PRId32"\n", i);
 }
+
 inline void java_io_PrintStream_print_int32_t(java_io_PrintStream* this_parameter, int32_t i) {
     printf("%"PRId32, i);
 }
+
 inline void java_io_PrintStream_println_int64_t(java_io_PrintStream* this_parameter, int64_t i) {
     printf("%"PRId64"\n", i);
+}
+
+inline void java_io_PrintStream_println_double(java_io_PrintStream* this_parameter, double d) {
+    java_io_PrintStream_print_double(this_parameter, d);
+    printf("\n");
+}
+
+inline void java_io_PrintStream_print_double(java_io_PrintStream* this_parameter, double d) {
+    printf("%f", d);
 }
