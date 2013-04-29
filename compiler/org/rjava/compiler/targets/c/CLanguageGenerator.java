@@ -649,14 +649,13 @@ public class CLanguageGenerator extends CodeGenerator {
                     firstStmt = false;
                 }
                 
-                out.append(stmt.get(rStmt) + SEMICOLON + NEWLINE);                
+                out.append(stmt.get(rStmt) + SEMICOLON + NEWLINE);
                 
                 // if we called super constructor, then will need to set class_struct back
                 if (rStmt.containsInvokeExpr() && rStmt.getInvokeExpr().isCallingSuperConstructor())
                     out.append("((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*)" + THIS_PARAMETER + ") -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + " = &" + name.get(method.getKlass(), true) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + SEMICOLON + NEWLINE);
             }            
             out.appendNoIndent(SEMICOLON + NEWLINE);
-
         }
 
         return out.toString();
