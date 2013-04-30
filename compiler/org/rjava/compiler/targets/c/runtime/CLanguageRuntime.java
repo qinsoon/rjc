@@ -212,6 +212,7 @@ public class CLanguageRuntime {
                 "if (!cond) {" + NEWLINE + 
                 "  printf(\"RJava C assertion failed: %s\\n\", str);" + NEWLINE + 
                 "  java_lang_Thread_dumpStack();" + NEWLINE +
+                "  exit(1);" + NEWLINE +
                 "}" + NEWLINE;    
         HELPER_RJAVA_ASSERT.setSource(RJAVA_ASSERT_SOURCE);
         

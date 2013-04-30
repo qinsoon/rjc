@@ -8,7 +8,7 @@ import org.rjava.restriction.rulesets.RJavaCore;
 public class MMTkContext {
     public static MMTkContext currentContext;
     
-    public static final int MAX_CONTEXT = 1;
+    public static final int MAX_CONTEXT = 5;
     public static int contextCount = 0;
     public static MMTkContext[] allContexts = new MMTkContext[MAX_CONTEXT];    
     
