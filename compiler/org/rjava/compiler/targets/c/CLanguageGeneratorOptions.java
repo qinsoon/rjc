@@ -10,7 +10,7 @@ public class CLanguageGeneratorOptions extends GeneratorOptions{
 
     @Override
     public boolean allowArrayBoundCheck() {
-        return false;
+        return true;
     }
 
     @Override

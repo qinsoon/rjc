@@ -35,7 +35,7 @@ public class RJavaLangForC {
             SootEngine.RUN_SOOT = false;
             
             RJavaCompiler compiler = RJavaCompiler.newRJavaCompiler(compileJavaLang);
-            RJavaLangForCGenerator generator = new RJavaLangForCGenerator(RJavaCompiler.getCurrentGeneratorOptions());
+            RJavaLangForCGenerator generator = new RJavaLangForCGenerator();
             RJavaLangForCIntrinsicGenerator intrinsic = new RJavaLangForCIntrinsicGenerator(generator);
             generator.setIntrinsic(intrinsic);
             compiler.setCodeGenerator(generator);

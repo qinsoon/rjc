@@ -205,7 +205,7 @@ public class RMethod implements DependencyEdgeNode, CompilationUnit{
     }
     
     public boolean shouldBeInlined() {
-        return body.size() <= 25 && RJavaCompiler.getCurrentGeneratorOptions().allowInline();
+        return body.size() <= 25 && RJavaCompiler.getGeneratorOptions().allowInline();
     }
 
     /**

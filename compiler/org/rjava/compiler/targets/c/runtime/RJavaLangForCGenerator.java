@@ -8,7 +8,6 @@ import org.rjava.compiler.targets.c.CLanguageGenerator;
 
 public class RJavaLangForCGenerator extends CLanguageGenerator {
 
-    public RJavaLangForCGenerator(GeneratorOptions generatorOptions) {
-        super(generatorOptions);
+    public RJavaLangForCGenerator() {
     }
 }

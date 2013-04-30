@@ -158,6 +158,11 @@ public class CLanguageRuntime {
      * void rjava_debug_print_header(void* this_class, char* name);
      */
     public static final HelperMethod HELPER_RJAVA_DEBUG_PRINT_HEADER;
+    /**
+     * assert
+     * void rjava_assert(bool cond);
+     */
+    public static final HelperMethod HELPER_RJAVA_ASSERT;
     
     /*
      *  array implements: an array is a void* that points to a structure (in memory) like this
@@ -198,6 +203,18 @@ public class CLanguageRuntime {
     public static final HelperMethod HELPER_RJAVA_INIT_ARGS;
     
     static {
+        /**
+         * assert
+         * void rjava_assert(bool cond, char* str);
+         */
+        HELPER_RJAVA_ASSERT = new HelperMethod("rjava_assert", "void", new HelperVariable[]{new HelperVariable("bool", "cond"), new HelperVariable("char*", "str")});
+        final String RJAVA_ASSERT_SOURCE  = 
+                "if (!cond) {" + NEWLINE + 
+                "  printf(\"RJava C assertion failed: %s\\n\", str);" + NEWLINE + 
+                "  java_lang_Thread_dumpStack();" + NEWLINE +
+                "}" + NEWLINE;    
+        HELPER_RJAVA_ASSERT.setSource(RJAVA_ASSERT_SOURCE);
+        
         /**
          * init rjava class (application classes)
          * void rjava_class_init()
@@ -351,6 +368,35 @@ public class CLanguageRuntime {
         HELPER_RJAVA_DEBUG_PRINT_HEADER.setSource(RJAVA_DEBUG_PRINT_HEADER_SOURCE);
         
         /**
+         * used to implement array.length
+         * inline int rjava_length_of_array(void* array);
+         */
+        HELPER_RJAVA_LENGTH_OF_ARRAY = new HelperMethod("rjava_length_of_array", "int", new HelperVariable[]{
+                                                        new HelperVariable("void*", "array")
+        });
+        final String RJAVA_LENGTH_OF_ARRAY_SOURCE = 
+                "return *((int*)array);" + NEWLINE;
+        HELPER_RJAVA_LENGTH_OF_ARRAY.setSource(RJAVA_LENGTH_OF_ARRAY_SOURCE);
+        HELPER_RJAVA_LENGTH_OF_ARRAY.setMethodDescriptor("inline");
+        
+        /**
+         * used to implement array access (e.g. array[0])
+         * inline void* rjava_access_array(void* array, int index);
+         */
+        HELPER_RJAVA_ACCESS_ARRAY = new HelperMethod("rjava_access_array", "void*", new HelperVariable[]{
+                                                     new HelperVariable("void*", "array"),
+                                                     new HelperVariable("int", "index")
+        });
+        final String RJAVA_ACCESS_ARRAY_SOURCE = 
+                (RJavaCompiler.getGeneratorOptions().allowArrayBoundCheck() ?
+                ("int length = " + invokeHelper(HELPER_RJAVA_LENGTH_OF_ARRAY, new String[]{"array"}) + SEMICOLON + NEWLINE +
+                invokeHelper(HELPER_RJAVA_ASSERT, new String[]{"index < length && index >= 0", "\"index out of bounds\""}) + SEMICOLON + NEWLINE) : "") +
+                "long ele_size = *((long*)(array + sizeof(int)));" + NEWLINE +
+                "return (array + sizeof(int) + sizeof(long) + ele_size * index);" + NEWLINE;
+        HELPER_RJAVA_ACCESS_ARRAY.setSource(RJAVA_ACCESS_ARRAY_SOURCE);
+        HELPER_RJAVA_ACCESS_ARRAY.setMethodDescriptor("inline");
+        
+        /**
          * used to implement newarray
          * void* rjava_new_array(int length, long ele_size);
          */
@@ -362,35 +408,13 @@ public class CLanguageRuntime {
                 "void* ret = " + MALLOC + "(sizeof(int) + sizeof(long) + ele_size * length);" + NEWLINE +
                 "*((int*)ret) = length;" + NEWLINE + 
                 "*((long*)(ret + sizeof(int))) = ele_size;" + NEWLINE +
+                // zeroing the array
+                "int i = 0;" + NEWLINE + 
+                "for(; i < length; i++)" + NEWLINE +
+                "  *(char**)(rjava_access_array(ret, i)) = NULL;" + NEWLINE +
                 "return ret;" + NEWLINE;
         HELPER_RJAVA_NEW_ARRAY.setSource(RJAVA_NEW_ARRAY_SOURCE);
         HELPER_RJAVA_NEW_ARRAY.setMethodDescriptor("inline");
-        
-        /**
-         * used to implement array access (e.g. array[0])
-         * inline void* rjava_access_array(void* array, int index);
-         */
-        HELPER_RJAVA_ACCESS_ARRAY = new HelperMethod("rjava_access_array", "void*", new HelperVariable[]{
-                                                     new HelperVariable("void*", "array"),
-                                                     new HelperVariable("int", "index")
-        });
-        final String RJAVA_ACCESS_ARRAY_SOURCE = 
-                "long ele_size = *((long*)(array + sizeof(int)));" + NEWLINE +
-                "return (array + sizeof(int) + sizeof(long) + ele_size * index);" + NEWLINE;
-        HELPER_RJAVA_ACCESS_ARRAY.setSource(RJAVA_ACCESS_ARRAY_SOURCE);
-        HELPER_RJAVA_ACCESS_ARRAY.setMethodDescriptor("inline");
-        
-        /**
-         * used to implement array.length
-         * inline int rjava_length_of_array(void* array);
-         */
-        HELPER_RJAVA_LENGTH_OF_ARRAY = new HelperMethod("rjava_length_of_array", "int", new HelperVariable[]{
-                                                        new HelperVariable("void*", "array")
-        });
-        final String RJAVA_LENGTH_OF_ARRAY_SOURCE = 
-                "return *((int*)array);" + NEWLINE;
-        HELPER_RJAVA_LENGTH_OF_ARRAY.setSource(RJAVA_LENGTH_OF_ARRAY_SOURCE);
-        HELPER_RJAVA_LENGTH_OF_ARRAY.setMethodDescriptor("inline");
         
         /**
          * used to implement new multiarray
@@ -452,7 +476,6 @@ public class CLanguageRuntime {
                 "return ret;" + NEWLINE;
         HELPER_RJAVA_INIT_ARGS.setSource(RJAVA_INIT_ARGS_SOURCE);
         
-        
         CRT_HELPERS.add(HELPER_RJAVA_ADD_INTERFACE_TO_CLASS);
         CRT_HELPERS.add(HELPER_RJAVA_ALTER_INTERFACE);
         CRT_HELPERS.add(HELPER_RJAVA_GET_INTERFACE);
@@ -464,6 +487,7 @@ public class CLanguageRuntime {
         CRT_HELPERS.add(HELPER_RJAVA_INIT_ARGS);
         CRT_HELPERS.add(HELPER_RJAVA_NEW_MULTIARRAY);
         CRT_HELPERS.add(HELPER_RJAVA_C_ARRAY_TO_RJAVA_ARRAY);
+        CRT_HELPERS.add(HELPER_RJAVA_ASSERT);
     }
     
     public void generateCRuntime() throws RJavaError {

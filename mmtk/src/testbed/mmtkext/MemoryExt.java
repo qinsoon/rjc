@@ -51,8 +51,8 @@ public class MemoryExt extends Memory {
 
     @Override
     public void setHeapRange(int id, Address start, Address end) {
-        TestbedRuntime.heap.setStart(start);
-        TestbedRuntime.heap.setEnd(end);
+        // TestbedRuntime.heap.setStart(start);
+        // TestbedRuntime.heap.setEnd(end);
     }
 
     @Override

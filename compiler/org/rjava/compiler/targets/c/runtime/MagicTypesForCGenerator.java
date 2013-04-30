@@ -18,8 +18,7 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
         "boehm-gc/libatomic_ops/src/atomic_ops.h",
         CLanguageRuntime.RJAVA_CRT + ".h"};
     
-    public MagicTypesForCGenerator(GeneratorOptions generatorOptions) {
-        super(generatorOptions);
+    public MagicTypesForCGenerator() {
     }
     
     @Override

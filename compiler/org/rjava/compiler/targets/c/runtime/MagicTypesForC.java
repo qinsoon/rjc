@@ -40,7 +40,7 @@ public class MagicTypesForC {
             SootEngine.RUN_SOOT = false;
             
             RJavaCompiler compiler = RJavaCompiler.newRJavaCompiler(compileUnboxedTypes);
-            MagicTypesForCGenerator generator = new MagicTypesForCGenerator(RJavaCompiler.getCurrentGeneratorOptions());
+            MagicTypesForCGenerator generator = new MagicTypesForCGenerator();
             compiler.setCodeGenerator(generator);
             compiler.internalCompile(RJavaCompiler.INTERNAL_COMPILE_MAGIC_TYPES);
         } catch (RJavaWarning e) {

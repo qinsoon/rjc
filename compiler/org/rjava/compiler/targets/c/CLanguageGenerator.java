@@ -90,10 +90,7 @@ public class CLanguageGenerator extends CodeGenerator {
     
     protected Set<String> referencedClasses;
     
-    protected CLanguageGeneratorOptions options;
-
-    public CLanguageGenerator(GeneratorOptions generatorOptions) {
-        this.options = (CLanguageGeneratorOptions) generatorOptions;
+    public CLanguageGenerator() {
         this.mainObj = RJavaCompiler.namedOutput;
     }
 

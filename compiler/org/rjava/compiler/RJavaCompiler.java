@@ -32,9 +32,17 @@ public class RJavaCompiler {
     public static int INTERNAL_COMPILE_LIB          = 2;
     
     private CompilationTask task;
-    private CodeGenerator codeGenerator;
-    private GeneratorOptions generatorOptions;
-    private StaticRestrictionChecker checker;
+    
+    private static CodeGenerator codeGenerator;
+    private static StaticRestrictionChecker checker;
+    private static GeneratorOptions options;
+    
+    {
+        // initialize Restriction Checker and Code Generator
+        checker = new StaticRestrictionChecker();
+        options = new CLanguageGeneratorOptions();
+        codeGenerator = new CLanguageGenerator();
+    }
     
     public static CompilationTask currentTask;
     
@@ -45,11 +53,6 @@ public class RJavaCompiler {
     
     private RJavaCompiler(CompilationTask task) {
     	this.task = task;
-    	
-        // initialize Restriction Checker and Code Generator
-        checker = new StaticRestrictionChecker();
-        generatorOptions = new CLanguageGeneratorOptions();
-        codeGenerator = new CLanguageGenerator(generatorOptions);
     }
     
     public void internalCompile(int compileType) throws RJavaWarning, RJavaError{
@@ -200,11 +203,14 @@ public class RJavaCompiler {
         singleton = new RJavaCompiler(t);
         return singleton;
     }
-    public static GeneratorOptions getCurrentGeneratorOptions() {
-        return singleton.generatorOptions;
-    }
     public static int isInternalCompiling() {
         return singleton.internalCompile;
+    }
+    public static CodeGenerator getCodeGenerator() {
+        return codeGenerator;
+    }
+    public static GeneratorOptions getGeneratorOptions() {
+        return options;
     }
     
     public static void usage() {
