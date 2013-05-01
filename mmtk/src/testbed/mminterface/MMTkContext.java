@@ -4,6 +4,8 @@ import org.mmtk.plan.CollectorContext;
 import org.mmtk.plan.MutatorContext;
 import org.rjava.restriction.rulesets.RJavaCore;
 
+import testbed.Main;
+
 @RJavaCore
 public class MMTkContext {
     public static MMTkContext currentContext;
@@ -19,7 +21,9 @@ public class MMTkContext {
     protected boolean running;
     
     public MMTkContext(CollectorContext collector) {
+        Main.println("MMTkContext" + contextCount);
         this.collector = collector;
+        this.collector.initCollector(slot);
         
         this.slot = contextCount;
         contextCount ++;        

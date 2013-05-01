@@ -244,14 +244,17 @@ public abstract class Plan implements Constants {
     Options.threads.updateDefaultValue(VM.collection.getDefaultThreads());
 
     // Create our parallel workers
+    System.out.println("Init parallel workers..");
     parallelWorkers.initGroup(Options.threads.getValue(), this);
 
     // Create the concurrent worker threads.
+    System.out.println("Init concurrent workers..");
     if (VM.activePlan.constraints().needsConcurrentWorkers()) {
       concurrentWorkers.initGroup(Options.threads.getValue(), this);
     }
 
     // Create our control thread.
+    System.out.println("new controller..");
     VM.collection.spawnCollectorContext(controlCollectorContext);
 
     // Allow mutators to trigger collection.

@@ -20,10 +20,14 @@ public class StringsExt extends Strings {
     @Override
     public int copyStringToChars(String src, char[] dst, int dstBegin,
             int dstEnd) {
-        for (int i = dstBegin; i < dstEnd; i++) {
-            dst[i] = src.charAt(i - dstBegin);
+        int count = 0;
+        for (int i=0; i <src.length(); i++) {
+          if (dstBegin > dstEnd) break;
+          dst[dstBegin] = src.charAt(i);
+          dstBegin++;
+          count++;
         }
-        return dstEnd - dstBegin;
+        return count;
     }
 
 }

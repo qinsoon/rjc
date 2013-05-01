@@ -1,5 +1,6 @@
 package testbed;
 
+import org.mmtk.utility.options.Options;
 import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.unboxed.ObjectReference;
 
@@ -16,6 +17,7 @@ public class TestbedRuntime {
     
     public static void boot() {
         MemoryManager.boot();
+        Options.verbose.setValue(5);
     }
     
     public static void run() {

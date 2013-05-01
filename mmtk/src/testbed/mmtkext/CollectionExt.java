@@ -22,12 +22,12 @@ public class CollectionExt extends Collection {
 
     @Override
     public int getDefaultThreads() {
-        return MMTkContext.MAX_CONTEXT;
+        return 1;
     }
 
     @Override
     public int getActiveThreads() {
-        return MMTkContext.contextCount;
+        return 1;
     }
 
     @Override
