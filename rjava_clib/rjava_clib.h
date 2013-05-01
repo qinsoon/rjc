@@ -13,6 +13,8 @@
 #include "java_lang_ClassNotFoundException.h"
 #include "java_lang_Class.h"
 #include "java_lang_Boolean.h"
+#include "java_lang_Thread.h"
+#include "java_lang_Runnable.h"
 
 #include "org_vmmagic_unboxed_Address.h"
 #include "org_vmmagic_unboxed_AddressArray.h"

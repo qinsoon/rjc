@@ -66,10 +66,8 @@ public class RClass implements DependencyEdgeNode, CompilationUnit{
     	
     	this.annotations = fetchAnnotations(internal);
     	
-    	if (isAppClass()) {
-    	    fetchMethods();
-    	    fetchFields();
-    	}
+        fetchMethods();
+        fetchFields();
     	
     	if (internal.hasSuperclass() && !internal.getSuperclass().getName().equals("java.lang.Object"))
     	    superClass = fromSootClass(internal.getSuperclass());
@@ -87,16 +85,21 @@ public class RClass implements DependencyEdgeNode, CompilationUnit{
     	    RMethod tmp = new RMethod(this, m);
     	    
     	    // a method maybe a twin for another method. See twin in RMethod
-    	    boolean validMethod = true;
-    	    for (RMethod method : methods) {
-    	        if (method.isTwin(tmp)) {
-    	            method.setTwin(tmp);
-    	            validMethod = false;
-    	        }
-    	    }
-    	    
-    	    if (validMethod)
+    	    if (isAppClass()) {
+        	    boolean validMethod = true;
+        	    for (RMethod method : methods) {
+        	        if (method.isTwin(tmp)) {
+        	            method.setTwin(tmp);
+        	            validMethod = false;
+        	        }
+        	    }
+        	    
+        	    if (validMethod) {
+        	        methods.add(tmp);
+        	    }
+    	    } else {
     	        methods.add(tmp);
+    	    }
     	}
     }
 
@@ -372,5 +375,12 @@ public class RClass implements DependencyEdgeNode, CompilationUnit{
     @Override
     public boolean isClassNode() {
         return true;
+    }
+    
+    public void dump() {
+        RJavaCompiler.debug("RClass: " + getName());
+        RJavaCompiler.debug("Methods:");
+        for (RMethod m : methods)
+            RJavaCompiler.debug(m);
     }
 }

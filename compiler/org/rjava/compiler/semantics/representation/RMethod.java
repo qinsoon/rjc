@@ -85,7 +85,8 @@ public class RMethod implements DependencyEdgeNode, CompilationUnit{
             parameters.add(RType.initWithClassName(t.toString()));
         }
         
-        if (internal.isConcrete()) {
+        // we dont care about the source code of library
+        if (internal.isConcrete() && klass.isAppClass()) {
             
             try {
                 // get body
@@ -145,14 +146,14 @@ public class RMethod implements DependencyEdgeNode, CompilationUnit{
     }
     
     public String toString() {
-	String ret = "<" + returnType.toString() + " " + getKlass().getName() + "." + name + "(";
-	for (int i = 0; i < parameters.size(); i++) {
-	    ret += parameters.get(i).toString();
-	    if (i != parameters.size() - 1)
-		ret += ",";
-	}
-	ret += ")>";
-	return ret;
+    	String ret = "<" + returnType + " " + getKlass().getName() + "." + name + "(";
+    	for (int i = 0; i < parameters.size(); i++) {
+    	    ret += parameters.get(i).toString();
+    	    if (i != parameters.size() - 1)
+    		ret += ",";
+    	}
+    	ret += ")>";
+    	return ret;
     }
 
     public List<RStatement> getBody() {
@@ -235,6 +236,9 @@ public class RMethod implements DependencyEdgeNode, CompilationUnit{
      * @return
      */
     public boolean isTwin(RMethod possibleTwin) {
+        if (isConstructor() || possibleTwin.isConstructor())
+            return false;
+        
         if (!name.equals(possibleTwin.name))
             return false;
         
@@ -244,6 +248,9 @@ public class RMethod implements DependencyEdgeNode, CompilationUnit{
         for (int i = 0; i < parameters.size(); i++)
             if (!parameters.get(i).equals(possibleTwin.parameters.get(i)))
                 return false;
+        
+        if (internal.getReturnType().equals(possibleTwin.internal.getReturnType()))
+            return false;
         
         // should be a twin, but we need to check if this method is already a twin for other method (that shouldn't happen)
         if (RJavaCompiler.ENABLE_ASSERTION)

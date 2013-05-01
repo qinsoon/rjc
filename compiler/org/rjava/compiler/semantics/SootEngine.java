@@ -59,8 +59,9 @@ public class SootEngine {
     }
     
     private void init() {
-        List<String> sootArgs = initSoot();  
+        List<String> sootArgs = initSoot();
     	resolveClasses();
+    	//Scene.v().loadNecessaryClasses();
     	if (RUN_SOOT)
     	    runSoot(sootArgs);
     }

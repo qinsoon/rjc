@@ -594,7 +594,7 @@ public class CLanguageRuntime {
     }
 
     public void generateGNUMakefile() throws RJavaError {
-        final String C_FLAGS = "-I . " + (RJavaCompiler.debugTarget ? "-g" : "-O3");
+        final String C_FLAGS = "-I . " + (RJavaCompiler.debugTarget ? "-g" : "-O3") + " -lpthread";
         /*
          *  generate makefile
          */

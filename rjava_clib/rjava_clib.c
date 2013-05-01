@@ -27,11 +27,17 @@ void rjava_lib_init() {
     rjava_init_header(&java_lang_Class_class_instance, &java_lang_Object_class_instance, sizeof(java_lang_Object_class));
     
     /* init for java_lang_Throwable */
-    rjava_init_header(&java_lang_Throwable_class_instance, &java_lang_Object_class_instance, sizeof(java_lang_Throwable_class));
+    rjava_init_header(&java_lang_Throwable_class_instance, &java_lang_Object_class_instance, sizeof(java_lang_Object_class));
     
     /* init for java_lang_Exception */
-    rjava_init_header(&java_lang_Exception_class_instance, &java_lang_Object_class_instance, sizeof(java_lang_Exception_class));
+    rjava_init_header(&java_lang_Exception_class_instance, &java_lang_Throwable_class_instance, sizeof(java_lang_Throwable_class));
     
     /* init for java_lang_ClassNotFoundException */
-    rjava_init_header(&java_lang_ClassNotFoundException_class_instance, &java_lang_Exception_class_instance, sizeof(java_lang_ClassNotFoundException_class));
+    rjava_init_header(&java_lang_ClassNotFoundException_class_instance, &java_lang_Exception_class_instance, sizeof(java_lang_Exception_class));
+    
+    /* init for java_lang_Thread */
+    rjava_init_header(&java_lang_Thread_class_instance, &java_lang_Object_class_instance, sizeof(java_lang_Object_class));
+    java_lang_Runnable* java_lang_Runnable_implemented_on_java_lang_Thread = malloc(sizeof(java_lang_Runnable));
+    java_lang_Runnable_implemented_on_java_lang_Thread -> run = java_lang_Thread_run;
+    rjava_add_interface_to_class(java_lang_Runnable_implemented_on_java_lang_Thread, sizeof(java_lang_Runnable), "java_lang_Runnable", (RJava_Common_Class*)&java_lang_Thread_class_instance);
 }
