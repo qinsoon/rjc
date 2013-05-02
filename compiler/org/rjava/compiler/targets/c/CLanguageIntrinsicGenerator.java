@@ -14,6 +14,7 @@ import org.rjava.compiler.semantics.representation.RType;
 import org.rjava.compiler.semantics.representation.stmt.RAssignStmt;
 import org.rjava.compiler.semantics.representation.stmt.RIdentityStmt;
 import org.rjava.compiler.semantics.representation.stmt.RInvokeStmt;
+import org.rjava.compiler.semantics.representation.stmt.RReturnVoidStmt;
 import org.rjava.compiler.targets.c.runtime.CLanguageRuntime;
 
 import soot.Body;
@@ -113,6 +114,11 @@ public class CLanguageIntrinsicGenerator {
                 && ((JIdentityStmt)stmt.internal()).getRightOp().toString().contains("parameter0")) {
             stmt.setIntrinsic(true);
             stmt.setCode("args = " + CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_INIT_ARGS, new String[]{"argc", "parameter0"}));
+        }
+        // call rjava_join_all_threads() before main method returns
+        else if (stmt instanceof RReturnVoidStmt && stmt.getMethod().isMainMethod()) {
+            stmt.setIntrinsic(true);
+            stmt.setCode("rjava_join_all_threads();return");
         }
     }
 

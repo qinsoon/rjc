@@ -28,4 +28,7 @@ void java_lang_Thread_run(void* this_parameter);
 void java_lang_Thread_start(void* this_parameter);
 void java_lang_Thread_dumpStack();
 
+// this is a runtime method, called at the end of main method
+void rjava_join_all_threads();
+
 #endif
