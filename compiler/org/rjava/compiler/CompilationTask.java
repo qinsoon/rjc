@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.rjava.compiler.exception.RJavaError;
 import org.rjava.compiler.exception.RJavaWarning;
+import org.rjava.compiler.semantics.SemanticMap;
 
 public class CompilationTask {
     String baseDir;
@@ -51,11 +52,19 @@ public class CompilationTask {
     }
     
     /**
-     * assume we will find the class for this class name
+     * Add a class to compilation list. If the list already contains such class name, do nothing.
+     * Assume we will find the class for this class name
      * @param className
      */
     public void addClassByClassName(String className) {
-        classes.add(className);
+        // we are not compiling rjava lib or java lib, then we only compile application class here
+        // only application class will be added to the list
+        if (RJavaCompiler.isInternalCompiling() == RJavaCompiler.INTERNAL_COMPILE_NONE)
+            if (!SemanticMap.isApplicationClass(className))
+                return;
+
+        if (!classes.contains(className))
+            classes.add(className);
     }
     
     public static void addFileToListRecursively(File dir, List<String> sources2) {

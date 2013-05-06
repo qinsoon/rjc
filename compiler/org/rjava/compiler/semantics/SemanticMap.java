@@ -53,15 +53,14 @@ public abstract class SemanticMap {
     	// get class-level info
     	engine = new SootEngine(task);
     	engine.addAllClasses();
-    	// all nested classes are added in this way (?)
+    	// all nested classes are added in this way
     	for (SootClass klass : engine.getAllAppClassesInScene()) {
     	    String name = klass.getName();
-    	    if (!isRJavaLib(name) && classes.get(name) == null) {
-    	        // add to semantic map
-    	        RClass.fromSootClass(klass);
-    	        // add to compilation task
-    	        task.addClassByClassName(name);
-    	    }
+
+    	    // add to semantic map
+	        RClass.fromSootClass(klass);
+	        // add to compilation task
+	        task.addClassByClassName(name);
     	}
     	
     	// init hierarchy
@@ -75,8 +74,7 @@ public abstract class SemanticMap {
     	    Set<RClass> needToCompile = hierarchy.getAncestorsOf(classes.get(className));
     	    
     	    for (RClass klass : needToCompile) {
-    	        if (!task.getClasses().contains(klass.getName()))
-    	            task.addClassByClassName(klass.getName());
+    	        task.addClassByClassName(klass.getName());
     	    }
     	}
     	

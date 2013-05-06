@@ -69,7 +69,8 @@ public class RClass implements DependencyEdgeNode, CompilationUnit{
         fetchMethods();
         fetchFields();
     	
-    	if (internal.hasSuperclass() && !internal.getSuperclass().getName().equals("java.lang.Object"))
+    	//if (internal.hasSuperclass() && !internal.getSuperclass().getName().equals("java.lang.Object"))
+        if (internal.hasSuperclass())
     	    superClass = fromSootClass(internal.getSuperclass());
     }
 
