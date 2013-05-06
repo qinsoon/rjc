@@ -230,6 +230,10 @@ public class RMethod implements DependencyEdgeNode, CompilationUnit{
         return getName().equals("<clinit>");
     }
     
+    public boolean isSynchronized() {
+        return internal.isSynchronized();
+    }
+    
     /**
      * are two methods twins. See {@link twin} in this class for details
      * @param possibleTwin

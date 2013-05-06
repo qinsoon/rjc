@@ -200,8 +200,9 @@ public class SootEngine {
     }
 
     public static SootClass resolveAndGetClass(String name) {
-        if (!Scene.v().containsClass(name))
+        if (!Scene.v().containsClass(name)) {
             SootResolver.v().resolveClass(name, SootClass.BODIES);
+        }
     	return Scene.v().getSootClass(name);
     }
     

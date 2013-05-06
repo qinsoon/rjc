@@ -1,5 +1,8 @@
 package org.rjava.test;
 
+import org.rjava.restriction.rulesets.RJavaCore;
+
+@RJavaCore
 public class RJavaThread {
     public static class Loop implements Runnable {
         public void run() {
@@ -22,6 +25,5 @@ public class RJavaThread {
         } catch (InterruptedException e) {
             
         }
-        
     }
 }

@@ -2,6 +2,7 @@
 #include <execinfo.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sched.h>
 
 // record all the created threads
 #define MAX_THREADS 1024
@@ -92,8 +93,20 @@ void java_lang_Thread_join_int64_t(void* this_parameter, int64_t millis) {
     java_lang_Thread_join(this_parameter);
 }
 
+void java_lang_Thread_join_int64_t_int32_t(void* this_parameter, int64_t millis, int32_t nanos) {
+    internal_wait_and_cancel(((java_lang_Thread*)this_parameter) -> internal_thread, millis * 1000000 + nanos);
+}
+
 void java_lang_Thread_sleep_int64_t(int64_t millis) {
     usleep(millis*1000);
+}
+
+void java_lang_Thread_sleep_int64_t_int32_t(int64_t millis, int32_t nanos) {
+    usleep(millis*1000 + nanos/1000);
+}
+
+void java_lang_Thread_yield() {
+    sched_yield();
 }
 
 /* as parameters to timer thread */
@@ -105,8 +118,7 @@ struct timer_struct {
 /* sleep for nanosec, and then cancel a thread */
 void* internal_timer_thread_func(void* param) {
     struct timer_struct* parsed_param = (struct timer_struct*) param;
-    int32_t usec_to_sleep = parsed_param->nanosec_to_wait / 1000;
-    usleep(usec_to_sleep);
+    usleep(parsed_param->nanosec_to_wait/1000);
     pthread_cancel(parsed_param->pthread_to_join);
     pthread_exit(NULL);
 }
