@@ -80,7 +80,8 @@ public class CLanguageRuntime {
         "stdio.h",
         "stdlib.h",
         "stdbool.h",
-        "inttypes.h"
+        "inttypes.h",
+        "pthread.h"
     };
     public static final String RJAVA_LIB = "rjava_clib";
     public static final String RJAVA_CRT = "rjava_crt";
@@ -116,6 +117,10 @@ public class CLanguageRuntime {
     public static final String INTERFACE_LIST_NODE_ATTR_ADDR = "address";
     public static final String INTERFACE_LIST_NODE_ATTR_NEXT = "next";
     public static final String INTERFACE_LIST_NODE_ATTR_SIZE = "interface_size";
+    
+    public static final String MUTEX_TYPE = "pthread_mutex_t";
+    public static final String INSTANCE_MUTEX = "instance_mutex";
+    public static final String CLASS_MUTEX = "class_mutex";
     
     /*
      * helper methods
@@ -344,7 +349,8 @@ public class CLanguageRuntime {
                 "  prevNewListNode = newListIter;" + NEWLINE + 
                 "}" + NEWLINE +
         
-                "((RJava_Common_Class*)this_class) -> interfaces = newListHead;" + NEWLINE;
+                "((RJava_Common_Class*)this_class) -> interfaces = newListHead;" + NEWLINE +
+                "pthread_mutex_init(&(((RJava_Common_Class*)this_class) -> " + CLASS_MUTEX + "), NULL);" + NEWLINE;
         HELPER_RJAVA_INIT_HEADER.setSource(RJAVA_INIT_HEADER_SOURCE);
         
         /**
@@ -534,13 +540,17 @@ public class CLanguageRuntime {
         out.increaseIndent();
         out.append(COMMON_CLASS_STRUCT + "* " + SUPER_CLASS + SEMICOLON + NEWLINE);
         out.append(INTERFACE_LIST_NODE + "* " + INTERFACE_LIST + SEMICOLON + NEWLINE);
+        out.append(MUTEX_TYPE + " " + CLASS_MUTEX + SEMICOLON + NEWLINE);
         out.decreaseIndent();
         out.append("}" + SEMICOLON + NEWLINE);
         out.append(NEWLINE);
         
         // instance struct
         out.append("typedef struct " + COMMON_INSTANCE_STRUCT + " {" + NEWLINE);
-        out.appendWithIndent("void* " + POINTER_TO_CLASS_STRUCT + SEMICOLON + NEWLINE);
+        out.increaseIndent();
+        out.append("void* " + POINTER_TO_CLASS_STRUCT + SEMICOLON + NEWLINE);
+        out.append(MUTEX_TYPE + " " + INSTANCE_MUTEX + SEMICOLON + NEWLINE);
+        out.decreaseIndent();
         out.append("} " + COMMON_INSTANCE_STRUCT + SEMICOLON + NEWLINE);
         
         out.append(NEWLINE);
@@ -575,6 +585,8 @@ public class CLanguageRuntime {
         
         // runtime helpers
         for (HelperMethod method : CRT_HELPERS) {
+            crtSource.append(NEWLINE);
+            crtSource.append(CLanguageGenerator.commentln(signatureHelper(method)));
             crtSource.append(signatureHelper(method) + " {" + NEWLINE);
             crtSource.appendWithIndent(method.getSource());
             crtSource.append("}" + NEWLINE);
@@ -709,7 +721,7 @@ public class CLanguageRuntime {
      * @return
      */
     public static String signatureHelper(HelperMethod method) {
-        String ret = method.getMethodDescriptor() + " " + method.getReturnType() + " " + method.getMethodName() + "(";
+        String ret = (method.getMethodDescriptor().equals("") ? "" : method.getMethodDescriptor() + " ") + method.getReturnType() + " " + method.getMethodName() + "(";
         ArrayList<HelperVariable> args = method.getParameters();
         for (int i = 0; i < args.size(); i++) {
             ret += args.get(i).getType() + " " + args.get(i).getName();

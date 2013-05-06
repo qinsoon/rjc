@@ -3,6 +3,9 @@
 #include <stdlib.h>
 
 inline void java_lang_Object_rjinit(void* this_parameter) {
+    // init instance mutex
+    pthread_mutex_init(&(((RJava_Common_Instance*)this_parameter) -> instance_mutex), NULL);
+    // set class
     ((RJava_Common_Instance*)this_parameter) -> class_struct = &java_lang_Object_class_instance;
     return;
 }
