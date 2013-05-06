@@ -6,3 +6,4 @@
    4.1 gcc: buildin_prefetch/CAS in magic types
    4.2 mac os: prebuilt boehm_gc.a, RawMemory
 5. Magic Type Generator is broken (dont know since when)
+6. Not supporting Thread.interrupt() and InterruptedException
