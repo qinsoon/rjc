@@ -6,6 +6,7 @@ void rjava_lib_init() {
     /* init for java_lang_Object */
     ((RJava_Common_Class*)(&java_lang_Object_class_instance)) -> super_class = NULL;
     ((RJava_Common_Class*)(&java_lang_Object_class_instance)) -> interfaces = NULL;
+    pthread_mutex_init( &(((RJava_Common_Class*)(&java_lang_Object_class_instance)) -> class_mutex), NULL);
     ((java_lang_Object_class*)(&java_lang_Object_class_instance)) -> toString = java_lang_Object_toString;
 
     /* init for java_lang_Integer */

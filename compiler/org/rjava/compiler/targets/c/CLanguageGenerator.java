@@ -22,6 +22,9 @@ import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.semantics.representation.RStatement;
 import org.rjava.compiler.semantics.representation.RType;
 import org.rjava.compiler.semantics.representation.stmt.RAssignStmt;
+import org.rjava.compiler.semantics.representation.stmt.RRetStmt;
+import org.rjava.compiler.semantics.representation.stmt.RReturnStmt;
+import org.rjava.compiler.semantics.representation.stmt.RReturnVoidStmt;
 import org.rjava.compiler.targets.CodeGenerator;
 import org.rjava.compiler.targets.CodeStringBuilder;
 import org.rjava.compiler.targets.GeneratorOptions;
@@ -631,6 +634,16 @@ public class CLanguageGenerator extends CodeGenerator {
         out.append(NEWLINE);
         out.append(commentln("stmts"));
         
+        if (method.isSynchronized()) {
+            if (!method.isStatic()) {
+                // lock on instance monitor
+                out.append("pthread_mutex_lock(&(((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*) " + THIS_PARAMETER + ") -> " + CLanguageRuntime.INSTANCE_MUTEX + "))" + SEMICOLON + NEWLINE);
+            } else {
+                // lock on class monitor
+                out.append("pthread_mutex_lock(&(((" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)(&" + name.get(method.getKlass(), false) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + ")) -> " + CLanguageRuntime.CLASS_MUTEX + "))" + SEMICOLON + NEWLINE);
+            }
+        }     
+        
         boolean firstStmt = true;
         for (RStatement rStmt : method.getBody()) {
             if (OUTPUT_JIMPLE_TO_SOURCE)
@@ -644,6 +657,18 @@ public class CLanguageGenerator extends CodeGenerator {
                 if (firstStmt && method.isConstructor()) {
                     out.append("((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*)" + THIS_PARAMETER + ") -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + " = &" + name.get(method.getKlass(), true) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + SEMICOLON + NEWLINE);
                     firstStmt = false;
+                }
+                
+                // if this method is synchronized, then we need to unlock mutex before returning
+                if (method.isSynchronized() && (rStmt instanceof RRetStmt || rStmt instanceof RReturnStmt || rStmt instanceof RReturnVoidStmt)) {
+                    // unlock mutex
+                    if (!method.isStatic()) {
+                        // unlock on instance monitor
+                        out.append("pthread_mutex_unlock(&(((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*) " + THIS_PARAMETER + ") -> " + CLanguageRuntime.INSTANCE_MUTEX + "))" + SEMICOLON + NEWLINE);
+                    } else {
+                        // unlock on class monitor
+                        out.append("pthread_mutex_unlock(&(((" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)(&" + name.get(method.getKlass(), false) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + ")) -> " + CLanguageRuntime.CLASS_MUTEX + "))" + SEMICOLON + NEWLINE);
+                    }
                 }
                 
                 out.append(stmt.get(rStmt) + SEMICOLON + NEWLINE);
