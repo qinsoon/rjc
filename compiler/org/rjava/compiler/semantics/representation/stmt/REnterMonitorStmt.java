@@ -5,6 +5,7 @@ import org.rjava.compiler.semantics.representation.RStatement;
 
 import soot.Unit;
 import soot.jimple.internal.AbstractStmt;
+import soot.jimple.internal.JEnterMonitorStmt;
 
 public class REnterMonitorStmt extends RStatement {
 
@@ -13,4 +14,7 @@ public class REnterMonitorStmt extends RStatement {
 	// TODO Auto-generated constructor stub
     }
 
+    public JEnterMonitorStmt internal() {
+        return (JEnterMonitorStmt) internal;
+    }
 }

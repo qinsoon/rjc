@@ -35,6 +35,8 @@ import soot.jimple.internal.JCastExpr;
 import soot.jimple.internal.JCmpExpr;
 import soot.jimple.internal.JCmpgExpr;
 import soot.jimple.internal.JCmplExpr;
+import soot.jimple.internal.JEnterMonitorStmt;
+import soot.jimple.internal.JExitMonitorStmt;
 import soot.jimple.internal.JGotoStmt;
 import soot.jimple.internal.JIdentityStmt;
 import soot.jimple.internal.JIfStmt;
@@ -210,11 +212,13 @@ public class CLanguageStatementGenerator {
     }
     
     private String get(REnterMonitorStmt stmt) throws RJavaError {
-        throw stmt.newIncompleteImplementationError("EnterMonitorStmt");
+        JEnterMonitorStmt internal = stmt.internal();
+        return "pthread_mutex_lock(&(((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*) " + name.fromSootValue(internal.getOp()) + ") -> " + CLanguageRuntime.INSTANCE_MUTEX + "))";
     }
     
     private String get(RExitMonitorStmt stmt) throws RJavaError {
-        throw stmt.newIncompleteImplementationError("ExitMonitorStmt");
+        JExitMonitorStmt internal = stmt.internal();
+        return "pthread_mutex_unlock(&(((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*) " + name.fromSootValue(internal.getOp()) + ") -> " + CLanguageRuntime.INSTANCE_MUTEX + "))";
     }
     
     private String get(RGotoStmt stmt) {
@@ -322,13 +326,12 @@ public class CLanguageStatementGenerator {
     }
     
     private String get(RThrowStmt stmt) throws RJavaError {
-        throw stmt.newIncompleteImplementationError("ThrowStmt");
+        return CLanguageGenerator.comment(stmt.internal().toString());
     }
     
     /*
      * from soot statement/expr representation
-     */
-  
+     */  
     private String fromSootJVirtualInvokeExpr(soot.jimple.internal.JVirtualInvokeExpr virtualInvoke) {
         String callingClass = virtualInvoke.getMethod().getDeclaringClass().getName();
         if (callingClass.startsWith("java.") || callingClass.startsWith("javax.") ||

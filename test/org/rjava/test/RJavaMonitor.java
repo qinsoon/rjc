@@ -5,17 +5,21 @@ import org.rjava.restriction.rulesets.RJavaCore;
 @RJavaCore
 public class RJavaMonitor {
     static class Worker implements Runnable {
+        static Object o = new Object();
+        
         public void run() {
             synchronizedMethod();
         }
         
-        public synchronized void synchronizedMethod() {
-            System.out.println("synchronized method starts");
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
+        public void synchronizedMethod() {
+            synchronized (o) {
+                System.out.println("synchronized method1 starts");
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                }
+                System.out.println("synchronized method1 ends");
             }
-            System.out.println("synchronized method ends");
         }
     }
 
