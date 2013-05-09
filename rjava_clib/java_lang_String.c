@@ -22,13 +22,14 @@ inline char java_lang_String_charAt_int32_t(void* this_parameter, int32_t index)
 }
 
 inline void java_lang_String_rjinit(void* this_parameter, char* str) {
+    java_lang_String* this = (java_lang_String*)this_parameter;
+    this->internal = (char*) malloc(sizeof(STRING_DEFAULT_LENGTH));
     strcpy(((java_lang_String*) this_parameter) -> internal, str);
     (((RJava_Common_Instance*)this_parameter) -> class_struct) = &java_lang_String_class_instance;
 }
 
 inline void java_lang_String_rjinit_java_lang_String(void* this_parameter, java_lang_String* str) {
-    strcpy(((java_lang_String*) this_parameter) -> internal, str -> internal);
-    (((RJava_Common_Instance*)this_parameter) -> class_struct) = &java_lang_String_class_instance;
+    java_lang_String_rjinit(this_parameter, str->internal);
 }
 
 inline int32_t java_lang_String_length(void* this_parameter) {

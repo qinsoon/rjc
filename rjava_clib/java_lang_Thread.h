@@ -10,7 +10,10 @@ typedef struct java_lang_Thread java_lang_Thread;
 struct java_lang_Thread {
     java_lang_Object instance_header;
     
-    void (*start_function)(void);
+    /* we extract run() from worker, but we also keep worker here since it is the first parameter to pass */
+    void (*start_function)(void*);
+    void* worker;
+    
     pthread_t internal_thread;
 };
 

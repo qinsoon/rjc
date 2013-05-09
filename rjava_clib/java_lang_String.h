@@ -9,9 +9,11 @@
 
 #define RJAVA_STR java_lang_String*
 
+#define STRING_DEFAULT_LENGTH INT32_MAX
+
 struct java_lang_String {
     java_lang_Object instance_header;
-    char internal[10000];
+    char* internal;
 };
 
 typedef struct java_lang_String_class {

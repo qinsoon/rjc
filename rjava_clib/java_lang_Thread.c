@@ -27,6 +27,7 @@ void java_lang_Thread_rjinit_java_lang_Runnable(void* this_parameter, void* runn
     RJava_Interface_Node* interface_list = ((RJava_Common_Class*)(((RJava_Common_Instance*)runnable) -> class_struct)) -> interfaces;
     java_lang_Runnable* runnable_interface = (java_lang_Runnable*)rjava_get_interface(interface_list, "java_lang_Runnable");
     t -> start_function = runnable_interface -> run;
+    t -> worker = runnable;
 
     (((RJava_Common_Instance*)this_parameter) -> class_struct) = &java_lang_Thread_class_instance;
 }
@@ -34,7 +35,7 @@ void java_lang_Thread_rjinit_java_lang_Runnable(void* this_parameter, void* runn
 void java_lang_Thread_run(void* this_parameter) {
     java_lang_Thread* t = (java_lang_Thread*) this_parameter;
     if (t -> start_function != NULL) {
-        t -> start_function();
+        t -> start_function(t -> worker);
     }
 }
 
