@@ -122,6 +122,9 @@ public class CLanguageRuntime {
     public static final String INSTANCE_MUTEX = "instance_mutex";
     public static final String CLASS_MUTEX = "class_mutex";
     
+    public static final String COND_VAR_TYPE = "pthread_cond_t";
+    public static final String INSTANCE_COND_VAR = "instance_cond";
+    
     /*
      * helper methods
      */
@@ -550,6 +553,7 @@ public class CLanguageRuntime {
         out.increaseIndent();
         out.append("void* " + POINTER_TO_CLASS_STRUCT + SEMICOLON + NEWLINE);
         out.append(MUTEX_TYPE + " " + INSTANCE_MUTEX + SEMICOLON + NEWLINE);
+        out.append(COND_VAR_TYPE + " " + INSTANCE_COND_VAR + SEMICOLON + NEWLINE);
         out.decreaseIndent();
         out.append("} " + COMMON_INSTANCE_STRUCT + SEMICOLON + NEWLINE);
         
