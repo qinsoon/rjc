@@ -20,7 +20,7 @@ public class TestbedRuntime {
         Options.verbose.setValue(5);
     }
     
-    public static void run() {
+    public static void allocSequence() {
         TestbedObject root = new TestbedObject(null);
         globalRoot = MemoryManager.alloc(root).toObjectReference();
     }

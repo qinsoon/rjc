@@ -11,6 +11,7 @@ import testbed.Configuration;
 import testbed.Main;
 import testbed.TestbedRuntime;
 import testbed.mminterface.select.PlanSelect;
+import testbed.runtime.Scheduler;
 import testbed.runtime.TestbedObject;
 
 @RJavaCore
@@ -36,7 +37,7 @@ public class MemoryManager {
         int offset = 0;
         int size = object.getSize();
         
-        MutatorContext mutator = MMTkContext.currentContext.mutator();
+        MutatorContext mutator = Scheduler.getCurrentContext().mutator();
         Address ret = mutator.alloc(size, align, offset, allocator, site);
         testbed.runtime.ObjectModel.initializeObject(ret, object);
         mutator.postAlloc(ret.toObjectReference(), ObjectReference.nullReference(), size, allocator);

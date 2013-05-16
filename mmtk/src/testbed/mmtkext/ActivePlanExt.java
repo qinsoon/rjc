@@ -13,6 +13,7 @@ import testbed.Main;
 import testbed.mminterface.MMTkContext;
 import testbed.mminterface.select.ConstraintsSelect;
 import testbed.mminterface.select.PlanSelect;
+import testbed.runtime.Scheduler;
 
 @RJavaCore
 public class ActivePlanExt extends ActivePlan {
@@ -28,58 +29,43 @@ public class ActivePlanExt extends ActivePlan {
 
     @Override
     public CollectorContext collector() {
-        return MMTkContext.currentContext.collector();
+        return Scheduler.getCurrentContext().collector();
     }
 
     @Override
     public boolean isMutator() {
-        return MMTkContext.currentContext.isMutator();
+        return Scheduler.getCurrentContext().isMutator();
     }
 
     @Override
     public MutatorContext mutator() {
-        return MMTkContext.currentContext.mutator();
+        return Scheduler.getCurrentContext().mutator();
     }
 
     @Override
     public Log log() {
-        return MMTkContext.currentContext.mutator().getLog();
+        return Scheduler.getCurrentContext().mutator().getLog();
     }
 
     @Override
     public int collectorCount() {
-        int sum = 0;
-        for (MMTkContext context : MMTkContext.allContexts)
-            if (context.isCollector())
-                sum ++;
-        
-        return sum;
+        return Scheduler.collectorCount;
     }
 
-    MMTkContext mutatorIterator;
+    int mutatorIdCursor = 0;
     
     @Override
     public void resetMutatorIterator() {
-        mutatorIterator = null;
-        for (int i = 0; i < MMTkContext.allContexts.length; i++) {
-            MMTkContext currentContext = MMTkContext.allContexts[i];
-            if (currentContext.isMutator())
-                mutatorIterator = currentContext;
-        }
-        
-        Main._assert(mutatorIterator != null, "failed to reset mutator iterator");
+        mutatorIdCursor = 0;
     }
 
     @Override
     public MutatorContext getNextMutator() {
-        Main._assert(mutatorIterator != null, 
-                "mutator iterator is null when trying to get next mutator");
-        
-        int currentSlot = mutatorIterator.getSlot();
-        for (int i = currentSlot + 1; i < MMTkContext.MAX_CONTEXT; i++) {
-            if (MMTkContext.allContexts[i].isMutator())
-                return MMTkContext.allContexts[i].mutator();
-        }
+        for (int i = mutatorIdCursor; i < Scheduler.mutatorCount; i++)
+            if (Scheduler.mutatorContexts[i] != null) {
+                mutatorIdCursor++;
+                return Scheduler.mutatorContexts[i].mutator();
+            }
         
         return null;
     }

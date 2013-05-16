@@ -5,31 +5,22 @@ import org.mmtk.plan.MutatorContext;
 import org.rjava.restriction.rulesets.RJavaCore;
 
 import testbed.Main;
+import testbed.TestbedRuntime;
+import testbed.runtime.Scheduler;
 
 @RJavaCore
-public class MMTkContext {
-    public static MMTkContext currentContext;
+public class MMTkContext implements Runnable{  
+    private static int idCount = 0;
+    protected int id;
     
-    public static final int MAX_CONTEXT = 5;
-    public static int contextCount = 0;
-    public static MMTkContext[] allContexts = new MMTkContext[MAX_CONTEXT];    
-    
-    protected int slot;
     protected MutatorContext mutator = new org.mmtk.plan.nogc.NoGCMutator();
     protected CollectorContext collector;
     
-    protected boolean running;
-    
     public MMTkContext(CollectorContext collector) {
-        Main.println("MMTkContext" + contextCount);
-        this.collector = collector;
-        this.collector.initCollector(slot);
-        
-        this.slot = contextCount;
-        contextCount ++;        
-        allContexts[slot] = this;
-        
-        currentContext = this;
+        this.collector = collector;       
+        this.id = idCount;
+        this.collector.initCollector(id);
+        idCount ++;
     }
     
     public MutatorContext mutator() {
@@ -48,15 +39,17 @@ public class MMTkContext {
         return collector != null;
     }
     
-    public int getSlot() {
-        return slot;
+    public int getId() {
+        return id;
     }
-    
-    public boolean isRunning() {
-        return running;
-    }
-    
-    public void setRunning(boolean running) {
-        this.running = running;
+
+    @Override
+    public void run() {
+        if (isCollector()) {
+            collector.run();
+        } else {
+            // mutator's job
+            TestbedRuntime.allocSequence();
+        }
     }
 }

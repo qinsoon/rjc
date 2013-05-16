@@ -17,7 +17,7 @@ public class CollectionExt extends Collection {
     @Override
     @Interruptible
     public void spawnCollectorContext(CollectorContext context) {
-        Scheduler.startMMTkContext(new MMTkContext(context));
+        Scheduler.newCollectorThread(new MMTkContext(context));
     }
 
     @Override
@@ -43,7 +43,7 @@ public class CollectionExt extends Collection {
 
     @Override
     public void requestMutatorFlush() {
-        MMTkContext.currentContext.mutator().flush();
+        Scheduler.getCurrentContext().mutator().flush();
     }
 
     @Override
