@@ -1,33 +1,32 @@
 package testbed.mmtkext;
 
 import org.mmtk.vm.Lock;
+import org.rjava.nativeext.RawConcurrency;
 import org.rjava.restriction.rulesets.RJavaCore;
 
 @RJavaCore
 public class LockExt extends Lock {
+    private String name;
+    private Object lock = new Object();
 
     @Override
     public void setName(String str) {
-        // TODO Auto-generated method stub
-
+        this.name = str;
     }
 
     @Override
     public void acquire() {
-        // TODO Auto-generated method stub
-
+        RawConcurrency.mutexLock(lock);
     }
 
     @Override
     public void check(int w) {
-        // TODO Auto-generated method stub
-
+        
     }
 
     @Override
-    public void release() {
-        // TODO Auto-generated method stub
-
+    public synchronized void release() {
+        RawConcurrency.mutexUnlock(lock);
     }
 
 }

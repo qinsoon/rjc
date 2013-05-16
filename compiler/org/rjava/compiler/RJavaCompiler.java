@@ -221,6 +221,7 @@ public class RJavaCompiler {
     	usage += "Options:\n";
     	usage += "-m\t\t\tmakes compiler mute (output nothing except warning/error)\n";
     	usage += "-l [file_name]\t\t\ttakes source files from the file named\n";
+    	usage += "-o [file_name]\t\t\texecutable name\n";
     	error(usage);
     }
 

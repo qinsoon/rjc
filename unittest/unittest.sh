@@ -11,8 +11,8 @@ my $test_base = "src";
 
 my $rjc = "org.rjava.compiler.RJavaCompiler";
 
-my $mute = "> /dev/null 2>&1";
-#my $mute = "";
+#my $mute = "> /dev/null 2>&1";
+my $mute = "";
 
 if ($ARGV[0] ne "-skip-compile") {
 print "generating compiler jar...";
@@ -70,6 +70,7 @@ sub run_test() {
 	my $local_fail = 0;
 	my $local_succ = 0;
 	foreach (@out) {
+		print "$_\n";
 		($test_name, $result) = ($_ =~ m/(.*):(.*)/);
 		if ($result eq "success") {
 			$success_exec ++;

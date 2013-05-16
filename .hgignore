@@ -5,6 +5,6 @@ syntax: regexp
 ?\.gv
 output\\*
 c_test\\*
-mmtk/mmtk/\\*
+mmtk/src\\*
 mmtk/common/\\*
 build\\*

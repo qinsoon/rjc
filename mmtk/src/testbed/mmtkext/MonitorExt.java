@@ -1,33 +1,34 @@
 package testbed.mmtkext;
 
 import org.mmtk.vm.Monitor;
+import org.rjava.nativeext.RawConcurrency;
 import org.rjava.restriction.rulesets.RJavaCore;
 
 @RJavaCore
 public class MonitorExt extends Monitor {
+    private Object lock = new Object();
 
     @Override
     public void lock() {
-        // TODO Auto-generated method stub
-
+        RawConcurrency.mutexLock(lock);
     }
 
     @Override
     public void unlock() {
-        // TODO Auto-generated method stub
-
+        RawConcurrency.mutexUnlock(lock);
     }
 
     @Override
     public void await() {
-        // TODO Auto-generated method stub
-
+        try {
+            lock.wait();
+        } catch (InterruptedException ignore) {
+        }
     }
 
     @Override
     public void broadcast() {
-        // TODO Auto-generated method stub
-
+        lock.notifyAll();
     }
 
 }

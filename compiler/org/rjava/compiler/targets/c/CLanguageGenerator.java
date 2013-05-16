@@ -736,7 +736,7 @@ public class CLanguageGenerator extends CodeGenerator {
 
     public void setMainObj(String mainObj) {
         if (this.mainObj != null) {
-            RJavaCompiler.warning("overwriting mainObj from " + this.mainObj + " to " + mainObj);
+            RJavaCompiler.warning("trying overwrite mainObj from " + this.mainObj + " to " + mainObj + ", ignored!");
             return;
         }
         

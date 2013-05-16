@@ -1,9 +1,11 @@
 package org.rjava.nativeext;
 
+import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.Extent;
 import org.vmmagic.unboxed.Offset;
 
+@RJavaCore
 public abstract class RawMemory {
     public static native Address malloc(int size);
     
