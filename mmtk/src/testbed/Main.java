@@ -12,7 +12,7 @@ public class Main {
         print("DONE.\n");
         
         print("[RUN]...\n");
-        TestbedRuntime.run();
+        TestbedRuntime.start();
     }
     
     public static void println(Object message) {

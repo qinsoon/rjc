@@ -52,10 +52,10 @@ public class Scheduler {
     public static MMTkContext getCurrentContext() {
         Thread current = getCurrentThread();
         for (int i = 0; i < mutatorCount; i++)
-            if (mutatorThreads[i].equals(current))
+            if (mutatorThreads[i].hashCode() == current.hashCode())
                 return mutatorContexts[i];
         for (int i = 0; i < collectorCount; i++)
-            if (collectorThreads[i].equals(current))
+            if (collectorThreads[i].hashCode() == current.hashCode())
                 return collectorContexts[i];
         
         return null;
@@ -64,10 +64,16 @@ public class Scheduler {
     public static Object gcLock = new Object();
     public static boolean gcTriggering = false;
     public static void stopAllMutators() {
-
+        synchronized(gcLock) {
+            Main._assert(gcTriggering == false, "gcTriggering is already true when trying to set it to true again");
+            gcTriggering = true;
+        }
     }
     
     public static void resumeAllMutators() {
-
+        synchronized(gcLock) {
+            Main._assert(gcTriggering == true, "gcTriggering is false when trying to set it to false");
+            gcTriggering = false;
+        }
     }
 }

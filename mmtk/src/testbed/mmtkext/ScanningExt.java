@@ -12,6 +12,7 @@ import testbed.Main;
 import testbed.TestbedRuntime;
 import testbed.mminterface.MMTkContext;
 import testbed.runtime.ObjectModel;
+import testbed.runtime.Scheduler;
 
 @RJavaCore
 public class ScanningExt extends Scanning {
@@ -40,7 +41,7 @@ public class ScanningExt extends Scanning {
 
     @Override
     public void notifyInitialThreadScanComplete() {
-        MMTkContext.currentContext.mutator().flushRememberedSets();
+        Scheduler.getCurrentContext().mutator().flushRememberedSets();
     }
 
     @Override
@@ -50,7 +51,10 @@ public class ScanningExt extends Scanning {
 
     @Override
     public void computeGlobalRoots(TraceLocal trace) {
-        trace.processRootEdge(TestbedRuntime.globalRoot.toAddress(), true);
+        for (int i = 0; i < TestbedRuntime.rootsCount; i++) {
+            ObjectReference root = TestbedRuntime.globalRoots.get(i);
+            trace.processRootEdge(root.toAddress(), true);
+        }
     }
 
     @Override

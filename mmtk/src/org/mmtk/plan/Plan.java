@@ -913,8 +913,22 @@ public abstract class Plan implements Constants {
    * @return <code>true</code> if a collection is requested by the plan.
    */
   protected boolean collectionRequired(boolean spaceFull, Space space) {
+    Log.write("collection required?");
+    Log.write("spaceFull=");
+    Log.write(spaceFull);
+    
     boolean stressForceGC = stressTestGCRequired();
+    Log.write(",stressForceGC=");
+    Log.write(stressForceGC);
+    
     boolean heapFull = getPagesReserved() > getTotalPages();
+    Log.write(",heapFull=");
+    Log.write(heapFull);
+    Log.write("(pageReserved=");
+    Log.write(getPagesReserved());
+    Log.write(",totalPages=");
+    Log.write(getTotalPages());
+    Log.writeln(")");
 
     return spaceFull || stressForceGC || heapFull;
   }

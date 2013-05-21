@@ -22,6 +22,7 @@ public class CollectionExt extends Collection {
 
     @Override
     public int getDefaultThreads() {
+        // FIXME: need to be configurable
         return 1;
     }
 
@@ -33,12 +34,12 @@ public class CollectionExt extends Collection {
     @Override
     @Unpreemptible
     public void blockForGC() {
-        Scheduler.stopCurrentContext();
+        Scheduler.getCurrentContext().waitForGC();
     }
 
     @Override
     public void prepareMutator(MutatorContext m) {
-        
+        // do nothing
     }
 
     @Override

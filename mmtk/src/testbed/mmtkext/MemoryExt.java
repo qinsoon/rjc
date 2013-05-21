@@ -3,6 +3,7 @@ package testbed.mmtkext;
 import org.mmtk.policy.ImmortalSpace;
 import org.mmtk.utility.heap.VMRequest;
 import org.mmtk.vm.Memory;
+import org.rjava.nativeext.Native;
 import org.rjava.nativeext.RawMemory;
 import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.pragma.Inline;
@@ -62,7 +63,9 @@ public class MemoryExt extends Memory {
        Address ret = RawMemory.mmap(start, Extent.fromIntZeroExtend(size), prot, flags, -1, Offset.zero());
        if (ret.EQ(start))
            return 0;
-       else return ret.toInt();
+       else{
+           return Native.errno();
+       }
     }
 
     @Override
