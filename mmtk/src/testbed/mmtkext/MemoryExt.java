@@ -58,6 +58,10 @@ public class MemoryExt extends Memory {
 
     @Override
     public int dzmmap(Address start, int size) {
+       System.out.print("mmap at ");
+       System.out.print(start.toInt());
+       System.out.print(", of size ");
+       System.out.println(size);
        int prot = RawMemory.PROT_READ | RawMemory.PROT_WRITE | RawMemory.PROT_EXEC;
        int flags = RawMemory.MAP_ANONYMOUS | RawMemory.MAP_PRIVATE | RawMemory.MAP_FIXED;
        Address ret = RawMemory.mmap(start, Extent.fromIntZeroExtend(size), prot, flags, -1, Offset.zero());
