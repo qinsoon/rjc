@@ -5,10 +5,22 @@ import org.vmmagic.unboxed.Address;
 
 @RJavaCore
 public abstract class Constants {
-    public static final Address HEAP_START          = Address.fromIntZeroExtend(0x31000000);
-    public static final Address CONTIGUOUS_START    = Address.fromIntZeroExtend(0x36800000);
-    public static final Address HEAP_END            = Address.fromIntZeroExtend(0x80000000);
+    public static final Address HEAP_START;
+    public static final Address CONTIGUOUS_START;
+    public static final Address HEAP_END;
     
+    static {
+        if (Configuration.BUILD_FOR_64_ADDRESS) {
+            HEAP_START = Address.fromLong(0x131000000L);
+            CONTIGUOUS_START = Address.fromLong(0x1368000000L);
+            HEAP_END = Address.fromLong(0x180000000L);
+        } else {
+            HEAP_START          = Address.fromIntZeroExtend(0x31000000);
+            CONTIGUOUS_START    = Address.fromIntZeroExtend(0x36800000);
+            HEAP_END            = Address.fromIntZeroExtend(0x80000000);
+        }
+    }
+
     /*
      * RJAVA type length
      */
