@@ -399,8 +399,11 @@ public class CLanguageRuntime {
         });
         final String RJAVA_ACCESS_ARRAY_SOURCE = 
                 (RJavaCompiler.getGeneratorOptions().allowArrayBoundCheck() ?
-                ("int length = " + invokeHelper(HELPER_RJAVA_LENGTH_OF_ARRAY, new String[]{"array"}) + SEMICOLON + NEWLINE +
-                invokeHelper(HELPER_RJAVA_ASSERT, new String[]{"index < length && index >= 0", "\"index out of bounds\""}) + SEMICOLON + NEWLINE) : "") +
+                        ("int length = " + invokeHelper(HELPER_RJAVA_LENGTH_OF_ARRAY, new String[]{"array"}) + SEMICOLON + NEWLINE +
+                        "char* str = (char*)" + CLanguageGenerator.MALLOC + "(1000)" + SEMICOLON + NEWLINE +
+                        "sprintf(str, \"index(%d) out of bounds(%d)\", index, length)" + SEMICOLON + NEWLINE +
+                        invokeHelper(HELPER_RJAVA_ASSERT, new String[]{"index < length && index >= 0", "str"}) + SEMICOLON + NEWLINE) 
+                        : "") +
                 "long ele_size = *((long*)(array + sizeof(int)));" + NEWLINE +
                 "return (array + sizeof(int) + sizeof(long) + ele_size * index);" + NEWLINE;
         HELPER_RJAVA_ACCESS_ARRAY.setSource(RJAVA_ACCESS_ARRAY_SOURCE);

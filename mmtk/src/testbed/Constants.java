@@ -11,9 +11,9 @@ public abstract class Constants {
     
     static {
         if (Configuration.BUILD_FOR_64_ADDRESS) {
-            HEAP_START = Address.fromLong(0x131000000L);
-            CONTIGUOUS_START = Address.fromLong(0x1368000000L);
-            HEAP_END = Address.fromLong(0x180000000L);
+            HEAP_START          = Address.fromLong(0x131000000L);
+            CONTIGUOUS_START    = Address.fromLong(0x136800000L);
+            HEAP_END            = Address.fromLong(0x180000000L);
         } else {
             HEAP_START          = Address.fromIntZeroExtend(0x31000000);
             CONTIGUOUS_START    = Address.fromIntZeroExtend(0x36800000);
