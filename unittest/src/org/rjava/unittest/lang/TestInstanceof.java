@@ -17,6 +17,12 @@ public class TestInstanceof extends UnitTest {
         
         start("Test instanceof parent class");
         check(testInstanceofParentClass());
+        
+        start("Test instanceof child class");
+        check(testInstanceofChildClass());
+        
+        start("Test instanceof parent class 2");
+        check(testInstanceofParentClass2());
     }
 
     public static boolean testInstanceofSelfClass() {
@@ -26,6 +32,16 @@ public class TestInstanceof extends UnitTest {
     
     public static boolean testInstanceofParentClass() {
         Child instance = new Child();
+        return instance instanceof Parent;
+    }
+    
+    public static boolean testInstanceofChildClass() {
+        Parent instance = new Child();
+        return instance instanceof Child;
+    }
+    
+    public static boolean testInstanceofParentClass2() {
+        Parent instance = new Child();
         return instance instanceof Parent;
     }
 }
