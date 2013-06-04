@@ -58,7 +58,8 @@ public abstract class Space implements Constants {
 
   // the following is somewhat arbitrary for the 64 bit system at this stage
   // FIXME: need to make the code work for 64 bits
-  public static final int LOG_ADDRESS_SPACE = (BYTES_IN_ADDRESS == 4) ? 32 : 40;    // FIXME: 64 bits - why 40?
+  //public static final int LOG_ADDRESS_SPACE = (BYTES_IN_ADDRESS == 4) ? 32 : 40;    // FIXME: 64 bits - why 40?
+  public static final int LOG_ADDRESS_SPACE = Constants.LOG_BYTES_IN_ADDRESS_SPACE;
   public static final int LOG_BYTES_IN_CHUNK = 22;
   public static final int BYTES_IN_CHUNK = 1 << LOG_BYTES_IN_CHUNK;
   public static final int PAGES_IN_CHUNK = 1 << (LOG_BYTES_IN_CHUNK - LOG_BYTES_IN_PAGE);

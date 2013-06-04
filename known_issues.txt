@@ -7,3 +7,4 @@
    4.2 mac os: prebuilt boehm_gc.a, RawMemory, wait() (use mach time)
 5. Magic Type Generator is broken (dont know since when)
 6. Not supporting Thread.interrupt() and InterruptedException
+7. System.out.print() only outputs limited number of chars (probably problem with internal length of char*)

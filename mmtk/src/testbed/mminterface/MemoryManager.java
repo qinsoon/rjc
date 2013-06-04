@@ -3,6 +3,7 @@ package testbed.mminterface;
 import org.mmtk.plan.MutatorContext;
 import org.mmtk.plan.Plan;
 import org.mmtk.utility.heap.HeapGrowthManager;
+import org.mmtk.utility.options.Options;
 import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.ObjectReference;
@@ -28,6 +29,9 @@ public class MemoryManager {
         
         Main.print("-Enable collection\n");
         PlanSelect.getPlan().enableCollection();
+        
+        Main.print("-Setting verbose\n");
+        Options.verbose.setValue(Configuration.GC_VERBOSE);
     }
     
     public static Address alloc(TestbedObject object) {

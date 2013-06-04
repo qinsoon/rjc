@@ -33,46 +33,6 @@ public class CLanguageRuntime {
 
     public static final int MEMORY_MANAGEMENT_SCHEME = GC_MALLOC_PREBUILT;
     
-    CLanguageGenerator generator;
-    CLanguageNameGenerator name;
-    
-    public CLanguageRuntime(CLanguageGenerator generator) {
-        this.generator = generator;
-        name = new CLanguageNameGenerator(generator);
-        
-        // atomic ops lib
-        final boolean ATOMIC_OPS_PREBUILT = true;
-        if (ATOMIC_OPS_PREBUILT) {
-            MAKE_SUBTASK.put("libatomic_ops.a", "libatomic_ops.a:\n" +
-                "\tcp prebuilt/libatomic_ops.a libatomic_ops.a\n");
-        } else MAKE_SUBTASK.put("boehm-gc/libatomic_ops/src/atomic_ops.a", "boehm-gc/libatomic_ops/src/atomic_ops.a:\n" +
-        		"\tcd boehm-gc/libatomic_ops;./configure;make\n");
-        
-        // malloc lib
-        switch (MEMORY_MANAGEMENT_SCHEME) {
-        case DEFAULT_MALLOC: 
-            CLanguageGenerator.MALLOC = "malloc";
-            break;
-        case GC_MALLOC:
-            CLanguageGenerator.MALLOC = "GC_malloc";
-            EXTRA_INCLUDE.add(includeNonStandardHeader("boehm-gc/include/gc.h"));
-            MAKE_SUBTASK.put("boehm-gc.a", "boehm-gc.a:\n" +
-                    "\tcd boehm-gc;autoreconf -vif;automake --add-missing;./configure;make -f Makefile.direct\n" +
-            		"\tcp boehm-gc/gc.a boehm-gc.a\n");
-            break;
-        case GC_MALLOC_PREBUILT:
-            CLanguageGenerator.MALLOC = "GC_malloc";
-            EXTRA_INCLUDE.add(includeNonStandardHeader("boehm-gc/include/gc.h"));
-            MAKE_SUBTASK.put("boehm-gc.a", "boehm-gc.a:\n" +
-                    "\tcp prebuilt/boehm-gc.a boehm-gc.a\n");
-            break;
-        case DL_MALLOC:
-            CLanguageGenerator.MALLOC = "malloc";
-            MAKE_SUBTASK.put("dlmalloc.o", "dlmalloc.o:\n\tgcc -O3 -c -o dlmalloc.o dlmalloc.c\n");
-            break;
-        }
-    }
-    
     /*
      * RJava's C implementation helpers
      */
@@ -97,6 +57,41 @@ public class CLanguageRuntime {
     public static final ArrayList<String> EXTRA_INCLUDE = new ArrayList<String>();
     public static final HashMap<String, String> MAKE_SUBTASK = new HashMap<String, String>();
     public static final String RJAVA_LIB_DIR = "rjava_clib/";
+    
+    static {
+        
+        // atomic ops lib
+        final boolean ATOMIC_OPS_PREBUILT = true;
+        if (ATOMIC_OPS_PREBUILT) {
+            MAKE_SUBTASK.put("libatomic_ops.a", "libatomic_ops.a:\n" +
+                "\tcp prebuilt/libatomic_ops.a libatomic_ops.a\n");
+        } else MAKE_SUBTASK.put("boehm-gc/libatomic_ops/src/atomic_ops.a", "boehm-gc/libatomic_ops/src/atomic_ops.a:\n" +
+                "\tcd boehm-gc/libatomic_ops;./configure;make\n");
+        
+        // malloc lib
+        switch (MEMORY_MANAGEMENT_SCHEME) {
+        case DEFAULT_MALLOC: 
+            CLanguageGenerator.MALLOC = "malloc";
+            break;
+        case GC_MALLOC:
+            CLanguageGenerator.MALLOC = "GC_malloc";
+            EXTRA_INCLUDE.add(includeNonStandardHeader("boehm-gc/include/gc.h"));
+            MAKE_SUBTASK.put("boehm-gc.a", "boehm-gc.a:\n" +
+                    "\tcd boehm-gc;autoreconf -vif;automake --add-missing;./configure;make -f Makefile.direct\n" +
+                    "\tcp boehm-gc/gc.a boehm-gc.a\n");
+            break;
+        case GC_MALLOC_PREBUILT:
+            CLanguageGenerator.MALLOC = "GC_malloc";
+            EXTRA_INCLUDE.add(includeNonStandardHeader("boehm-gc/include/gc.h"));
+            MAKE_SUBTASK.put("boehm-gc.a", "boehm-gc.a:\n" +
+                    "\tcp prebuilt/boehm-gc.a boehm-gc.a\n");
+            break;
+        case DL_MALLOC:
+            CLanguageGenerator.MALLOC = "malloc";
+            MAKE_SUBTASK.put("dlmalloc.o", "dlmalloc.o:\n\tgcc -O3 -c -o dlmalloc.o dlmalloc.c\n");
+            break;
+        }
+    }
     
     /*
      * RJava's C Object
@@ -171,6 +166,11 @@ public class CLanguageRuntime {
      * void rjava_assert(bool cond);
      */
     public static final HelperMethod HELPER_RJAVA_ASSERT;
+    /**
+     * implements instanceof bytecode
+     * bool rjava_instanceof(void* instance, void* class_struct);
+     */
+    public static final HelperMethod HELPER_RJAVA_INSTANCEOF;
     
     /*
      *  array implements: an array is a void* that points to a structure (in memory) like this
@@ -378,6 +378,27 @@ public class CLanguageRuntime {
         HELPER_RJAVA_DEBUG_PRINT_HEADER.setSource(RJAVA_DEBUG_PRINT_HEADER_SOURCE);
         
         /**
+         * implements instanceof bytecode
+         * bool rjava_instanceof(void* instance, void* class_struct);
+         */
+        HELPER_RJAVA_INSTANCEOF = new HelperMethod("rjava_instanceof", "bool", new HelperVariable[]{
+                                                                new HelperVariable("void*", "instance"),
+                                                                new HelperVariable("void*", "class_struct")
+        });
+        final String RJAVA_INSTANCEOF_SOURCE = 
+                "if (" +
+                "((" + COMMON_INSTANCE_STRUCT + "*) instance) -> " + POINTER_TO_CLASS_STRUCT + " == class_struct" +
+                ")" + NEWLINE +
+                "return 1" + SEMICOLON + NEWLINE +
+                COMMON_CLASS_STRUCT + "* super_struct = ((" + COMMON_CLASS_STRUCT + "*)(((" + COMMON_INSTANCE_STRUCT + "*) instance) -> " + POINTER_TO_CLASS_STRUCT + ")) -> " + SUPER_CLASS + SEMICOLON + NEWLINE +
+                "while(super_struct != NULL) {" + NEWLINE +
+                "  if (super_struct == class_struct) return 1" + SEMICOLON + NEWLINE +
+                "  super_struct = super_struct -> " + SUPER_CLASS + SEMICOLON + NEWLINE +
+                "}" + NEWLINE +
+                "return 0" + SEMICOLON + NEWLINE;
+        HELPER_RJAVA_INSTANCEOF.setSource(RJAVA_INSTANCEOF_SOURCE);
+        
+        /**
          * used to implement array.length
          * inline int rjava_length_of_array(void* array);
          */
@@ -501,7 +522,17 @@ public class CLanguageRuntime {
         CRT_HELPERS.add(HELPER_RJAVA_NEW_MULTIARRAY);
         CRT_HELPERS.add(HELPER_RJAVA_C_ARRAY_TO_RJAVA_ARRAY);
         CRT_HELPERS.add(HELPER_RJAVA_ASSERT);
+        CRT_HELPERS.add(HELPER_RJAVA_INSTANCEOF);
     }
+    
+    
+    CLanguageGenerator generator;
+    CLanguageNameGenerator name;
+    
+    public CLanguageRuntime(CLanguageGenerator generator) {
+        this.generator = generator;
+        name = new CLanguageNameGenerator(generator);
+    }    
     
     public void generateCRuntime() throws RJavaError {
         /*

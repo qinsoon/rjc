@@ -579,12 +579,12 @@ public class CLanguageStatementGenerator {
      */
     private String fromSootJInstanceOfExpr(JInstanceOfExpr expr) {
         // e.g. temp instanceof org.mmtk.plan.ComplexPhase
-        // will translate to: ((RJava_Common_Instance*) temp) -> class_struct == &org_mmtk_plan_ComplexPhase_class_instance;
-        String ret = "(";
-        ret += "(" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*)" + name.fromSootValue(expr.getOp());
-        ret += ")";
-        ret += " -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + " == &" + name.fromSootType(expr.getCheckType(), false) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX;
-        return "(" + ret + ")";
+        // will translate to a call to helper method rjava_instanceof(temp, &org_mmtk_plan_CompelxPhase_class_instance);
+        String ret = CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_INSTANCEOF, new String[]{
+                "(void*)" + name.fromSootValue(expr.getOp()),
+                "(void*)&" + name.fromSootType(expr.getCheckType(), false) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX
+                });
+        return ret;
     }
     
     /*

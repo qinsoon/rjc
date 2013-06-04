@@ -22,7 +22,6 @@ public class TestbedRuntime {
     
     public static void boot() {
         MemoryManager.boot();
-        Options.verbose.setValue(10);
     }
     
     public static void start() {
