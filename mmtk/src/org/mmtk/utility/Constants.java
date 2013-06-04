@@ -131,6 +131,7 @@ public interface Constants {
   int BITS_IN_PAGE = 1 << LOG_BITS_IN_PAGE;
 
   /* Assume byte-addressability */
+  // FIXME: need to make the code work for the case that address space doesn't start from Address.zero()
   byte LOG_BYTES_IN_ADDRESS_SPACE = (byte) BITS_IN_ADDRESS;
 
   /**

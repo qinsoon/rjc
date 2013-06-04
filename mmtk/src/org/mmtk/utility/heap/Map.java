@@ -33,6 +33,7 @@ import org.vmmagic.unboxed.Word;
 public class Map {
 
   /** set the map base address so that we have an unused {@code null} chunk at the bottome of the space for 64 bit */
+  // FIXME: need to make the code work for 64 bits
   private static final Address MAP_BASE_ADDRESS = Space.BITS_IN_ADDRESS == 32 ? Address.zero() : Space.HEAP_START.minus(Space.BYTES_IN_CHUNK);
 
   /****************************************************************************
@@ -74,6 +75,7 @@ public class Map {
     if (VM.VERIFY_ASSERTIONS)
         VM.assertions._assert(Space.BITS_IN_ADDRESS == Space.LOG_ADDRESS_SPACE ||
             Space.HEAP_END.diff(MAP_BASE_ADDRESS).toWord().rshl(Space.LOG_ADDRESS_SPACE).isZero());
+        // FIXME: 64 bits - why the latter could ever be true?
   }
 
   /****************************************************************************
@@ -342,6 +344,7 @@ public class Map {
    * @param address The address to be hashed
    * @return The chunk number that this address hashes into
    */
+  // FIXME: need to make the code work for 64 bits
   @Inline
   private static int getChunkIndex(Address address) {
     if (Space.BYTES_IN_ADDRESS == 8) {
