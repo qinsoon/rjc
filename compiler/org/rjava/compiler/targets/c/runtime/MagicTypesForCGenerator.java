@@ -113,7 +113,7 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
             RJavaCompiler.debug(outInc.toString() + outMain.toString());
         }
         
-        writeTo(outInc.toString() + outMain.toString(), Constants.OUTPUT_DIR + cHeaderSource);
+        writeTo(outInc.toString() + outMain.toString(), RJavaCompiler.outputDir + cHeaderSource);
         
         translatedCHeader.add(cHeaderSource);
     }

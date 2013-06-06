@@ -600,7 +600,7 @@ public class CLanguageRuntime {
         
         out.append("#endif" + NEWLINE);
         
-        generator.writeTo(out.toString(), Constants.OUTPUT_DIR + RJAVA_CRT + ".h");
+        generator.writeTo(out.toString(), RJavaCompiler.outputDir + RJAVA_CRT + ".h");
         
         /*
          *  generating runtime source - for class init()
@@ -629,14 +629,14 @@ public class CLanguageRuntime {
             crtSource.appendWithIndent(method.getSource());
             crtSource.append("}" + NEWLINE);
         }
-        generator.writeTo(crtSource.toString(), Constants.OUTPUT_DIR + RJAVA_CRT + ".c");
+        generator.writeTo(crtSource.toString(), RJavaCompiler.outputDir + RJAVA_CRT + ".c");
     }
 
     public void copyJavaLibrary() throws RJavaError {
         // copy lib files
         try {
-            FileUtils.copyDirectory(new File(RJAVA_LIB_DIR), new File(Constants.OUTPUT_DIR), false);
-            Runtime.getRuntime().exec("chmod -R 777 " + Constants.OUTPUT_DIR);
+            FileUtils.copyDirectory(new File(RJAVA_LIB_DIR), new File(RJavaCompiler.outputDir), false);
+            Runtime.getRuntime().exec("chmod -R 777 " + RJavaCompiler.outputDir);
         } catch (IOException e) {
             e.printStackTrace();
             throw new RJavaError("Error when copying lib files: " + e.getMessage());
@@ -720,7 +720,7 @@ public class CLanguageRuntime {
             makeFile.append(MAKE_SUBTASK.get(lib));
         }
         
-        generator.writeTo(makeFile.toString(), Constants.OUTPUT_DIR + "Makefile");
+        generator.writeTo(makeFile.toString(), RJavaCompiler.outputDir + "Makefile");
     }
     
     private String getClassInitMethodBody() {

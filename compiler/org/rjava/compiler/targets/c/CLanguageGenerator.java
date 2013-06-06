@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
-import org.rjava.compiler.Constants;
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.exception.RJavaError;
 import org.rjava.compiler.exception.RJavaWarning;
@@ -176,7 +175,7 @@ public class CLanguageGenerator extends CodeGenerator {
                 RJavaCompiler.debug(outInc.toString() + outMain.toString());
             }
             
-            writeTo(outInc.toString() + outMain.toString(), Constants.OUTPUT_DIR + cCodeSource);
+            writeTo(outInc.toString() + outMain.toString(), RJavaCompiler.outputDir + cCodeSource);
             translatedCSource.add(cCodeSource);
             SemanticMap.interfacesThatNeedInit.add(klass);
         }
@@ -239,7 +238,7 @@ public class CLanguageGenerator extends CodeGenerator {
             RJavaCompiler.debug(outInc.toString() + outMain.toString());
         }
         
-        writeTo(outInc.toString() + outMain.toString(), Constants.OUTPUT_DIR + cHeaderSource);
+        writeTo(outInc.toString() + outMain.toString(), RJavaCompiler.outputDir + cHeaderSource);
         
         translatedCHeader.add(cHeaderSource);
     }
@@ -318,7 +317,7 @@ public class CLanguageGenerator extends CodeGenerator {
             RJavaCompiler.debug(outInc.toString() + outMain.toString());
         }
         
-        writeTo(outInc.toString() + outMain.toString(), Constants.OUTPUT_DIR + cCodeSource);
+        writeTo(outInc.toString() + outMain.toString(), RJavaCompiler.outputDir + cCodeSource);
         translatedCSource.add(cCodeSource);
         if (containsMain) {
             mainSource = cCodeSource;
@@ -499,7 +498,7 @@ public class CLanguageGenerator extends CodeGenerator {
             }
         }
         
-        writeTo(outInc.toString() + outMain.toString(), Constants.OUTPUT_DIR + cHeaderSource);
+        writeTo(outInc.toString() + outMain.toString(), RJavaCompiler.outputDir + cHeaderSource);
         
         translatedCHeader.add(cHeaderSource);
     }

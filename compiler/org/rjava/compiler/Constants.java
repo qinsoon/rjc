@@ -8,8 +8,6 @@ public final class Constants {
     // rjava source file extension, same as Java at the moment
     public static final String RJAVA_EXT = ".java";
     
-    public static final String OUTPUT_DIR = "output/";
-    
     // rjava restr./ext. annotations' path
     public static final String RJAVA_ANNOTATION_DIR = "rjava/";
     public static final String RJAVA_MAGIC_DIR = "rjava/";

@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
-import org.rjava.compiler.Constants;
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.exception.*;
@@ -20,7 +19,7 @@ public abstract class CodeGenerator {
      */
     public void preTranslationWork() throws RJavaError{
         try {
-            File outputDir = new File(Constants.OUTPUT_DIR);
+            File outputDir = new File(RJavaCompiler.outputDir);
             if (!outputDir.exists())
                 outputDir.mkdir();
             FileUtils.cleanDirectory(outputDir);

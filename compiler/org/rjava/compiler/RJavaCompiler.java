@@ -32,6 +32,8 @@ public class RJavaCompiler {
     public static int INTERNAL_COMPILE_LIB          = 2;
     
     private CompilationTask task;
+
+    public static String outputDir = "output/";
     
     private static CodeGenerator codeGenerator;
     private static StaticRestrictionChecker checker;
@@ -141,6 +143,11 @@ public class RJavaCompiler {
                     i++;
                 } else if (args[i].equals("-dt")) {
                     debugTarget = true;
+                } else if (args[i].equals("-outdir")) {
+                    //outputDir = args[i+1];
+                    //if (!outputDir.endsWith("/"))
+                    //    outputDir += "/";
+                    i++;
                 }
                 else {
                     sources.add(args[i]);
@@ -262,5 +269,9 @@ public class RJavaCompiler {
     }
     public static void fail(String message) {
         error("Fail: " + message);
+    }
+    
+    public static void incompleteImplementationError() {
+        error("Incomplete implementation, please check source code");
     }
 }
