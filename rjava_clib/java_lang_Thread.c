@@ -43,6 +43,15 @@ void* thread_run_trampoline(void* ptr) {
     java_lang_Thread_run(ptr);
 }
 
+/* assertion */
+void internal_assert(bool cond, const char* msg) {
+    if (!cond) {
+        printf("%s\n", msg);
+        java_lang_Thread_dumpStack();
+        exit(1);
+    }
+}
+
 void java_lang_Thread_start(void* this_parameter) {
     java_lang_Thread* t = (java_lang_Thread*) this_parameter;
     internal_assert(rjava_thread_count < MAX_THREADS, "Trying to create more threads than MAX_THREADS");
@@ -69,15 +78,6 @@ java_lang_Thread* java_lang_Thread_currentThread() {
     return NULL;
 }
 
-/* assertion */
-void internal_assert(bool cond, const char* msg) {
-    if (!cond) {
-        printf("%s\n", msg);
-        java_lang_Thread_dumpStack();
-        exit(1);
-    }
-}
-
 void rjava_join_all_threads() {
     int i = 0;
     for (; i < rjava_thread_count; i++)
@@ -87,27 +87,6 @@ void rjava_join_all_threads() {
 void java_lang_Thread_join(void* this_parameter) {
     java_lang_Thread* t = (java_lang_Thread*) this_parameter;
     pthread_join(t->internal_thread, NULL);
-}
-
-void java_lang_Thread_join_int64_t(void* this_parameter, int64_t millis) {
-    internal_wait_and_cancel(((java_lang_Thread*)this_parameter) -> internal_thread, millis * 1000000);
-    java_lang_Thread_join(this_parameter);
-}
-
-void java_lang_Thread_join_int64_t_int32_t(void* this_parameter, int64_t millis, int32_t nanos) {
-    internal_wait_and_cancel(((java_lang_Thread*)this_parameter) -> internal_thread, millis * 1000000 + nanos);
-}
-
-void java_lang_Thread_sleep_int64_t(int64_t millis) {
-    usleep(millis*1000);
-}
-
-void java_lang_Thread_sleep_int64_t_int32_t(int64_t millis, int32_t nanos) {
-    usleep(millis*1000 + nanos/1000);
-}
-
-void java_lang_Thread_yield() {
-    sched_yield();
 }
 
 /* as parameters to timer thread */
@@ -134,3 +113,23 @@ void internal_wait_and_cancel(pthread_t pthread, int64_t nanosec) {
     pthread_create(&timer_thread, NULL, internal_timer_thread_func, (void*)param);
 }
 
+void java_lang_Thread_join_int64_t(void* this_parameter, int64_t millis) {
+    internal_wait_and_cancel(((java_lang_Thread*)this_parameter) -> internal_thread, millis * 1000000);
+    java_lang_Thread_join(this_parameter);
+}
+
+void java_lang_Thread_join_int64_t_int32_t(void* this_parameter, int64_t millis, int32_t nanos) {
+    internal_wait_and_cancel(((java_lang_Thread*)this_parameter) -> internal_thread, millis * 1000000 + nanos);
+}
+
+void java_lang_Thread_sleep_int64_t(int64_t millis) {
+    usleep(millis*1000);
+}
+
+void java_lang_Thread_sleep_int64_t_int32_t(int64_t millis, int32_t nanos) {
+    usleep(millis*1000 + nanos/1000);
+}
+
+void java_lang_Thread_yield() {
+    sched_yield();
+}

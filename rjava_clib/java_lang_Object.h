@@ -24,7 +24,6 @@ void java_lang_Object_wait_int64_t(void* this_parameter, int64_t timeout);
 void java_lang_Object_wait_int64_t_int32_t(void* this_parameter, int64_t timeout, int nanos);
 void java_lang_Object_notify(void* this_parameter);
 void java_lang_Object_notifyAll(void* this_parameter);
-int32_t java_lang_Object_hashCode(void* this_parameter);
 
 java_lang_Object_class java_lang_Object_class_instance;
 
