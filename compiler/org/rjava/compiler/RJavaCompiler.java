@@ -152,9 +152,7 @@ public class RJavaCompiler {
                     //    outputDir += "/";
                     i++;
                 } else if (args[i].equals("-m32")){
-                    // FIXME: ignoring this flag
-                    // need to build boehm-gc in 32 bits
-                    // m32 = true;
+                    m32 = true;
                     i++;
                 }
                 else {

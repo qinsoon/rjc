@@ -69,11 +69,17 @@ public class CLanguageRuntime {
         
         // atomic ops lib
         final boolean ATOMIC_OPS_PREBUILT = true;
+        
         if (ATOMIC_OPS_PREBUILT) {
-            MAKE_SUBTASK.put("libatomic_ops.a", "libatomic_ops.a:\n" +
-                "\tcp prebuilt/libatomic_ops.a libatomic_ops.a\n");
-        } else MAKE_SUBTASK.put("boehm-gc/libatomic_ops/src/atomic_ops.a", "boehm-gc/libatomic_ops/src/atomic_ops.a:\n" +
-                "\tcd boehm-gc/libatomic_ops;./configure;make\n");
+            if (RJavaCompiler.m32) {
+                MAKE_SUBTASK.put("libatomic_ops-32.a", "libatomic_ops-32.a:\n" +
+                        "\tcp prebuilt/libatomic_ops-32.a libatomic_ops-32.a\n");
+            }
+            else {
+                MAKE_SUBTASK.put("libatomic_ops.a", "libatomic_ops.a:\n" +
+                        "\tcp prebuilt/libatomic_ops.a libatomic_ops.a\n");               
+            }
+        } else RJavaCompiler.incompleteImplementationError();
         
         // malloc lib
         switch (MEMORY_MANAGEMENT_SCHEME) {
@@ -633,6 +639,7 @@ public class CLanguageRuntime {
         // void rjava_class_init()
         crtSource.append(signatureHelper(HELPER_RJAVA_CLASS_INIT) + " {" + NEWLINE);
         crtSource.increaseIndent();
+        crtSource.append("GC_init()" + SEMICOLON + NEWLINE);
         crtSource.append(invokeHelper(HELPER_RJAVA_LIB_INIT, null) + SEMICOLON + NEWLINE);
         crtSource.append(getClassInitMethodBody());
         crtSource.decreaseIndent();
