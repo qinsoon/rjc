@@ -59,8 +59,6 @@ public class CLanguageRuntime {
             
             // allow programmatically insert gdb breakpoint
             RJAVA_RUNTIME_DEFINE.put("GDB_BREAKPOINT", "asm volatile(\"int3;\")");
-        } else {
-            RJAVA_RUNTIME_DEFINE.put("DEBUG_TARGET", "0");
         }
     }
     public static final ArrayList<String> EXTRA_INCLUDE = new ArrayList<String>();
