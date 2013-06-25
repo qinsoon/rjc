@@ -52,6 +52,8 @@ public class RJavaCompiler {
     public static String namedOutput = null;
     // allow the generated code in debug mode (if C is the target, use -g in gcc flags) 
     public static boolean debugTarget = false;
+    // compile as 32bits executable
+    public static boolean m32 = false;
     
     private RJavaCompiler(CompilationTask task) {
     	this.task = task;
@@ -144,9 +146,15 @@ public class RJavaCompiler {
                 } else if (args[i].equals("-dt")) {
                     debugTarget = true;
                 } else if (args[i].equals("-outdir")) {
+                    // FIXME: ignoring this flag
                     //outputDir = args[i+1];
                     //if (!outputDir.endsWith("/"))
                     //    outputDir += "/";
+                    i++;
+                } else if (args[i].equals("-m32")){
+                    // FIXME: ignoring this flag
+                    // need to build boehm-gc in 32 bits
+                    // m32 = true;
                     i++;
                 }
                 else {
@@ -229,6 +237,8 @@ public class RJavaCompiler {
     	usage += "-m\t\t\tmakes compiler mute (output nothing except warning/error)\n";
     	usage += "-l [file_name]\t\t\ttakes source files from the file named\n";
     	usage += "-o [file_name]\t\t\texecutable name\n";
+    	usage += "-m32\t\t\tbuild for 32 bits address\n";
+    	usage += "-dt\t\t\tenable debug information during c compilation (-g in gcc)\n";
     	error(usage);
     }
 

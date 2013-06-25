@@ -165,11 +165,10 @@ void * realloc(void * p, size_t lb)
 # undef GC_debug_realloc_replacement
 # endif /* REDIRECT_REALLOC */
 
-
 /* Allocate memory such that only pointers to near the          */
 /* beginning of the object are considered.                      */
-/* We avoid holding allocation lock while we clear memory.      */
-GC_INNER void * GC_generic_malloc_ignore_off_page(size_t lb, int k)
+/* We avoid holding allocation lock while we clear the memory.  */
+GC_API void * GC_CALL GC_generic_malloc_ignore_off_page(size_t lb, int k)
 {
     void *result;
     size_t lg;
@@ -186,8 +185,10 @@ GC_INNER void * GC_generic_malloc_ignore_off_page(size_t lb, int k)
         return((*GC_get_oom_fn())(lb));
     n_blocks = OBJ_SZ_TO_BLOCKS(lb_rounded);
     init = GC_obj_kinds[k].ok_init;
-    if (GC_have_errors) GC_print_all_errors();
+    if (EXPECT(GC_have_errors, FALSE))
+      GC_print_all_errors();
     GC_INVOKE_FINALIZERS();
+    GC_DBG_COLLECT_AT_MALLOC(lb);
     LOCK();
     result = (ptr_t)GC_alloc_large(ADD_SLOP(lb), k, IGNORE_OFF_PAGE);
     if (0 != result) {
@@ -242,7 +243,7 @@ GC_API void GC_CALL GC_incr_bytes_freed(size_t n)
 }
 
 # ifdef PARALLEL_MARK
-    STATIC volatile signed_word GC_bytes_allocd_tmp = 0;
+    STATIC volatile AO_t GC_bytes_allocd_tmp = 0;
                         /* Number of bytes of memory allocated since    */
                         /* we released the GC lock.  Instead of         */
                         /* reacquiring the GC lock just to add this in, */
@@ -282,16 +283,19 @@ GC_API void GC_CALL GC_generic_malloc_many(size_t lb, int k, void **result)
     GC_ASSERT(lb != 0 && (lb & (GRANULE_BYTES-1)) == 0);
     if (!SMALL_OBJ(lb)) {
         op = GC_generic_malloc(lb, k);
-        if(0 != op) obj_link(op) = 0;
+        if (EXPECT(0 != op, TRUE))
+            obj_link(op) = 0;
         *result = op;
         return;
     }
     lw = BYTES_TO_WORDS(lb);
     lg = BYTES_TO_GRANULES(lb);
-    if (GC_have_errors) GC_print_all_errors();
+    if (EXPECT(GC_have_errors, FALSE))
+      GC_print_all_errors();
     GC_INVOKE_FINALIZERS();
+    GC_DBG_COLLECT_AT_MALLOC(lb);
     LOCK();
-    if (!GC_is_initialized) GC_init();
+    if (!EXPECT(GC_is_initialized, TRUE)) GC_init();
     /* Do our share of marking work */
       if (GC_incremental && !GC_dont_gc) {
         ENTER_GC();
@@ -313,16 +317,16 @@ GC_API void GC_CALL GC_generic_malloc_many(size_t lb, int k, void **result)
             hhdr -> hb_last_reclaimed = (unsigned short) GC_gc_no;
 #           ifdef PARALLEL_MARK
               if (GC_parallel) {
-                  signed_word my_bytes_allocd_tmp = GC_bytes_allocd_tmp;
-
+                  signed_word my_bytes_allocd_tmp =
+                                (signed_word)AO_load(&GC_bytes_allocd_tmp);
                   GC_ASSERT(my_bytes_allocd_tmp >= 0);
                   /* We only decrement it while holding the GC lock.    */
                   /* Thus we can't accidentally adjust it down in more  */
                   /* than one thread simultaneously.                    */
+
                   if (my_bytes_allocd_tmp != 0) {
-                    (void)AO_fetch_and_add(
-                                (volatile void *)(&GC_bytes_allocd_tmp),
-                                (AO_t)(-my_bytes_allocd_tmp));
+                    (void)AO_fetch_and_add(&GC_bytes_allocd_tmp,
+                                           (AO_t)(-my_bytes_allocd_tmp));
                     GC_bytes_allocd += my_bytes_allocd_tmp;
                   }
                   GC_acquire_mark_lock();
@@ -342,9 +346,8 @@ GC_API void GC_CALL GC_generic_malloc_many(size_t lb, int k, void **result)
 #             ifdef PARALLEL_MARK
                 if (GC_parallel) {
                   *result = op;
-                  (void)AO_fetch_and_add(
-                                (volatile AO_t *)(&GC_bytes_allocd_tmp),
-                                (AO_t)(my_bytes_allocd));
+                  (void)AO_fetch_and_add(&GC_bytes_allocd_tmp,
+                                         (AO_t)my_bytes_allocd);
                   GC_acquire_mark_lock();
                   -- GC_fl_builder_count;
                   if (GC_fl_builder_count == 0) GC_notify_all_builder();
@@ -462,6 +465,8 @@ GC_API void * GC_CALL GC_memalign(size_t align, size_t lb)
     /* is a multiple of align.  That would be correct up to HBLKSIZE.      */
     new_lb = lb + align - 1;
     result = GC_malloc(new_lb);
+            /* It is ok not to check result for NULL as in that case    */
+            /* GC_memalign returns NULL too since (0 + 0 % align) is 0. */
     offset = (word)result % align;
     if (offset != 0) {
         offset = align - offset;
@@ -509,13 +514,15 @@ GC_API int GC_CALL GC_posix_memalign(void **memptr, size_t align, size_t lb)
     DCL_LOCK_STATE;
 
     if( SMALL_OBJ(lb) ) {
+        GC_DBG_COLLECT_AT_MALLOC(lb);
         if (EXTRA_BYTES != 0 && lb != 0) lb--;
                   /* We don't need the extra byte, since this won't be  */
                   /* collected anyway.                                  */
         lg = GC_size_map[lb];
         opp = &(GC_auobjfreelist[lg]);
         LOCK();
-        if( (op = *opp) != 0 ) {
+        op = *opp;
+        if (EXPECT(0 != op, TRUE)) {
             *opp = obj_link(op);
             obj_link(op) = 0;
             GC_bytes_allocd += GRANULES_TO_BYTES(lg);
@@ -563,12 +570,7 @@ GC_API char * GC_CALL GC_strdup(const char *s)
 #   endif
     return NULL;
   }
-# ifndef MSWINCE
-    strcpy(copy, s);
-# else
-    /* strcpy() is deprecated in WinCE */
-    memcpy(copy, s, lb);
-# endif
+  BCOPY(s, copy, lb);
   return copy;
 }
 

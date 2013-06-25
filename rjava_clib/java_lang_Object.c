@@ -60,3 +60,7 @@ void java_lang_Object_notify(void* this_parameter) {
 void java_lang_Object_notifyAll(void* this_parameter) {
     pthread_cond_broadcast(&(((RJava_Common_Instance*)this_parameter) -> instance_cond));
 }
+
+int32_t java_lang_Object_hashCode(void* this_parameter) {
+    return (int32_t) this_parameter;
+}

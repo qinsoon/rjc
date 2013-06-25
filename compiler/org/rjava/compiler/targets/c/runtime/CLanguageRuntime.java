@@ -76,6 +76,7 @@ public class CLanguageRuntime {
         case GC_MALLOC:
             CLanguageGenerator.MALLOC = "GC_malloc";
             EXTRA_INCLUDE.add(includeNonStandardHeader("boehm-gc/include/gc.h"));
+            // FIXME: make it work for -m32 -> ./configure "CFLAGS=-m32" "LDFLAGS=-m32"
             MAKE_SUBTASK.put("boehm-gc.a", "boehm-gc.a:\n" +
                     "\tcd boehm-gc;autoreconf -vif;automake --add-missing;./configure;make -f Makefile.direct\n" +
                     "\tcp boehm-gc/gc.a boehm-gc.a\n");
@@ -83,7 +84,10 @@ public class CLanguageRuntime {
         case GC_MALLOC_PREBUILT:
             CLanguageGenerator.MALLOC = "GC_malloc";
             EXTRA_INCLUDE.add(includeNonStandardHeader("boehm-gc/include/gc.h"));
-            MAKE_SUBTASK.put("boehm-gc.a", "boehm-gc.a:\n" +
+            if (RJavaCompiler.m32) {
+                MAKE_SUBTASK.put("boehm-gc-32.a", "boehm-gc-32.a:\n" +
+                    "\tcp prebuilt/boehm-gc-32.a boehm-gc-32.a\n");
+            }else MAKE_SUBTASK.put("boehm-gc.a", "boehm-gc.a:\n" +
                     "\tcp prebuilt/boehm-gc.a boehm-gc.a\n");
             break;
         case DL_MALLOC:
@@ -644,7 +648,7 @@ public class CLanguageRuntime {
     }
 
     public void generateGNUMakefile() throws RJavaError {
-        final String C_FLAGS = "-I . " + (RJavaCompiler.debugTarget ? "-g" : "-O3") + " -lpthread";
+        final String C_FLAGS = "-I . " + (RJavaCompiler.debugTarget ? "-g" : "-O3") + " -lpthread " + (RJavaCompiler.m32 ? "-m32" : "");
         /*
          *  generate makefile
          */

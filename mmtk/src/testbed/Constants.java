@@ -10,7 +10,7 @@ public abstract class Constants {
     public static final Address HEAP_END;
     
     static {
-        if (Configuration.BUILD_FOR_MACOSX_64) {
+        if (Configuration.OS == Configuration.MACH_OS && Configuration.BUILD_FOR_64_ADDRESS) {
             HEAP_START          = Address.fromLong(0x131000000L);
             CONTIGUOUS_START    = Address.fromLong(0x136800000L);
             HEAP_END            = Address.fromLong(0x180000000L);

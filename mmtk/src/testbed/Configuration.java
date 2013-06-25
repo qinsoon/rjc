@@ -7,9 +7,17 @@ import org.vmutil.options.OptionSet;
 
 @RJavaCore
 public abstract class Configuration {
+    /* true if build for 64bits address, otherwise 32 bits */
     public static final boolean BUILD_FOR_64_ADDRESS = true;
-    public static final boolean BUILD_FOR_IA32 = true;
-    public static final boolean BUILD_FOR_MACOSX_64 = true;
     
+    /* arch */
+    public static final boolean BUILD_FOR_IA32 = true;
+    
+    /* os */
+    public static final int MACH_OS = 0;
+    /* chosen os */
+    public static final int OS = MACH_OS;
+
+    /* MMTk verbose */
     public static final int GC_VERBOSE = 10;
 }

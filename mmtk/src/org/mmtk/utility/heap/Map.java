@@ -34,8 +34,8 @@ public class Map {
 
   /** set the map base address so that we have an unused {@code null} chunk at the bottome of the space for 64 bit */
   // FIXME: need to make the code work for 64 bits
-  //private static final Address MAP_BASE_ADDRESS = Space.BITS_IN_ADDRESS == 32 ? Address.zero() : Space.HEAP_START.minus(Space.BYTES_IN_CHUNK);
-  private static final Address MAP_BASE_ADDRESS = Space.BITS_IN_ADDRESS == 32 ? Space.HEAP_START : Space.HEAP_START.minus(Space.BYTES_IN_CHUNK);
+  private static final Address MAP_BASE_ADDRESS = Space.BITS_IN_ADDRESS == 32 ? Address.zero() : Space.HEAP_START.minus(Space.BYTES_IN_CHUNK);
+  //private static final Address MAP_BASE_ADDRESS = Space.BITS_IN_ADDRESS == 32 ? Space.HEAP_START : Space.HEAP_START.minus(Space.BYTES_IN_CHUNK);
     
   /****************************************************************************
    *
@@ -354,7 +354,7 @@ public class Map {
       else
         return address.diff(MAP_BASE_ADDRESS).toWord().rshl(Space.LOG_BYTES_IN_CHUNK).toInt();
     } else
-      return address.diff(MAP_BASE_ADDRESS).toWord().rshl(Space.LOG_BYTES_IN_CHUNK).toInt();
+      return address.toWord().rshl(Space.LOG_BYTES_IN_CHUNK).toInt();
   }
   @Inline
   private static Address addressForChunkIndex(int chunk) {
@@ -364,6 +364,6 @@ public class Map {
       else
         return MAP_BASE_ADDRESS.plus(Word.fromIntZeroExtend(chunk).lsh(Space.LOG_BYTES_IN_CHUNK).toExtent());
     } else
-      return MAP_BASE_ADDRESS.plus(Word.fromIntZeroExtend(chunk).lsh(Space.LOG_BYTES_IN_CHUNK).toExtent());
+      return Word.fromIntZeroExtend(chunk).lsh(Space.LOG_BYTES_IN_CHUNK).toAddress();
   }
 }
