@@ -389,12 +389,19 @@ public class CLanguageGenerator extends CodeGenerator {
             outMain.append(commentln("contains super class struct"));
             outMain.append(name.get(klass.getSuperClass(), true) + CLanguageRuntime.CLASS_STRUCT_SUFFIX + " " + CLanguageRuntime.EMBED_SUPER_CLASS + SEMICOLON + NEWLINE);
             
-            // and set its header to super class
+            // calling rjava_init_header()
             CodeStringBuilder classInitTemp = new CodeStringBuilder();
             String thisClass = "&" + name.get(klass, true) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX;
             String superClass = "&" + name.get(klass.getSuperClass(), true) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX;
             String superClassSize = SIZE_OF + "(" + name.get(klass.getSuperClass(), true) + CLanguageRuntime.CLASS_STRUCT_SUFFIX + ")";
             classInitTemp.append(CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_INIT_HEADER, new String[]{thisClass, superClass, superClassSize}) + SEMICOLON + NEWLINE);
+            
+            // class_name
+            if (RJavaCompiler.debugTarget) {
+                classInitTemp.append("((" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)(&" + name.get(klass, false) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + "))");
+                classInitTemp.append(" -> " + CLanguageRuntime.CLASS_NAME + " = \"" + name.get(klass, false) + "\"" + SEMICOLON + NEWLINE);
+            }
+            
             addToClassInitMap(klass.getName(), classInitTemp.toString());
         } else {
             // contains common class struct
@@ -409,6 +416,12 @@ public class CLanguageGenerator extends CodeGenerator {
             // interfaces = NULL
             classInitTemp.append("((" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)(&" + name.get(klass, false) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + "))");
             classInitTemp.append(" -> " + CLanguageRuntime.INTERFACE_LIST + " = NULL" + SEMICOLON + NEWLINE);
+            // class_name
+            if (RJavaCompiler.debugTarget) {
+                classInitTemp.append("((" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)(&" + name.get(klass, false) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + "))");
+                classInitTemp.append(" -> " + CLanguageRuntime.CLASS_NAME + " = \"" + name.get(klass, false) + "\"" + SEMICOLON + NEWLINE);
+            }
+            
             addToClassInitMap(klass.getName(), classInitTemp.toString());
         }
         outMain.append(NEWLINE);

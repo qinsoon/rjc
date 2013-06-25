@@ -53,6 +53,15 @@ public class CLanguageRuntime {
     public static final HashMap<String, String> RJAVA_RUNTIME_DEFINE = new HashMap<String, String>();
     static {
         RJAVA_RUNTIME_DEFINE.put("byte", "char");
+        if (RJavaCompiler.debugTarget) {
+            // allow external source code to know it is debug mode
+            RJAVA_RUNTIME_DEFINE.put("DEBUG_TARGET", "1");
+            
+            // allow programmatically insert gdb breakpoint
+            RJAVA_RUNTIME_DEFINE.put("GDB_BREAKPOINT", "asm volatile(\"int3;\")");
+        } else {
+            RJAVA_RUNTIME_DEFINE.put("DEBUG_TARGET", "0");
+        }
     }
     public static final ArrayList<String> EXTRA_INCLUDE = new ArrayList<String>();
     public static final HashMap<String, String> MAKE_SUBTASK = new HashMap<String, String>();
@@ -101,22 +110,26 @@ public class CLanguageRuntime {
      * RJava's C Object
      */
     // related with dyanmic dispatching
-    public static final String POINTER_TO_CLASS_STRUCT = "class_struct";    // in object, pointing to its class
-    public static final String EMBED_SUPER_OBJECT = "instance_header";
+    /* rjava class */
+    public static final String COMMON_CLASS_STRUCT = "RJava_Common_Class";
     public static final String EMBED_SUPER_CLASS  = "class_header";
     public static final String SUPER_CLASS = "super_class";
     public static final String INTERFACE_LIST = "interfaces";
     public static final String CLASS_STRUCT_SUFFIX = "_class";
-    public static final String INTERFACE_STRUCT_SUFFIX = "";
     public static final String CLASS_STRUCT_INSTANCE_SUFFIX = "_class_instance";
-    public static final String COMMON_CLASS_STRUCT = "RJava_Common_Class";
+    public static final String CLASS_NAME = "class_name";
+    /* rjava instance/object */
+    public static final String POINTER_TO_CLASS_STRUCT = "class_struct";    // in object, pointing to its class
+    public static final String EMBED_SUPER_OBJECT = "instance_header";
     public static final String COMMON_INSTANCE_STRUCT = "RJava_Common_Instance";
+    /* interface */
     public static final String INTERFACE_LIST_NODE = "RJava_Interface_Node";
+    public static final String INTERFACE_STRUCT_SUFFIX = "";
     public static final String INTERFACE_LIST_NODE_ATTR_NAME = "name";
     public static final String INTERFACE_LIST_NODE_ATTR_ADDR = "address";
     public static final String INTERFACE_LIST_NODE_ATTR_NEXT = "next";
     public static final String INTERFACE_LIST_NODE_ATTR_SIZE = "interface_size";
-    
+    /* mutex */
     public static final String MUTEX_TYPE = "pthread_mutex_t";
     public static final String INSTANCE_MUTEX = "instance_mutex";
     public static final String CLASS_MUTEX = "class_mutex";
@@ -582,6 +595,8 @@ public class CLanguageRuntime {
         out.append(COMMON_CLASS_STRUCT + "* " + SUPER_CLASS + SEMICOLON + NEWLINE);
         out.append(INTERFACE_LIST_NODE + "* " + INTERFACE_LIST + SEMICOLON + NEWLINE);
         out.append(MUTEX_TYPE + " " + CLASS_MUTEX + SEMICOLON + NEWLINE);
+        if (RJavaCompiler.debugTarget)
+            out.append("char* " + CLASS_NAME + SEMICOLON + NEWLINE);
         out.decreaseIndent();
         out.append("}" + SEMICOLON + NEWLINE);
         out.append(NEWLINE);
