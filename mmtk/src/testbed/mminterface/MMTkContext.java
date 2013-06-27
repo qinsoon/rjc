@@ -7,6 +7,7 @@ import org.vmmagic.unboxed.ObjectReference;
 
 import testbed.Main;
 import testbed.TestbedRuntime;
+import testbed.runtime.ObjectModel;
 import testbed.runtime.Scheduler;
 import testbed.runtime.TestbedObject;
 
@@ -56,28 +57,26 @@ public class MMTkContext implements Runnable{
             collector.run();
         } else {
             // mutator's job
-            allocLoop();
+            
+            // allocSingleObject();
+            allocExhaustDeadObjects();
         }
     }
     
     /**
-     * the allocation loop happens here
+     * allocate a single object
      */
-    public void allocLoop() {
+    public void allocSingleObject() {
         // ObjectReference lastObj = ObjectReference.nullReference();
         while(true) {
             // check gc first
-            if (Scheduler.gcTriggering) {
-                synchronized(this) {
-                    try {
-                        wait();
-                    } catch (InterruptedException ignore) {}
-                }
-            }
+            checkGCBeforeAllocation();
             
             // we dont need gc, then alloc
             TestbedObject obj = new TestbedObject(null);
             ObjectReference objRef = MemoryManager.alloc(obj).toObjectReference();
+            
+            ObjectModel.dumpObject(objRef);
             
             synchronized (TestbedRuntime.globalRootsLock) {
                 TestbedRuntime.globalRoots.set(TestbedRuntime.rootsCount, objRef);
@@ -85,6 +84,31 @@ public class MMTkContext implements Runnable{
                 if (TestbedRuntime.rootsCount >= TestbedRuntime.MAX_ROOTS_ALLOWED)
                     Main.println("Reached max roots, testbed will quit.");
                     Main.sysExit(1);
+            }
+        }
+    }
+    
+    /**
+     * exhaust allocation
+     */
+    public void allocExhaustDeadObjects() {
+        while(true) {
+            // check gc first
+            checkGCBeforeAllocation();
+            
+            TestbedObject obj = new TestbedObject(null);
+            ObjectReference objRef = MemoryManager.alloc(obj).toObjectReference();
+            
+            ObjectModel.dumpObject(objRef);
+        }
+    }
+    
+    private void checkGCBeforeAllocation() {
+        if (Scheduler.gcTriggering) {
+            synchronized(this) {
+                try {
+                    wait();
+                } catch (InterruptedException ignore) {}
             }
         }
     }

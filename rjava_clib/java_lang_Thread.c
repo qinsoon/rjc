@@ -35,6 +35,23 @@ void java_lang_Thread_rjinit_java_lang_Runnable(void* this_parameter, void* runn
 void java_lang_Thread_run(void* this_parameter) {
     java_lang_Thread* t = (java_lang_Thread*) this_parameter;
     if (t -> start_function != NULL) {
+        // sometimes thread creation may bypass java_lang_Thread_start()
+        // so we check if current thread is recorded here
+        int i = 0;
+        int found = 0;
+        for (; i < rjava_thread_count; i++) {
+            if (rjava_threads[i] == t)
+                found = 1;
+        }
+        if (!found) {
+            // record the thread
+            pthread_mutex_lock(&thread_create_lock);
+            rjava_pthreads[rjava_thread_count] = t->internal_thread;
+            rjava_threads[rjava_thread_count] = this_parameter;
+            rjava_thread_count++;
+            pthread_mutex_unlock(&thread_create_lock);
+        }
+            
         t -> start_function(t -> worker);
     }
 }
@@ -61,10 +78,13 @@ void java_lang_Thread_start(void* this_parameter) {
                &(t->internal_thread), NULL,
                thread_run_trampoline,
                this_parameter);
+    
     // record the thread
+    pthread_mutex_lock(&thread_create_lock);
     rjava_pthreads[rjava_thread_count] = t->internal_thread;
     rjava_threads[rjava_thread_count] = this_parameter;
     rjava_thread_count++;
+    pthread_mutex_unlock(&thread_create_lock);
 }
 
 java_lang_Thread* java_lang_Thread_currentThread() {

@@ -54,6 +54,7 @@ void java_lang_Thread_join_int64_t_int32_t(void* this_parameter, int64_t millis,
 // this is a runtime method, called at the end of main method
 void rjava_join_all_threads();
 
-
+// used to create thread and record those threads
+pthread_mutex_t thread_create_lock;
 
 #endif

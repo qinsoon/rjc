@@ -36,6 +36,7 @@ public class CLanguageRuntime {
     /*
      * RJava's C implementation helpers
      */
+    // include c standard lib
     public static final String[] C_STD_LIB_HEADER = {
         "stdio.h",
         "stdlib.h",
@@ -43,22 +44,31 @@ public class CLanguageRuntime {
         "inttypes.h",
         "pthread.h"
     };
+    // rjava's java.lang lib
     public static final String RJAVA_LIB = "rjava_clib";
+    // rjava runtime (including some defines and helpers)
     public static final String RJAVA_CRT = "rjava_crt";
-    public static final String[] JAVA_LANG_PACKAGE = new String[Constants.RJAVA_JAVA_LANG.length];
+    // runtime define before include (an ugly hack) because we need to define GC_THREADS before including boehm gc header
+    public static final HashMap<String, String> RJAVA_RUNTIME_DEFINE_BEFORE_INCLUDE = new HashMap<String, String>();
     static {
-        for (int i = 0; i < JAVA_LANG_PACKAGE.length; i++)
-            JAVA_LANG_PACKAGE[i] = Constants.RJAVA_JAVA_LANG[i].replace('.', '_');
+        if (MEMORY_MANAGEMENT_SCHEME == GC_MALLOC || MEMORY_MANAGEMENT_SCHEME == GC_MALLOC_PREBUILT)
+            RJAVA_RUNTIME_DEFINE_BEFORE_INCLUDE.put("GC_THREADS", "");
     }
+    // runtime define
     public static final HashMap<String, String> RJAVA_RUNTIME_DEFINE = new HashMap<String, String>();
     static {
         RJAVA_RUNTIME_DEFINE.put("byte", "char");
+        
         if (RJavaCompiler.debugTarget) {
             // allow external source code to know it is debug mode
             RJAVA_RUNTIME_DEFINE.put("DEBUG_TARGET", "1");
             
             // allow programmatically insert gdb breakpoint
             RJAVA_RUNTIME_DEFINE.put("GDB_BREAKPOINT", "asm volatile(\"int3;\")");
+        }
+        
+        if (MEMORY_MANAGEMENT_SCHEME == GC_MALLOC || MEMORY_MANAGEMENT_SCHEME == GC_MALLOC_PREBUILT) {
+            RJAVA_RUNTIME_DEFINE.put("malloc", "GC_malloc");
         }
     }
     public static final ArrayList<String> EXTRA_INCLUDE = new ArrayList<String>();
@@ -441,11 +451,16 @@ public class CLanguageRuntime {
         });
         final String RJAVA_ACCESS_ARRAY_SOURCE = 
                 (RJavaCompiler.getGeneratorOptions().allowArrayBoundCheck() ?
-                        ("int length = " + invokeHelper(HELPER_RJAVA_LENGTH_OF_ARRAY, new String[]{"array"}) + SEMICOLON + NEWLINE +
+                        (
+                        CLanguageGenerator.commentln("bounds check") + NEWLINE +
+                        "int length = " + invokeHelper(HELPER_RJAVA_LENGTH_OF_ARRAY, new String[]{"array"}) + SEMICOLON + NEWLINE +
+                        "if (index >= length || index < 0) {" + NEWLINE +
                         "char* str = (char*)" + CLanguageGenerator.MALLOC + "(1000)" + SEMICOLON + NEWLINE +
                         "sprintf(str, \"index(%d) out of bounds(%d)\", index, length)" + SEMICOLON + NEWLINE +
-                        invokeHelper(HELPER_RJAVA_ASSERT, new String[]{"index < length && index >= 0", "str"}) + SEMICOLON + NEWLINE) 
-                        : "") +
+                        invokeHelper(HELPER_RJAVA_ASSERT, new String[]{"false", "str"}) + SEMICOLON + NEWLINE
+                        + "}" + NEWLINE) 
+                        : 
+                        "") +
                 "long ele_size = *((long*)(array + sizeof(int)));" + NEWLINE +
                 "return (array + sizeof(int) + sizeof(long) + ele_size * index);" + NEWLINE;
         HELPER_RJAVA_ACCESS_ARRAY.setSource(RJAVA_ACCESS_ARRAY_SOURCE);
@@ -562,10 +577,18 @@ public class CLanguageRuntime {
         CodeStringBuilder out = new CodeStringBuilder();
         out.append("#ifndef RJAVA_CRT_H" + NEWLINE);
         out.append("#define RJAVA_CRT_H" + NEWLINE);
+        
         out.append(CLanguageGenerator.commentln("c std lib"));
         for (String inc : C_STD_LIB_HEADER) {
             out.append(includeStandardHeader(inc) + NEWLINE);
         }
+        
+        out.append(CLanguageGenerator.commentln("some defines prior to include"));
+        for (String key : RJAVA_RUNTIME_DEFINE_BEFORE_INCLUDE.keySet()) {
+            out.append("#define " + key + " " + RJAVA_RUNTIME_DEFINE_BEFORE_INCLUDE.get(key) + NEWLINE);
+        }
+        out.append(NEWLINE);
+        
         out.append(CLanguageGenerator.commentln("extra header"));
         for (String inc : EXTRA_INCLUDE) {
             out.append(inc + NEWLINE);

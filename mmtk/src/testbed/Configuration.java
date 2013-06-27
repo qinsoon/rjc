@@ -8,7 +8,7 @@ import org.vmutil.options.OptionSet;
 @RJavaCore
 public abstract class Configuration {
     /* true if build for 64bits address, otherwise 32 bits */
-    public static final boolean BUILD_FOR_64_ADDRESS = true;
+    public static final boolean BUILD_FOR_64_ADDRESS = false;
     
     /* arch */
     public static final boolean BUILD_FOR_IA32 = true;

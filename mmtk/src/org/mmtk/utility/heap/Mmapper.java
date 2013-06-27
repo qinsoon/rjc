@@ -125,11 +125,11 @@ import org.vmmagic.pragma.*;
   public static void ensureMapped(Address start, int pages) {
     int startChunk = Conversions.addressToMmapChunksDown(start);
     int endChunk = Conversions.addressToMmapChunksUp(start.plus(Conversions.pagesToBytes(pages)));
-    Log.write("mapped array size:");
-    Log.writeln(MMAP_NUM_CHUNKS);
+    //Log.write("mapped array size:");
+    //Log.writeln(MMAP_NUM_CHUNKS);
     for (int chunk = startChunk; chunk < endChunk; chunk++) {
-      Log.write("access:");
-      Log.writeln(chunk);
+      //Log.write("access:");
+      //Log.writeln(chunk);
       if (mapped[chunk] == MAPPED) continue;
       Address mmapStart = Conversions.mmapChunksToAddress(chunk);
       lock.acquire();
