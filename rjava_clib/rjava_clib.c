@@ -6,6 +6,9 @@ void rjava_lib_init() {
     /* thread create lock */
     pthread_mutex_init(&thread_create_lock, NULL);
     
+    /* set Main Thread */
+    rjava_add_main_thread();
+    
     /* init for java_lang_Object */
     ((RJava_Common_Class*)(&java_lang_Object_class_instance)) -> super_class = NULL;
     ((RJava_Common_Class*)(&java_lang_Object_class_instance)) -> interfaces = NULL;

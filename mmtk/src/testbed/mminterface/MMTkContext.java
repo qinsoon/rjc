@@ -98,8 +98,8 @@ public class MMTkContext implements Runnable{
             
             TestbedObject obj = new TestbedObject(null);
             ObjectReference objRef = MemoryManager.alloc(obj).toObjectReference();
-            
-            ObjectModel.dumpObject(objRef);
+            System.out.print("Object allocated:");
+            System.out.println(objRef.toAddress().toLong());
         }
     }
     

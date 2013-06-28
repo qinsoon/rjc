@@ -662,7 +662,7 @@ public class CLanguageRuntime {
         // void rjava_class_init()
         crtSource.append(signatureHelper(HELPER_RJAVA_CLASS_INIT) + " {" + NEWLINE);
         crtSource.increaseIndent();
-        crtSource.append("GC_init()" + SEMICOLON + NEWLINE);
+        crtSource.append("GC_init()" + SEMICOLON + NEWLINE);        // init boehm gc
         crtSource.append(invokeHelper(HELPER_RJAVA_LIB_INIT, null) + SEMICOLON + NEWLINE);
         crtSource.append(getClassInitMethodBody());
         crtSource.decreaseIndent();

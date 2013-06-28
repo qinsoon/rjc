@@ -10,6 +10,20 @@ pthread_t rjava_pthreads[MAX_THREADS];
 java_lang_Thread* rjava_threads[MAX_THREADS];
 int rjava_thread_count = 0;
 
+// this is a hack to add main thread as a RJava thread (but it is already launched)
+void rjava_add_main_thread() {
+    // main thread should always be the first thread
+    internal_assert(rjava_thread_count == 0, "We have RJava thread before adding main thread, its a problem");
+    
+    // this will increase thread_count, add RJava thread to array
+    java_lang_Thread* rjava_main = (java_lang_Thread*) malloc(sizeof(java_lang_Thread));
+    java_lang_Thread_rjinit_java_lang_String(rjava_main, "Main Thread");
+    
+    // we will need to add pthread to array
+    pthread_t main_thread = pthread_self();
+    rjava_pthreads[0] = main_thread;
+}
+
 void java_lang_Thread_dumpStack() {
     void* array[20];
     size_t size;
@@ -20,40 +34,55 @@ void java_lang_Thread_dumpStack() {
     backtrace_symbols_fd(array, size, 2);
 }
 
+void java_lang_Thread_rjinit_java_lang_String(void* this_parameter, java_lang_String* name) {
+    java_lang_Thread_rjinit_java_lang_Runnable_java_lang_String(this_parameter, NULL, name);
+}
+
 void java_lang_Thread_rjinit_java_lang_Runnable(void* this_parameter, void* runnable) {
+    // name
+    char* str = (char*) malloc(20);
+    sprintf(str, "Thread-%d", rjava_thread_count);
+    java_lang_String* name = newStringConstant(str);
+    
+    java_lang_Thread_rjinit_java_lang_Runnable_java_lang_String(this_parameter, runnable, name);
+}
+
+void java_lang_Thread_rjinit_java_lang_Runnable_java_lang_String(void* this_parameter, void* runnable, java_lang_String* name) {
     java_lang_Thread* t = (java_lang_Thread*)this_parameter;
     
     // get the interface first
-    RJava_Interface_Node* interface_list = ((RJava_Common_Class*)(((RJava_Common_Instance*)runnable) -> class_struct)) -> interfaces;
-    java_lang_Runnable* runnable_interface = (java_lang_Runnable*)rjava_get_interface(interface_list, "java_lang_Runnable");
-    t -> start_function = runnable_interface -> run;
-    t -> worker = runnable;
-
+    if (runnable != NULL) {
+        RJava_Interface_Node* interface_list = ((RJava_Common_Class*)(((RJava_Common_Instance*)runnable) -> class_struct)) -> interfaces;
+        java_lang_Runnable* runnable_interface = (java_lang_Runnable*)rjava_get_interface(interface_list, "java_lang_Runnable");
+        t -> start_function = runnable_interface -> run;
+        t -> worker = runnable;
+    }
+    
+    /* get thread id and name */
+    pthread_mutex_lock(&thread_create_lock);
+    // thread id
+    t -> thread_id = rjava_thread_count;
+    // thread name
+    t -> name = name;
+    // rjava thread
+    rjava_threads[rjava_thread_count] = t;
+    // increase count
+    rjava_thread_count++;
+    pthread_mutex_unlock(&thread_create_lock);
+    
     (((RJava_Common_Instance*)this_parameter) -> class_struct) = &java_lang_Thread_class_instance;
 }
 
 void java_lang_Thread_run(void* this_parameter) {
     java_lang_Thread* t = (java_lang_Thread*) this_parameter;
     if (t -> start_function != NULL) {
-        // sometimes thread creation may bypass java_lang_Thread_start()
-        // so we check if current thread is recorded here
-        int i = 0;
-        int found = 0;
-        for (; i < rjava_thread_count; i++) {
-            if (rjava_threads[i] == t)
-                found = 1;
-        }
-        if (!found) {
-            // record the thread
-            pthread_mutex_lock(&thread_create_lock);
-            rjava_pthreads[rjava_thread_count] = t->internal_thread;
-            rjava_threads[rjava_thread_count] = this_parameter;
-            rjava_thread_count++;
-            pthread_mutex_unlock(&thread_create_lock);
-        }
+        // record the thread
+        rjava_pthreads[t->thread_id] = t->internal_thread;
             
         t -> start_function(t -> worker);
-    }
+    } else {
+        internal_assert(false, "start function not set");
+    }    
 }
 
 void* thread_run_trampoline(void* ptr) {
@@ -78,13 +107,6 @@ void java_lang_Thread_start(void* this_parameter) {
                &(t->internal_thread), NULL,
                thread_run_trampoline,
                this_parameter);
-    
-    // record the thread
-    pthread_mutex_lock(&thread_create_lock);
-    rjava_pthreads[rjava_thread_count] = t->internal_thread;
-    rjava_threads[rjava_thread_count] = this_parameter;
-    rjava_thread_count++;
-    pthread_mutex_unlock(&thread_create_lock);
 }
 
 java_lang_Thread* java_lang_Thread_currentThread() {
@@ -152,4 +174,12 @@ void java_lang_Thread_sleep_int64_t_int32_t(int64_t millis, int32_t nanos) {
 
 void java_lang_Thread_yield() {
     sched_yield();
+}
+
+java_lang_String* java_lang_Thread_getName(void* this_parameter) {
+    return ((java_lang_Thread*)this_parameter) -> name;
+}
+
+int64_t java_lang_Thread_getId(void* this_parameter) {
+    return ((java_lang_Thread*)this_parameter) -> thread_id;
 }
