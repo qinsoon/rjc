@@ -10,6 +10,7 @@ import java.util.Queue;
 import java.util.Set;
 
 import org.rjava.compiler.CompilationTask;
+import org.rjava.compiler.Constants;
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.pass.DependencyGraphPass;
 import org.rjava.compiler.semantics.representation.*;
@@ -161,6 +162,18 @@ public abstract class SemanticMap {
         return className.startsWith("org.rjava.restriction") || 
                 className.startsWith("org.vmmagic") ||
                 className.startsWith("org.rjava.nativeext");
+    }
+    
+    public static boolean isUnboxedType(String className) {
+        for (String s : Constants.MAGIC_ARRAY_TYPES)
+            if (className.equals(s))
+                return true;
+        
+        for (String s : Constants.MAGIC_TYPES)
+            if (className.equals(s))
+                return true;
+        
+        return false;
     }
     
     public static void dumpTypes() {

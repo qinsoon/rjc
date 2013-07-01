@@ -118,7 +118,7 @@ public class CLanguageIntrinsicGenerator {
         // call rjava_join_all_threads() before main method returns
         else if (stmt instanceof RReturnVoidStmt && stmt.getMethod().isMainMethod()) {
             stmt.setIntrinsic(true);
-            stmt.setCode("rjava_join_all_threads();return");
+            stmt.setCode("rjava_join_all_threads();return 0");
         }
     }
 

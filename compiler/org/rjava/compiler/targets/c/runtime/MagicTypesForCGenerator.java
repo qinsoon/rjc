@@ -7,6 +7,7 @@ import java.util.Map;
 import org.rjava.compiler.Constants;
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.exception.RJavaError;
+import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.targets.CodeStringBuilder;
@@ -23,6 +24,9 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
     
     @Override
     public void translate(RClass klass) throws RJavaError {
+        if (!SemanticMap.isUnboxedType(klass.getName()))
+            return;
+        
         currentRClass = klass;
         
         assert (RJavaCompiler.isInternalCompiling() == RJavaCompiler.INTERNAL_COMPILE_MAGIC_TYPES);
@@ -158,7 +162,7 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
            return "((" + MAGIC_TYPE_TO_C_TYPE.get(type) + ") ((" + SIGNED_MAGIC_TYPE + ")" + param0 + "))"; 
        } 
        else if (methodName.equals("fromIntZeroExtend")) {
-           return "(((" + MAGIC_TYPE_TO_C_TYPE.get(type) + ") " + param0 + ") & 0x00000000FFFFFFFF)"; 
+           return "((" + MAGIC_TYPE_TO_C_TYPE.get(type) + ") ((" + UNSIGNED_MAGIC_TYPE + ")" + param0 + "))"; 
        } 
        else if (methodName.equals("toInt")) {
            return "(uint32_t) " + THIS_PARAMETER;
@@ -242,33 +246,33 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
        else if (methodName.startsWith("load") || methodName.startsWith("prepare")) {
            String returnType = name.get(method.getReturnType(), false);
            
-           String ret = "*((" + returnType + "*)" + THIS_PARAMETER;
+           String ret = "*((" + returnType + "*) (" + THIS_PARAMETER;
            if (method.getParameters().size() == 1)
                ret += " + " + param0;
-           ret += ")";
+           ret += "))";
            
            return ret;
        }
        else if (methodName.startsWith("store")) {
            String storeType = name.get(method.getParameters().get(0), false);
            
-           String ret = "*((" + storeType + "*)" + THIS_PARAMETER;
+           String ret = "*((" + storeType + "*) (" + THIS_PARAMETER;
            if (method.getParameters().size() == 2)
                ret += " + " + param1;
-           ret += ") = " + param0;
+           ret += ")) = " + param0;
            
            return ret;
        }
        else if (methodName.equals("attempt")) {
            String CAS = "__sync_bool_compare_and_swap";
            String ptrType = name.get(method.getParameters().get(0), false);
-           String ret = CAS + "( (" + ptrType + "*)" + THIS_PARAMETER;
+           String ret = CAS + "( (" + ptrType + "*)(" + THIS_PARAMETER;
            
            // offset
            if (method.getParameters().size() == 3)
                ret += " + " + FORMAL_PARAMETER + "2";
            
-           ret += ",";
+           ret += "),";
            ret += param0 + "," + param1 + ")";
            return ret;
        }

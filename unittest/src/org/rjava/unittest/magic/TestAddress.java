@@ -46,11 +46,18 @@ public class TestAddress extends UnitTest{
     public static boolean TestAddressOffsetStoreLoad() {
         Integer[] array = new Integer[5];
         Address addr = ObjectReference.fromObject(array).toAddress();
+        
+        // test offset store
         Offset offset = Offset.fromIntSignExtend(2);
         addr.store(100, offset);
-        int load = addr.loadInt(offset);
+        Address storeAddress = addr.plus(offset);
+        int load = storeAddress.loadInt();
         
-        return load == 100;        
+        // test offset load
+        storeAddress.store(101);
+        int load2 = addr.loadInt(offset);
+        
+        return load == 100 && load2 == 101;        
     }
     
     public static boolean TestAddressPlusMinusInt() {

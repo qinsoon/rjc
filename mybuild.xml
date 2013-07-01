@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. -->
+<project basedir="." default="createjar" name="RJava_Prototype">
+    <property environment="env"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.6"/>
+    <property name="source" value="1.6"/>
+	<property name="build_dir" value="build"/>
+	<property name="build_tmp" value="build_tmp"/>
+	
+    <path id="RJava_Prototype.classpath">
+        <pathelement location="${build_tmp}"/>
+    	<pathelement location="rjava"/>
+    	<pathelement location="compiler"/>
+		<pathelement location="components/soot/soot-2.5.0.jar"/>
+        <pathelement location="components/commons-io-2.2.jar"/>
+		<pathelement location="components/jgrapht-jdk1.6.jar"/>
+    </path>
+    <target depends="clean" name="init">
+        <mkdir dir="${build_tmp}"/>
+    	<mkdir dir="${build_tmp}/rjava"/>
+    </target>
+    <target name="clean">
+        <delete dir="${build_tmp}"/>
+    	<delete dir="${build_dir}"/>
+    </target>
+    
+    <target depends="clean" name="cleanall"/>
+    
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>    
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" destdir="${build_tmp}" debuglevel="${debuglevel}" includeantruntime="false" source="${source}" target="${target}">
+            <src path="compiler"/>
+            <classpath refid="RJava_Prototype.classpath"/>
+        </javac>
+        <javac debug="true" destdir="${build_tmp}/rjava" debuglevel="${debuglevel}" includeantruntime="false" source="${source}" target="${target}">
+            <src path="rjava"/>
+        	<classpath refid="RJava_Prototype.classpath"/>
+        </javac>
+    </target>
+    
+    <target depends="build" name="createjar">
+    	<mkdir dir="${build_dir}"/>
+    	<jar jarfile="${build_dir}/rjc.jar" basedir="${build_dir}">
+    		<fileset dir="${build_tmp}" includes="**/*.class"/>
+    		<zipgroupfileset dir="components" includes="soot/soot-2.5.0.jar"/>
+    		<zipgroupfileset dir="components" includes="commons-io-2.2.jar"/>
+		<zipgroupfileset dir="components" includes="jgrapht-jdk1.6.jar"/>
+    	</jar>
+    	<mkdir dir="${build_dir}/rjava"/>
+    	<copy todir="${build_dir}/rjava">
+    		<fileset dir="${build_tmp}/rjava" includes="**/*.class"/>
+    	</copy>
+    	<mkdir dir="${build_dir}/components/soot/"/>
+    	<copy file="components/soot/rt.jar" tofile="${build_dir}/components/soot/rt.jar"/>
+    	<copy file="components/soot/jce.jar" tofile="${build_dir}/components/soot/jce.jar"/>
+    	<mkdir dir="${build_dir}/rjava_clib"/>
+    	<copy todir="${build_dir}/rjava_clib">
+    		<fileset dir="rjava_clib/"/>
+    	</copy>
+    	<delete dir="${build_tmp}"/>
+	</target>
+</project>
