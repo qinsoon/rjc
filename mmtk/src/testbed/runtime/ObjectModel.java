@@ -22,11 +22,21 @@ public abstract class ObjectModel {
     public static final Offset OFFSET_GC_HEADER   = OFFSET_HEADER.minus(MMTkConstants.GC_HEADER_BYTES());
     
     public static final void initializeObject(Address addr, TestbedObject object) {
+        System.out.print("Object at ");
+        System.out.println(Integer.toHexString(addr.toInt()));
+        
         // write length
+        System.out.print("Length at ");
+        Address lengthAddr = addr.plus(OFFSET_OBJECT_SIZE);
+        System.out.println(Integer.toHexString(lengthAddr.toInt()));
         addr.store(object.getSize(), OFFSET_OBJECT_SIZE);
         
         // write field
+        System.out.print("Field count at ");
+        Address fieldCountAddr = addr.plus(OFFSET_FIELD_COUNT);
+        System.out.println(Integer.toHexString(fieldCountAddr.toInt()));
         addr.store(object.getFieldCount(), OFFSET_FIELD_COUNT);
+        
         Address cursor = addr.plus(OFFSET_FIELD_START);
         for (int i = 0; i < object.fieldCount; i++) {
             cursor.store(object.fields.get(i));

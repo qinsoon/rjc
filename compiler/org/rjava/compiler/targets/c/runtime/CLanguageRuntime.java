@@ -99,7 +99,8 @@ public class CLanguageRuntime {
         case GC_MALLOC:
             CLanguageGenerator.MALLOC = "GC_malloc";
             EXTRA_INCLUDE.add(includeNonStandardHeader("boehm-gc/include/gc.h"));
-            // FIXME: make it work for -m32 -> ./configure "CFLAGS=-m32" "LDFLAGS=-m32"
+            // FIXME: make it work for -m32 -> CFLAGS=-m32 ./configure --enable-static
+            // cp .libs/libgc.a boehm-gc.a
             MAKE_SUBTASK.put("boehm-gc.a", "boehm-gc.a:\n" +
                     "\tcd boehm-gc;autoreconf -vif;automake --add-missing;./configure;make -f Makefile.direct\n" +
                     "\tcp boehm-gc/gc.a boehm-gc.a\n");
@@ -789,12 +790,9 @@ public class CLanguageRuntime {
         // calling <clinit> for those classes        
         body.append(CLanguageGenerator.commentln("calling <clinit> for RJava classes"));
         for (RClass klass : SemanticMap.dependencyGraph.getClassInitializationOrder()) {
-            System.out.print("will init [" + klass + "]");
             if (klass.getCLInitMethod() != null) {
                 body.append(name.get(klass.getCLInitMethod()) + "();\n");
-                System.out.println();
             }
-            else System.out.println(": no <clinit>");
         }
 
         return body.toString();

@@ -32,3 +32,9 @@ java_lang_Integer_rjinit_int32_t(ret, i);
 inline int32_t java_lang_Integer_parseInt_java_lang_String(java_lang_String* str) {
     return (int32_t)(atol(str->internal));
 }
+
+java_lang_String* java_lang_Integer_toHexString_int32_t(int32_t i) {
+    char* str = (char*) malloc(sizeof(8));
+    sprintf(str, "0x%x", i);
+    return newStringConstant(str);
+}

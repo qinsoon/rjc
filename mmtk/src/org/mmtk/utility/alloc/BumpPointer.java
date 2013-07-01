@@ -167,6 +167,10 @@ import org.vmmagic.unboxed.Word;
    */
   @Inline
   public final Address alloc(int bytes, int align, int offset) {
+    System.out.print("cursor:");
+    System.out.print(Integer.toHexString(cursor.toInt()));
+    System.out.print(",limit:");
+    System.out.println(Integer.toHexString(limit.toInt()));
     Address start = alignAllocationNoFill(cursor, align, offset);
     Address end = start.plus(bytes);
     if (end.GT(internalLimit))
