@@ -16,7 +16,7 @@ public class MMTkContext implements Runnable{
     private static int idCount = 0;
     protected int id;
     
-    protected MutatorContext mutator = new org.mmtk.plan.nogc.NoGCMutator();
+    protected MutatorContext mutator = new org.mmtk.plan.marksweep.MSMutator();
     protected CollectorContext collector;
     
     public MMTkContext() {
@@ -58,8 +58,8 @@ public class MMTkContext implements Runnable{
         } else {
             // mutator's job
             
-            // allocSingleObject();
-            allocExhaustDeadObjects();
+            allocSingleObject();
+            // allocExhaustDeadObjects();
         }
     }
     

@@ -27,7 +27,7 @@ public abstract class ParallelCollector extends CollectorContext {
    */
 
   /** The group that this collector context is running in (may be null) */
-  protected ParallelCollectorGroup group;
+  protected ParallelCollectorGroup group = null;
 
   /** Last group trigger index (see CollectorContextGroup) */
   int lastTriggerCount;
