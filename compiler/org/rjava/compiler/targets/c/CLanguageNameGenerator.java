@@ -1,5 +1,6 @@
 package org.rjava.compiler.targets.c;
 
+import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.semantics.representation.RField;
@@ -12,6 +13,7 @@ import soot.Local;
 import soot.SootClass;
 import soot.Type;
 import soot.Value;
+import soot.jimple.LongConstant;
 import soot.jimple.NullConstant;
 import soot.jimple.StringConstant;
 import soot.jimple.internal.JArrayRef;
@@ -155,6 +157,10 @@ public class CLanguageNameGenerator {
             return "NULL";
         else if (value instanceof StringConstant) {
             return "newStringConstant(" + value.toString() + ")";
+        }
+        else if (value instanceof LongConstant) {
+            // make sure that long is 64bits (LL) under m32 mode
+            return value.toString() + (RJavaCompiler.m32 ? "L" : "");
         }
         else return value.toString();
     }

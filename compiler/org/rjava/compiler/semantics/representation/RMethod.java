@@ -216,10 +216,18 @@ public class RMethod implements DependencyEdgeNode, CompilationUnit{
     public boolean isOverridingMethod() {
         if (!klass.hasSuperClass())
             return false;
+        
         SootClass superClass = internal.getDeclaringClass().getSuperclass();
-        if (superClass != null && superClass.declaresMethod(internal.getName(), internal.getParameterTypes()))
-            return true;
-        else return false;
+        
+        while(superClass != null) {
+            if (superClass.declaresMethod(internal.getName(), internal.getParameterTypes()))
+                return true;
+            
+            if (superClass.hasSuperclass())
+                superClass = superClass.getSuperclass();
+            else return false;
+        }
+        return false;
     }
     
     public boolean isConstructor() {

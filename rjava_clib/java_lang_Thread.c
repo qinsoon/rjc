@@ -4,13 +4,14 @@
 #include <stdlib.h>
 #include <sched.h>
 
+// #define DEBUG_THREAD
+
 // record all the created threads
 #define MAX_THREADS 1024
-pthread_t rjava_pthreads[MAX_THREADS];
 java_lang_Thread* rjava_threads[MAX_THREADS];
 int rjava_thread_count = 0;
 
-// this is a hack to add main thread as a RJava thread (but it is already launched)
+/* this is a hack to add main thread as a RJava thread (but it is already launched) */
 void rjava_add_main_thread() {
     // main thread should always be the first thread
     internal_assert(rjava_thread_count == 0, "We have RJava thread before adding main thread, its a problem");
@@ -21,7 +22,7 @@ void rjava_add_main_thread() {
     
     // we will need to add pthread to array
     pthread_t main_thread = pthread_self();
-    rjava_pthreads[0] = main_thread;
+    rjava_threads[0]->internal_thread = main_thread;
 }
 
 void java_lang_Thread_dumpStack() {
@@ -76,13 +77,17 @@ void java_lang_Thread_rjinit_java_lang_Runnable_java_lang_String(void* this_para
 void java_lang_Thread_run(void* this_parameter) {
     java_lang_Thread* t = (java_lang_Thread*) this_parameter;
     if (t -> start_function != NULL) {
-        // record the thread
-        rjava_pthreads[t->thread_id] = t->internal_thread;
-            
+        pthread_mutex_lock(&thread_create_lock);
+        // we wait until pthread create is completely done (in java_lang_Thread_start()), so when new thread is running we will have pthread_t
+        pthread_mutex_unlock(&thread_create_lock);
+        
+#ifdef DEBUG_THREAD
+        printf("[DEBUG]New thread running. id:%" PRId64 ", pthread:%u, name:%s\n", t->thread_id, t->internal_thread, t->name->internal);
+#endif
         t -> start_function(t -> worker);
     } else {
         internal_assert(false, "start function not set");
-    }    
+    }
 }
 
 void* thread_run_trampoline(void* ptr) {
@@ -102,18 +107,32 @@ void java_lang_Thread_start(void* this_parameter) {
     java_lang_Thread* t = (java_lang_Thread*) this_parameter;
     internal_assert(rjava_thread_count < MAX_THREADS, "Trying to create more threads than MAX_THREADS");
     
+#ifdef DEBUG_THREAD
+    printf("[DEBUG]create new thread. id:%" PRId64 ", pthread:%u, name:%s\n", t->thread_id, t->internal_thread, t->name->internal);
+#endif
     // creating thread
+    pthread_mutex_lock(&thread_create_lock);
     pthread_create(
-               &(t->internal_thread), NULL,
-               thread_run_trampoline,
-               this_parameter);
+                   &(t->internal_thread), NULL,
+                   thread_run_trampoline,
+                   this_parameter);
+    pthread_mutex_unlock(&thread_create_lock);
+#ifdef DEBUG_THREAD
+    printf("done. pthread=%u\n", t->internal_thread);
+#endif
 }
 
 java_lang_Thread* java_lang_Thread_currentThread() {
-    pthread_t current_pthread = pthread_self();
     int i = 0;
-    for (; i < rjava_thread_count; i++)
-        if (rjava_pthreads[i] == current_pthread)
+#ifdef DEBUG_THREAD
+    printf("[DEBUG]Trying to find current thread from all threads:\n");
+    for (i = 0; i < rjava_thread_count; i++) {
+        printf("%d: id=%d, pthread=%d, name=%s\n", i, rjava_threads[i]->thread_id, rjava_threads[i]->internal_thread, rjava_threads[i]->name->internal);
+    }
+#endif
+    pthread_t current_pthread = pthread_self();
+    for (i = 0; i < rjava_thread_count; i++)
+        if (rjava_threads[i]->internal_thread == current_pthread)
             return rjava_threads[i];
     
     internal_assert(false, "couldn't find current thread");
@@ -123,7 +142,7 @@ java_lang_Thread* java_lang_Thread_currentThread() {
 void rjava_join_all_threads() {
     int i = 0;
     for (; i < rjava_thread_count; i++)
-        pthread_join(rjava_pthreads[i], NULL);
+        pthread_join(rjava_threads[i]->internal_thread, NULL);
 }
 
 void java_lang_Thread_join(void* this_parameter) {

@@ -165,10 +165,10 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
            return "((" + MAGIC_TYPE_TO_C_TYPE.get(type) + ") ((" + UNSIGNED_MAGIC_TYPE + ")" + param0 + "))"; 
        } 
        else if (methodName.equals("toInt")) {
-           return "(uint32_t) " + THIS_PARAMETER;
+           return "(int32_t) " + THIS_PARAMETER;
        }
        else if (methodName.equals("toLong")) {
-           return "(uint64_t) " + THIS_PARAMETER;
+           return "(int64_t) " + THIS_PARAMETER;
        }
        else if (methodName.equals("toWord")) {
            return "(" + name.get(method.getReturnType(), false) + ") " + THIS_PARAMETER;

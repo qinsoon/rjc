@@ -35,10 +35,10 @@ this_parameter == UINTPTR_MAX
 this_parameter
 
 #define org_vmmagic_unboxed_Address_toInt(this_parameter) \
-(uint32_t) this_parameter
+(int32_t) this_parameter
 
 #define org_vmmagic_unboxed_Address_toLong(this_parameter) \
-(uint64_t) this_parameter
+(int64_t) this_parameter
 
 #define org_vmmagic_unboxed_Address_toWord(this_parameter) \
 (org_vmmagic_unboxed_Word) this_parameter

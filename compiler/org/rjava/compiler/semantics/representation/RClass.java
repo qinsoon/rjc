@@ -279,7 +279,7 @@ public class RClass implements DependencyEdgeNode, CompilationUnit{
     }
     
     /**
-     * returns the class who declares the method but whose parent doesnt declare such method
+     * returns the class who declares the method but whose parent(s) doesnt declare such method
      * @param base
      * @param method
      * @return
@@ -295,20 +295,20 @@ public class RClass implements DependencyEdgeNode, CompilationUnit{
         return whoOwnsMethodInTypeHierarchyInternal(base, method.getName(), method.getParameterTypes());
     }
     
-    private static RClass whoOwnsMethodInTypeHierarchyInternal(RClass base, String methodName, List params) {
-        RClass ret = base;
-        while(true) {
-            // ret declares such method, but either he has no parent or his parent doesnt have such method
-            if (
-                    (ret.internal.declaresMethod(methodName, params) && 
-                    ( ret.getSuperClass() == null || !ret.getSuperClass().internal.declaresMethod(methodName, params))))
-                return ret;
-            else {
-                if (ret.hasSuperClass())
-                    ret = ret.getSuperClass();
-                else return null;
-            }
+    private static RClass whoOwnsMethodInTypeHierarchyInternal(RClass base, String methodName, List params) {       
+        RClass ret = null;
+        
+        RClass cursor = base;
+        while(cursor != null) {
+            if (cursor.internal.declaresMethod(methodName, params))
+                ret = cursor;
+            
+            if (cursor.hasSuperClass())
+                cursor = cursor.getSuperClass();
+            else cursor = null;
         }
+        
+        return ret;
     }
     
     public static RClass whoOwnsFieldInTypeHierarchy(RClass base, RType type, String name) {

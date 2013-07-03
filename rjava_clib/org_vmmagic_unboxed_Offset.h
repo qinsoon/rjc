@@ -20,10 +20,10 @@
 INTPTR_MAX
 
 #define org_vmmagic_unboxed_Offset_toInt(this_parameter) \
-(uint32_t) this_parameter
+(int32_t) this_parameter
 
 #define org_vmmagic_unboxed_Offset_toLong(this_parameter) \
-(uint64_t) this_parameter
+(int64_t) this_parameter
 
 #define org_vmmagic_unboxed_Offset_toWord(this_parameter) \
 (org_vmmagic_unboxed_Word) this_parameter

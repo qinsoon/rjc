@@ -40,11 +40,16 @@ public class TestInheritance extends UnitTest {
         }
     }
     
+    static class GrandChild extends Child {
+        
+    }
+    
     public static boolean testFieldInheritance() {
         Parent parent = new Parent();
         Child child = new Child();
+        Parent parent2 = new Child();
         
-        return parent.field == 0 && child.field == 0;
+        return parent.field == 0 && child.field == 0 && parent2.field == 0;
     }
     
     public static boolean testInstanceMethodInheritance() {
@@ -57,8 +62,10 @@ public class TestInheritance extends UnitTest {
     public static boolean testInstanceMethodOverride() {
         Parent parent = new Parent();
         Child child = new Child();
+        Parent parent2 = new Child();
+        Parent parent3 = new GrandChild();
         
-        return parent.instanceMethod() == 0 && child.instanceMethod() == 1;
+        return parent.instanceMethod() == 0 && child.instanceMethod() == 1 && parent2.instanceMethod() == 1 && parent3.instanceMethod() == 1;
     }
     
     public static boolean testStaticMethodInheritance() {

@@ -153,7 +153,6 @@ public class RJavaCompiler {
                     i++;
                 } else if (args[i].equals("-m32")){
                     m32 = true;
-                    i++;
                 }
                 else {
                     sources.add(args[i]);

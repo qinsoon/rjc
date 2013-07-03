@@ -7,6 +7,12 @@ public class TestNumberComparison extends UnitTest {
         start("Test integer comparison");
         check(testIntComparison());
         
+        start("Test integer boundary comparison");
+        check(testIntBoundaryComparison());
+        
+        start("Test long/int comparison");
+        check(testLongIntComparison());
+        
         start("Test double comparison");
         check(testDoubleComparison());
     }
@@ -17,6 +23,24 @@ public class TestNumberComparison extends UnitTest {
         int c = 5;
         int d = 5;
         return a < b && c == d && b > a;
+    }
+    
+    public static boolean testIntBoundaryComparison() {
+        int MIN = -2147483648;
+        int MAX = 2147483647;
+        
+        int a = 0;
+        
+        return a >= MIN && a <= MAX;
+    }
+    
+    public static boolean testLongIntComparison() {
+        int MIN = -2147483648;
+        int MAX = 2147483647;
+        
+        long a = 0;
+        
+        return a >= MIN && a <= MAX;
     }
     
     public static boolean testDoubleComparison() {

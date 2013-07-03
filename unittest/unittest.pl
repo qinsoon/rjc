@@ -13,6 +13,7 @@ my $rjc_jar = "$build_path/rjc.jar";
 my $test_source = "$rjava_base/unittest/src";
 
 my $rjc_main = "org.rjava.compiler.RJavaCompiler";
+my $rjc_flags = "-m32";
 
 my $mute = "> /dev/null 2>&1";
 #my $mute = "2>&1";
@@ -79,7 +80,7 @@ sub run_test() {
   } else {
   	$opt_flag = "";
   }
-  system("java -cp $rjc_jar:$rjava_lib_path $rjc_main $opt_flag -dir $test_source -o test $_[0] $mute");
+  system("java -cp $rjc_jar:$rjava_lib_path $rjc_main $opt_flag $rjc_flags -dir $test_source -o test $_[0] $mute");
   if ( $? != 0) {
     print "(fail)\n";
     return;

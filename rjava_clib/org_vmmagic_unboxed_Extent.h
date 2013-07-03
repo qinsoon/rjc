@@ -23,10 +23,10 @@ org_vmmagic_unboxed_Extent_fromIntSignExtend_int32_t(1)
 UINTPTR_MAX
 
 #define org_vmmagic_unboxed_Extent_toInt(this_parameter) \
-(uint32_t) this_parameter
+(int32_t) this_parameter
 
 #define org_vmmagic_unboxed_Extent_toLong(this_parameter) \
-(uint64_t) this_parameter
+(int64_t) this_parameter
 
 #define org_vmmagic_unboxed_Extent_toWord(this_parameter) \
 (org_vmmagic_unboxed_Word) this_parameter
