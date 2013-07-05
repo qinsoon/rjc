@@ -47,6 +47,7 @@ import soot.jimple.internal.JInterfaceInvokeExpr;
 import soot.jimple.internal.JInvokeStmt;
 import soot.jimple.internal.JLengthExpr;
 import soot.jimple.internal.JLookupSwitchStmt;
+import soot.jimple.internal.JNeExpr;
 import soot.jimple.internal.JNegExpr;
 import soot.jimple.internal.JNewArrayExpr;
 import soot.jimple.internal.JNewExpr;
@@ -483,12 +484,11 @@ public class CLanguageStatementGenerator {
     
     private String fromSootConditionExpr(soot.jimple.ConditionExpr conditionExpr) {
         // if we are comparing two pointers, we need to do a type cast (to avoid gcc warnings)
-        if (conditionExpr instanceof JEqExpr) {
-            JEqExpr eqExpr = (JEqExpr) conditionExpr;
-            RType left = RType.initWithClassName(eqExpr.getOp1().getType().toString());
-            RType right = RType.initWithClassName(eqExpr.getOp2().getType().toString()); 
+        if (conditionExpr instanceof JEqExpr || conditionExpr instanceof JNeExpr) {
+            RType left = RType.initWithClassName(conditionExpr.getOp1().getType().toString());
+            RType right = RType.initWithClassName(conditionExpr.getOp2().getType().toString()); 
             if (left.isReferenceType() && right.isReferenceType()) {
-                return "(intptr_t)" + name.fromSootValue(eqExpr.getOp1()) + " == (intptr_t)" + name.fromSootValue(eqExpr.getOp2());
+                return "(intptr_t)" + name.fromSootValue(conditionExpr.getOp1()) + " " + conditionExpr.getSymbol() + " (intptr_t)" + name.fromSootValue(conditionExpr.getOp2());
             }
         }
         
@@ -542,7 +542,9 @@ public class CLanguageStatementGenerator {
         if (binopExpr instanceof JUshrExpr) {
             return "(unsigned int)(" + name.fromSootValue(binopExpr.getOp1()) + " >> " + name.fromSootValue(binopExpr.getOp2()) + ")";
         }
-        return binopExpr.toString();
+        
+        // default
+        return name.fromSootValue(binopExpr.getOp1()) + binopExpr.getSymbol() + name.fromSootValue(binopExpr.getOp2());
     }
     
     private String fromSootJNewExpr(soot.jimple.internal.JNewExpr newExpr) {

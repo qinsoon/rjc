@@ -13,6 +13,7 @@ import soot.Local;
 import soot.SootClass;
 import soot.Type;
 import soot.Value;
+import soot.jimple.IntConstant;
 import soot.jimple.LongConstant;
 import soot.jimple.NullConstant;
 import soot.jimple.StringConstant;
@@ -161,6 +162,12 @@ public class CLanguageNameGenerator {
         else if (value instanceof LongConstant) {
             // make sure that long is 64bits (LL) under m32 mode
             return value.toString() + (RJavaCompiler.m32 ? "L" : "");
+        }
+        else if ( (value instanceof IntConstant)
+                && Integer.parseInt(value.toString()) == Integer.MIN_VALUE) {
+            // to avoid warning: warning: this decimal constant is unsigned only in ISO C90
+            // thus we need to include <limits.h>
+            return "INT_MIN";
         }
         else return value.toString();
     }

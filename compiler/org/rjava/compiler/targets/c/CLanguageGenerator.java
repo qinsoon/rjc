@@ -661,7 +661,7 @@ public class CLanguageGenerator extends CodeGenerator {
         boolean firstStmt = true;
         for (RStatement rStmt : method.getBody()) {
             if (OUTPUT_JIMPLE_TO_SOURCE)
-                out.append(commentln("[" + rStmt.internal().getClass().toString() + "]" + rStmt.internal().toString()));
+                out.append(commentln("[" + rStmt.internal().getClass().toString() + "]" + rStmt.toString()));
 
             
             if (rStmt.isIntrinsic())

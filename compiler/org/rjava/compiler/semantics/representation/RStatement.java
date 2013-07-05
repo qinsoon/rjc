@@ -114,29 +114,7 @@ public abstract class RStatement implements CompilationUnit{
     public static final boolean verboseInvoke = false;
     
     public String toString() {
-	String ret = "[" + internal.getClass() + "]:" + internal.toString();
-	if (verboseInvoke && internal().containsInvokeExpr()) {
-	    ret += ",invoke base:";
-	    InvokeExpr invoke = internal().getInvokeExpr();
-	    if (invoke instanceof soot.jimple.internal.JSpecialInvokeExpr) {
-	        ret += ((soot.jimple.internal.JSpecialInvokeExpr) invoke).getBase().getType();
-	    } else if (invoke instanceof soot.jimple.internal.JVirtualInvokeExpr) {
-	        ret += ((soot.jimple.internal.JVirtualInvokeExpr) invoke).getBase().getType();
-	    } else ret += "non-virtual invoke";
-	}
-	if (verbose) {
-        	ret += "\nuse/def boxes: \n";
-        	for (Object o : internal.getUseAndDefBoxes()) {
-        	    ValueBox b = (ValueBox) o;
-        	    ret += " " + b.getClass() + ": " + b.toString() + "\n";
-        	}
-        	ret += "unit boxes: \n";
-        	for (Object b : internal.getUnitBoxes()) {
-        	    ret += " " + b.getClass() + ": " + b.toString() + "\n";
-        	}
-	}
-	
-	return ret;
+        return internal.toString();
     }
 
     public int getType() {

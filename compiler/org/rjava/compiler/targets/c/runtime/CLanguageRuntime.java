@@ -42,7 +42,8 @@ public class CLanguageRuntime {
         "stdlib.h",
         "stdbool.h",
         "inttypes.h",
-        "pthread.h"
+        "pthread.h",
+        "limits.h"
     };
     // rjava's java.lang lib
     public static final String RJAVA_LIB = "rjava_clib";
