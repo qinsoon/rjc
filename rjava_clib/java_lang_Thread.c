@@ -11,19 +11,6 @@
 java_lang_Thread* rjava_threads[MAX_THREADS];
 int rjava_thread_count = 0;
 
-/* this is a hack to add main thread as a RJava thread (but it is already launched) */
-void rjava_add_main_thread() {
-    // main thread should always be the first thread
-    internal_assert(rjava_thread_count == 0, "We have RJava thread before adding main thread, its a problem");
-    
-    // this will increase thread_count, add RJava thread to array
-    java_lang_Thread* rjava_main = (java_lang_Thread*) malloc(sizeof(java_lang_Thread));
-    java_lang_Thread_rjinit_java_lang_String(rjava_main, "Main Thread");
-    
-    // we will need to add pthread to array
-    pthread_t main_thread = pthread_self();
-    rjava_threads[0]->internal_thread = main_thread;
-}
 
 void java_lang_Thread_dumpStack() {
     void* array[20];
@@ -35,17 +22,13 @@ void java_lang_Thread_dumpStack() {
     backtrace_symbols_fd(array, size, 2);
 }
 
-void java_lang_Thread_rjinit_java_lang_String(void* this_parameter, java_lang_String* name) {
-    java_lang_Thread_rjinit_java_lang_Runnable_java_lang_String(this_parameter, NULL, name);
-}
-
-void java_lang_Thread_rjinit_java_lang_Runnable(void* this_parameter, void* runnable) {
-    // name
-    char* str = (char*) malloc(20);
-    sprintf(str, "Thread-%d", rjava_thread_count);
-    java_lang_String* name = newStringConstant(str);
-    
-    java_lang_Thread_rjinit_java_lang_Runnable_java_lang_String(this_parameter, runnable, name);
+/* assertion */
+void internal_assert(bool cond, const char* msg) {
+    if (!cond) {
+        printf("%s\n", msg);
+        java_lang_Thread_dumpStack();
+        exit(1);
+    }
 }
 
 void java_lang_Thread_rjinit_java_lang_Runnable_java_lang_String(void* this_parameter, void* runnable, java_lang_String* name) {
@@ -74,6 +57,19 @@ void java_lang_Thread_rjinit_java_lang_Runnable_java_lang_String(void* this_para
     (((RJava_Common_Instance*)this_parameter) -> class_struct) = &java_lang_Thread_class_instance;
 }
 
+void java_lang_Thread_rjinit_java_lang_String(void* this_parameter, java_lang_String* name) {
+    java_lang_Thread_rjinit_java_lang_Runnable_java_lang_String(this_parameter, NULL, name);
+}
+
+void java_lang_Thread_rjinit_java_lang_Runnable(void* this_parameter, void* runnable) {
+    // name
+    char* str = (char*) malloc(20);
+    sprintf(str, "Thread-%d", rjava_thread_count);
+    java_lang_String* name = newStringConstant(str);
+    
+    java_lang_Thread_rjinit_java_lang_Runnable_java_lang_String(this_parameter, runnable, name);
+}
+
 void java_lang_Thread_run(void* this_parameter) {
     java_lang_Thread* t = (java_lang_Thread*) this_parameter;
     if (t -> start_function != NULL) {
@@ -92,15 +88,6 @@ void java_lang_Thread_run(void* this_parameter) {
 
 void* thread_run_trampoline(void* ptr) {
     java_lang_Thread_run(ptr);
-}
-
-/* assertion */
-void internal_assert(bool cond, const char* msg) {
-    if (!cond) {
-        printf("%s\n", msg);
-        java_lang_Thread_dumpStack();
-        exit(1);
-    }
 }
 
 void java_lang_Thread_start(void* this_parameter) {
@@ -139,11 +126,33 @@ java_lang_Thread* java_lang_Thread_currentThread() {
     return NULL;
 }
 
+/*******************************************/
+/* helper methods                          */
+/*******************************************/
+
 void rjava_join_all_threads() {
     int i = 0;
     for (; i < rjava_thread_count; i++)
         pthread_join(rjava_threads[i]->internal_thread, NULL);
 }
+
+/* this is a hack to add main thread as a RJava thread (but it is already launched) */
+void rjava_add_main_thread() {
+    // main thread should always be the first thread
+    internal_assert(rjava_thread_count == 0, "We have RJava thread before adding main thread, its a problem");
+    
+    // this will increase thread_count, add RJava thread to array
+    java_lang_Thread* rjava_main = (java_lang_Thread*) malloc(sizeof(java_lang_Thread));
+    java_lang_Thread_rjinit_java_lang_String(rjava_main, newStringConstant("Main Thread"));
+    
+    // we will need to add pthread to array
+    pthread_t main_thread = pthread_self();
+    rjava_threads[0]->internal_thread = main_thread;
+}
+
+/*******************************************/
+/* synchronization                         */
+/*******************************************/
 
 void java_lang_Thread_join(void* this_parameter) {
     java_lang_Thread* t = (java_lang_Thread*) this_parameter;

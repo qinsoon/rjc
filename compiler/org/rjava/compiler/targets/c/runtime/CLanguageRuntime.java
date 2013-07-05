@@ -640,6 +640,11 @@ public class CLanguageRuntime {
         
         out.append(NEWLINE);
         
+        // types defines
+        out.append(CLanguageGenerator.commentln("application type defines"));
+        out.append(getTypedefs());
+        out.append(NEWLINE);
+        
         // helper methods
         out.append(signatureHelper(HELPER_RJAVA_CLASS_INIT) + SEMICOLON + NEWLINE);
         for (HelperMethod method : CRT_HELPERS)
@@ -796,6 +801,20 @@ public class CLanguageRuntime {
         }
 
         return body.toString();
+    }
+    
+    /**
+     * (R)Java types may use each other, but C is compiled top-down. Thus we typedefine all the types in advance to avoid warnings. 
+     */
+    private ArrayList<String> RJavaCStructType = new ArrayList<String>();
+    public void addTypedef(String type) {
+        RJavaCStructType.add(type);
+    }
+    private String getTypedefs() {
+        CodeStringBuilder defs = new CodeStringBuilder();
+        for (String typedef : RJavaCStructType)
+            defs.append("typedef struct " + typedef + " " + typedef + SEMICOLON + NEWLINE);
+        return defs.toString();
     }
     
     /**

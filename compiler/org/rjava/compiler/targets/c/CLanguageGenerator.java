@@ -208,7 +208,8 @@ public class CLanguageGenerator extends CodeGenerator {
          * Generate interface struct (e.g. org_rjava_test_poly_DoArithmetic_interface)
          * it only has function pointers;
          */
-        outMain.append("typedef struct " + name.get(klass, false) + CLanguageRuntime.INTERFACE_STRUCT_SUFFIX + " {" + NEWLINE);
+        runtime.addTypedef(name.get(klass, false));
+        outMain.append("struct " + name.get(klass, false) + CLanguageRuntime.INTERFACE_STRUCT_SUFFIX + " {" + NEWLINE);
         outMain.increaseIndent();
         outMain.append(commentln("function pointers"));
         for (RMethod method : klass.getMethods()) {
@@ -216,7 +217,7 @@ public class CLanguageGenerator extends CodeGenerator {
                 outMain.append(getFunctionPointerForMethod(method) + SEMICOLON + NEWLINE);
         }
         outMain.decreaseIndent();
-        outMain.append("} " + name.get(klass, false) + CLanguageRuntime.INTERFACE_STRUCT_SUFFIX + SEMICOLON + NEWLINE);
+        outMain.append("} " + SEMICOLON + NEWLINE);
         
         /*
          * generate static final fields
@@ -350,7 +351,8 @@ public class CLanguageGenerator extends CodeGenerator {
         /*
          * Generate instance struct (e.g. org_rjava_test_poly_Animal)
          */
-        outMain.append("typedef struct " + name.get(klass, false) + " " + name.get(klass, false) + SEMICOLON + NEWLINE);
+        //outMain.append("typedef struct " + name.get(klass, false) + " " + name.get(klass, false) + SEMICOLON + NEWLINE);
+        runtime.addTypedef(name.get(klass, false));
         outMain.append("struct " + name.get(klass, false) + " {" + NEWLINE);
         outMain.increaseIndent();
         

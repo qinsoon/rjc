@@ -58,8 +58,8 @@ public class MMTkContext implements Runnable{
         } else {
             // mutator's job
             
-            allocSingleObject();
-            // allocExhaustDeadObjects();
+            // allocSingleObject();
+            allocExhaustDeadObjects();
         }
     }
     
