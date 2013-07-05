@@ -10,6 +10,7 @@ import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.SootEngine;
 
 import soot.SootClass;
+import soot.Type;
 
 public class RType {
     // full class name <-> soot classes
@@ -113,6 +114,13 @@ public class RType {
     	// store back to types map
     	saveToSemanticMap(className, r);
     	return r;
+    }
+    
+    /**
+     * init an RType from a soot type
+     */
+    public static RType initWithSootType(Type type) {
+        return initWithClassName(type.toString());
     }
 
     private void resolveAndNormalize() {

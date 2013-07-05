@@ -11,6 +11,8 @@ typedef struct java_lang_Throwable_class {
   java_lang_Object_class class_header;
 } java_lang_Throwable_class;
 
+java_lang_String* java_lang_Throwable_toString(void* this_parameter);
+
 java_lang_Throwable_class java_lang_Throwable_class_instance;
 
 #endif

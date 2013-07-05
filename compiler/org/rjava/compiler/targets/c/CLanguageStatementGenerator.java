@@ -36,6 +36,7 @@ import soot.jimple.internal.JCmpExpr;
 import soot.jimple.internal.JCmpgExpr;
 import soot.jimple.internal.JCmplExpr;
 import soot.jimple.internal.JEnterMonitorStmt;
+import soot.jimple.internal.JEqExpr;
 import soot.jimple.internal.JExitMonitorStmt;
 import soot.jimple.internal.JGotoStmt;
 import soot.jimple.internal.JIdentityStmt;
@@ -290,7 +291,9 @@ public class CLanguageStatementGenerator {
     }
     
     private String get(RReturnStmt stmt) {
-        return CLanguageGenerator.RETURN + " " + stmt.internal().getOp();
+        RType returnType = stmt.getMethod().getReturnType();
+        RType valueType = RType.initWithSootType(stmt.internal().getOp().getType());
+        return CLanguageGenerator.RETURN + " " + typeCasting(returnType, valueType, name.fromSootValue(stmt.internal().getOp()));
     }
     
     private String get(RReturnVoidStmt stmt) {
@@ -332,6 +335,7 @@ public class CLanguageStatementGenerator {
     /*
      * from soot statement/expr representation
      */  
+    // FIXME: library call and app call should be unified. 
     private String fromSootJVirtualInvokeExpr(soot.jimple.internal.JVirtualInvokeExpr virtualInvoke) {
         String callingClass = virtualInvoke.getMethod().getDeclaringClass().getName();
         if (callingClass.startsWith("java.") || callingClass.startsWith("javax.") ||
@@ -478,6 +482,17 @@ public class CLanguageStatementGenerator {
     }
     
     private String fromSootConditionExpr(soot.jimple.ConditionExpr conditionExpr) {
+        // if we are comparing two pointers, we need to do a type cast (to avoid gcc warnings)
+        if (conditionExpr instanceof JEqExpr) {
+            JEqExpr eqExpr = (JEqExpr) conditionExpr;
+            RType left = RType.initWithClassName(eqExpr.getOp1().getType().toString());
+            RType right = RType.initWithClassName(eqExpr.getOp2().getType().toString()); 
+            if (left.isReferenceType() && right.isReferenceType()) {
+                return "(intptr_t)" + name.fromSootValue(eqExpr.getOp1()) + " == (intptr_t)" + name.fromSootValue(eqExpr.getOp2());
+            }
+        }
+        
+        // default
         return name.fromSootValue(conditionExpr.getOp1()) + conditionExpr.getSymbol() + name.fromSootValue(conditionExpr.getOp2());
     }
     
@@ -639,11 +654,14 @@ public class CLanguageStatementGenerator {
         if (expect.equals(current))
             return value;
         
-        String expr = value;
+        return typeCasting(RType.initWithSootType(expect), RType.initWithSootType(current), value);
+    }
+    
+    private String typeCasting(RType expectRType, RType currentRType, String value) {
+        if (expectRType.equals(currentRType))
+            return value;
         
-        // we need to do type cast
-        RType expectRType = RType.initWithClassName(expect.toString());
-        RType currentRType = RType.initWithClassName(current.toString());
+        String expr = value;
         
         // check if we should unbox the type
         if (expectRType.isPrimitive() && currentRType.isBoxedPrimitiveType() && RType.boxedTypeMatchesPrimitiveType(currentRType, expectRType)) {
