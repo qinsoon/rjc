@@ -676,7 +676,7 @@ public class CLanguageStatementGenerator {
         } 
         // type cast
         // TODO: check type cast
-        else if (expectRType.isReferenceType()) 
+        else //if (expectRType.isReferenceType()) 
             expr = "(" + name.getWithPointerIfProper(expectRType, true) + ")" + value;
         
         return expr;
