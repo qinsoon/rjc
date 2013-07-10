@@ -47,3 +47,12 @@ inline void java_io_PrintStream_println_double(java_io_PrintStream* this_paramet
 inline void java_io_PrintStream_print_double(java_io_PrintStream* this_parameter, double d) {
     printf("%f", d);
 }
+
+inline void java_io_PrintStream_println_float(java_io_PrintStream* this_parameter, float f) {
+    java_io_PrintStream_print_float(this_parameter, f);
+    printf("\n");
+}
+
+inline void java_io_PrintStream_print_float(java_io_PrintStream* this_parameter, float f) {
+    printf("%f",  f);
+}

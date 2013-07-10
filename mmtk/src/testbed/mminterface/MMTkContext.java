@@ -26,6 +26,7 @@ public class MMTkContext implements Runnable{
     public MMTkContext(CollectorContext collector) {
         this.id = idCount;
         idCount ++;
+        mutator.initMutator(id);
         
         this.collector = collector;
         if (collector != null)
