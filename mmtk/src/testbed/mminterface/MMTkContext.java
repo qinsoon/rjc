@@ -92,12 +92,12 @@ public class MMTkContext implements Runnable{
      * exhaust allocation
      */
     public void allocExhaustDeadObjects() {
+        TestbedObject obj = new TestbedObject(null);        
         long count = 0;
         while(true) {
             // check gc first
-            checkGCBeforeAllocation();
-            
-            TestbedObject obj = new TestbedObject(null);
+            checkGCBeforeAllocation();            
+
             ObjectReference objRef = MemoryManager.alloc(obj).toObjectReference();
             
             count++;
@@ -109,7 +109,7 @@ public class MMTkContext implements Runnable{
     }
     
     private void checkGCBeforeAllocation() {
-        if (Scheduler.gcTriggering) {
+        if (Scheduler.gcTriggering || isBlocked()) {
             synchronized(this) {
                 try {
                     wait();
@@ -119,7 +119,14 @@ public class MMTkContext implements Runnable{
         }
     }
     
-    public void waitForGC() {
-        
+    private boolean isBlocked = false;
+    public void blockForGC() {
+        isBlocked = true;
+    }
+    public void unblockAfterGC() {
+        isBlocked = false;
+    }
+    public boolean isBlocked() {
+        return isBlocked;
     }
 }

@@ -9,32 +9,27 @@ public class StatisticsExt extends Statistics {
 
     @Override
     public long nanoTime() {
-        // TODO Auto-generated method stub
-        return 0;
+        return System.nanoTime();
     }
 
     @Override
     public double nanosToMillis(long c) {
-        // TODO Auto-generated method stub
-        return 0;
+        return ((double)c) / 1000000;
     }
 
     @Override
     public double nanosToSecs(long c) {
-        // TODO Auto-generated method stub
-        return 0;
+        return ((double)c) / 1000000000;
     }
 
     @Override
     public long millisToNanos(double t) {
-        // TODO Auto-generated method stub
-        return 0;
+        return (long) (t * 1000000);
     }
 
     @Override
     public long secsToNanos(double t) {
-        // TODO Auto-generated method stub
-        return 0;
+        return (long) (t * 1000000000);
     }
 
     @Override

@@ -85,7 +85,10 @@ public class Scheduler {
         
         // notify mutators
         for (int i = 0; i < mutatorCount; i++) {
-            mutatorContexts[i].notify();
+            mutatorContexts[i].unblockAfterGC();
+            synchronized(mutatorContexts[i]) {
+                mutatorContexts[i].notify();
+            }
         }
     }
 }

@@ -536,7 +536,7 @@ public class CLanguageStatementGenerator {
             // int result = (a > b) ? : 1 ((a == b) ? 0 : -1)
             String op1 = name.fromSootValue(binopExpr.getOp1());
             String op2 = name.fromSootValue(binopExpr.getOp2());
-            String ret = "(" + op1 + ">" + op2 + ") ? 1 : ((" + op1 + "==" + op2 + ") ? 0 : 1)";
+            String ret = "(" + op1 + ">" + op2 + ") ? 1 : ((" + op1 + "==" + op2 + ") ? 0 : -1)";
             return ret;
         }
         if (binopExpr instanceof JUshrExpr) {

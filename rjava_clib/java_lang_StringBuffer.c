@@ -59,6 +59,12 @@ inline java_lang_StringBuffer* java_lang_StringBuffer_append_int64_t(java_lang_S
     java_lang_StringBuffer_append_java_lang_Object(this_parameter, newStringConstant(iStr));
 }
 
+inline java_lang_StringBuffer* java_lang_StringBuffer_append_double(java_lang_StringBuffer* this_parameter, double d) {
+    char iStr[50];
+    sprintf (iStr, "%f", d);
+    java_lang_StringBuffer_append_java_lang_String(this_parameter, newStringConstant(iStr));
+}
+
 inline java_lang_String* java_lang_StringBuffer_toString(java_lang_StringBuffer* this_parameter) {
   return newStringConstant(this_parameter->internal);
 }

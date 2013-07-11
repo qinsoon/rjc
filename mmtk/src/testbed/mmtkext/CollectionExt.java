@@ -34,7 +34,7 @@ public class CollectionExt extends Collection {
     @Override
     @Unpreemptible
     public void blockForGC() {
-        Scheduler.getCurrentContext().waitForGC();
+        Scheduler.getCurrentContext().blockForGC();
     }
 
     @Override
