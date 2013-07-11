@@ -82,5 +82,10 @@ public class Scheduler {
             Main._assert(gcTriggering == true, "gcTriggering is false when trying to set it to false");
             gcTriggering = false;
         }
+        
+        // notify mutators
+        for (int i = 0; i < mutatorCount; i++) {
+            mutatorContexts[i].notify();
+        }
     }
 }

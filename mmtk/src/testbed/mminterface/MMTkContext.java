@@ -68,7 +68,6 @@ public class MMTkContext implements Runnable{
      * allocate a single object
      */
     public void allocSingleObject() {
-        // ObjectReference lastObj = ObjectReference.nullReference();
         while(true) {
             // check gc first
             checkGCBeforeAllocation();
@@ -93,12 +92,19 @@ public class MMTkContext implements Runnable{
      * exhaust allocation
      */
     public void allocExhaustDeadObjects() {
+        long count = 0;
         while(true) {
             // check gc first
             checkGCBeforeAllocation();
             
             TestbedObject obj = new TestbedObject(null);
             ObjectReference objRef = MemoryManager.alloc(obj).toObjectReference();
+            
+            count++;
+            if (count % 100000 == 0) {
+                Main.print(count + " objects allocated:");
+                Main.println(objRef.toAddress());
+            }
         }
     }
     
@@ -109,6 +115,7 @@ public class MMTkContext implements Runnable{
                     wait();
                 } catch (InterruptedException ignore) {}
             }
+            Main.println("Allocation resumed...");
         }
     }
     
