@@ -54,5 +54,5 @@ int64_t java_lang_System_nanoTime() {
     clock_gettime(CLOCK_REALTIME, &ts);
 #endif
     
-    return (int64_t) (ts.tv_sec * 1000000000 + ts.tv_nsec);
+    return (int64_t) ts.tv_sec * 1000000000LL + (int64_t)ts.tv_nsec;
 }

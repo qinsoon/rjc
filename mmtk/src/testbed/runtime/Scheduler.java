@@ -74,6 +74,11 @@ public class Scheduler {
         synchronized(gcLock) {
             Main._assert(gcTriggering == false, "gcTriggering is already true when trying to set it to true again");
             gcTriggering = true;
+            
+            // FIXME: need the following code to allow multiple mutators
+            /*for (int i = 0; i < mutatorCount; i++)
+                if (!mutatorContexts[i].isBlocked())
+                    mutatorContexts[i].blockForGC();*/
         }
     }
     
@@ -81,13 +86,10 @@ public class Scheduler {
         synchronized(gcLock) {
             Main._assert(gcTriggering == true, "gcTriggering is false when trying to set it to false");
             gcTriggering = false;
-        }
-        
-        // notify mutators
-        for (int i = 0; i < mutatorCount; i++) {
-            mutatorContexts[i].unblockAfterGC();
-            synchronized(mutatorContexts[i]) {
-                mutatorContexts[i].notify();
+            
+            // unblock and notify mutators
+            for (int i = 0; i < mutatorCount; i++) {
+                mutatorContexts[i].unblockAfterGC();
             }
         }
     }

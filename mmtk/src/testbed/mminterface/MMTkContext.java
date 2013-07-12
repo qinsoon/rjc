@@ -69,9 +69,6 @@ public class MMTkContext implements Runnable{
      */
     public void allocSingleObject() {
         while(true) {
-            // check gc first
-            checkGCBeforeAllocation();
-            
             // we dont need gc, then alloc
             TestbedObject obj = new TestbedObject(null);
             ObjectReference objRef = MemoryManager.alloc(obj).toObjectReference();
@@ -91,40 +88,38 @@ public class MMTkContext implements Runnable{
     /**
      * exhaust allocation
      */
+    long objectAllocedSinceLastGC = 0;
+    int gcTimes = 1;
     public void allocExhaustDeadObjects() {
         TestbedObject obj = new TestbedObject(null);        
-        long count = 0;
         while(true) {
-            // check gc first
-            checkGCBeforeAllocation();            
-
             ObjectReference objRef = MemoryManager.alloc(obj).toObjectReference();
             
-            count++;
-            if (count % 100000 == 0) {
-                Main.print(count + " objects allocated:");
-                Main.println(objRef.toAddress());
+            objectAllocedSinceLastGC++;
+            if (objectAllocedSinceLastGC % 100000 == 0) {
+               // Main.print(objectAllocedSinceLastGC + " objects allocated:");
+               // Main.println(objRef.toAddress());
             }
-        }
-    }
-    
-    private void checkGCBeforeAllocation() {
-        if (Scheduler.gcTriggering || isBlocked()) {
-            synchronized(this) {
-                try {
-                    wait();
-                } catch (InterruptedException ignore) {}
-            }
-            Main.println("Allocation resumed...");
         }
     }
     
     private boolean isBlocked = false;
     public void blockForGC() {
         isBlocked = true;
+        Main.println("[LOG] GC" + gcTimes + "," + objectAllocedSinceLastGC + " objects allocated before this GC");
+        objectAllocedSinceLastGC = 0;
+        gcTimes++;
+        synchronized(this) {
+            try{
+                wait();
+            } catch (InterruptedException ignore) {};
+        }
     }
     public void unblockAfterGC() {
         isBlocked = false;
+        synchronized(this) {
+            notify();
+        }
     }
     public boolean isBlocked() {
         return isBlocked;

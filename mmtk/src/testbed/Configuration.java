@@ -19,5 +19,5 @@ public abstract class Configuration {
     public static final int OS = MACH_OS;
 
     /* MMTk verbose */
-    public static final int GC_VERBOSE = 10;
+    public static final int GC_VERBOSE = 0;
 }
