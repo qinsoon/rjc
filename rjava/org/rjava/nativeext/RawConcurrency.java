@@ -15,4 +15,16 @@ public abstract class RawConcurrency {
      * @param lock
      */
     public static native void mutexUnlock(Object lock);
+    
+    /**
+     * suspending a RJava thread by sending signal
+     * @param t
+     */
+    public static native void threadSuspend(Thread t);
+    
+    /**
+     * resume a suspended RJava thread
+     * @param t
+     */
+    public static native void threadResume(Thread t);
 }

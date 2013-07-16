@@ -2,6 +2,7 @@ package testbed.mminterface;
 
 import org.mmtk.plan.CollectorContext;
 import org.mmtk.plan.MutatorContext;
+import org.rjava.nativeext.RawConcurrency;
 import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.unboxed.ObjectReference;
 
@@ -15,6 +16,9 @@ import testbed.runtime.TestbedObject;
 public class MMTkContext implements Runnable{  
     private static int idCount = 0;
     protected int id;
+    
+    // which thread is running this context
+    Thread thread;
     
     protected MutatorContext mutator = new org.mmtk.plan.marksweep.MSMutator();
     protected CollectorContext collector;
@@ -31,6 +35,13 @@ public class MMTkContext implements Runnable{
         this.collector = collector;
         if (collector != null)
             this.collector.initCollector(id);
+    }
+    
+    public void setThread(Thread t) {
+        this.thread = t;
+    }
+    public Thread getThread() {
+        return this.thread;
     }
     
     public MutatorContext mutator() {
@@ -88,8 +99,8 @@ public class MMTkContext implements Runnable{
     /**
      * exhaust allocation
      */
-    long objectAllocedSinceLastGC = 0;
-    int gcTimes = 1;
+    public long objectAllocedSinceLastGC = 0;
+
     public void allocExhaustDeadObjects() {
         TestbedObject obj = new TestbedObject(null);        
         while(true) {
@@ -103,25 +114,43 @@ public class MMTkContext implements Runnable{
         }
     }
     
-    private boolean isBlocked = false;
+    private int gcState;
+    public static final int MUTATOR = 0;
+    public static final int GOING_TO_BLOCK = 1;
+    public static final int BLOCK = 2;
+    public static final int SUSPEND = 3;
+    
+    public int getGCState() {
+        return gcState;
+    }
+    public boolean shouldSuspendThisContext() {
+        return gcState == MUTATOR;
+    }
+    public void informGoingToBlock() {
+        gcState = GOING_TO_BLOCK;
+    }
+    public void informSuspend() {
+        gcState = SUSPEND;
+    }
+    public void informResume() {
+        gcState = MUTATOR;
+    }
+    
+    private final Object blockLock = new Object();
+    
     public void blockForGC() {
-        isBlocked = true;
-        Main.println("[LOG] GC" + gcTimes + "," + objectAllocedSinceLastGC + " objects allocated before this GC");
-        objectAllocedSinceLastGC = 0;
-        gcTimes++;
-        synchronized(this) {
-            try{
-                wait();
-            } catch (InterruptedException ignore) {};
+        synchronized (blockLock) {
+            try {
+                gcState = BLOCK;
+                blockLock.wait();
+            } catch (InterruptedException ignore) {}
         }
-    }
+    }    
     public void unblockAfterGC() {
-        isBlocked = false;
-        synchronized(this) {
-            notify();
+        synchronized (blockLock) {
+            gcState = MUTATOR;
+            blockLock.notify();
         }
     }
-    public boolean isBlocked() {
-        return isBlocked;
-    }
+        
 }

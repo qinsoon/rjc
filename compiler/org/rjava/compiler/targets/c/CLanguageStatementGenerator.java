@@ -284,7 +284,7 @@ public class CLanguageStatementGenerator {
     
     private String get(RNopStmt stmt) {
         // intentionally return empty
-        return CLanguageGenerator.comment("nop");
+        return CLanguageGenerator.SEMICOLON + CLanguageGenerator.comment("nop");
     }
     
     private String get(RRetStmt stmt) throws RJavaError {

@@ -204,6 +204,11 @@ public class CLanguageRuntime {
      * bool rjava_instanceof(void* instance, void* class_struct);
      */
     public static final HelperMethod HELPER_RJAVA_INSTANCEOF;
+    /**
+     * install signal handler to allow thread suspend
+     * void rjava_init_thread_suspending();
+     */
+    public static final HelperMethod HELPER_RJAVA_INIT_THREAD_SUSPENDING;
     
     /*
      *  array implements: an array is a void* that points to a structure (in memory) like this
@@ -432,6 +437,12 @@ public class CLanguageRuntime {
         HELPER_RJAVA_INSTANCEOF.setSource(RJAVA_INSTANCEOF_SOURCE);
         
         /**
+         * install signal handler to allow thread suspend
+         * void rjava_init_thread_suspending();
+         */
+        HELPER_RJAVA_INIT_THREAD_SUSPENDING = new HelperMethod("rjava_init_thread_suspending", "void", null);
+        
+        /**
          * used to implement array.length
          * inline int rjava_length_of_array(void* array);
          */
@@ -561,6 +572,7 @@ public class CLanguageRuntime {
         CRT_HELPERS.add(HELPER_RJAVA_C_ARRAY_TO_RJAVA_ARRAY);
         CRT_HELPERS.add(HELPER_RJAVA_ASSERT);
         CRT_HELPERS.add(HELPER_RJAVA_INSTANCEOF);
+        CRT_HELPERS.add(HELPER_RJAVA_INIT_THREAD_SUSPENDING);
     }
     
     
@@ -669,7 +681,8 @@ public class CLanguageRuntime {
         // void rjava_class_init()
         crtSource.append(signatureHelper(HELPER_RJAVA_CLASS_INIT) + " {" + NEWLINE);
         crtSource.increaseIndent();
-        crtSource.append("GC_init()" + SEMICOLON + NEWLINE);        // init boehm gc
+        crtSource.append(getRuntimeInitCode());
+        crtSource.append(NEWLINE);
         crtSource.append(invokeHelper(HELPER_RJAVA_LIB_INIT, null) + SEMICOLON + NEWLINE);
         crtSource.append(getClassInitMethodBody());
         crtSource.decreaseIndent();
@@ -677,13 +690,29 @@ public class CLanguageRuntime {
         
         // runtime helpers
         for (HelperMethod method : CRT_HELPERS) {
-            crtSource.append(NEWLINE);
-            crtSource.append(CLanguageGenerator.commentln(signatureHelper(method)));
-            crtSource.append(signatureHelper(method) + " {" + NEWLINE);
-            crtSource.appendWithIndent(method.getSource());
-            crtSource.append("}" + NEWLINE);
+            if (method.getSource() != null) {
+                crtSource.append(NEWLINE);
+                crtSource.append(CLanguageGenerator.commentln(signatureHelper(method)));
+                crtSource.append(signatureHelper(method) + " {" + NEWLINE);
+                crtSource.appendWithIndent(method.getSource());
+                crtSource.append("}" + NEWLINE);
+            }
         }
         generator.writeTo(crtSource.toString(), RJavaCompiler.outputDir + RJAVA_CRT + ".c");
+    }
+    
+    public String getRuntimeInitCode() {
+        CodeStringBuilder init = new CodeStringBuilder();
+        
+        init.append(CLanguageGenerator.commentln("init runtime"));
+        
+        if (MEMORY_MANAGEMENT_SCHEME == GC_MALLOC || MEMORY_MANAGEMENT_SCHEME == GC_MALLOC_PREBUILT) {
+            init.append("GC_init()" + SEMICOLON + NEWLINE);
+        }
+        
+        init.append(invokeHelper(HELPER_RJAVA_INIT_THREAD_SUSPENDING, null) + SEMICOLON + NEWLINE);
+        
+        return init.toString();
     }
 
     public void copyJavaLibrary() throws RJavaError {

@@ -5,7 +5,7 @@ import org.vmmagic.unboxed.ObjectReferenceArray;
 
 @RJavaCore
 public class TestbedObject {
-    ObjectReferenceArray fields;;
+    ObjectReferenceArray fields;
     int size;
     int fieldCount;
     

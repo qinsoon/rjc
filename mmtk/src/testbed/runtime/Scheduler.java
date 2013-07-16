@@ -1,5 +1,6 @@
 package testbed.runtime;
 
+import org.rjava.nativeext.RawConcurrency;
 import org.rjava.restriction.rulesets.RJavaCore;
 
 import testbed.Main;
@@ -11,11 +12,9 @@ public class Scheduler {
     private static int threadCount = 0;
     
     public static int collectorCount = 0;
-    public static Thread[] collectorThreads = new Thread[MAX_THREADS];
     public static MMTkContext[] collectorContexts = new MMTkContext[MAX_THREADS];
     
     public static int mutatorCount = 0;
-    public static Thread[] mutatorThreads = new Thread[MAX_THREADS];
     public static MMTkContext[] mutatorContexts = new MMTkContext[MAX_THREADS];
     
     private static Object newThreadLock = new Object();
@@ -23,7 +22,7 @@ public class Scheduler {
         Thread t = newThread(mutator);
         
         synchronized(newThreadLock) {
-            mutatorThreads[mutatorCount] = t;
+            mutator.setThread(t);
             mutatorContexts[mutatorCount] = mutator;
             mutatorCount++;
         }
@@ -35,7 +34,7 @@ public class Scheduler {
         Thread t = newThread(collector);
         
         synchronized(newThreadLock) {
-            collectorThreads[collectorCount] = t;
+            collector.setThread(t);
             collectorContexts[collectorCount] = collector;
             collectorCount++;
         }
@@ -58,39 +57,97 @@ public class Scheduler {
         Thread current = getCurrentThread();
         
         for (int i = 0; i < mutatorCount; i++)
-            if (mutatorThreads[i].getId() == current.getId())
+            if (mutatorContexts[i].getThread().getId() == current.getId())
                 return mutatorContexts[i];
         for (int i = 0; i < collectorCount; i++)
-            if (collectorThreads[i].getId() == current.getId())
+            if (collectorContexts[i].getThread().getId() == current.getId())
                 return collectorContexts[i];        
         
         Main.sysFail("Failed to find current context, current thread: " + current.getName());
         return null;
     }
-
-    public static Object gcLock = new Object();
-    public static boolean gcTriggering = false;
+    
+    public static long totalObjectAlloced = 0;
+    public static long objectAllocedSinceLastGC = 0;
+    public static int gcTime = 1;
+    
+    public static int gcState;
+    public static final int MUTATOR = 0;
+    public static final int WAITING_FOR_TRIGGERING_MUTATOR = 1;
+    public static final int STOPPING_MUTATORS = 2;
+    public static final int GC = 3;
+    
+    public static final Object waitingToBlockMutatorLock = new Object();
+    public static final Object blockingMutatorLock = new Object();
+    
     public static void stopAllMutators() {
-        synchronized(gcLock) {
-            Main._assert(gcTriggering == false, "gcTriggering is already true when trying to set it to true again");
-            gcTriggering = true;
-            
-            // FIXME: need the following code to allow multiple mutators
-            /*for (int i = 0; i < mutatorCount; i++)
-                if (!mutatorContexts[i].isBlocked())
-                    mutatorContexts[i].blockForGC();*/
+        synchronized (waitingToBlockMutatorLock) {
+            if (gcState != STOPPING_MUTATORS) {
+                gcState = WAITING_FOR_TRIGGERING_MUTATOR;
+                // wait here
+                try {
+                    waitingToBlockMutatorLock.wait();
+                } catch (InterruptedException ignore) {}
+            }
         }
+        
+        // stop all mutators
+        gcState = STOPPING_MUTATORS;
+        for (int i = 0; i < mutatorCount; i++) {
+            MMTkContext context = mutatorContexts[i];
+            totalObjectAlloced += context.objectAllocedSinceLastGC;
+            objectAllocedSinceLastGC += context.objectAllocedSinceLastGC;
+            
+            // stop mutators here
+            // the thread(mutator) which triggers this GC will block itself in currentThreadBlockForGC()
+            // the other threads will be suspended
+            
+            if (context.shouldSuspendThisContext()) {
+                RawConcurrency.threadSuspend(context.getThread());
+                context.informSuspend();
+            } else {
+                // until the thread that triggers the GC to be blocked
+                while(context.getGCState() != MMTkContext.BLOCK) {
+                    Thread.yield();
+                }
+            }
+        }
+        
+        Main.println("[DEBUG]GC" + gcTime + ", total objects allocated:" + totalObjectAlloced + ",objects allocated since last GC:" + objectAllocedSinceLastGC);
+        gcTime ++;
+        gcState = GC;
     }
     
     public static void resumeAllMutators() {
-        synchronized(gcLock) {
-            Main._assert(gcTriggering == true, "gcTriggering is false when trying to set it to false");
-            gcTriggering = false;
+        objectAllocedSinceLastGC = 0;
+        gcState = MUTATOR;
+        
+        // resume mutators here
+        for (int i = 0; i < mutatorCount; i++) {
+            MMTkContext context = mutatorContexts[i];
+            context.objectAllocedSinceLastGC = 0;
             
-            // unblock and notify mutators
-            for (int i = 0; i < mutatorCount; i++) {
-                mutatorContexts[i].unblockAfterGC();
+            // if a mutator is suspended, we use the same mechanism to resume it
+            if (context.getGCState() == MMTkContext.SUSPEND) {
+                context.informResume();
+                RawConcurrency.threadResume(context.getThread());
             }
+            // if the mutator is blocked, we unblock it
+            else if (context.getGCState() == MMTkContext.BLOCK)
+                context.unblockAfterGC();
+            else Main._assert(false, "Unexpected MMTkContext gc state: " + context.getGCState());
         }
+    }
+
+    public static void currentThreadBlockForGC() {
+        synchronized (waitingToBlockMutatorLock) {
+            if (gcState == WAITING_FOR_TRIGGERING_MUTATOR) {
+                getCurrentContext().informGoingToBlock();
+                waitingToBlockMutatorLock.notify();
+            }
+            gcState = STOPPING_MUTATORS;
+        }
+        
+        getCurrentContext().blockForGC();
     }
 }
