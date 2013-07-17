@@ -77,22 +77,23 @@ public class Scheduler {
     public static final int STOPPING_MUTATORS = 2;
     public static final int GC = 3;
     
-    public static final Object waitingToBlockMutatorLock = new Object();
+    public static final Object gcStateChangeLock = new Object();
     public static final Object blockingMutatorLock = new Object();
     
     public static void stopAllMutators() {
-        synchronized (waitingToBlockMutatorLock) {
+        synchronized (gcStateChangeLock) {
             if (gcState != STOPPING_MUTATORS) {
                 gcState = WAITING_FOR_TRIGGERING_MUTATOR;
                 // wait here
                 try {
-                    waitingToBlockMutatorLock.wait();
+                    gcStateChangeLock.wait();
                 } catch (InterruptedException ignore) {}
             }
+            
+            gcState = STOPPING_MUTATORS;
         }
         
         // stop all mutators
-        gcState = STOPPING_MUTATORS;
         for (int i = 0; i < mutatorCount; i++) {
             MMTkContext context = mutatorContexts[i];
             totalObjectAlloced += context.objectAllocedSinceLastGC;
@@ -113,14 +114,15 @@ public class Scheduler {
             }
         }
         
-        Main.println("[DEBUG]GC" + gcTime + ", total objects allocated:" + totalObjectAlloced + ",objects allocated since last GC:" + objectAllocedSinceLastGC);
-        gcTime ++;
-        gcState = GC;
+        synchronized (gcStateChangeLock) {
+            gcState = GC;
+        }
     }
     
     public static void resumeAllMutators() {
-        objectAllocedSinceLastGC = 0;
-        gcState = MUTATOR;
+        synchronized (gcStateChangeLock) {
+            gcState = MUTATOR;
+        }
         
         // resume mutators here
         for (int i = 0; i < mutatorCount; i++) {
@@ -137,13 +139,17 @@ public class Scheduler {
                 context.unblockAfterGC();
             else Main._assert(false, "Unexpected MMTkContext gc state: " + context.getGCState());
         }
+        
+        Main.println("[DEBUG]GC" + gcTime + ", total objects allocated:" + totalObjectAlloced + ",objects allocated since last GC:" + objectAllocedSinceLastGC);
+        gcTime ++;
+        objectAllocedSinceLastGC = 0;
     }
 
     public static void currentThreadBlockForGC() {
-        synchronized (waitingToBlockMutatorLock) {
+        synchronized (gcStateChangeLock) {
             if (gcState == WAITING_FOR_TRIGGERING_MUTATOR) {
                 getCurrentContext().informGoingToBlock();
-                waitingToBlockMutatorLock.notify();
+                gcStateChangeLock.notify();
             }
             gcState = STOPPING_MUTATORS;
         }

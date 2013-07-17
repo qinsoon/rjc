@@ -104,6 +104,8 @@ public class MMTkContext implements Runnable{
     public void allocExhaustDeadObjects() {
         TestbedObject obj = new TestbedObject(null);        
         while(true) {
+            gcPoint();
+            
             ObjectReference objRef = MemoryManager.alloc(obj).toObjectReference();
             
             objectAllocedSinceLastGC++;
@@ -112,6 +114,11 @@ public class MMTkContext implements Runnable{
                // Main.println(objRef.toAddress());
             }
         }
+    }
+    
+    public void gcPoint() {
+        if (Scheduler.gcState != Scheduler.MUTATOR) 
+            blockForGC();
     }
     
     private int gcState;

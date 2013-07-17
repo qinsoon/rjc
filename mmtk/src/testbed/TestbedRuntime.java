@@ -28,5 +28,8 @@ public class TestbedRuntime {
         // start a mutator
         MMTkContext mutator = new MMTkContext(null);
         Scheduler.newMutatorThread(mutator);
+        
+        // MMTkContext mutator2 = new MMTkContext(null);
+        // Scheduler.newMutatorThread(mutator2);
     }
 }
