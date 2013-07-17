@@ -104,7 +104,7 @@ public class MMTkContext implements Runnable{
     public void allocExhaustDeadObjects() {
         TestbedObject obj = new TestbedObject(null);        
         while(true) {
-            gcPoint();
+            Scheduler.gcPoint();
             
             ObjectReference objRef = MemoryManager.alloc(obj).toObjectReference();
             
@@ -115,20 +115,17 @@ public class MMTkContext implements Runnable{
             }
         }
     }
-    
-    public void gcPoint() {
-        if (Scheduler.gcState != Scheduler.MUTATOR) 
-            blockForGC();
-    }
-    
+
     private int gcState;
     public static final int MUTATOR = 0;
     public static final int GOING_TO_BLOCK = 1;
     public static final int BLOCK = 2;
-    public static final int SUSPEND = 3;
     
     public int getGCState() {
         return gcState;
+    }
+    public boolean isBlocked() {
+        return gcState == BLOCK;
     }
     public boolean shouldSuspendThisContext() {
         return gcState == MUTATOR;
@@ -136,14 +133,8 @@ public class MMTkContext implements Runnable{
     public void informGoingToBlock() {
         gcState = GOING_TO_BLOCK;
     }
-    public void informSuspend() {
-        gcState = SUSPEND;
-    }
-    public void informResume() {
-        gcState = MUTATOR;
-    }
     
-    private final Object blockLock = new Object();
+    public static final Object blockLock = new Object();
     
     public void blockForGC() {
         synchronized (blockLock) {

@@ -25,11 +25,10 @@ public class TestbedRuntime {
     }
     
     public static void start() {
-        // start a mutator
-        MMTkContext mutator = new MMTkContext(null);
-        Scheduler.newMutatorThread(mutator);
-        
-        // MMTkContext mutator2 = new MMTkContext(null);
-        // Scheduler.newMutatorThread(mutator2);
+        for (int i = 0; i < Configuration.MUTATOR_COUNT; i++) {
+            // start a mutator
+            MMTkContext mutator = new MMTkContext(null);
+            Scheduler.newMutatorThread(mutator);
+        }
     }
 }

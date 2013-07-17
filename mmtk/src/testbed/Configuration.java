@@ -20,4 +20,7 @@ public abstract class Configuration {
 
     /* MMTk verbose */
     public static final int GC_VERBOSE = 0;
+    
+    /* Mutator threads */
+    public static final int MUTATOR_COUNT = 2;
 }
