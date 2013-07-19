@@ -5,6 +5,8 @@ import org.mmtk.vm.MMTk_Events;
 import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.Extent;
 
+import testbed.Main;
+
 public class MMTk_EventsExt extends MMTk_Events {
 
     @Override
@@ -23,8 +25,8 @@ public class MMTk_EventsExt extends MMTk_Events {
 
     @Override
     public void heapSizeChanged(Extent heapSize) {
-        // TODO Auto-generated method stub
-
+        Main.print("[event] heap size changed to ");
+        Main.println(heapSize);
     }
 
 }

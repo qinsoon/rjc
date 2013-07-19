@@ -19,8 +19,8 @@ public abstract class Configuration {
     public static final int OS = MACH_OS;
 
     /* MMTk verbose */
-    public static final int GC_VERBOSE = 0;
+    public static final int GC_VERBOSE = 10;
     
     /* Mutator threads */
-    public static final int MUTATOR_COUNT = 2;
+    public static final int MUTATOR_COUNT = 1;
 }

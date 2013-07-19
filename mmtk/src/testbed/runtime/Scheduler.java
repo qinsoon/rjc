@@ -18,6 +18,19 @@ public class Scheduler {
     public static int mutatorCount = 0;
     public static MMTkContext[] mutatorContexts = new MMTkContext[MAX_THREADS];
     
+    public static void boot() {
+        registerMainThread();
+    }
+    
+    /* main thread is not really a mutator, but it is possible MMTk wants to output/log stuff and it assume every thread has a mutator context */
+    public static long mainThreadId;
+    public static MMTkContext mainContext;
+    
+    public static void registerMainThread() {
+        mainThreadId = Thread.currentThread().getId();
+        mainContext = new MMTkContext(null);
+    }
+    
     private static Object newThreadLock = new Object();
     public static void newMutatorThread(MMTkContext mutator) {
         Thread t = newThread(mutator);
@@ -64,6 +77,9 @@ public class Scheduler {
             if (collectorContexts[i].getThread().getId() == current.getId())
                 return collectorContexts[i];        
         
+        if (current.getId() == mainThreadId)
+            return mainContext;
+        
         Main.sysFail("Failed to find current context, current thread: " + current.getName());
         return null;
     }
@@ -81,6 +97,12 @@ public class Scheduler {
     
     public static final Object gcStateChangeLock = new Object();
     
+    /*
+     * The best result is to have only adequate polling points that are necessary and sufficient.
+     * 1. The mandatory polling points are the allocation sites. Allocation can trigger collection, so allocation site has to be a safe point.
+     * 2. Long-time execution are always associated with method call or loop. So call sites and loop back sites are also expected polling points. 
+     * http://xiao-feng.blogspot.com.au/2008/01/gc-safe-point-and-safe-region.html
+     */
     public static void gcPoint() {
         synchronized (gcStateChangeLock) {
             if (gcState == MUTATOR)

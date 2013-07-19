@@ -21,6 +21,11 @@ public class MemoryManager {
         Main.print("-Set heap\n");
         HeapGrowthManager.boot(TestbedRuntime.heap.getHeapSize(), TestbedRuntime.heap.getHeapSize());
         
+        Main.print("-Set options\n");
+        Options.eagerMmapSpaces.setValue(true);
+        Options.verbose.setValue(Main.gcVerbose);
+        Options.variableSizeHeap.setValue(false);
+        
         Main.print("-Process options\n");
         PlanSelect.getPlan().processOptions();
         
@@ -29,9 +34,6 @@ public class MemoryManager {
         
         Main.print("-Enable collection\n");
         PlanSelect.getPlan().enableCollection();
-        
-        Main.print("-Setting verbose\n");
-        Options.verbose.setValue(Configuration.GC_VERBOSE);
     }
     
     public static Address alloc(TestbedObject object) {

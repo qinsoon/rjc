@@ -10,6 +10,8 @@ public abstract class Constants {
     public static final Address HEAP_END;
     
     static {
+        // we reserved 0x10000000 size for VM
+        // so the usable space for client is from HEAP_START + 0x10000000
         if (Configuration.OS == Configuration.MACH_OS && Configuration.BUILD_FOR_64_ADDRESS) {
             HEAP_START          = Address.fromLong(0x131000000L);
             CONTIGUOUS_START    = Address.fromLong(0x136800000L);

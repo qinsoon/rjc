@@ -6,6 +6,7 @@ import org.vmmagic.unboxed.ObjectReference;
 import org.vmmagic.unboxed.Offset;
 
 import testbed.Constants;
+import testbed.Main;
 import testbed.mminterface.MMTkConstants;
 
 @RJavaCore
@@ -36,22 +37,24 @@ public abstract class ObjectModel {
     }
     
     public static void dumpObject(ObjectReference object) {
-        System.out.println("Object:");
-        System.out.print("  GC HEADER(optional):");
-        System.out.println(object.toAddress().loadWord(OFFSET_GC_HEADER).toInt());
-        System.out.print("  HEADER:");
-        System.out.println(object.toAddress().loadWord(OFFSET_HEADER).toInt());
-        System.out.print("  LENGTH:");
-        System.out.println(object.toAddress().loadInt(OFFSET_OBJECT_SIZE));
-        System.out.print("  FIELDS:(");
+        Main.print("Object:");
+        Main.print(object);
+        Main.println();
+        Main.print("  GC HEADER(optional):");
+        Main.println(object.toAddress().loadWord(OFFSET_GC_HEADER));
+        Main.print("  HEADER:");
+        Main.println(object.toAddress().loadWord(OFFSET_HEADER));
+        Main.print("  LENGTH:");
+        Main.println(object.toAddress().loadInt(OFFSET_OBJECT_SIZE));
+        Main.print("  FIELDS:(");
         int fieldCount = object.toAddress().loadInt(OFFSET_FIELD_COUNT);
-        System.out.print(fieldCount); System.out.println(")");
+        Main.print(fieldCount); Main.println(")");
         Address cursor = object.toAddress().plus(OFFSET_FIELD_START);
         for (int i = 0; i < fieldCount; i++) {
-            System.out.print("   -field");
-            System.out.print(i);
-            System.out.print(":");
-            System.out.println(cursor.loadObjectReference().toAddress().toLong());
+            Main.print("   -field");
+            Main.print(i);
+            Main.print(":");
+            Main.println(cursor.loadObjectReference());
             cursor = cursor.plus(Constants.OBJECTREFERENCE_LENGTH_IN_BYTES);
         }
     }

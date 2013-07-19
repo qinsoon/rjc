@@ -21,6 +21,7 @@ public class TestbedRuntime {
     public static ObjectReferenceArray globalRoots = ObjectReferenceArray.create(MAX_ROOTS_ALLOWED);
     
     public static void boot() {
+        Scheduler.boot();
         MemoryManager.boot();
     }
     

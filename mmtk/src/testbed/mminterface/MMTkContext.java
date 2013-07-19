@@ -4,6 +4,7 @@ import org.mmtk.plan.CollectorContext;
 import org.mmtk.plan.MutatorContext;
 import org.rjava.nativeext.RawConcurrency;
 import org.rjava.restriction.rulesets.RJavaCore;
+import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.ObjectReference;
 
 import testbed.Main;
@@ -100,13 +101,14 @@ public class MMTkContext implements Runnable{
      * exhaust allocation
      */
     public long objectAllocedSinceLastGC = 0;
-
+    
     public void allocExhaustDeadObjects() {
         TestbedObject obj = new TestbedObject(null);        
         while(true) {
             Scheduler.gcPoint();
             
             ObjectReference objRef = MemoryManager.alloc(obj).toObjectReference();
+            // ObjectModel.dumpObject(objRef);
             
             objectAllocedSinceLastGC++;
             if (objectAllocedSinceLastGC % 100000 == 0) {

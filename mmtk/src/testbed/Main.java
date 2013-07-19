@@ -12,8 +12,17 @@ import testbed.mminterface.select.PlanSelect;
 @RJavaCore
 public class Main {
     public static final boolean DEBUG = true;
+    
+    public static int gcVerbose = Configuration.GC_VERBOSE;
 
     public static void main(String[] args) {
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].equals("-verbose")) {
+                gcVerbose = Integer.parseInt(args[i+1]);
+                i++;
+            }
+        }
+        
         print("[BOOT]...\n");
         PlanSelect.initPlan();
         TestbedRuntime.boot();
@@ -30,10 +39,12 @@ public class Main {
         System.out.println(Integer.toHexString(addr.toInt()));
     }    
     public static void print(Extent ext) {
-        System.out.print(Integer.toHexString(ext.toInt()));
+        System.out.print(ext.toWord().rshl(10).toInt());
+        System.out.print("KB");
     }
     public static void println(Extent ext) {
-        System.out.println(Integer.toHexString(ext.toInt()));
+        print(ext);
+        println();
     }
     public static void print(Offset offset) {
         System.out.print(offset.toInt());
