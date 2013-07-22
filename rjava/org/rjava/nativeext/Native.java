@@ -15,4 +15,10 @@ public abstract class Native {
      * @return strerror(errno)
      */
     public native static String strErrno();
+    
+    /**
+     * return a random double between 0 and 1
+     * @return
+     */
+    public native static double random();
 }

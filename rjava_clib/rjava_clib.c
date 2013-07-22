@@ -32,6 +32,12 @@ void rjava_lib_init() {
 #endif
     //((java_lang_Object_class*)(&java_lang_Float_class_instance)) -> toString = java_lang_Float_toString;
     
+    /* init for java_lang_Double */
+    rjava_init_header(&java_lang_Double_class_instance, &java_lang_Object_class_instance, sizeof(java_lang_Object_class));
+#ifdef DEBUG_TARGET
+    ((RJava_Common_Class*)(&java_lang_Double_class_instance)) -> class_name = "java_lang_Double";
+#endif
+    
     /* init for java_lang_Boolean */
     rjava_init_header(&java_lang_Boolean_class_instance, &java_lang_Object_class_instance, sizeof(java_lang_Object_class));
 #ifdef DEBUG_TARGET

@@ -10,4 +10,6 @@ errno
 #define org_rjava_nativeext_Native_strErrno() \
 newStringConstant(strerror(errno))
 
+double org_rjava_nativeext_Native_random();
+
 #endif

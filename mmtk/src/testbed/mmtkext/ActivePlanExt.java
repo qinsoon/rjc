@@ -34,7 +34,7 @@ public class ActivePlanExt extends ActivePlan {
 
     @Override
     public boolean isMutator() {
-        return Scheduler.getCurrentContext().isMutator();
+        return !Scheduler.getCurrentContext().isCollector();
     }
 
     @Override

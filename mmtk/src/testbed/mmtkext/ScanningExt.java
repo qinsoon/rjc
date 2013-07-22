@@ -51,9 +51,20 @@ public class ScanningExt extends Scanning {
 
     @Override
     public void computeGlobalRoots(TraceLocal trace) {
+        Main.println("computeGlobalRoots()");
         for (int i = 0; i < TestbedRuntime.rootsCount; i++) {
-            ObjectReference root = TestbedRuntime.globalRoots.get(i);
-            trace.processRootEdge(root.toAddress(), true);
+            // Address slot
+            // the following MMTk code will load ObjectReference from slot
+            // thus we cannot just pass the obj ref
+            Object dummy = new Object();
+            Address slot = ObjectReference.fromObject(dummy).toAddress();
+            slot.store(TestbedRuntime.globalRoots.get(i));
+            Main.print("Processing root:");
+            Main.print(slot.loadObjectReference());
+            Main.print("(stored at");
+            Main.print(slot);
+            Main.println(")");
+            trace.processRootEdge(slot, true);
         }
     }
 

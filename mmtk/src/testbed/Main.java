@@ -14,11 +14,20 @@ public class Main {
     public static final boolean DEBUG = true;
     
     public static int gcVerbose = Configuration.GC_VERBOSE;
+    public static double randomRootChance = 0.5;
+    public static int maxRoot = 10000000;
 
     public static void main(String[] args) {
         for (int i = 0; i < args.length; i++) {
+            Main.println("Process command line args:" + args[i]);
             if (args[i].equals("-verbose")) {
                 gcVerbose = Integer.parseInt(args[i+1]);
+                i++;
+            } else if (args[i].equals("-random_root_chance")) {
+                randomRootChance = Double.parseDouble(args[i+1]);
+                i++;
+            } else if (args[i].equals("-max_root")) {
+                maxRoot = Integer.parseInt(args[i+1]);
                 i++;
             }
         }

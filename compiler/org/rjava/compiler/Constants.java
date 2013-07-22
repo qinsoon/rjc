@@ -66,6 +66,7 @@ public final class Constants {
         "java.lang.Throwable",
         "java.lang.Boolean",
         "java.lang.Float",
+        "java.lang.Double",
         "java.lang.Thread",
         "java.lang.Runnable",
         "java.lang.InterruptedException"

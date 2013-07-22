@@ -16,13 +16,30 @@ public class TestbedRuntime {
     public static Heap heap = new Heap();
     
     public static Object globalRootsLock = new Object();
-    public static final int MAX_ROOTS_ALLOWED = 1;
+    public static int maxRootsAllowed;
     public static int rootsCount = 0;
-    public static ObjectReferenceArray globalRoots = ObjectReferenceArray.create(MAX_ROOTS_ALLOWED);
+    public static ObjectReferenceArray globalRoots;;
     
     public static void boot() {
+        maxRootsAllowed = Main.maxRoot;
+        globalRoots = ObjectReferenceArray.create(maxRootsAllowed);
         Scheduler.boot();
         MemoryManager.boot();
+    }
+    
+    /**
+     * add the object reference as a root. If the root count excess the maxiumum roots number, 
+     * we erase existing roots
+     * @param objRef
+     */
+    public static void addToRootAllowErasing(ObjectReference objRef) {
+        synchronized (globalRootsLock) {
+            if (rootsCount >= maxRootsAllowed) 
+                rootsCount = 0;
+            
+            globalRoots.set(rootsCount, objRef);
+            rootsCount++;
+        }
     }
     
     public static void start() {

@@ -2,6 +2,7 @@ package testbed.mminterface;
 
 import org.mmtk.plan.CollectorContext;
 import org.mmtk.plan.MutatorContext;
+import org.rjava.nativeext.Native;
 import org.rjava.nativeext.RawConcurrency;
 import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.unboxed.Address;
@@ -72,7 +73,8 @@ public class MMTkContext implements Runnable{
             // mutator's job
             
             // allocSingleObject();
-            allocExhaustDeadObjects();
+            // allocExhaustDeadObjects();
+            allocExhaustObjectsRandomRoot();
         }
     }
     
@@ -82,18 +84,10 @@ public class MMTkContext implements Runnable{
     public void allocSingleObject() {
         while(true) {
             // we dont need gc, then alloc
-            TestbedObject obj = new TestbedObject(null);
+            TestbedObject obj = new TestbedObject(0);
             ObjectReference objRef = MemoryManager.alloc(obj).toObjectReference();
             
             ObjectModel.dumpObject(objRef);
-            
-            synchronized (TestbedRuntime.globalRootsLock) {
-                TestbedRuntime.globalRoots.set(TestbedRuntime.rootsCount, objRef);
-                TestbedRuntime.rootsCount++;
-                if (TestbedRuntime.rootsCount >= TestbedRuntime.MAX_ROOTS_ALLOWED)
-                    Main.println("Reached max roots, testbed will quit.");
-                    Main.sysExit(1);
-            }
         }
     }
     
@@ -103,7 +97,7 @@ public class MMTkContext implements Runnable{
     public long objectAllocedSinceLastGC = 0;
     
     public void allocExhaustDeadObjects() {
-        TestbedObject obj = new TestbedObject(null);        
+        TestbedObject obj = new TestbedObject(0);        
         while(true) {
             Scheduler.gcPoint();
             
@@ -114,6 +108,22 @@ public class MMTkContext implements Runnable{
             if (objectAllocedSinceLastGC % 100000 == 0) {
                // Main.print(objectAllocedSinceLastGC + " objects allocated:");
                // Main.println(objRef.toAddress());
+            }
+        }
+    }
+    
+    public void allocExhaustObjectsRandomRoot() {
+        TestbedObject obj = new TestbedObject(0);
+        double random;
+        while(true) {
+            Scheduler.gcPoint();
+            
+            ObjectReference objRef = MemoryManager.alloc(obj).toObjectReference();
+            
+            // random by millis
+            random = Native.random();
+            if (random <= Main.randomRootChance) {
+                TestbedRuntime.addToRootAllowErasing(objRef);
             }
         }
     }
