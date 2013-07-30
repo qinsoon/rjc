@@ -30,7 +30,6 @@ public class ScanningExt extends Scanning {
     @Override
     public void specializedScanObject(int id, TransitiveClosure trace,
             ObjectReference object) {
-        Main.warn("not support specializedScanObject. go to normal scan");
         scanObject(trace, object);
     }
 
@@ -51,7 +50,6 @@ public class ScanningExt extends Scanning {
 
     @Override
     public void computeGlobalRoots(TraceLocal trace) {
-        Main.println("computeGlobalRoots()");
         for (int i = 0; i < TestbedRuntime.rootsCount; i++) {
             // Address slot
             // the following MMTk code will load ObjectReference from slot
@@ -59,11 +57,6 @@ public class ScanningExt extends Scanning {
             Object dummy = new Object();
             Address slot = ObjectReference.fromObject(dummy).toAddress();
             slot.store(TestbedRuntime.globalRoots.get(i));
-            Main.print("Processing root:");
-            Main.print(slot.loadObjectReference());
-            Main.print("(stored at");
-            Main.print(slot);
-            Main.println(")");
             trace.processRootEdge(slot, true);
         }
     }

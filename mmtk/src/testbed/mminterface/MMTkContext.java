@@ -105,10 +105,6 @@ public class MMTkContext implements Runnable{
             // ObjectModel.dumpObject(objRef);
             
             objectAllocedSinceLastGC++;
-            if (objectAllocedSinceLastGC % 100000 == 0) {
-               // Main.print(objectAllocedSinceLastGC + " objects allocated:");
-               // Main.println(objRef.toAddress());
-            }
         }
     }
     
@@ -120,7 +116,9 @@ public class MMTkContext implements Runnable{
             
             ObjectReference objRef = MemoryManager.alloc(obj).toObjectReference();
             
-            // random by millis
+            objectAllocedSinceLastGC++;
+            
+            // random
             random = Native.random();
             if (random <= Main.randomRootChance) {
                 TestbedRuntime.addToRootAllowErasing(objRef);

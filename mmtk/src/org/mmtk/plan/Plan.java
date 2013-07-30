@@ -114,7 +114,8 @@ public abstract class Plan implements Constants {
   public static final ImmortalSpace immortalSpace = new ImmortalSpace("immortal", VMRequest.create());
 
   /** All meta data that is used by MMTk is allocated (and accounted for) in the meta data space. */
-  public static final RawPageSpace metaDataSpace = new RawPageSpace("meta", VMRequest.create());
+  //public static final RawPageSpace metaDataSpace = new RawPageSpace("meta", VMRequest.create());
+  public static final RawPageSpace metaDataSpace = new RawPageSpace("meta", VMRequest.create(0.1f));
 
   /** Large objects are allocated into a special large object space. */
   public static final LargeObjectSpace loSpace = new LargeObjectSpace("los", VMRequest.create());
