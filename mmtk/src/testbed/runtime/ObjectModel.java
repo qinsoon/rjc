@@ -30,8 +30,8 @@ public abstract class ObjectModel {
         addr.store(object.getFieldCount(), OFFSET_FIELD_COUNT);
         
         Address cursor = addr.plus(OFFSET_FIELD_START);
-        for (int i = 0; i < object.fieldCount; i++) {
-            cursor.store(object.fields.get(i));
+        for (int i = 0; i < object.getFieldCount(); i++) {
+            cursor.store(object.getField(i));
             cursor.plus(Constants.OBJECTREFERENCE_LENGTH_IN_BYTES);
         }            
     }

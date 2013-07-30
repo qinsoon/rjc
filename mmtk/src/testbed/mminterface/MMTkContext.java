@@ -7,6 +7,7 @@ import org.rjava.nativeext.RawConcurrency;
 import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.ObjectReference;
+import org.vmmagic.unboxed.ObjectReferenceArray;
 
 import testbed.Main;
 import testbed.TestbedRuntime;
@@ -74,7 +75,8 @@ public class MMTkContext implements Runnable{
             
             // allocSingleObject();
             // allocExhaustDeadObjects();
-            allocExhaustObjectsRandomRoot();
+            // allocExhaustObjectsRandomRoot();
+            allocExhaustObjectsRandomRootRandomField();
         }
     }
     
@@ -122,6 +124,52 @@ public class MMTkContext implements Runnable{
             random = Native.random();
             if (random <= Main.randomRootChance) {
                 TestbedRuntime.addToRootAllowErasing(objRef);
+            }
+        }
+    }
+    
+    public void allocExhaustObjectsRandomRootRandomField() {
+        TestbedObject obj = new TestbedObject();
+        
+        ObjectReferenceArray objectToBeReferenced = ObjectReferenceArray.create(Main.maxField);
+        int fieldCount = 0;
+        
+        double random;
+        
+        while(true) {
+            Scheduler.gcPoint();
+            
+            // construct obj to be allocated
+            obj.reset();
+            
+            random = Native.random();
+            if (fieldCount == Main.maxField || random <= Main.randomReferencingChance) {
+                // this object will reference those objects in the array
+                obj.setFieldCount(fieldCount);
+                for (int i = 0; i < fieldCount; i++)
+                    obj.setField(i, objectToBeReferenced.get(i));
+                
+                // reset stored objects
+                fieldCount = 0;
+            } else {
+                // this object will have no field, we dont need to do anything here
+            }
+            
+            // alloc
+            ObjectReference objRef = MemoryManager.alloc(obj).toObjectReference();
+            objectAllocedSinceLastGC ++;
+            
+            // is this obj root?
+            random = Native.random();
+            if (random <= Main.randomRootChance) {
+                TestbedRuntime.addToRootAllowErasing(objRef);
+            }
+            
+            // will this obj be referenced?
+            random = Native.random();
+            if (random <= Main.randomReferencedChance) {
+                objectToBeReferenced.set(fieldCount, objRef);
+                fieldCount++;
             }
         }
     }
