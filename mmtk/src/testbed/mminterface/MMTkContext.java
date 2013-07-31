@@ -8,6 +8,7 @@ import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.ObjectReference;
 import org.vmmagic.unboxed.ObjectReferenceArray;
+import org.vmmagic.unboxed.Word;
 
 import testbed.Main;
 import testbed.TestbedRuntime;

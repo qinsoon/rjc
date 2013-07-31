@@ -121,7 +121,8 @@ public abstract class Plan implements Constants {
   public static final LargeObjectSpace loSpace = new LargeObjectSpace("los", VMRequest.create());
 
   /** Space used by the sanity checker (used at runtime only if sanity checking enabled */
-  public static final RawPageSpace sanitySpace = new RawPageSpace("sanity", VMRequest.create());
+  //public static final RawPageSpace sanitySpace = new RawPageSpace("sanity", VMRequest.create());
+  public static final RawPageSpace sanitySpace = new RawPageSpace("sanity", VMRequest.create(0.3f));
 
   /** Space used to allocate objects that cannot be moved. we do not need a large space as the LOS is non-moving. */
   public static final MarkSweepSpace nonMovingSpace = new MarkSweepSpace("non-moving", VMRequest.create());

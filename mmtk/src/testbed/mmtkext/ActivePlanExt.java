@@ -10,6 +10,7 @@ import org.rjava.restriction.rulesets.RJavaCore;
 
 import testbed.Configuration;
 import testbed.Main;
+import testbed.TestbedRuntime;
 import testbed.mminterface.MMTkContext;
 import testbed.mminterface.select.ConstraintsSelect;
 import testbed.mminterface.select.PlanSelect;
@@ -42,8 +43,13 @@ public class ActivePlanExt extends ActivePlan {
         return Scheduler.getCurrentContext().mutator();
     }
 
+    Log tempLog = new Log();
+    
     @Override
     public Log log() {
+        if (!TestbedRuntime.booted)
+            return tempLog;
+        
         return Scheduler.getCurrentContext().mutator().getLog();
     }
 

@@ -8,5 +8,5 @@ Plan constructor will call Map.finalizeStaticSpaceMap(), and set sharedFLMap. sh
 MMTk's slow allocation loop won't end until the allocation is successful. So runtime needs to be able to insert GC point into this allocation loop, otherwise the loop will keep running and request GC when MMTk is already doing GC. This will cause at least two subsequent GC being triggered whenever a GC is needed. 
 -> note @Uninterruptible code. MMTk doesn't require GC point in those code
 
-4. metaDataSpace
+4. metaDataSpace/sanitySpace
 metaDataSpace needs to have buffer pages before entering a GC. Otherwise, during a GC, when processing nodes, deque would require memory and cause a failure. See TraceLocal.processNode().

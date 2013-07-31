@@ -27,9 +27,7 @@ public class TestbedObject {
     }
     
     private void computeSize() {
-        int minSize = testbed.Constants.WORD_LENGTH_IN_BYTES + // header
-                testbed.Constants.INT_IN_BYTES + // size
-                testbed.Constants.INT_IN_BYTES;// field count
+        int minSize = ObjectModel.objectMinSize();
 
         if (fields == null)
             this.size = minSize;

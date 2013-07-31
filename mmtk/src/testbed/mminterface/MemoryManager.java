@@ -23,8 +23,10 @@ public class MemoryManager {
         
         Main.print("-Set options\n");
         Options.eagerMmapSpaces.setValue(true);
-        Options.verbose.setValue(Main.gcVerbose);
         Options.variableSizeHeap.setValue(false);
+        Options.noFinalizer.setValue(true);
+        Options.verbose.setValue(Main.gcVerbose);
+        Options.sanityCheck.setValue(Main.sanityCheck);
         
         Main.print("-Process options\n");
         PlanSelect.getPlan().processOptions();
@@ -45,7 +47,7 @@ public class MemoryManager {
         
         MutatorContext mutator = Scheduler.getCurrentContext().mutator();
         Address ret = mutator.alloc(size, align, offset, allocator, site);
-        testbed.runtime.ObjectModel.initializeObject(ret, object);
+        testbed.runtime.ObjectModel.initializeObject(ret.toObjectReference(), object);
         mutator.postAlloc(ret.toObjectReference(), ObjectReference.nullReference(), size, allocator);
         
         return ret;

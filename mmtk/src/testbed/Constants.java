@@ -19,7 +19,7 @@ public abstract class Constants {
         } else {
             HEAP_START          = Address.fromIntZeroExtend(0x31000000);
             CONTIGUOUS_START    = Address.fromIntZeroExtend(0x36800000);
-            HEAP_END            = Address.fromIntZeroExtend(0x45000000);
+            HEAP_END            = Address.fromIntZeroExtend(0x70000000);
         }
     }
 

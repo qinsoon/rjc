@@ -253,8 +253,7 @@ public class BarriersExt extends Barriers {
     @Override
     public void objectArrayStoreNoGCBarrier(Object[] dst, int index,
             Object value) {
-        // TODO Auto-generated method stub
-
+        dst[index] = value;
     }
 
 }

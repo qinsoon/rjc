@@ -20,11 +20,15 @@ public class TestbedRuntime {
     public static int rootsCount = 0;
     public static ObjectReferenceArray globalRoots;;
     
+    public static boolean booted = false;
+    
     public static void boot() {
         maxRootsAllowed = Main.maxRoot;
         globalRoots = ObjectReferenceArray.create(maxRootsAllowed);
         Scheduler.boot();
         MemoryManager.boot();
+        
+        booted = true;
     }
     
     /**

@@ -282,7 +282,7 @@ public final class MarkSweepSpace extends SegregatedFreeListSpace implements Con
    */
   @Override
   @Inline
-  public boolean isLive(ObjectReference object) {
+  public boolean isLive(ObjectReference object) { 
     if (HEADER_MARK_BITS) {
       return testMarkState(object);
     } else {

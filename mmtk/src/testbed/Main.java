@@ -13,7 +13,7 @@ import testbed.mminterface.select.PlanSelect;
 public class Main {
     public static final boolean DEBUG = true;
     
-    public static int gcVerbose = Configuration.GC_VERBOSE;
+    public static int gcVerbose = 0;
     
     public static double randomRootChance = 0.5;
     public static int maxRoot = 10000;
@@ -27,6 +27,8 @@ public class Main {
      * probability that an object will reference stored objects (see the probability above)
      */
     public static double randomReferencingChance = 0.5;
+    
+    public static boolean sanityCheck = false;
 
     public static void main(String[] args) {
         for (int i = 0; i < args.length; i++) {
@@ -49,6 +51,8 @@ public class Main {
             } else if (args[i].equals("-random_referencing_chance")) {
                 randomReferencedChance = Double.parseDouble(args[i+1]);
                 i++;
+            } else if (args[i].equals("-enable_sanity_check")) {
+                sanityCheck = true;
             }
         }
         

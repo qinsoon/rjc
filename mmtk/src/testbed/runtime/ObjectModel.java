@@ -4,6 +4,7 @@ import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.ObjectReference;
 import org.vmmagic.unboxed.Offset;
+import org.vmmagic.unboxed.Word;
 
 import testbed.Constants;
 import testbed.Main;
@@ -12,17 +13,23 @@ import testbed.mminterface.MMTkConstants;
 @RJavaCore
 public abstract class ObjectModel {
     //                       ->ObjectReference  
-    // | GC_HEADER (if needed) | header (WORD) | size (int32_t) | field_count (int32_t) | fields (ObjRefs) ...
-    // |                       |    4 bytes    |     4 bytes    |      4 bytes          |    8 bytes       ...
+    // | GC_HEADER (if needed) | header (WORD) | cl_header (WORD) | size (int32_t) | field_count (int32_t) | fields (ObjRefs) ...
+    // |                       |    4 bytes    |     4 bytes      |     4 bytes    |      4 bytes          |    8 bytes       ...
     
-    public static final Offset OFFSET_HEADER      = Offset.zero();
-    public static final Offset OFFSET_OBJECT_SIZE = Offset.fromIntZeroExtend(4);
-    public static final Offset OFFSET_FIELD_COUNT = Offset.fromIntZeroExtend(8);
-    public static final Offset OFFSET_FIELD_START = Offset.fromIntZeroExtend(12);
+    public static final Offset OFFSET_HEADER        = Offset.zero();
+    public static final Offset OFFSET_CLIENT_HEADER = Offset.fromIntZeroExtend(4);
+    public static final Offset OFFSET_OBJECT_SIZE   = Offset.fromIntZeroExtend(8);
+    public static final Offset OFFSET_FIELD_COUNT   = Offset.fromIntZeroExtend(12);
+    public static final Offset OFFSET_FIELD_START   = Offset.fromIntZeroExtend(16);
     
-    public static final Offset OFFSET_GC_HEADER   = OFFSET_HEADER.minus(MMTkConstants.GC_HEADER_BYTES());
+    public static final Offset OFFSET_GC_HEADER     = OFFSET_HEADER.minus(MMTkConstants.GC_HEADER_BYTES());
     
-    public static final void initializeObject(Address addr, TestbedObject object) {
+    public static final void initializeObject(ObjectReference objRef, TestbedObject object) {
+        Address addr = objRef.toAddress();
+        
+        // write client header
+        addr.store(Word.zero(), OFFSET_CLIENT_HEADER);
+        
         // write length
         addr.store(object.getSize(), OFFSET_OBJECT_SIZE);
         
@@ -32,8 +39,22 @@ public abstract class ObjectModel {
         Address cursor = addr.plus(OFFSET_FIELD_START);
         for (int i = 0; i < object.getFieldCount(); i++) {
             cursor.store(object.getField(i));
-            cursor.plus(Constants.OBJECTREFERENCE_LENGTH_IN_BYTES);
+            cursor = cursor.plus(Constants.OBJECTREFERENCE_LENGTH_IN_BYTES);
         }            
+    }
+    
+    public static final void writeClientHeader(ObjectReference obj, int header) {
+        obj.toAddress().store(header, OFFSET_CLIENT_HEADER);
+    }
+    
+    public static final int readClientHeader(ObjectReference obj) {
+        return obj.toAddress().loadInt(OFFSET_CLIENT_HEADER);
+    }
+    
+    public static int objectMinSize() {
+        return testbed.Constants.WORD_LENGTH_IN_BYTES * 2+ // header + client header
+                testbed.Constants.INT_IN_BYTES + // size
+                testbed.Constants.INT_IN_BYTES;// field count
     }
     
     public static void dumpObject(ObjectReference object) {
@@ -44,6 +65,8 @@ public abstract class ObjectModel {
         Main.println(object.toAddress().loadWord(OFFSET_GC_HEADER));
         Main.print("  HEADER:");
         Main.println(object.toAddress().loadWord(OFFSET_HEADER));
+        Main.print("  CLIENT HEADER:");
+        Main.println(object.toAddress().loadWord(OFFSET_CLIENT_HEADER));
         Main.print("  LENGTH:");
         Main.println(object.toAddress().loadInt(OFFSET_OBJECT_SIZE));
         Main.print("  FIELDS:(");
@@ -58,4 +81,10 @@ public abstract class ObjectModel {
             cursor = cursor.plus(Constants.OBJECTREFERENCE_LENGTH_IN_BYTES);
         }
     }
+    
+    /*
+     * for debug use
+     */
+    public static final int ROOT_MASK = 0x1;
+    public static final int REFERENCED_MASK = 0x10;
 }
