@@ -1,4 +1,4 @@
-#include "org_rjava_nativeext_RawConcurrency.h"
+#include "org_rjava_osext_OSConcurrency.h"
 #include <signal.h>
 
 #define RESUME_SIG  SIGUSR2
@@ -7,11 +7,11 @@
 static sigset_t wait_mask;
 static __thread int suspended;    // per-thread flag
 
-void org_rjava_nativeext_RawConcurrency_threadSuspend_java_lang_Thread(java_lang_Thread* t) {
+void org_rjava_osext_OSConcurrency_threadSuspend_java_lang_Thread(java_lang_Thread* t) {
     pthread_kill(t->internal_thread, SUSPEND_SIG);
 }
 
-void org_rjava_nativeext_RawConcurrency_threadResume_java_lang_Thread(java_lang_Thread* t) {
+void org_rjava_osext_OSConcurrency_threadResume_java_lang_Thread(java_lang_Thread* t) {
     pthread_kill(t->internal_thread, RESUME_SIG);
 }
 

@@ -1,8 +1,8 @@
-#include "org_rjava_nativeext_Native.h"
+#include "org_rjava_osext_OSNative.h"
 
 #include <time.h>
 
-double org_rjava_nativeext_Native_random() {
+double org_rjava_osext_OSNative_random() {
     srand(time(NULL));
     int r = random() % 100;
     return ((double)r) / 100;

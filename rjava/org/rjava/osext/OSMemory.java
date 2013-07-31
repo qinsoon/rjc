@@ -1,4 +1,4 @@
-package org.rjava.nativeext;
+package org.rjava.osext;
 
 import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.unboxed.Address;
@@ -6,7 +6,7 @@ import org.vmmagic.unboxed.Extent;
 import org.vmmagic.unboxed.Offset;
 
 @RJavaCore
-public abstract class RawMemory {
+public abstract class OSMemory {
     public static native Address malloc(int size);
     
     // constants for protection and mapping calls

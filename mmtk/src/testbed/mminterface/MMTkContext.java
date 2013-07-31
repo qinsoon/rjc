@@ -2,8 +2,8 @@ package testbed.mminterface;
 
 import org.mmtk.plan.CollectorContext;
 import org.mmtk.plan.MutatorContext;
-import org.rjava.nativeext.Native;
-import org.rjava.nativeext.RawConcurrency;
+import org.rjava.osext.OSConcurrency;
+import org.rjava.osext.OSNative;
 import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.ObjectReference;
@@ -122,7 +122,7 @@ public class MMTkContext implements Runnable{
             objectAllocedSinceLastGC++;
             
             // random
-            random = Native.random();
+            random = OSNative.random();
             if (random <= Main.randomRootChance) {
                 TestbedRuntime.addToRootAllowErasing(objRef);
             }
@@ -143,7 +143,7 @@ public class MMTkContext implements Runnable{
             // construct obj to be allocated
             obj.reset();
             
-            random = Native.random();
+            random = OSNative.random();
             if (fieldCount == Main.maxField || random <= Main.randomReferencingChance) {
                 // this object will reference those objects in the array
                 obj.setFieldCount(fieldCount);
@@ -161,13 +161,13 @@ public class MMTkContext implements Runnable{
             objectAllocedSinceLastGC ++;
             
             // is this obj root?
-            random = Native.random();
+            random = OSNative.random();
             if (random <= Main.randomRootChance) {
                 TestbedRuntime.addToRootAllowErasing(objRef);
             }
             
             // will this obj be referenced?
-            random = Native.random();
+            random = OSNative.random();
             if (random <= Main.randomReferencedChance) {
                 objectToBeReferenced.set(fieldCount, objRef);
                 fieldCount++;

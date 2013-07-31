@@ -3,8 +3,8 @@ package testbed.mmtkext;
 import org.mmtk.policy.ImmortalSpace;
 import org.mmtk.utility.heap.VMRequest;
 import org.mmtk.vm.Memory;
-import org.rjava.nativeext.Native;
-import org.rjava.nativeext.RawMemory;
+import org.rjava.osext.OSMemory;
+import org.rjava.osext.OSNative;
 import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.pragma.Inline;
 import org.vmmagic.pragma.Interruptible;
@@ -58,26 +58,26 @@ public class MemoryExt extends Memory {
 
     @Override
     public int dzmmap(Address start, int size) {
-       int prot = RawMemory.PROT_READ | RawMemory.PROT_WRITE | RawMemory.PROT_EXEC;
-       int flags = RawMemory.MAP_ANONYMOUS | RawMemory.MAP_PRIVATE | RawMemory.MAP_FIXED;
-       Address ret = RawMemory.mmap(start, Extent.fromIntZeroExtend(size), prot, flags, -1, Offset.zero());
+       int prot = OSMemory.PROT_READ | OSMemory.PROT_WRITE | OSMemory.PROT_EXEC;
+       int flags = OSMemory.MAP_ANONYMOUS | OSMemory.MAP_PRIVATE | OSMemory.MAP_FIXED;
+       Address ret = OSMemory.mmap(start, Extent.fromIntZeroExtend(size), prot, flags, -1, Offset.zero());
        if (ret.EQ(start))
            return 0;
        else{
-           return Native.errno();
+           return OSNative.errno();
        }
     }
 
     @Override
     public boolean mprotect(Address start, int size) {
-        return RawMemory.mprotect(start, Extent.fromIntZeroExtend(size), RawMemory.PROT_NONE) == 0;
+        return OSMemory.mprotect(start, Extent.fromIntZeroExtend(size), OSMemory.PROT_NONE) == 0;
     }
 
     @Override
     public boolean munprotect(Address start, int size) {
-        return RawMemory.mprotect(start, 
+        return OSMemory.mprotect(start, 
                 Extent.fromIntZeroExtend(size), 
-                RawMemory.PROT_READ | RawMemory.PROT_WRITE | RawMemory.PROT_EXEC) == 0;
+                OSMemory.PROT_READ | OSMemory.PROT_WRITE | OSMemory.PROT_EXEC) == 0;
     }
 
     @Override
@@ -85,7 +85,7 @@ public class MemoryExt extends Memory {
      * currently ignoring useNT argument
      */
     public void zero(boolean useNT, Address start, Extent len) {
-        RawMemory.memset(start, 0x00, len);
+        OSMemory.memset(start, 0x00, len);
     }
 
     @Override

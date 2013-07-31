@@ -1,9 +1,9 @@
-package org.rjava.nativeext;
+package org.rjava.osext;
 
 import org.rjava.restriction.rulesets.RJavaCore;
 
 @RJavaCore
-public abstract class RawConcurrency {
+public abstract class OSConcurrency {
     /**
      * lock on the object instance_mutex. This method is an alternative to MonitorEnter of such object (synchronized method/block)
      * @param lock

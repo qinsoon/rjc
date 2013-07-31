@@ -1,7 +1,7 @@
 package testbed.mmtkext;
 
 import org.mmtk.vm.Lock;
-import org.rjava.nativeext.RawConcurrency;
+import org.rjava.osext.OSConcurrency;
 import org.rjava.restriction.rulesets.RJavaCore;
 
 @RJavaCore
@@ -16,7 +16,7 @@ public class LockExt extends Lock {
 
     @Override
     public void acquire() {
-        RawConcurrency.mutexLock(lock);
+        OSConcurrency.mutexLock(lock);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class LockExt extends Lock {
 
     @Override
     public synchronized void release() {
-        RawConcurrency.mutexUnlock(lock);
+        OSConcurrency.mutexUnlock(lock);
     }
 
 }

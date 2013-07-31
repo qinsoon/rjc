@@ -2,6 +2,7 @@ package testbed.mmtkext;
 
 import org.mmtk.vm.Barriers;
 import org.rjava.restriction.rulesets.RJavaCore;
+import org.vmmagic.pragma.NoCheckStore;
 import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.Extent;
 import org.vmmagic.unboxed.ObjectReference;

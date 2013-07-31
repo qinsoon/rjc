@@ -1,9 +1,9 @@
-package org.rjava.nativeext;
+package org.rjava.osext;
 
 import org.rjava.restriction.rulesets.RJavaCore;
 
 @RJavaCore
-public abstract class Native {
+public abstract class OSNative {
     /**
      * 
      * @return last errno (in errno.h)

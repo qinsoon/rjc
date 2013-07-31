@@ -1,7 +1,7 @@
 package testbed.mmtkext;
 
 import org.mmtk.vm.Monitor;
-import org.rjava.nativeext.RawConcurrency;
+import org.rjava.osext.OSConcurrency;
 import org.rjava.restriction.rulesets.RJavaCore;
 
 @RJavaCore
@@ -10,12 +10,12 @@ public class MonitorExt extends Monitor {
 
     @Override
     public void lock() {
-        RawConcurrency.mutexLock(lock);
+        OSConcurrency.mutexLock(lock);
     }
 
     @Override
     public void unlock() {
-        RawConcurrency.mutexUnlock(lock);
+        OSConcurrency.mutexUnlock(lock);
     }
 
     @Override

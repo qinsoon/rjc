@@ -161,7 +161,7 @@ public abstract class SemanticMap {
     public static boolean isRJavaLib(String className) {
         return className.startsWith("org.rjava.restriction") || 
                 className.startsWith("org.vmmagic") ||
-                className.startsWith("org.rjava.nativeext");
+                className.startsWith("org.rjava.osext");
     }
     
     public static boolean isUnboxedType(String className) {

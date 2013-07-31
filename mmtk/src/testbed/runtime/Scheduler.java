@@ -1,6 +1,6 @@
 package testbed.runtime;
 
-import org.rjava.nativeext.RawConcurrency;
+import org.rjava.osext.OSConcurrency;
 import org.rjava.restriction.rulesets.RJavaCore;
 
 import testbed.Configuration;
