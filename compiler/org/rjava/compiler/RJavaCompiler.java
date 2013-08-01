@@ -60,6 +60,11 @@ public class RJavaCompiler {
     public static String rjava_lib = "rjava/";
     public static String rjava_clib = "rjava_clib/";
     
+    public static final int HOST_MACOSX = 0;
+    public static final int HOST_LINUX  = 1;
+    // which os the C code will run on
+    public static int hostOS = HOST_MACOSX;
+    
     private RJavaCompiler(CompilationTask task) {
     	this.task = task;
     }
@@ -164,6 +169,16 @@ public class RJavaCompiler {
                     i++;
                 } else if (args[i].equals("-rjava_clib")) {
                     rjava_clib = args[i+1];
+                    i++;
+                } else if (args[i].equals("-host_os")) {
+                    String os = args[i+1];
+                    if (os.equalsIgnoreCase("mac")) {
+                        hostOS = HOST_MACOSX;
+                    } else if (os.equalsIgnoreCase("linux")) {
+                        hostOS = HOST_LINUX;
+                    } else {
+                        error("Unsupported hosting OS: " + os);
+                    }
                     i++;
                 }
                 else {

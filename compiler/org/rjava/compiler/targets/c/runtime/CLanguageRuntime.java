@@ -33,6 +33,9 @@ public class CLanguageRuntime {
 
     public static final int MEMORY_MANAGEMENT_SCHEME = GC_MALLOC_PREBUILT;
     
+    // atomic ops lib
+    public static final boolean ATOMIC_OPS_PREBUILT = true;
+    
     /*
      * RJava's C implementation helpers
      */
@@ -60,14 +63,6 @@ public class CLanguageRuntime {
     static {
         RJAVA_RUNTIME_DEFINE.put("byte", "char");
         
-        if (RJavaCompiler.debugTarget) {
-            // allow external source code to know it is debug mode
-            RJAVA_RUNTIME_DEFINE.put("DEBUG_TARGET", "1");
-            
-            // allow programmatically insert gdb breakpoint
-            RJAVA_RUNTIME_DEFINE.put("GDB_BREAKPOINT", "asm volatile(\"int3;\")");
-        }
-        
         if (MEMORY_MANAGEMENT_SCHEME == GC_MALLOC || MEMORY_MANAGEMENT_SCHEME == GC_MALLOC_PREBUILT) {
             RJAVA_RUNTIME_DEFINE.put("malloc", "GC_malloc");
         }
@@ -75,21 +70,42 @@ public class CLanguageRuntime {
     public static final ArrayList<String> EXTRA_INCLUDE = new ArrayList<String>();
     public static final HashMap<String, String> MAKE_SUBTASK = new HashMap<String, String>();
     
-    static {
-        
-        // atomic ops lib
-        final boolean ATOMIC_OPS_PREBUILT = true;
-        
+    public static final String ATOMIC_LIB_OSX = "libatomic_ops_osx.a";
+    public static final String ATOMIC_LIB_OSX_32 = "libatomic_ops_osx_32.a";
+    public static final String ATOMIC_LIB_LINUX = "libatomic_ops_linux.a";
+    public static final String ATOMIC_LIB_LINUX_32 = "libatomic_ops_linux_32.a";
+    
+    public static final String GC_OSX = "boehm-gc_osx.a";
+    public static final String GC_OSX_32 = "boehm-gc_oxs_32.a";
+    public static final String GC_LINUX = "boehm-gc_linux.a";
+    public static final String GC_LINUX_32 = "boehm-gc_linux_32.a";
+    
+    static {       
         if (ATOMIC_OPS_PREBUILT) {
-            if (RJavaCompiler.m32) {
-                MAKE_SUBTASK.put("libatomic_ops-32.a", "libatomic_ops-32.a:\n" +
-                        "\tcp prebuilt/libatomic_ops-32.a libatomic_ops-32.a\n");
+            if (RJavaCompiler.hostOS == RJavaCompiler.HOST_MACOSX) {
+                if (RJavaCompiler.m32) {
+                    MAKE_SUBTASK.put(ATOMIC_LIB_OSX_32, ATOMIC_LIB_OSX_32 + ":\n" +
+                            "\tcp prebuilt/" + ATOMIC_LIB_OSX_32 + " " + ATOMIC_LIB_OSX_32 + "\n");
+                }
+                else {
+                    MAKE_SUBTASK.put(ATOMIC_LIB_OSX, ATOMIC_LIB_OSX + ":\n" +
+                            "\tcp prebuilt/" + ATOMIC_LIB_OSX + " " + ATOMIC_LIB_OSX + "\n");               
+                }
+            } else if (RJavaCompiler.hostOS == RJavaCompiler.HOST_LINUX) {
+                if (RJavaCompiler.m32) {
+                    MAKE_SUBTASK.put(ATOMIC_LIB_LINUX_32, ATOMIC_LIB_LINUX_32 + ":\n" +
+                            "\tcp prebuilt/" + ATOMIC_LIB_LINUX_32 + " " + ATOMIC_LIB_LINUX_32 + "\n");
+                }
+                else {
+                    MAKE_SUBTASK.put(ATOMIC_LIB_LINUX, ATOMIC_LIB_LINUX + ":\n" +
+                            "\tcp prebuilt/" + ATOMIC_LIB_LINUX + " " + ATOMIC_LIB_LINUX + "\n");               
+                }
             }
-            else {
-                MAKE_SUBTASK.put("libatomic_ops.a", "libatomic_ops.a:\n" +
-                        "\tcp prebuilt/libatomic_ops.a libatomic_ops.a\n");               
-            }
-        } else RJavaCompiler.incompleteImplementationError();
+        } else {
+            MAKE_SUBTASK.put("libatomic_ops.a", "libatomic_ops.a:\n" +
+                    "\tcd boehm-gc/libatomic_ops;" + (RJavaCompiler.m32 ? "CFLAGS=-m32" : "") + "./configure;make\n" +
+                    "\tcp boehm-gc/libatomic_ops/src/.libs/libatomic_ops.a libatomic_ops.a\n");
+        }
         
         // malloc lib
         switch (MEMORY_MANAGEMENT_SCHEME) {
@@ -99,24 +115,30 @@ public class CLanguageRuntime {
         case GC_MALLOC:
             CLanguageGenerator.MALLOC = "GC_malloc";
             EXTRA_INCLUDE.add(includeNonStandardHeader("boehm-gc/include/gc.h"));
-            // FIXME: make it work for -m32 -> CFLAGS=-m32 ./configure --enable-static
-            // cp .libs/libgc.a boehm-gc.a
             MAKE_SUBTASK.put("boehm-gc.a", "boehm-gc.a:\n" +
-                    "\tcd boehm-gc;autoreconf -vif;automake --add-missing;./configure;make -f Makefile.direct\n" +
-                    "\tcp boehm-gc/gc.a boehm-gc.a\n");
+                    "\tcd boehm-gc;autoreconf -vif;automake --add-missing;" + 
+                    (RJavaCompiler.m32 ? "CFLAGS=-m32 " : "") + "./configure --enable-threads=posix --enable-static;make\n" +
+                    "\tcp boehm-gc/.libs/libgc.a boehm-gc.a\n");
             break;
         case GC_MALLOC_PREBUILT:
             CLanguageGenerator.MALLOC = "GC_malloc";
             EXTRA_INCLUDE.add(includeNonStandardHeader("boehm-gc/include/gc.h"));
-            if (RJavaCompiler.m32) {
-                MAKE_SUBTASK.put("boehm-gc-32.a", "boehm-gc-32.a:\n" +
-                    "\tcp prebuilt/boehm-gc-32.a boehm-gc-32.a\n");
-            }else MAKE_SUBTASK.put("boehm-gc.a", "boehm-gc.a:\n" +
-                    "\tcp prebuilt/boehm-gc.a boehm-gc.a\n");
+            if (RJavaCompiler.hostOS == RJavaCompiler.HOST_MACOSX) {
+                if (RJavaCompiler.m32) {
+                    MAKE_SUBTASK.put(GC_OSX_32, GC_OSX_32 + ":\n" +
+                        "\tcp prebuilt/" + GC_OSX_32 + " " + GC_OSX_32 + "\n");
+                }else MAKE_SUBTASK.put(GC_OSX, GC_OSX + ":\n" +
+                        "\tcp prebuilt/" + GC_OSX + " " + GC_OSX +"\n");
+            } else if (RJavaCompiler.hostOS == RJavaCompiler.HOST_LINUX) {
+                if (RJavaCompiler.m32) {
+                    MAKE_SUBTASK.put(GC_LINUX_32, GC_LINUX_32 + ":\n" +
+                        "\tcp prebuilt/" + GC_LINUX_32 + " " + GC_LINUX_32 + "\n");
+                }else MAKE_SUBTASK.put(GC_LINUX, GC_LINUX + ":\n" +
+                        "\tcp prebuilt/" + GC_LINUX + " " + GC_LINUX +"\n");
+            }
             break;
         case DL_MALLOC:
-            CLanguageGenerator.MALLOC = "malloc";
-            MAKE_SUBTASK.put("dlmalloc.o", "dlmalloc.o:\n\tgcc -O3 -c -o dlmalloc.o dlmalloc.c\n");
+            RJavaCompiler.incompleteImplementationError();
             break;
         }
     }
@@ -608,6 +630,20 @@ public class CLanguageRuntime {
         }
         out.append(NEWLINE);
         
+        /* some defines */
+        if (RJavaCompiler.debugTarget) {
+            // allow external source code to know it is debug mode
+            RJAVA_RUNTIME_DEFINE.put("DEBUG_TARGET", "1");
+            
+            // allow programmatically insert gdb breakpoint
+            RJAVA_RUNTIME_DEFINE.put("GDB_BREAKPOINT", "asm volatile(\"int3;\")");
+        }
+        if (RJavaCompiler.hostOS == RJavaCompiler.HOST_MACOSX) {
+            RJAVA_RUNTIME_DEFINE.put("__OS_MACOSX_", "");
+        } else if (RJavaCompiler.hostOS == RJavaCompiler.HOST_LINUX) {
+            RJAVA_RUNTIME_DEFINE.put("__OS_LINUX_", "");
+        }
+        
         out.append(CLanguageGenerator.commentln("defines"));
         for (String key : RJAVA_RUNTIME_DEFINE.keySet()) {
             out.append("#define " + key + " " + RJAVA_RUNTIME_DEFINE.get(key) + NEWLINE);
@@ -726,7 +762,12 @@ public class CLanguageRuntime {
     }
 
     public void generateGNUMakefile() throws RJavaError {
-        final String C_FLAGS = "-I . " + (RJavaCompiler.debugTarget ? "-g" : "-O3") + " -lpthread " + (RJavaCompiler.m32 ? "-m32" : "");
+        String C_FLAGS = (RJavaCompiler.debugTarget ? "-g " : "-O3 ") + (RJavaCompiler.m32 ? "-m32 " : "");
+        if (RJavaCompiler.hostOS == RJavaCompiler.HOST_MACOSX)
+            C_FLAGS += "-lpthread ";
+        else if (RJavaCompiler.hostOS == RJavaCompiler.HOST_LINUX)
+            C_FLAGS += "-pthread -lrt ";
+        
         /*
          *  generate makefile
          */
