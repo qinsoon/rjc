@@ -3,6 +3,7 @@ package org.rjava.compiler;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -54,6 +55,10 @@ public class RJavaCompiler {
     public static boolean debugTarget = false;
     // compile as 32bits executable
     public static boolean m32 = false;
+    
+    // rjava restr./ext. annotations' path
+    public static String rjava_lib = "rjava/";
+    public static String rjava_clib = "rjava_clib/";
     
     private RJavaCompiler(CompilationTask task) {
     	this.task = task;
@@ -110,8 +115,9 @@ public class RJavaCompiler {
     	    codeGenerator.postTranslationWork();
     }
     
-    public void success() {
+    public void success() throws IOException {
         RJavaCompiler.println("\nCompilation successful");
+        RJavaCompiler.println("(output: " + new File(outputDir).getCanonicalPath() + ")");
     }
     
     /**
@@ -153,6 +159,12 @@ public class RJavaCompiler {
                     i++;
                 } else if (args[i].equals("-m32")){
                     m32 = true;
+                } else if (args[i].equals("-rjava_lib")) {
+                    rjava_lib = args[i+1];
+                    i++;
+                } else if (args[i].equals("-rjava_clib")) {
+                    rjava_clib = args[i+1];
+                    i++;
                 }
                 else {
                     sources.add(args[i]);
@@ -206,6 +218,9 @@ public class RJavaCompiler {
 	    } catch (RJavaWarning e) {
 	        warning(e);
 	    } catch (RJavaError e) {
+	        error(e);
+	    } catch (IOException e) {
+	        e.printStackTrace();
 	        error(e);
 	    }
     }

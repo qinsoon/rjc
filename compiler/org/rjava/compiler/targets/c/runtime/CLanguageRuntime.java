@@ -74,7 +74,6 @@ public class CLanguageRuntime {
     }
     public static final ArrayList<String> EXTRA_INCLUDE = new ArrayList<String>();
     public static final HashMap<String, String> MAKE_SUBTASK = new HashMap<String, String>();
-    public static final String RJAVA_LIB_DIR = "rjava_clib/";
     
     static {
         
@@ -718,7 +717,7 @@ public class CLanguageRuntime {
     public void copyJavaLibrary() throws RJavaError {
         // copy lib files
         try {
-            FileUtils.copyDirectory(new File(RJAVA_LIB_DIR), new File(RJavaCompiler.outputDir), false);
+            FileUtils.copyDirectory(new File(RJavaCompiler.rjava_clib), new File(RJavaCompiler.outputDir), false);
             Runtime.getRuntime().exec("chmod -R 777 " + RJavaCompiler.outputDir);
         } catch (IOException e) {
             e.printStackTrace();

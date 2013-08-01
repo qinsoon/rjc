@@ -131,7 +131,7 @@ public class SootEngine {
         if (RJavaCompiler.isInternalCompiling() != RJavaCompiler.INTERNAL_COMPILE_LIB)
             for (String path : jdkPath)
                 classpath += path + ":";
-        classpath += RJAVA_ANNOTATION_DIR + ":"; 
+        classpath += RJavaCompiler.rjava_lib + ":"; 
         classpath += ".";
         Options.v().set_soot_classpath(classpath);
         
