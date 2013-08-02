@@ -2,7 +2,7 @@
 2. [SOLVED]Class needs to be compiled by a top-down order in type hierarchy
 3. An interface cannot have subinterface - this is for implementation ease at the moment. 
    If we want subinterface, we need to class_init interfaces, and maintain its hierarchy
-4. Current implementation is very x86\mac os\gcc specific
+4. [SOLVED]Current implementation is very x86\mac os\gcc specific
    4.1 gcc: buildin_prefetch/CAS in magic types
    4.2 mac os: prebuilt boehm_gc.a, RawMemory, wait() (use mach time)
 5. [SOLVED]Magic Type Generator is broken (dont know since when)
