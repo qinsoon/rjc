@@ -10,15 +10,19 @@ public abstract class OSMemory {
     public static native Address malloc(int size);
     
     // constants for protection and mapping calls
-    public static final int PROT_NONE = 0;
-    public static final int PROT_READ = 1;
-    public static final int PROT_WRITE = 2;
-    public static final int PROT_EXEC = 4;
+    public static int PROT_NONE   = 0;
+    public static int PROT_READ   = 1;
+    public static int PROT_WRITE  = 2;
+    public static int PROT_EXEC   = 4;
 
-    public static final int MAP_PRIVATE = 2;
-    public static final int MAP_FIXED     = 16; 
+    /**
+     * those constants are defined in org_rjava_osext_OSMemory.h, which is os dependant
+     */
+    public static int MAP_SHARED;
+    public static int MAP_PRIVATE;
+    public static int MAP_FIXED; 
             //(VM.BuildForLinux) ? 16 : (VM.BuildForOsx) ?     16 : (VM.BuildForSolaris) ? 0x10 :256;
-    public static final int MAP_ANONYMOUS = 0x1000; 
+    public static int MAP_ANONYMOUS; 
             //(VM.BuildForLinux) ? 32 : (VM.BuildForOsx) ? 0x1000 : (VM.BuildForSolaris) ? 0x100 : 16;
     
     public static final int MAP_FAILED = -1;

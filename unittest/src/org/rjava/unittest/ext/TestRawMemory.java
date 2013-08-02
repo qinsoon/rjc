@@ -31,7 +31,7 @@ public class TestRawMemory extends UnitTest {
         Address ret = OSMemory.mmap(Address.zero(), 
                 Extent.fromIntZeroExtend(4096), 
                 OSMemory.PROT_READ | OSMemory.PROT_WRITE, 
-                OSMemory.MAP_ANONYMOUS | OSMemory.MAP_PRIVATE, -1, Offset.zero());
+                OSMemory.MAP_ANONYMOUS | OSMemory.MAP_SHARED, -1, Offset.zero());
         return ret.toInt() != OSMemory.MAP_FAILED;
     }
     
@@ -40,7 +40,7 @@ public class TestRawMemory extends UnitTest {
         Address ret = OSMemory.mmap(Address.zero(), 
                 length, 
                 OSMemory.PROT_READ, 
-                OSMemory.MAP_ANONYMOUS | OSMemory.MAP_PRIVATE, -1, Offset.zero());
+                OSMemory.MAP_ANONYMOUS | OSMemory.MAP_SHARED, -1, Offset.zero());
         
         if (ret.toInt() == OSMemory.MAP_FAILED)
             return false;
