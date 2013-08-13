@@ -769,6 +769,7 @@ public class CLanguageRuntime {
             C_FLAGS += "-lpthread ";
         else if (RJavaCompiler.hostOS == RJavaCompiler.HOST_LINUX)
             C_FLAGS += "-pthread -lrt ";
+        C_FLAGS += "-std=c99 ";
         
         /*
          *  generate makefile

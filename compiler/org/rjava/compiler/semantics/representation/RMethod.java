@@ -210,7 +210,7 @@ public class RMethod implements DependencyEdgeNode, CompilationUnit{
         return mainMethod;
     }
     
-    public boolean shouldBeInlined() {
+    public boolean isHeuristicInlined() {
         return body.size() <= 25 && RJavaCompiler.getGeneratorOptions().allowInline();
     }
     

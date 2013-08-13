@@ -288,6 +288,10 @@ public class CLanguageGenerator extends CodeGenerator {
         
         // generating code for each method
         for (RMethod method : klass.getMethods()) {
+            // we already had inline function body in the header
+            if (method.isHeuristicInlined() || method.hasInlineAnnotation())
+                continue;
+            
             if (method.isMainMethod()) {
                 outMain.append(MAIN_METHOD_SIGNATURE + " {" + NEWLINE);
                 outMain.increaseIndent();
@@ -300,9 +304,7 @@ public class CLanguageGenerator extends CodeGenerator {
                 outMain.increaseIndent();
             }
             
-            if (method.isIntrinsic()) {
-                outMain.append(method.getCode());
-            } else outMain.appendNoIndent(getMethodBody(method));
+            outMain.appendNoIndent(getMethodBody(method));
             
             outMain.decreaseIndent();
             outMain.append("}" + NEWLINE + NEWLINE);
@@ -483,7 +485,16 @@ public class CLanguageGenerator extends CodeGenerator {
         outMain.append(commentln("function definitions"));
         for (RMethod method : klass.getMethods()) {
             if (!method.isMainMethod()) {
-                outMain.append(getMethodSignature(method, true) + SEMICOLON + NEWLINE);
+                if (method.isHeuristicInlined() || method.hasInlineAnnotation()) {                
+                    // put inline function definition in the header
+                    outMain.append(getMethodSignature(method, true) + "{" + NEWLINE);
+                    outMain.increaseIndent();
+                    outMain.append(getMethodBody(method));
+                    outMain.decreaseIndent();
+                    outMain.append("}" + NEWLINE + NEWLINE);
+                } else {
+                    outMain.append(getMethodSignature(method, true) + SEMICOLON + NEWLINE);
+                }
             }
         }
         
@@ -625,7 +636,7 @@ public class CLanguageGenerator extends CodeGenerator {
         CodeStringBuilder out = new CodeStringBuilder();
         
         // inline if needed
-        if (declaration && (method.shouldBeInlined() || method.hasInlineAnnotation()))
+        if (declaration && (method.isHeuristicInlined() || method.hasInlineAnnotation()))
             out.append(CLanguageRuntime.ALWAYS_INLINE + " ");
         
         out.append(name.getWithPointerIfProper(method.getReturnType(), true) + " ");
@@ -646,7 +657,10 @@ public class CLanguageGenerator extends CodeGenerator {
         return out.toString();
     }
     
-    public String getMethodBody(RMethod method) throws RJavaError {      
+    public String getMethodBody(RMethod method) throws RJavaError {
+        if (method.isIntrinsic())
+            return method.getCode();
+        
         CodeStringBuilder out = new CodeStringBuilder();
         out.increaseIndent();
         
