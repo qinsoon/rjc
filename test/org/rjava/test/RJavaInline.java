@@ -17,6 +17,7 @@ public class RJavaInline {
             i = inc(i);
             superLongInlineMethod();
         }
+        System.out.println(sum);
     }
 
     @Inline

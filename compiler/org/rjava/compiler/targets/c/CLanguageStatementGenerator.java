@@ -12,6 +12,7 @@ import org.rjava.compiler.semantics.representation.RStatement;
 import org.rjava.compiler.semantics.representation.RType;
 import org.rjava.compiler.semantics.representation.stmt.*;
 import org.rjava.compiler.targets.c.runtime.CLanguageRuntime;
+import org.rjava.compiler.targets.c.runtime.RuntimeHelpers;
 
 import soot.Local;
 import soot.PointsToAnalysis;
@@ -427,7 +428,7 @@ public class CLanguageStatementGenerator {
                     "((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*) " + base + ")" +
                     " -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + ") -> " + CLanguageRuntime.INTERFACE_LIST;
         String interfaceName = "\"" + name.get(interfaceClass, true) + "\"";
-        ret.append(CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_GET_INTERFACE, new String[]{interfaceList, interfaceName}));
+        ret.append(RuntimeHelpers.invoke(RuntimeHelpers.GET_INTERFACE, new String[]{interfaceList, interfaceName}));
         ret.append(")");
         ret.append(" -> " + methodName + "(" + base);
         
@@ -568,13 +569,13 @@ public class CLanguageStatementGenerator {
      * RJava array implements
      */
     private String fromSootJLengthExpr(JLengthExpr rightOp) {
-        return CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_LENGTH_OF_ARRAY, new String[]{rightOp.getOp().toString() });
+        return RuntimeHelpers.invoke(RuntimeHelpers.LENGTH_OF_ARRAY, new String[]{rightOp.getOp().toString() });
     }    
 
     private String fromSootJNewArrayExpr(JNewArrayExpr rightOp) {
         String length = rightOp.getSize().toString();
         String eleSize = "(long) sizeof(" + name.getWithPointerIfProper(RType.initWithClassName(rightOp.getBaseType().toString()), false) + ")";
-        return CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_NEW_ARRAY, new String[]{length, eleSize});
+        return RuntimeHelpers.invoke(RuntimeHelpers.NEW_ARRAY, new String[]{length, eleSize});
     }
     
     private String fromSootJNewMultiArrayExpr(JNewMultiArrayExpr rightOp) {
@@ -588,7 +589,7 @@ public class CLanguageStatementGenerator {
         
         String dimensionSize = String.valueOf(rightOp.getSizeCount());
         String eleSize = "sizeof(" + name.fromSootType(rightOp.getBaseType(), false) + ")";
-        return CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_NEW_MULTIARRAY, new String[]{dimensionArray, dimensionSize, eleSize});
+        return RuntimeHelpers.invoke(RuntimeHelpers.NEW_MULTIARRAY, new String[]{dimensionArray, dimensionSize, eleSize});
     }
     
     /*
@@ -597,7 +598,7 @@ public class CLanguageStatementGenerator {
     private String fromSootJInstanceOfExpr(JInstanceOfExpr expr) {
         // e.g. temp instanceof org.mmtk.plan.ComplexPhase
         // will translate to a call to helper method rjava_instanceof(temp, &org_mmtk_plan_CompelxPhase_class_instance);
-        String ret = CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_INSTANCEOF, new String[]{
+        String ret = RuntimeHelpers.invoke(RuntimeHelpers.INSTANCEOF, new String[]{
                 "(void*)" + name.fromSootValue(expr.getOp()),
                 "(void*)&" + name.fromSootType(expr.getCheckType(), false) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX
                 });

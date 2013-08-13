@@ -1,7 +1,6 @@
 #ifndef RJAVA_C_LIB_H
 #define RJAVA_C_LIB_H
 
-#include "java_io_PrintStream.h"
 #include "java_lang_Object.h"
 #include "java_lang_System.h"
 #include "java_lang_StringBuffer.h"
@@ -16,6 +15,7 @@
 #include "java_lang_Boolean.h"
 #include "java_lang_Thread.h"
 #include "java_lang_Runnable.h"
+#include "java_io_PrintStream.h"
 
 #include "org_vmmagic_unboxed_Address.h"
 #include "org_vmmagic_unboxed_AddressArray.h"

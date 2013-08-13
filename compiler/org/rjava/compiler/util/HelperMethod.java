@@ -19,6 +19,8 @@ public class HelperMethod {
     
     String source;
     
+    boolean inline = false;
+    
     public HelperMethod(String methodName, String returnType, HelperVariable[] parameters) {
         super();
         this.methodName = methodName;
@@ -49,6 +51,14 @@ public class HelperMethod {
 
     public void setSource(String source) {
         this.source = source;
+    }
+    
+    public void setInline(boolean inline) {
+        this.inline = inline;
+    }
+    
+    public boolean isInline() {
+        return inline;
     }
 
     public String getMethodDescriptor() {

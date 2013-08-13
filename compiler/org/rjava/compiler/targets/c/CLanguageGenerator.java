@@ -28,6 +28,7 @@ import org.rjava.compiler.targets.CodeGenerator;
 import org.rjava.compiler.targets.CodeStringBuilder;
 import org.rjava.compiler.targets.GeneratorOptions;
 import org.rjava.compiler.targets.c.runtime.CLanguageRuntime;
+import org.rjava.compiler.targets.c.runtime.RuntimeHelpers;
 import org.rjava.compiler.util.Tree;
 import org.rjava.compiler.util.TreeBreadthFirstIterator;
 
@@ -296,7 +297,7 @@ public class CLanguageGenerator extends CodeGenerator {
                 outMain.append(MAIN_METHOD_SIGNATURE + " {" + NEWLINE);
                 outMain.increaseIndent();
                 // calling class_init();
-                outMain.append(CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_CLASS_INIT, null) + SEMICOLON + NEWLINE);
+                outMain.append(RuntimeHelpers.invoke(RuntimeHelpers.CLASS_INIT, null) + SEMICOLON + NEWLINE);
                 containsMain = true;
             } else {
                 outMain.append(commentln(method.getKlass().getName() + "." + method.getName() + "()"));
@@ -398,7 +399,7 @@ public class CLanguageGenerator extends CodeGenerator {
             String thisClass = "&" + name.get(klass, true) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX;
             String superClass = "&" + name.get(klass.getSuperClass(), true) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX;
             String superClassSize = SIZE_OF + "(" + name.get(klass.getSuperClass(), true) + CLanguageRuntime.CLASS_STRUCT_SUFFIX + ")";
-            classInitTemp.append(CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_INIT_HEADER, new String[]{thisClass, superClass, superClassSize}) + SEMICOLON + NEWLINE);
+            classInitTemp.append(RuntimeHelpers.invoke(RuntimeHelpers.INIT_HEADER, new String[]{thisClass, superClass, superClassSize}) + SEMICOLON + NEWLINE);
             
             // class_name
             if (RJavaCompiler.debugTarget) {
@@ -590,14 +591,14 @@ public class CLanguageGenerator extends CodeGenerator {
             // void rjava_alter_interface(void* interface, char* name, RJava_Common_Class* class);
             String tempClassVar = "(" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)&" + name.get(klass, true) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX;
             String tempInterfaceName = "\"" + name.get(myInterface, true) + "\"";
-            classInitTemp.append(CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_ALTER_INTERFACE, new String[]{tempInterfaceVar, tempInterfaceName, tempClassVar}) + SEMICOLON + NEWLINE);
+            classInitTemp.append(RuntimeHelpers.invoke(RuntimeHelpers.ALTER_INTERFACE, new String[]{tempInterfaceVar, tempInterfaceName, tempClassVar}) + SEMICOLON + NEWLINE);
         }else {
             // add this interface to class
             // void rjava_add_interface_to_class(void* interface, int interface_size, char* name, RJava_Common_Class* class);
             String interfaceSize = SIZE_OF + "(" + name.get(myInterface, true) + ")";
             String tempInterfaceName = "\"" + name.get(myInterface, true) + "\"";
             String tempClassVar = "(" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)&" + name.get(klass, true) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX;
-            classInitTemp.append(CLanguageRuntime.invokeHelper(CLanguageRuntime.HELPER_RJAVA_ADD_INTERFACE_TO_CLASS, 
+            classInitTemp.append(RuntimeHelpers.invoke(RuntimeHelpers.ADD_INTERFACE_TO_CLASS, 
                     new String[]{tempInterfaceVar, interfaceSize, tempInterfaceName, tempClassVar}) + SEMICOLON + NEWLINE);
         }
         
