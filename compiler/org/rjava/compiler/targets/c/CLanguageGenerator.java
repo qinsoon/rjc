@@ -386,7 +386,7 @@ public class CLanguageGenerator extends CodeGenerator {
         /*
          * Generating class struct (e.g. org_rjava_test_poly_Animal_class)
          */
-        outMain.append("typedef struct " + name.get(klass, false) + CLanguageRuntime.CLASS_STRUCT_SUFFIX + " {" + NEWLINE);
+        outMain.append("struct " + name.get(klass, false) + CLanguageRuntime.CLASS_STRUCT_SUFFIX + " {" + NEWLINE);
         outMain.increaseIndent();
         
         if (klass.hasSuperClass()) {
@@ -454,7 +454,7 @@ public class CLanguageGenerator extends CodeGenerator {
         }
         
         outMain.decreaseIndent();
-        outMain.append("} " + name.get(klass, false) + CLanguageRuntime.CLASS_STRUCT_SUFFIX + SEMICOLON + NEWLINE);
+        outMain.append("} " + SEMICOLON + NEWLINE);
         
         outMain.append(NEWLINE);
         

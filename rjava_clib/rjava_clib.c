@@ -13,14 +13,14 @@ void rjava_lib_init() {
     ((RJava_Common_Class*)(&java_lang_Object_class_instance)) -> super_class = NULL;
     ((RJava_Common_Class*)(&java_lang_Object_class_instance)) -> interfaces = NULL;
     pthread_mutex_init( &(((RJava_Common_Class*)(&java_lang_Object_class_instance)) -> class_mutex), NULL);
-    ((java_lang_Object_class*)(&java_lang_Object_class_instance)) -> toString = java_lang_Object_toString_noinline;
+    ((java_lang_Object_class*)(&java_lang_Object_class_instance)) -> toString = java_lang_Object_toString_noinline ;
 #ifdef DEBUG_TARGET
         ((RJava_Common_Class*)(&java_lang_Object_class_instance)) -> class_name = "java_lang_Object";
 #endif
     
     /* init for java_lang_Integer */
     rjava_init_header(&java_lang_Integer_class_instance, &java_lang_Object_class_instance, sizeof(java_lang_Object_class));
-    ((java_lang_Object_class*)(&java_lang_Integer_class_instance)) -> toString = java_lang_Integer_toString_noinline;
+    ((java_lang_Object_class*)(&java_lang_Integer_class_instance)) -> toString = java_lang_Integer_toString_noinline ;
 #ifdef DEBUG_TARGET
     ((RJava_Common_Class*)(&java_lang_Integer_class_instance)) -> class_name = "java_lang_Integer";
 #endif
@@ -43,14 +43,14 @@ void rjava_lib_init() {
 #ifdef DEBUG_TARGET
         ((RJava_Common_Class*)(&java_lang_Boolean_class_instance)) -> class_name = "java_lang_Boolean";
 #endif
-    ((java_lang_Object_class*)(&java_lang_Boolean_class_instance)) -> toString = java_lang_Boolean_toString_noinline;
+    ((java_lang_Object_class*)(&java_lang_Boolean_class_instance)) -> toString = java_lang_Boolean_toString_noinline ;
     
     /* init for java_lang_String */
     rjava_init_header(&java_lang_String_class_instance, &java_lang_Object_class_instance, sizeof(java_lang_Object_class));
 #ifdef DEBUG_TARGET
         ((RJava_Common_Class*)(&java_lang_String_class_instance)) -> class_name = "java_lang_String";
 #endif
-    ((java_lang_Object_class*)(&java_lang_String_class_instance)) -> toString = java_lang_String_toString_noinline;
+    ((java_lang_Object_class*)(&java_lang_String_class_instance)) -> toString = java_lang_String_toString_noinline ;
     
     /* init for java_lang_Class */
     rjava_init_header(&java_lang_Class_class_instance, &java_lang_Object_class_instance, sizeof(java_lang_Object_class));

@@ -26,12 +26,11 @@ import org.rjava.compiler.util.Tree;
 import org.rjava.compiler.util.TreeBreadthFirstIterator;
 
 public class CLanguageRuntime {
-    public static final String ALWAYS_INLINE = "inline __attribute__((always_inline))";
+    public static final String ALWAYS_INLINE = "static inline __attribute__((always_inline))";
     
     public static final int DEFAULT_MALLOC      = 0;
     public static final int GC_MALLOC           = 1;
-    public static final int DL_MALLOC           = 2;
-    public static final int GC_MALLOC_PREBUILT  = 3;
+    public static final int GC_MALLOC_PREBUILT  = 2;
 
     public static final int MEMORY_MANAGEMENT_SCHEME = GC_MALLOC_PREBUILT;
     
@@ -64,6 +63,7 @@ public class CLanguageRuntime {
     public static final HashMap<String, String> RJAVA_RUNTIME_DEFINE = new HashMap<String, String>();
     static {
         RJAVA_RUNTIME_DEFINE.put("byte", "char");
+        RJAVA_RUNTIME_DEFINE.put("RJAVA_ALWAYS_INLINE", ALWAYS_INLINE);
         
         if (MEMORY_MANAGEMENT_SCHEME == GC_MALLOC || MEMORY_MANAGEMENT_SCHEME == GC_MALLOC_PREBUILT) {
             RJAVA_RUNTIME_DEFINE.put("malloc", "GC_malloc");
@@ -138,9 +138,6 @@ public class CLanguageRuntime {
                 }else MAKE_SUBTASK.put(GC_LINUX, GC_LINUX + ":\n" +
                         "\tcp prebuilt/" + GC_LINUX + " " + GC_LINUX +"\n");
             }
-            break;
-        case DL_MALLOC:
-            RJavaCompiler.incompleteImplementationError();
             break;
         }
     }
@@ -474,8 +471,12 @@ public class CLanguageRuntime {
     }
     private String getTypedefs() {
         CodeStringBuilder defs = new CodeStringBuilder();
-        for (String typedef : RJavaCStructType)
+        for (String typedef : RJavaCStructType) {
+            defs.append("struct " + typedef + SEMICOLON + NEWLINE);
             defs.append("typedef struct " + typedef + " " + typedef + SEMICOLON + NEWLINE);
+            defs.append("struct " + typedef + CLASS_STRUCT_SUFFIX + SEMICOLON + NEWLINE);
+            defs.append("typedef struct " + typedef + CLASS_STRUCT_SUFFIX + " " + typedef + CLASS_STRUCT_SUFFIX + SEMICOLON + NEWLINE);
+        }
         return defs.toString();
     }
     
