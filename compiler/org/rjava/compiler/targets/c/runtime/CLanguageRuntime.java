@@ -76,9 +76,11 @@ public class CLanguageRuntime {
     public static final String ATOMIC_LIB_LINUX_32 = "libatomic_ops_linux_32.a";
     
     public static final String GC_OSX = "boehm-gc_osx.a";
-    public static final String GC_OSX_32 = "boehm-gc_oxs_32.a";
+    public static final String GC_OSX_32 = "boehm-gc_osx_32.a";
     public static final String GC_LINUX = "boehm-gc_linux.a";
     public static final String GC_LINUX_32 = "boehm-gc_linux_32.a";
+    
+    public static final String ALWAYS_INLINE = "inline __attribute__((always_inline))";
     
     static {       
         if (ATOMIC_OPS_PREBUILT) {

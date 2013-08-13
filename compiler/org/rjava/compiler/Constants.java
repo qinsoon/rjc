@@ -13,6 +13,8 @@ public final class Constants {
     public static final String RJAVA_RESTRICTION_RULESET_PACKAGE = "org.rjava.restriction.rulesets";
     public static final String RJAVA_RESTRICTION_RULESET_PRAGMA = "org.rjava.restriction.RestrictionRuleset";
     
+    public static final String RJAVA_INLINE_ANNOTATION = "org.vmmagic.pragma.Inline";
+    
     // the suffix that check rules end with
     public static final String CHECK_RULE_SUFFIX = "_CHECK";
     public static final String CHECK_CLASS_METHOD = "checkClass";

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.rjava.compiler.CompilationUnit;
+import org.rjava.compiler.Constants;
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.pass.CompilationPass;
 import org.rjava.compiler.semantics.DependencyEdgeNode;
@@ -21,6 +22,9 @@ import soot.Type;
 import soot.Unit;
 import soot.UnitBox;
 import soot.jimple.internal.AbstractStmt;
+import soot.tagkit.AnnotationTag;
+import soot.tagkit.Tag;
+import soot.tagkit.VisibilityAnnotationTag;
 
 public class RMethod implements DependencyEdgeNode, CompilationUnit{
     private List<RType> parameters = new ArrayList<RType>();
@@ -130,6 +134,7 @@ public class RMethod implements DependencyEdgeNode, CompilationUnit{
             }
         }
         
+        this.annotations = fetchAnnotations(internal);
         checkMainMethod();
     }
 
@@ -207,6 +212,32 @@ public class RMethod implements DependencyEdgeNode, CompilationUnit{
     
     public boolean shouldBeInlined() {
         return body.size() <= 25 && RJavaCompiler.getGeneratorOptions().allowInline();
+    }
+    
+    public boolean hasInlineAnnotation() {
+        for (RAnnotation rAnno : annotations)
+            if (rAnno.getType().getClassName().equals(Constants.RJAVA_INLINE_ANNOTATION))
+                return true;
+        
+        return false;
+    }
+    
+    /**
+     * annotations on this method. 
+     * Remember annotations on the declaring class also affect this method. 
+     * But they are NOT included in this list
+     */
+    List<RAnnotation> annotations;
+    private List<RAnnotation> fetchAnnotations(SootMethod method) {
+        List<RAnnotation> ret = new ArrayList<RAnnotation>();
+        for (Tag tag : method.getTags()) {
+            if (tag instanceof VisibilityAnnotationTag) {
+                VisibilityAnnotationTag annoTag = (VisibilityAnnotationTag) tag;
+                for (AnnotationTag t : annoTag.getAnnotations())
+                    ret.add(new RAnnotation(t));
+            }
+        }
+        return ret;
     }
 
     /**

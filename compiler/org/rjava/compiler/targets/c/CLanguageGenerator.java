@@ -157,7 +157,7 @@ public class CLanguageGenerator extends CodeGenerator {
             
             // generating code for each method           
             outMain.append(commentln(clinit.getKlass().getName() + "." + clinit.getName() + "()"));
-            outMain.append(getMethodSignature(clinit) + " {" + NEWLINE);
+            outMain.append(getMethodSignature(clinit, false) + " {" + NEWLINE);
             
             outMain.increaseIndent();
             outMain.appendNoIndent(getMethodBody(clinit));
@@ -296,7 +296,7 @@ public class CLanguageGenerator extends CodeGenerator {
                 containsMain = true;
             } else {
                 outMain.append(commentln(method.getKlass().getName() + "." + method.getName() + "()"));
-                outMain.append(getMethodSignature(method) + " {" + NEWLINE);
+                outMain.append(getMethodSignature(method, false) + " {" + NEWLINE);
                 outMain.increaseIndent();
             }
             
@@ -483,7 +483,7 @@ public class CLanguageGenerator extends CodeGenerator {
         outMain.append(commentln("function definitions"));
         for (RMethod method : klass.getMethods()) {
             if (!method.isMainMethod()) {
-                outMain.append(getMethodSignature(method) + SEMICOLON + NEWLINE);
+                outMain.append(getMethodSignature(method, true) + SEMICOLON + NEWLINE);
             }
         }
         
@@ -615,10 +615,19 @@ public class CLanguageGenerator extends CodeGenerator {
        return out.toString();
     }
     
-    public String getMethodSignature(RMethod method) {
+    /**
+     * 
+     * @param method
+     * @param declaration true if this is for method declaration (otherwise definition)
+     * @return
+     */
+    public String getMethodSignature(RMethod method, boolean declaration) {
         CodeStringBuilder out = new CodeStringBuilder();
-        if (method.shouldBeInlined())
-            out.append("inline ");
+        
+        // inline if needed
+        if (declaration && (method.shouldBeInlined() || method.hasInlineAnnotation()))
+            out.append(CLanguageRuntime.ALWAYS_INLINE + " ");
+        
         out.append(name.getWithPointerIfProper(method.getReturnType(), true) + " ");
         out.append(name.get(method) + " (");
         // if not static, the first parameter will be 'this'
@@ -633,6 +642,7 @@ public class CLanguageGenerator extends CodeGenerator {
                 out.append(", ");
         }
         out.append(")");
+        
         return out.toString();
     }
     

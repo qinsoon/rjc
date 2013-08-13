@@ -116,7 +116,7 @@ public class RClass implements DependencyEdgeNode, CompilationUnit{
 	    if (tag instanceof VisibilityAnnotationTag) {
 		VisibilityAnnotationTag annoTag = (VisibilityAnnotationTag) tag;
 		for (AnnotationTag t : annoTag.getAnnotations()) {
-		    result.add(new RAnnotation(t, this));  
+		    result.add(new RAnnotation(t));  
 		}
 	    }
 	}
