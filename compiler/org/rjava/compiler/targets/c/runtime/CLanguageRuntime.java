@@ -444,7 +444,7 @@ public class CLanguageRuntime {
             while (iter.hasNext()) {
                 RClass current = iter.next();
                 if (generator.getClassInitMap().containsKey(current.getName())) {
-                    body.append(CLanguageGenerator.commentln("init for " + name.get(current, false)));
+                    body.append(CLanguageGenerator.commentln("init for " + name.get(current)));
                     body.append(generator.getClassInitMap().get(current.getName()).toString());
                     body.append("\n\n");
                 }

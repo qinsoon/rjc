@@ -133,10 +133,11 @@ public abstract class SemanticMap {
     }
     
     /**
-     * 
+     * Use RClass.initWithClassName(type.getClassName()) instead
      * @param type
      * @return null if type cannot be found or if type isnt an app type (we do not have its RClass)
      */
+    @Deprecated
     public static RClass getRClassFromRType(RType type) {
         // if type is not an application, we dont have its RClass then
         if (!type.isAppType())

@@ -62,11 +62,11 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
         CodeStringBuilder outInc = new CodeStringBuilder();
         CodeStringBuilder outMain = new CodeStringBuilder();
         
-        cHeaderSource = getSource(klass.getName(), ".h");
+        String cHeaderSource = getSource(klass.getName(), ".h");
         
         // include guard
-        outInc.append("#ifndef " + name.get(klass, false).toUpperCase() + "_H" + NEWLINE);
-        outInc.append("#define " + name.get(klass, false).toUpperCase() + "_H" + NEWLINE);
+        outInc.append("#ifndef " + name.get(klass).toUpperCase() + "_H" + NEWLINE);
+        outInc.append("#define " + name.get(klass).toUpperCase() + "_H" + NEWLINE);
         
         // include rjava lib
         for (String inc : INCLUDES) {
@@ -76,7 +76,7 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
         outMain.append(NEWLINE);
         
         // define type
-        String type = name.get(klass, false);
+        String type = name.get(klass);
         String c_type = MAGIC_TYPE_TO_C_TYPE.get(klass.getName());
         outMain.append("#define " + type + " " + c_type + NEWLINE);
         
@@ -171,7 +171,7 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
            return "(int64_t) " + THIS_PARAMETER;
        }
        else if (methodName.equals("toWord")) {
-           return "(" + name.get(method.getReturnType(), false) + ") " + THIS_PARAMETER;
+           return "(" + name.get(method.getReturnType()) + ") " + THIS_PARAMETER;
        }
        // Address only
        else if (methodName.equals("fromLong")) {
@@ -244,7 +244,7 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
         * memory access operators
         */
        else if (methodName.startsWith("load") || methodName.startsWith("prepare")) {
-           String returnType = name.get(method.getReturnType(), false);
+           String returnType = name.get(method.getReturnType());
            
            String ret = "*((" + returnType + "*) (" + THIS_PARAMETER;
            if (method.getParameters().size() == 1)
@@ -254,7 +254,7 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
            return ret;
        }
        else if (methodName.startsWith("store")) {
-           String storeType = name.get(method.getParameters().get(0), false);
+           String storeType = name.get(method.getParameters().get(0));
            
            String ret = "*((" + storeType + "*) (" + THIS_PARAMETER;
            if (method.getParameters().size() == 2)
@@ -265,7 +265,7 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
        }
        else if (methodName.equals("attempt")) {
            String CAS = "__sync_bool_compare_and_swap";
-           String ptrType = name.get(method.getParameters().get(0), false);
+           String ptrType = name.get(method.getParameters().get(0));
            String ret = CAS + "( (" + ptrType + "*)(" + THIS_PARAMETER;
            
            // offset
@@ -355,7 +355,7 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
        else if (methodName.equals("one")) {
            // equivalent as XXX.fromIntSignExtend(1)
            // i.e. XXX_fromIntSignExtend_uint32_t(1);
-           return name.get(method.getKlass(), false) + "_fromIntSignExtend_" + JAVA_INT + "(1)";
+           return name.get(method.getKlass()) + "_fromIntSignExtend_" + JAVA_INT + "(1)";
        }
        return INCOMPLETE_IMPLEMENTATION;
     }
