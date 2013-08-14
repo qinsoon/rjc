@@ -173,9 +173,6 @@ public class CLanguageRuntime {
     public static final String COND_VAR_TYPE = "pthread_cond_t";
     public static final String INSTANCE_COND_VAR = "instance_cond";
     
-
-    
-    
     CLanguageGenerator generator;
     CLanguageNameGenerator name;
     
@@ -355,7 +352,8 @@ public class CLanguageRuntime {
             C_FLAGS += "-lpthread ";
         else if (RJavaCompiler.hostOS == RJavaCompiler.HOST_LINUX)
             C_FLAGS += "-pthread -lrt ";
-        C_FLAGS += "-std=c99 ";
+        C_FLAGS += "-std=gnu99 ";
+        
         
         /*
          *  generate makefile

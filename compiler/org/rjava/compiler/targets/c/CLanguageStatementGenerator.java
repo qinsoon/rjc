@@ -151,17 +151,8 @@ public class CLanguageStatementGenerator {
         else if (rightOp instanceof soot.jimple.internal.JInstanceFieldRef) {
             rightOpStr = name.fromSootInstanceFieldRef((JInstanceFieldRef) rightOp);
         } 
-        else if (rightOp instanceof soot.jimple.internal.JVirtualInvokeExpr) {
-            rightOpStr = fromSootJVirtualInvokeExpr((JVirtualInvokeExpr) rightOp);
-        } 
-        else if (rightOp instanceof soot.jimple.internal.JStaticInvokeExpr) {
-            rightOpStr = fromSootJStaticInvokeExpr((JStaticInvokeExpr) rightOp);
-        }
-        else if (rightOp instanceof soot.jimple.internal.JSpecialInvokeExpr) {
-            rightOpStr = fromSootJSpecialInvokeExpr((JSpecialInvokeExpr) rightOp);
-        }
-        else if (rightOp instanceof soot.jimple.internal.JInterfaceInvokeExpr) {
-            rightOpStr = fromSootJInterfaceInvokeExpr((JInterfaceInvokeExpr) rightOp);
+        else if (rightOp instanceof soot.jimple.InvokeExpr) {
+            rightOpStr = fromSootInvokeExpr((InvokeExpr) rightOp);
         }
         else if (rightOp instanceof soot.jimple.BinopExpr) {
             rightOpStr = fromSootBinopExpr((BinopExpr) rightOp);
@@ -264,23 +255,7 @@ public class CLanguageStatementGenerator {
         JInvokeStmt internal = stmt.internal();
         InvokeExpr actualInvoke = internal.getInvokeExpr();
         
-        String ret = "";
-        
-        if (actualInvoke instanceof soot.jimple.internal.JVirtualInvokeExpr) {
-            ret = fromSootJVirtualInvokeExpr((JVirtualInvokeExpr) actualInvoke);
-        } else if (actualInvoke instanceof soot.jimple.internal.JSpecialInvokeExpr) {
-            ret = fromSootJSpecialInvokeExpr((JSpecialInvokeExpr) actualInvoke);
-        } else if (actualInvoke instanceof soot.jimple.internal.JInterfaceInvokeExpr) {
-            ret = fromSootJInterfaceInvokeExpr((JInterfaceInvokeExpr) actualInvoke);
-        } else if (actualInvoke instanceof soot.jimple.internal.JStaticInvokeExpr) {
-            ret = fromSootJStaticInvokeExpr((JStaticInvokeExpr) actualInvoke);
-        }
-        else {
-            ret = CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
-            throw stmt.newIncompleteImplementationError("Invoke:" + actualInvoke.getClass());
-        }
-        
-        return ret;
+        return fromSootInvokeExpr(actualInvoke);
     }
     
     private String get(RNopStmt stmt) {
@@ -337,6 +312,26 @@ public class CLanguageStatementGenerator {
     /*
      * from soot statement/expr representation
      */  
+    private String fromSootInvokeExpr(soot.jimple.InvokeExpr invoke) {
+        String ret = null;
+        if (invoke instanceof soot.jimple.internal.JVirtualInvokeExpr) {
+            ret = fromSootJVirtualInvokeExpr((JVirtualInvokeExpr) invoke);
+        } else if (invoke instanceof soot.jimple.internal.JSpecialInvokeExpr) {
+            ret = fromSootJSpecialInvokeExpr((JSpecialInvokeExpr) invoke);
+        } else if (invoke instanceof soot.jimple.internal.JInterfaceInvokeExpr) {
+            ret = fromSootJInterfaceInvokeExpr((JInterfaceInvokeExpr) invoke);
+        } else if (invoke instanceof soot.jimple.internal.JStaticInvokeExpr) {
+            ret = fromSootJStaticInvokeExpr((JStaticInvokeExpr) invoke);
+        } else {
+            ret = CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
+            RJavaCompiler.incompleteImplementationError();
+        }
+        if (RClass.fromSootClass(invoke.getMethod().getDeclaringClass()).isAppClass())
+            generator.referencing(RMethod.getFromSootMethod(invoke.getMethod()));
+        return ret;
+    }
+    
+    
     // FIXME: library call and app call should be unified. 
     private String fromSootJVirtualInvokeExpr(soot.jimple.internal.JVirtualInvokeExpr virtualInvoke) {
         String callingClass = virtualInvoke.getMethod().getDeclaringClass().getName();
@@ -366,7 +361,7 @@ public class CLanguageStatementGenerator {
             }
             ret += ")";
         }
-         
+
         return ret;
     }
     

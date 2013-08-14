@@ -57,7 +57,7 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
     }
     
     private void generateMagicTypeHeader(RClass klass) throws RJavaError {
-        referencedClasses = new HashSet<String>();
+        resetReferenceSet();
         
         CodeStringBuilder outInc = new CodeStringBuilder();
         CodeStringBuilder outMain = new CodeStringBuilder();

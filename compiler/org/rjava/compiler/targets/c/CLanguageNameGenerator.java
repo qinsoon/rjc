@@ -54,6 +54,7 @@ public class CLanguageNameGenerator {
     public String get(RType type) {
         String ret = javaNameToCName(type.getClassName());
         if (type.isReferenceType() || type.isMagicType())
+            // FIXME
             if (type.isArray())
                 generator.referencing(type);
             else
@@ -84,9 +85,8 @@ public class CLanguageNameGenerator {
      * generating c style name from soot element 
      */
     public String fromSootStaticFieldRef(soot.jimple.StaticFieldRef ref) {
-        String className = fromSootClass(ref.getField().getDeclaringClass());
-        String refName = ref.getField().getName();
-        return CLanguageGenerator.C_GLOBAL_VAR_PREFIX + javaNameToCName(className + "." + refName);
+        RClass klass = RClass.fromSootClass(ref.getField().getDeclaringClass());
+        return CLanguageGenerator.C_GLOBAL_VAR_PREFIX + get(klass) + "_" + ref.getField().getName();
     }
     
     public String fromSootMethod(soot.SootMethod method) {

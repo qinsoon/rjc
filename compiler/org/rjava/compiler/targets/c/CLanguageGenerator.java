@@ -93,6 +93,7 @@ public class CLanguageGenerator extends CodeGenerator {
     protected Map<String, CodeStringBuilder> classInitMap = new HashMap<String, CodeStringBuilder>();
     
     protected Set<String> referencedClasses;
+    protected Set<String> referencedMethodClasses;
     
     public CLanguageGenerator() {
         this.mainObj = RJavaCompiler.namedOutput;
@@ -119,10 +120,31 @@ public class CLanguageGenerator extends CodeGenerator {
         
         currentRClass = klass;
         
+        /*
+         * One RJava class org.rjava.A would become several C files
+         */
         if (!klass.isInterface()) {
             generateIntrinsic(klass);
+            /*
+             * A non-interface class org.rjava.A will become org_rjava_A.h, which includes:
+             * 1. instance declaration 'struct org_rjava_A', including instance fields
+             * 2. class declaration 'struct org_rjava_A_class', including virtual methods (function pointer) 
+             * 3. class instance org_rjava_A_class_instance
+             * 4. global variables, starting with prefix 'var_'
+             */
             generateTypeHeader(klass);
+            /*
+             * The declarations of methods will become org_rjava_A_methods.h, which includes (in this order)
+             * 1. includes related with 2
+             * 2. all method declarations
+             * 3. includes related with 4
+             * 4. inline method definition
+             * Note: includes are separated into 2 parts to avoid possible circular includes
+             */
             generateMethodHeader(klass);
+            /*
+             * The definitions of non-inline methods will become org_rjava_A_methods.c
+             */
             generateCode(klass);
         } else {
             generateIntrinsic(klass);
@@ -141,7 +163,7 @@ public class CLanguageGenerator extends CodeGenerator {
         RMethod clinit = klass.getCLInitMethod();
         
         if (clinit != null) {
-            referencedClasses = new HashSet<String>();
+            resetReferenceSet();
             
             CodeStringBuilder outInc = new CodeStringBuilder();
             CodeStringBuilder outMain = new CodeStringBuilder();
@@ -172,6 +194,9 @@ public class CLanguageGenerator extends CodeGenerator {
             for (String reference : referencedClasses) {
                 outInc.append("#include \"" + reference + ".h\"" + NEWLINE);
             }
+            for (String reference : referencedMethodClasses) {
+                outInc.append(CLanguageRuntime.includeNonStandardHeader(reference) + ".h" + NEWLINE);
+            }
             
             if (OUTPUT_C_TO_CONSOLE) {
                 RJavaCompiler.debug("Code output to: " + cCodeSource);
@@ -191,7 +216,7 @@ public class CLanguageGenerator extends CodeGenerator {
      * @throws RJavaError
      */
     private void generateInterfaceHeader(RClass klass) throws RJavaError {
-        referencedClasses = new HashSet<String>();
+        resetReferenceSet();
         
         CodeStringBuilder outInc = new CodeStringBuilder();
         CodeStringBuilder outMain = new CodeStringBuilder();
@@ -230,6 +255,13 @@ public class CLanguageGenerator extends CodeGenerator {
             outMain.append(name.getWithPointerIfProper(field.getType()) + " " + name.get(field) + SEMICOLON + NEWLINE);
         }
         
+        /*
+         * clinit (if applicable)
+         */
+        if (klass.getCLInitMethod() != null) {
+            outMain.append(getMethodSignature(klass.getCLInitMethod(), true) + SEMICOLON + NEWLINE);
+        }
+        
         outMain.append("#endif");
         
         // get referenced
@@ -264,14 +296,14 @@ public class CLanguageGenerator extends CodeGenerator {
             }
         }
     }
-
+    
     /**
      * A Java Class will become a C header and a C source file. The source file is generated here. 
      * @param klass
      * @throws RJavaError
      */
     private void generateCode(RClass klass) throws RJavaError {
-        referencedClasses = new HashSet<String>();
+        resetReferenceSet();
         boolean containsMain = false;
         
         CodeStringBuilder outInc = new CodeStringBuilder();
@@ -317,6 +349,9 @@ public class CLanguageGenerator extends CodeGenerator {
         for (String reference : referencedClasses) {
             outInc.append("#include \"" + reference + ".h\"" + NEWLINE);
         }
+        for (String reference : referencedMethodClasses) {
+            outInc.append(CLanguageRuntime.includeNonStandardHeader(reference + ".h") + NEWLINE);
+        }
         
         if (OUTPUT_C_TO_CONSOLE) {
             RJavaCompiler.debug("Code output to: " + cCodeSource);
@@ -339,7 +374,7 @@ public class CLanguageGenerator extends CodeGenerator {
     private void generateTypeHeader(RClass klass) throws RJavaError {
         generatingType = true;
         
-        referencedClasses = new HashSet<String>();
+        resetReferenceSet();
         
         CodeStringBuilder outInc = new CodeStringBuilder();
         CodeStringBuilder outMain = new CodeStringBuilder();
@@ -355,10 +390,10 @@ public class CLanguageGenerator extends CodeGenerator {
         outInc.append(CLanguageRuntime.includeNonStandardHeader(CLanguageRuntime.RJAVA_LIB + ".h") + NEWLINE);
         
         outMain.append(NEWLINE);
+        
         /*
          * Generate instance struct (e.g. org_rjava_test_poly_Animal)
          */
-        //outMain.append("typedef struct " + name.get(klass, false) + " " + name.get(klass, false) + SEMICOLON + NEWLINE);
         runtime.addTypedef(name.get(klass));
         outMain.append("struct " + name.get(klass) + " {" + NEWLINE);
         outMain.increaseIndent();
@@ -520,7 +555,7 @@ public class CLanguageGenerator extends CodeGenerator {
     }
     
     private void generateMethodHeader(RClass klass) throws RJavaError {
-        referencedClasses = new HashSet<String>();
+        resetReferenceSet();
         
         CodeStringBuilder outInc = new CodeStringBuilder();
         CodeStringBuilder outMain = new CodeStringBuilder();
@@ -544,46 +579,45 @@ public class CLanguageGenerator extends CodeGenerator {
             }
         }
         outMain.append(NEWLINE);
-
-        // put inline function definition in the header
-        outMain.append(commentln("inline function definitions"));
-        for (RMethod method : klass.getMethods()) {
-            if (!method.isMainMethod() && method.isHeuristicInlined() || method.hasInlineAnnotation()) {
-                outMain.append(getMethodSignature(method, true) + "{" + NEWLINE);
-                outMain.increaseIndent();
-                outMain.append(getMethodBody(method));
-                outMain.decreaseIndent();
-                outMain.append("}" + NEWLINE + NEWLINE);
-            }
-        }
-        
-        outMain.append("#endif");
         
         // get referenced
         for (String reference : referencedClasses) {
             outInc.append("#include \"" + reference + ".h\"" + NEWLINE);
         }
         
+        Set<String> oldReferencedClasses = new HashSet<String>();
+        oldReferencedClasses.addAll(referencedClasses);
+        resetReferenceSet();
+        
+        // put inline function definition in the header
+        CodeStringBuilder outMain2 = new CodeStringBuilder();
+        outMain2.append(commentln("inline function definitions"));
+        for (RMethod method : klass.getMethods()) {
+            if (!method.isMainMethod() && method.isHeuristicInlined() || method.hasInlineAnnotation()) {
+                outMain2.append(getMethodSignature(method, true) + "{" + NEWLINE);
+                outMain2.increaseIndent();
+                outMain2.append(getMethodBody(method));
+                outMain2.decreaseIndent();
+                outMain2.append("}" + NEWLINE + NEWLINE);
+            }
+        }
+        outMain2.append("#endif");
+        
+        CodeStringBuilder outInc2 = new CodeStringBuilder();
+        for (String reference : referencedClasses) {
+            if (!oldReferencedClasses.contains(reference))
+                outInc2.append(CLanguageRuntime.includeNonStandardHeader(reference + ".h") + NEWLINE);
+        }
+        for (String reference : referencedMethodClasses) {
+            outInc2.append(CLanguageRuntime.includeNonStandardHeader(reference + ".h") + NEWLINE);
+        }
+        
         if (OUTPUT_C_TO_CONSOLE) {
             RJavaCompiler.debug("Header output to: " + cHeaderSource);
-            RJavaCompiler.debug(outInc.toString() + outMain.toString());
+            RJavaCompiler.debug(outInc.toString() + outMain.toString() + outInc2.toString() + outMain2.toString());
         }
         
-        // check if the class implements any interface. If so, we will init those interfaces in class_init()
-        if (klass.hasInterfaces()) {
-            for(RClass myInterface : klass.getInterfaces()) {
-                getInterfaceInitCode(klass, myInterface, false);
-            }
-        }
-        if (klass.hasInheritedInterfaces()) {
-            for(RClass myInterface : klass.getInheritedInterfaces()) {
-                if (klass.hasOverridingMethodsFromInterface(myInterface)) {
-                    getInterfaceInitCode(klass, myInterface, true);
-                }
-            }
-        }
-        
-        writeTo(outInc.toString() + outMain.toString(), RJavaCompiler.outputDir + cHeaderSource);
+        writeTo(outInc.toString() + outMain.toString() + outInc2.toString() + outMain2.toString(), RJavaCompiler.outputDir + cHeaderSource);
         
         translatedCHeader.add(cHeaderSource);
     }
@@ -794,33 +828,41 @@ public class CLanguageGenerator extends CodeGenerator {
         runtime.generateGNUMakefile();
     }
     
+    protected void resetReferenceSet() {
+        referencedClasses = new HashSet<String>();
+        referencedMethodClasses = new HashSet<String>();
+    }
+    
     /**
      * current compiling class is referencing another class
      * @param klass
-     * @param refName
-     * @param initDependency true if referenced class needs to be initialized before current class
-     */
-    /*public void referencing(RClass klass, String refName, boolean initDependency) {
-        // avoid adding include for current class
-        if (!name.javaNameToCName(currentRClass.getName()).equals(refName)) {
-            referencedClasses.add(CodeGenerator.escapeDollarInFileName(refName));
-        }
-    }*/
-    
+     */    
     public void referencing(RClass klass) {
         if (!currentRClass.equals(klass)) {
             // we need to reference this klass
             String typeHeader = name.javaNameToCName(klass.getName());
             referencedClasses.add(CodeGenerator.escapeDollarInFileName(typeHeader));
-            if (!generatingType && SemanticMap.isApplicationClass(klass.getName()) && !klass.isInterface()) {
-                String methodHeader = typeHeader + METHOD_SOURCE_SUFFIX;
-                referencedClasses.add(CodeGenerator.escapeDollarInFileName(methodHeader));
-            }
         }
     }
     
     public void referencing(RType type) {
         referencing(RClass.fromClassName(type.getClassName()));
+    }
+    
+    public void referencing(RMethod method) {
+        RClass declaringClass = method.getKlass();
+        if (!currentRClass.equals(declaringClass)) {
+            if (SemanticMap.isApplicationClass(declaringClass.getName())) {
+                String methodHeader = null;
+                if (method.getKlass().isInterface()) {
+                    methodHeader = name.javaNameToCName(declaringClass.getName());
+                    referencedClasses.add(CodeGenerator.escapeDollarInFileName(methodHeader));
+                } else {
+                    methodHeader = name.javaNameToCName(declaringClass.getName()) + METHOD_SOURCE_SUFFIX;
+                    referencedMethodClasses.add(CodeGenerator.escapeDollarInFileName(methodHeader));
+                }
+            }
+        }
     }
     
     private void addToClassInitMap(String rClassName, String initStmt) {
