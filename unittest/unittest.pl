@@ -7,6 +7,7 @@ use File::Find;
 use File::Basename;
 
 my $rjava_base = dirname(abs_path($0))."/..";
+my $rjc_script = "$rjava_base/rjc";
 my $build_path = "$rjava_base/build";
 my $rjava_lib_path = "$build_path/rjava";
 my $generated_c_path = "$rjava_base/output";
@@ -84,7 +85,6 @@ sub run_test() {
   chdir($rjava_base);
   
   # RJava to C
-  print "  RJava -> C ";
   $total_compile ++;
   my $opt_flag;
   if ($_[0] eq "false") {
@@ -92,7 +92,11 @@ sub run_test() {
   } else {
   	$opt_flag = "";
   }
-  system("java -cp $rjc_jar:$rjava_lib_path $rjc_main $opt_flag $rjc_flags -dir $test_source -o test $_[0] $mute");
+  my $exec_cmd = "$rjc_script $opt_flag $rjc_flags -dir $test_source -o test $_[0] $mute";
+  print "$exec_cmd\n";
+  system($exec_cmd);
+  
+  print "  RJava -> C ";
   if ( $? != 0) {
     print "(fail)\n";
     return;

@@ -36,8 +36,7 @@ public class SootEngine {
      */
     public static boolean RUN_SOOT = false;
     
-    private static final String[] jdkPath = {"components/soot/jce.jar",
-    "components/soot/rt.jar"};
+    private static final String[] jdkJars = {"jce.jar", "rt.jar"};
     
     private List<String> dir;
     private List<String> classNames;
@@ -128,9 +127,10 @@ public class SootEngine {
         String classpath = "";
         for (String path : dir)
             classpath += path + ":";
-        if (RJavaCompiler.isInternalCompiling() != RJavaCompiler.INTERNAL_COMPILE_LIB)
-            for (String path : jdkPath)
-                classpath += path + ":";
+        if (RJavaCompiler.isInternalCompiling() != RJavaCompiler.INTERNAL_COMPILE_LIB) {
+            for (String jar : jdkJars)
+                classpath += RJavaCompiler.soot_jdk_path + jar + ":";
+        }
         classpath += RJavaCompiler.rjava_lib + ":"; 
         classpath += ".";
         Options.v().set_soot_classpath(classpath);
@@ -195,6 +195,7 @@ public class SootEngine {
     public void addAllClasses() {
     	// pass classes
     	for (Map.Entry<String, SootClass> entry : allClasses.entrySet()) {
+    	    System.out.println("Adding " + entry.getValue().toString());
     	    RClass.fromSootClass(entry.getValue());
     	}
     }

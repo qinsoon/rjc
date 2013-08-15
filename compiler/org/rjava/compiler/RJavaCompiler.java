@@ -57,6 +57,7 @@ public class RJavaCompiler {
     public static boolean m32 = false;
     
     // rjava restr./ext. annotations' path
+    public static String soot_jdk_path = "components/soot/";    // should contain jce.jar and rt.jar
     public static String rjava_lib = "rjava/";
     public static String rjava_clib = "rjava_clib/";
     
@@ -84,40 +85,45 @@ public class RJavaCompiler {
      * @throws Error
      */
     public void compile() throws RJavaWarning, RJavaError{
-        currentTask = task;
-        
-    	// collect semantic information (now with soot)
-    	SemanticMap.initSemanticMap(task);
-    	
-    	codeGenerator.preTranslationWork();
-    	
-    	for (int i = 0; i < task.getClasses().size(); i ++) {
-    	    RJavaCompiler.println("Compiling [" + task.getClasses().toArray()[i] + "]: ");
-    	    String className = (String) task.getClasses().get(i);
-    	    RClass klass = SemanticMap.getAllClasses().get(className);
-    	    
-    	    // for each class, check restriction compliance first
-    	    try {
-    	        checker.comply(klass);
-    	    } catch (RJavaError e) {
-    	        error(e);
-    	    } catch (RJavaWarning e) {
-    	        warning(e);
-    	    } 
-    	    
-    	    // then compiles the class	    
-    	    try {
-    	        codeGenerator.translate(klass);
-    	    } catch (RJavaError e) {
-    	        error(e);
-    	    } catch (RJavaWarning e) {
-    	        warning(e);
-    	    }
-    	}
-    	
-    	// copy library etc.
-    	if (internalCompile == INTERNAL_COMPILE_NONE)
-    	    codeGenerator.postTranslationWork();
+        try {
+            currentTask = task;
+            
+        	// collect semantic information (now with soot)
+        	SemanticMap.initSemanticMap(task);
+        	
+        	codeGenerator.preTranslationWork();
+        	
+        	for (int i = 0; i < task.getClasses().size(); i ++) {
+        	    RJavaCompiler.println("Compiling [" + task.getClasses().toArray()[i] + "]: ");
+        	    String className = (String) task.getClasses().get(i);
+        	    RClass klass = SemanticMap.getAllClasses().get(className);
+        	    
+        	    // for each class, check restriction compliance first
+        	    try {
+        	        checker.comply(klass);
+        	    } catch (RJavaError e) {
+        	        error(e);
+        	    } catch (RJavaWarning e) {
+        	        warning(e);
+        	    } 
+        	    
+        	    // then compiles the class	    
+        	    try {
+        	        codeGenerator.translate(klass);
+        	    } catch (RJavaError e) {
+        	        error(e);
+        	    } catch (RJavaWarning e) {
+        	        warning(e);
+        	    }
+        	}
+        	
+        	// copy library etc.
+        	if (internalCompile == INTERNAL_COMPILE_NONE)
+        	    codeGenerator.postTranslationWork();
+    	} catch (RuntimeException e) {
+            RJavaCompiler.println("RuntimeException. Check the error message");
+            error(e);
+        }
     }
     
     public void success() throws IOException {
@@ -179,6 +185,9 @@ public class RJavaCompiler {
                     } else {
                         error("Unsupported hosting OS: " + os);
                     }
+                    i++;
+                } else if (args[i].equals("-soot_jdk")) {
+                    soot_jdk_path = args[i+1];
                     i++;
                 }
                 else {

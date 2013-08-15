@@ -1,5 +1,6 @@
 package org.rjava.unittest.magic;
 
+import org.rjava.osext.OSMemory;
 import org.rjava.restriction.rulesets.RJavaCore;
 import org.rjava.unittest.UnitTest;
 import org.vmmagic.unboxed.Address;
@@ -24,8 +25,7 @@ public class TestAddressArray extends UnitTest {
     
     public static boolean TestAddressArraySetGet() {
         AddressArray array = AddressArray.create(5);
-        Integer i = new Integer(1);
-        Address addr = ObjectReference.fromObject(i).toAddress();
+        Address addr = OSMemory.malloc(100);
         addr.store(100);
         
         array.set(2, addr);
