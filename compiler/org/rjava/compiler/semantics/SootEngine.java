@@ -195,7 +195,6 @@ public class SootEngine {
     public void addAllClasses() {
     	// pass classes
     	for (Map.Entry<String, SootClass> entry : allClasses.entrySet()) {
-    	    System.out.println("Adding " + entry.getValue().toString());
     	    RClass.fromSootClass(entry.getValue());
     	}
     }

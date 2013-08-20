@@ -84,8 +84,7 @@ public class Scheduler {
         return null;
     }
     
-    public static long totalObjectAlloced = 0;
-    public static long objectAllocedSinceLastGC = 0;
+    public static long allocationVolumeSinceLastGC = 0;
     public static int gcTime = 1;
     
     public static int gcState;
@@ -145,10 +144,10 @@ public class Scheduler {
         // 4. get statistics
         for (int i = 0; i < mutatorCount; i++) {
             MMTkContext context = mutatorContexts[i];
-            totalObjectAlloced += context.objectAllocedSinceLastGC;
-            objectAllocedSinceLastGC += context.objectAllocedSinceLastGC;
+            allocationVolumeSinceLastGC += context.allocationVolume;
         }
         
+        MMTkContext.allocEnd();
         // 5. done
         synchronized (gcStateChangeLock) {
             gcState = GC;
@@ -160,19 +159,20 @@ public class Scheduler {
             gcState = MUTATOR;
         }
         
+        MMTkContext.allocStart();
         // resume mutators here
         for (int i = 0; i < mutatorCount; i++) {
             MMTkContext context = mutatorContexts[i];
-            context.objectAllocedSinceLastGC = 0;
+            context.allocationVolume = 0;
             
             if (context.isBlocked())
                 context.unblockAfterGC();
             else Main._assert(false, "Unexpected MMTkContext gc state: " + context.getGCState());
         }
         
-        Main.println("[DEBUG]GC" + gcTime + ", total objects allocated:" + totalObjectAlloced + ",objects allocated since last GC:" + objectAllocedSinceLastGC);
+        Main.println("[DEBUG]GC" + gcTime + ", allocation volume since last GC:" + (allocationVolumeSinceLastGC >> 13) + "mb");
         gcTime ++;
-        objectAllocedSinceLastGC = 0;
+        allocationVolumeSinceLastGC = 0;
     }
 
     public static void currentThreadBlockForGC() {

@@ -1,0 +1,35 @@
+1. Build RJava Compiler
+
+ant -f mybuild.xml
+
+The generated files will show up in the folder 'build'. 
+
+2. Use RJava Compiler
+
+Strongly suggest using the script 'rjc' in the base folder 
+instead of using the jar, which will auto generate some 
+runtime command line arguments for running the compiler. 
+
+Example: 
+to compile org.rjava.unittest.ext.TestInline.java which 
+locates at unittest/src/org/rjava/unittest/ext/. 
+Use './rjc -dir unittest/src unittest/src/org/rjava/unittest/exit/TestInline.java'. 
+Generated code can be found in './output/'.
+
+Note:
+1. To name a base directory is essential. The compiler will 
+search Java package based on the base directory. 
+2. If generating code for Mac OSX, use '-host_os mac' (default). 
+To generate code for Linux, use '-host_os linux'.
+3. Use '-m32' to generate 32bits code. 
+4. To include debug information in the binary, use '-dt', 
+which causes '-g' in gcc compilation. By default (without -dt), 
+use '-O3' in gcc compilation. 
+
+Example2:
+to compile MMTk testbed with marksweep plan. 
+Use './rjc -dir mmtk/src -l testbed_MS.list -m32'. 
+Generated code can be found in './output/'.
+
+The compiler will load all the files listed in 'testbed_MS.list', 
+and search those source files under the named based directory. 

@@ -72,12 +72,13 @@ public class MMTkContext implements Runnable{
         if (isCollector()) {
             collector.run();
         } else {
+            allocStart();
             // mutator's job
             
             // allocSingleObject();
-            // allocExhaustDeadObjects();
+            allocExhaustDeadObjects();
             // allocExhaustObjectsRandomRoot();
-            allocExhaustObjectsRandomRootRandomField();
+            // allocExhaustObjectsRandomRootRandomField();
         }
     }
     
@@ -97,7 +98,7 @@ public class MMTkContext implements Runnable{
     /**
      * exhaust allocation
      */
-    public long objectAllocedSinceLastGC = 0;
+    public long allocationVolume = 0;
     
     public void allocExhaustDeadObjects() {
         TestbedObject obj = new TestbedObject(0);        
@@ -107,7 +108,7 @@ public class MMTkContext implements Runnable{
             ObjectReference objRef = MemoryManager.alloc(obj).toObjectReference();
             // ObjectModel.dumpObject(objRef);
             
-            objectAllocedSinceLastGC++;
+            allocationVolume += obj.getSize();
         }
     }
     
@@ -119,7 +120,7 @@ public class MMTkContext implements Runnable{
             
             ObjectReference objRef = MemoryManager.alloc(obj).toObjectReference();
             
-            objectAllocedSinceLastGC++;
+            allocationVolume += obj.getSize();
             
             // random
             random = OSNative.random();
@@ -158,7 +159,7 @@ public class MMTkContext implements Runnable{
             
             // alloc
             ObjectReference objRef = MemoryManager.alloc(obj).toObjectReference();
-            objectAllocedSinceLastGC ++;
+            allocationVolume += obj.getSize();
             
             // is this obj root?
             random = OSNative.random();
@@ -209,5 +210,16 @@ public class MMTkContext implements Runnable{
             blockLock.notify();
         }
     }
-        
+    
+    static long startTime;
+    public static void allocStart() {
+        startTime = System.currentTimeMillis();
+    }
+    
+    public static void allocEnd() {
+        long endTime = System.currentTimeMillis();
+        Main.print("Allocating elapse time: ");
+        Main.print(endTime - startTime);
+        Main.println("ms");
+    }
 }
