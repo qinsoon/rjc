@@ -28,8 +28,6 @@ import org.mmtk.vm.VM;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
-import testbed.Main;
-
 /**
  * This class defines and manages spaces.  Each policy is an instance
  * of a space.  A space is a region of virtual memory (contiguous or
@@ -572,47 +570,6 @@ public abstract class Space implements Constants {
     }
     Log.write("  AVAILABLE_END "); Log.writeln(AVAILABLE_END);
     Log.write("       HEAP_END "); Log.writeln(HEAP_END);
-  }
-  
-  /**
-   * Print out a map of virtual memory useage by all spaces (using System.out)
-   */
-  public static void sysOutPrintVMMap() {
-    Main.println("Key: (I)mmortal (N)onmoving (D)iscontiguous (E)xtent (F)raction");
-    Main.print("     HEAP_START "); Main.println(HEAP_START);
-    Main.print("AVAILABLE_START "); Main.println(AVAILABLE_START);
-    for (int i = 0; i < spaceCount; i++) {
-      Space space = spaces[i];
-
-      for (int s = 0; s < 11 - space.nameLength; s++)
-        Main.print(" ");
-      Main.print(space.name); Main.print(" ");
-      Main.print(space.immortal ? "I" : " ");
-      Main.print(space.movable ? " " : "N");
-
-      if (space.contiguous) {
-        Main.print("  ");
-        Main.print(space.start); Main.print("->");
-        Main.print(space.start.plus(space.extent.minus(1)));
-        if (space.vmRequest.type == VMRequest.REQUEST_EXTENT) {
-          Main.print(" E "); Main.print(space.vmRequest.extent);
-        } else if (space.vmRequest.type == VMRequest.REQUEST_FRACTION) {
-          Main.print(" F "); Main.print(space.vmRequest.frac);
-        }
-        Main.println();
-      } else {
-        Main.print("D [");
-        for(Address a = space.headDiscontiguousRegion; !a.isZero(); a = Map.getNextContiguousRegion(a)) {
-          Main.print(a); Main.print("->");
-          Main.print(a.plus(Map.getContiguousRegionSize(a).minus(1)));
-          if (Map.getNextContiguousRegion(a) != Address.zero())
-            Main.print(", ");
-        }
-        Main.println("]");
-      }
-    }
-    Main.print("  AVAILABLE_END "); Main.println(AVAILABLE_END);
-    Main.print("       HEAP_END "); Main.println(HEAP_END);
   }
 
   /**

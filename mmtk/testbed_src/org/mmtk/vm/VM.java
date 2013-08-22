@@ -12,12 +12,11 @@
  */
 package org.mmtk.vm;
 
+import testbed.mmtkext.FactoryExt;
 import org.mmtk.utility.options.Options;
 import org.vmmagic.pragma.Untraced;
 import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.Offset;
-
-import testbed.mmtkext.FactoryExt;
 
 /**
  * This class is responsible for all VM-specific functionality required

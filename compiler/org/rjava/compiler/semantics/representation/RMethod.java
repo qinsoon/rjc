@@ -334,6 +334,10 @@ public class RMethod implements DependencyEdgeNode, CompilationUnit{
         }
     }
     
+    public boolean isAbstract() {
+        return internal.isAbstract();
+    }
+    
     /**
      * get all overriding method of this method
      * @return

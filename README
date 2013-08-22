@@ -33,3 +33,11 @@ Generated code can be found in './output/'.
 
 The compiler will load all the files listed in 'testbed_MS.list', 
 and search those source files under the named based directory. 
+
+3. Compile generated C code
+
+Enter output folder, use 'Make' to get binary. 
+The RJava class which contains main method will be identified,
+and the output binary will be named after it. 
+To specify another output binary name, use '-o [NAME]'
+when invoking RJava Compiler. 

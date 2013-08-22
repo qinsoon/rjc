@@ -327,6 +327,9 @@ public class CLanguageGenerator extends CodeGenerator {
             if (method.isHeuristicInlined() || method.hasInlineAnnotation())
                 continue;
             
+            if (method.isAbstract())
+                continue;
+            
             if (method.isMainMethod()) {
                 outMain.append(MAIN_METHOD_SIGNATURE + " {" + NEWLINE);
                 outMain.increaseIndent();
