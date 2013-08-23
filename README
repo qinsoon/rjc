@@ -28,7 +28,7 @@ use '-O3' in gcc compilation.
 
 Example2:
 to compile MMTk testbed with marksweep plan. 
-Use './rjc -dir mmtk/src -l testbed_MS.list -m32'. 
+Use './rjc -dir mmtk/src:mmtk/testbed_src -l testbed_MS.list -m32'.
 Generated code can be found in './output/'.
 
 The compiler will load all the files listed in 'testbed_MS.list', 

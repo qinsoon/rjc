@@ -136,14 +136,16 @@ public class RJavaCompiler {
      * @param args @see usage()
      */
     public static void main(String[] args) {
-        String baseDir = null;
+        List<String> baseDir = new ArrayList<String>();
         Set<String> sources = new HashSet<String>();
         
         int i = 0;
         try{
             while(i < args.length) {
                 if (args[i].equals("-dir")) {
-                    baseDir = args[i+1];
+                    String[] temp = args[i+1].split(":");
+                    for (String t : temp)
+                        baseDir.add(t);
                     i++;
                 } else if (args[i].equals("-l")) {
                     String input = args[i+1];
@@ -198,16 +200,18 @@ public class RJavaCompiler {
             }
             
             // check if args are valid
-            if (baseDir == null)
+            if (baseDir.size() == 0)
                 throw new RuntimeException("Didn't name a base directory. Use -dir");
             
-            if (!new File(baseDir).isDirectory())
-                throw new RuntimeException("Base directory is not a correct directory name. ");
+            for (String base : baseDir)
+                if (!new File(base).isDirectory())
+                    throw new RuntimeException("Base directory " + base + " is not a correct directory name. ");
             
             // add all files in the base directory
             if (sources.size() == 0) {
                 List<String> temp = new ArrayList<String>();
-                CompilationTask.addFileToListRecursively(new File(baseDir), temp);
+                for (String base : baseDir)
+                    CompilationTask.addFileToListRecursively(new File(base), temp);
                 sources.addAll(temp);
                 
                 if (sources.size() == 0)
@@ -284,7 +288,8 @@ public class RJavaCompiler {
     
     public static void error(Object o) {
         System.out.println("RJava compiler error: " + o);
-        Thread.dumpStack();
+        if (o instanceof Exception)
+            ((Exception)o).printStackTrace();
     	System.exit(-1);
     }
     

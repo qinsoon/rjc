@@ -21,7 +21,7 @@ import org.mmtk.vm.VM;
 import org.vmmagic.unboxed.Word;
 
 public class ImmixConstants {
-  public static final boolean BUILD_FOR_STICKYIMMIX = Plan.NEEDS_LOG_BIT_IN_HEADER;
+  public static final boolean BUILD_FOR_STICKYIMMIX = VM.activePlan.constraints().needsLogBitInHeader();
 
   /* start temporary experimental constants --- should not be allowed to lurk longer than necessary */
   public static final int TMP_MIN_SPILL_THRESHOLD = 2;

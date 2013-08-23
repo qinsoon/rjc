@@ -14,53 +14,63 @@ import org.rjava.compiler.exception.RJavaWarning;
 import org.rjava.compiler.semantics.SemanticMap;
 
 public class CompilationTask {
-    String baseDir;
+    List<String> baseDir;
     //List<String> sources;
     List<String> classes = new ArrayList<String>();
     String main;
     
     public static CompilationTask newTaskFromFile(String dir, String file) throws RJavaError {
-    	File f = new File(file);
-    	File dirFile = new File(dir);
-    	if (f.exists())
-    	    f = f.getAbsoluteFile();
-    	if (f.exists() && f.isFile())
-            try {
-                return new CompilationTask(dirFile.getCanonicalPath(), f.getCanonicalPath());
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new RJavaError("Error when creating new Task");
+        List<String> dirs = new ArrayList<String>();
+        dirs.add(dir);
+        return newTaskFromFile(dirs, file);
+    }
+    
+    public static CompilationTask newTaskFromFile(List<String> dir, String file) throws RJavaError {
+        try {
+            // get canonical path of base dir
+            for (int i = 0; i < dir.size(); i++) {
+                File dirFile = new File(dir.get(i));
+                String update = dirFile.getCanonicalPath();
+                if (!update.endsWith("/"))
+                    update += "/";
+                
+                // check valid
+                for (int j = 0; j < i; j++)
+                    if (dir.get(j).contains(update) || update.contains(dir.get(j)))
+                        throw new RJavaError("Base directories cannot overlap.");
+                
+                dir.set(i, update);
             }
+            
+            // check file
+            File f = new File(file);
+        	if (f.exists())
+        	    f = f.getAbsoluteFile();
+        	if (f.exists() && f.isFile())
+                return new CompilationTask(dir, f.getCanonicalPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RJavaError("Error when creating new Task");
+        }
     	
     	throw new RJavaError("File doesn't exist: " + file);
     }
     
-    public static CompilationTask newTaskFromDir(String dir) throws RJavaError {
-    	File d = new File(dir);
-    	if (d.exists())
-    	    d = d.getAbsoluteFile();
-    	if (d.exists() && d.isDirectory()) {
-    	    List<String> sources = new ArrayList<String>();
-    	    addFileToListRecursively(d, sources);
-    	    try {
-                return new CompilationTask(d.getCanonicalPath(), sources);
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new RJavaError("Error when creating new Task");
-            }
-    	}
-    	
-    	throw new RJavaError("Directory doesn't exist: " + dir);
-    }
-    
     public void addClassBySource(String file) throws RJavaError {
         try {
-        File f = new File(file);
-        String absPath = f.getCanonicalFile().getCanonicalPath();
-        String className = absPath.replaceAll(baseDir, "");
-        className = className.substring(0, className.length() - RJAVA_EXT.length());
-        className = className.replaceAll("/", ".");
-        classes.add(className);
+            File f = new File(file);
+            String absPath = f.getCanonicalFile().getCanonicalPath();
+            
+            String className = null;
+            for (String base : baseDir)
+                if (absPath.contains(base))
+                    className = absPath.replaceAll(base, "");
+            if (className == null)
+                throw new RJavaError("source file " + file + " is not contained in any named base directory");
+            
+            className = className.substring(0, className.length() - RJAVA_EXT.length());
+            className = className.replaceAll("/", ".");
+            classes.add(className);
         } catch (Exception e) {
             e.printStackTrace();
             throw new RJavaError("Error when adding " + file + " to compilation task");
@@ -93,21 +103,10 @@ public class CompilationTask {
     	}
     }
 
-    protected CompilationTask(String baseDir, String file) throws RJavaError {
+    protected CompilationTask(List<String> baseDir, String file) throws RJavaError {
     	super();
-    	if (!baseDir.endsWith("/"))
-    	    baseDir += "/";
     	this.baseDir = baseDir;
     	this.addClassBySource(file);
-    }
-    
-    protected CompilationTask(String baseDir, List<String> sources) throws RJavaError {
-    	super();
-    	if (!baseDir.endsWith("/"))
-    	    baseDir += "/";
-    	this.baseDir = baseDir;
-    	for (String source : sources)
-    	    this.addClassBySource(source);
     }
     
     public String toString() {
@@ -123,12 +122,8 @@ public class CompilationTask {
         return classes.size();
     }
 
-    public String getPath() {
+    public List<String> getPath() {
         return baseDir;
-    }
-
-    public void setPath(String path) {
-        this.baseDir = path;
     }
 
     public List<String> getClasses() {

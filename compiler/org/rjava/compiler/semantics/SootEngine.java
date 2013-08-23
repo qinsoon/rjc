@@ -49,7 +49,7 @@ public class SootEngine {
     public SootEngine(CompilationTask task) {
     	// dir to process
     	this.dir = new ArrayList<String>();
-    	this.dir.add(task.getPath());
+    	this.dir.addAll(task.getPath());
     	
     	// sources
     	this.classNames = task.getClasses();
