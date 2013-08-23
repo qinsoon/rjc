@@ -16,6 +16,7 @@
 #include "java_lang_Thread.h"
 #include "java_lang_Runnable.h"
 #include "java_io_PrintStream.h"
+#include "java_lang_Math.h"
 
 #include "org_vmmagic_unboxed_Address.h"
 #include "org_vmmagic_unboxed_AddressArray.h"

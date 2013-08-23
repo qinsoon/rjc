@@ -351,7 +351,7 @@ public class CLanguageRuntime {
         if (RJavaCompiler.hostOS == RJavaCompiler.HOST_MACOSX)
             C_FLAGS += "-lpthread ";
         else if (RJavaCompiler.hostOS == RJavaCompiler.HOST_LINUX)
-            C_FLAGS += "-pthread -lrt ";
+            C_FLAGS += "-pthread -lrt -lm ";
         C_FLAGS += "-std=gnu99 ";
         
         
