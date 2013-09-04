@@ -924,4 +924,23 @@ public class CLanguageGenerator extends CodeGenerator {
     public void setIntrinsic(CLanguageIntrinsicGenerator intrinsic) {
         this.intrinsic = intrinsic;
     }
+
+    @Override
+    public void processCommandlineOptions(String arg) throws RJavaError, RJavaWarning {
+        if (arg.contains("-target:mm=")) {
+            String mm = arg.replaceAll("-target:mm=", "");
+            if (mm.equals("boehm"))
+                CLanguageRuntime.memoryManagement = CLanguageRuntime.GC_MALLOC;
+            else if (mm.equals("boehm-prebuilt"))
+                CLanguageRuntime.memoryManagement = CLanguageRuntime.GC_MALLOC_PREBUILT;
+            else if (mm.equals("malloc"))
+                CLanguageRuntime.memoryManagement = CLanguageRuntime.DEFAULT_MALLOC;
+            else throw new RJavaError("Unrecognized memory management: " + mm);
+        }
+    }
+
+    @Override
+    public void init() {
+        CLanguageRuntime.lateCLInit();
+    }
 }

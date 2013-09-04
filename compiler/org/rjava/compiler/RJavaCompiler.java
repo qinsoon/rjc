@@ -36,16 +36,9 @@ public class RJavaCompiler {
 
     public static String outputDir = "output/";
     
-    private static CodeGenerator codeGenerator;
-    private static StaticRestrictionChecker checker;
-    private static GeneratorOptions options;
-    
-    {
-        // initialize Restriction Checker and Code Generator
-        checker = new StaticRestrictionChecker();
-        options = new CLanguageGeneratorOptions();
-        codeGenerator = new CLanguageGenerator();
-    }
+    private static CodeGenerator codeGenerator = new CLanguageGenerator();
+    private static StaticRestrictionChecker checker = new StaticRestrictionChecker();
+    private static GeneratorOptions options = new CLanguageGeneratorOptions();
     
     public static CompilationTask currentTask;
     
@@ -77,6 +70,10 @@ public class RJavaCompiler {
     
     public void setCodeGenerator(CodeGenerator myCodeGenerator) {
         this.codeGenerator = myCodeGenerator;
+    }
+    
+    public void init() {
+        codeGenerator.init();
     }
     
     /**
@@ -142,7 +139,11 @@ public class RJavaCompiler {
         int i = 0;
         try{
             while(i < args.length) {
-                if (args[i].equals("-dir")) {
+                if (args[i].startsWith("-target")) {
+                    // dispatch to target specific option process
+                    codeGenerator.processCommandlineOptions(args[i]);
+                }
+                else if (args[i].equals("-dir")) {
                     String[] temp = args[i+1].split(":");
                     for (String t : temp)
                         baseDir.add(t);
@@ -241,6 +242,7 @@ public class RJavaCompiler {
 	    
 	    RJavaCompiler compiler = newRJavaCompiler(task);
 	    try {
+	        
 	        compiler.compile();
 	        compiler.success();
 	    } catch (RJavaWarning e) {

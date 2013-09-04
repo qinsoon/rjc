@@ -32,7 +32,7 @@ public class CLanguageRuntime {
     public static final int GC_MALLOC           = 1;
     public static final int GC_MALLOC_PREBUILT  = 2;
 
-    public static final int MEMORY_MANAGEMENT_SCHEME = GC_MALLOC_PREBUILT;
+    public static int memoryManagement = GC_MALLOC_PREBUILT;
     
     // atomic ops lib
     public static final boolean ATOMIC_OPS_PREBUILT = true;
@@ -55,19 +55,12 @@ public class CLanguageRuntime {
     public static final String RJAVA_CRT = "rjava_crt";
     // runtime define before include (an ugly hack) because we need to define GC_THREADS before including boehm gc header
     public static final HashMap<String, String> RJAVA_RUNTIME_DEFINE_BEFORE_INCLUDE = new HashMap<String, String>();
-    static {
-        if (MEMORY_MANAGEMENT_SCHEME == GC_MALLOC || MEMORY_MANAGEMENT_SCHEME == GC_MALLOC_PREBUILT)
-            RJAVA_RUNTIME_DEFINE_BEFORE_INCLUDE.put("GC_THREADS", "");
-    }
+
     // runtime define
     public static final HashMap<String, String> RJAVA_RUNTIME_DEFINE = new HashMap<String, String>();
     static {
         RJAVA_RUNTIME_DEFINE.put("byte", "char");
         RJAVA_RUNTIME_DEFINE.put("RJAVA_ALWAYS_INLINE", ALWAYS_INLINE);
-        
-        if (MEMORY_MANAGEMENT_SCHEME == GC_MALLOC || MEMORY_MANAGEMENT_SCHEME == GC_MALLOC_PREBUILT) {
-            RJAVA_RUNTIME_DEFINE.put("malloc", "GC_malloc");
-        }
     }
     public static final ArrayList<String> EXTRA_INCLUDE = new ArrayList<String>();
     public static final HashMap<String, String> MAKE_SUBTASK = new HashMap<String, String>();
@@ -82,7 +75,12 @@ public class CLanguageRuntime {
     public static final String GC_LINUX = "boehm-gc_linux.a";
     public static final String GC_LINUX_32 = "boehm-gc_linux_32.a";
     
-    static {       
+    public static void lateCLInit() {
+        if (memoryManagement == GC_MALLOC || memoryManagement == GC_MALLOC_PREBUILT) {
+            RJAVA_RUNTIME_DEFINE_BEFORE_INCLUDE.put("GC_THREADS", "");
+            RJAVA_RUNTIME_DEFINE.put("malloc", "GC_malloc");
+        }
+        
         if (ATOMIC_OPS_PREBUILT) {
             if (RJavaCompiler.hostOS == RJavaCompiler.HOST_MACOSX) {
                 if (RJavaCompiler.m32) {
@@ -110,7 +108,7 @@ public class CLanguageRuntime {
         }
         
         // malloc lib
-        switch (MEMORY_MANAGEMENT_SCHEME) {
+        switch (memoryManagement) {
         case DEFAULT_MALLOC: 
             CLanguageGenerator.MALLOC = "malloc";
             break;
@@ -328,7 +326,7 @@ public class CLanguageRuntime {
         
         init.append(CLanguageGenerator.commentln("init runtime"));
         
-        if (MEMORY_MANAGEMENT_SCHEME == GC_MALLOC || MEMORY_MANAGEMENT_SCHEME == GC_MALLOC_PREBUILT) {
+        if (memoryManagement == GC_MALLOC || memoryManagement == GC_MALLOC_PREBUILT) {
             init.append("GC_init()" + SEMICOLON + NEWLINE);
         }
         
