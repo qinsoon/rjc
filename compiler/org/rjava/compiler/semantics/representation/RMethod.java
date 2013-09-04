@@ -338,6 +338,10 @@ public class RMethod implements DependencyEdgeNode, CompilationUnit{
         return internal.isAbstract();
     }
     
+    public boolean isNative() {
+        return internal.isNative();
+    }
+    
     /**
      * get all overriding method of this method
      * @return

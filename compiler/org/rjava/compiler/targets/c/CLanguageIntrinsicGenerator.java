@@ -15,6 +15,7 @@ import org.rjava.compiler.semantics.representation.stmt.RAssignStmt;
 import org.rjava.compiler.semantics.representation.stmt.RIdentityStmt;
 import org.rjava.compiler.semantics.representation.stmt.RInvokeStmt;
 import org.rjava.compiler.semantics.representation.stmt.RReturnVoidStmt;
+import org.rjava.compiler.targets.CodeStringBuilder;
 import org.rjava.compiler.targets.c.runtime.CLanguageRuntime;
 import org.rjava.compiler.targets.c.runtime.RuntimeHelpers;
 
@@ -148,6 +149,14 @@ public class CLanguageIntrinsicGenerator {
             units.clear();
             units.addAll(newUnits);
             method.update();
+        } else if (method.isAbstract() || method.isNative()) {
+            CodeStringBuilder src = new CodeStringBuilder();
+            src.append(RuntimeHelpers.invoke(RuntimeHelpers.UNIMPLEMENTED_METHOD, null) + ";\n");
+            if (!method.getReturnType().isVoidType())
+                src.append("return 0;\n");
+            
+            method.setCode(src.toString());
+            method.setIntrinsic(true);
         }
     }
 }

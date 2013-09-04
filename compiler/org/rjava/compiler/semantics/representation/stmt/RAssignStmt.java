@@ -26,4 +26,11 @@ public class RAssignStmt extends RStatement {
         if (internal().getRightOp() instanceof StaticFieldRef)
             pass.visit(this, (StaticFieldRef)internal().getRightOp());
     }
+    
+    @Override
+    public String toString() {
+        String leftOp = internal().getLeftOp().getClass().toString();
+        String rightOp = internal().getRightOp().getClass().toString();
+        return super.toString() + "[left:" + leftOp + ",right:" + rightOp +"]";
+    }
 }

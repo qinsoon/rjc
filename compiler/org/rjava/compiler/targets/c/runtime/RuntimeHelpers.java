@@ -131,6 +131,11 @@ public class RuntimeHelpers {
      * void* rjava_init_args(int argc, char** args)
      */
     public static final HelperMethod INIT_ARGS;
+    /**
+     * a warning put into native methods and abstract methods, which will cause an error
+     * void rjava_unimplemented_method();
+     */
+    public static final HelperMethod UNIMPLEMENTED_METHOD;
     
     static {
         /**
@@ -141,6 +146,7 @@ public class RuntimeHelpers {
         final String RJAVA_ASSERT_SOURCE  = 
                 "if (!cond) {" + NEWLINE + 
                 "  printf(\"RJava C assertion failed: %s\\n\", str);" + NEWLINE + 
+                "  GDB_BREAKPOINT;" + NEWLINE +
                 "  java_lang_Thread_dumpStack();" + NEWLINE +
                 "  exit(1);" + NEWLINE +
                 "}" + NEWLINE;    
@@ -441,6 +447,15 @@ public class RuntimeHelpers {
                 "return ret;" + NEWLINE;
         INIT_ARGS.setSource(RJAVA_INIT_ARGS_SOURCE);
         
+        /**
+         * a warning put into native methods and abstract methods, which will cause an error
+         * void rjava_unimplemented_method();
+         */
+        UNIMPLEMENTED_METHOD = new HelperMethod("rjava_unimplemented_method", "void", null);
+        final String RJAVA_UNIMPLEMENTED_METHOD_SOURCE = 
+                invoke(ASSERT, new String[]{"false", "\"this method isn't implemented yet, its either native or abstract. \""}) + SEMICOLON + NEWLINE;
+        UNIMPLEMENTED_METHOD.setSource(RJAVA_UNIMPLEMENTED_METHOD_SOURCE);
+        
         // the order matters
         CRT_HELPERS.add(ASSERT);
         CRT_HELPERS.add(ADD_INTERFACE_TO_CLASS);
@@ -456,6 +471,7 @@ public class RuntimeHelpers {
         CRT_HELPERS.add(C_ARRAY_TO_RJAVA_ARRAY);
         CRT_HELPERS.add(INSTANCEOF);
         CRT_HELPERS.add(INIT_THREAD_SUSPENDING);
+        CRT_HELPERS.add(UNIMPLEMENTED_METHOD);
     }
     
     /**

@@ -8,6 +8,7 @@ import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.semantics.representation.RStatement;
 
 import soot.jimple.InvokeExpr;
+import soot.jimple.internal.JNewExpr;
 
 public class RInvokeExpr implements CompilationUnit{
     RStatement stmt;

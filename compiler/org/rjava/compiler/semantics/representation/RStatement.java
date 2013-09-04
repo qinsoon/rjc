@@ -13,6 +13,8 @@ import soot.UnitBox;
 import soot.ValueBox;
 import soot.jimple.InvokeExpr;
 import soot.jimple.internal.AbstractStmt;
+import soot.jimple.internal.JAssignStmt;
+import soot.jimple.internal.JNewExpr;
 import soot.tagkit.LineNumberTag;
 import soot.tagkit.Tag;
 
@@ -163,6 +165,15 @@ public abstract class RStatement implements CompilationUnit{
     
     public RInvokeExpr getInvokeExpr() {
         return invokeExpr;
+    }
+    
+    public boolean isObjectCreation() {
+        return (internal instanceof JAssignStmt) && (((JAssignStmt)internal).getRightOp() instanceof JNewExpr);
+    }
+    
+    public RType getCreatedObjectClass() {
+        RJavaCompiler.assertion(isObjectCreation(), "Shouldnt call getCreatedObjectClass() without isObjectCreation() guard");
+        return RType.initWithSootType(((JAssignStmt)internal).getRightOp().getType());
     }
     
     @Override

@@ -213,6 +213,8 @@ public class CLanguageRuntime {
             
             // allow programmatically insert gdb breakpoint
             RJAVA_RUNTIME_DEFINE.put("GDB_BREAKPOINT", "asm volatile(\"int3;\")");
+        } else {
+            RJAVA_RUNTIME_DEFINE.put("GDB_BREAKPOINT", "");
         }
         if (RJavaCompiler.hostOS == RJavaCompiler.HOST_MACOSX) {
             RJAVA_RUNTIME_DEFINE.put("__OS_MACOSX_", "");

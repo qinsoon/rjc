@@ -32,8 +32,10 @@ import org.rjava.compiler.targets.c.runtime.RuntimeHelpers;
 import org.rjava.compiler.util.Tree;
 import org.rjava.compiler.util.TreeBreadthFirstIterator;
 
+import soot.Local;
 import soot.Value;
 import soot.jimple.StaticFieldRef;
+import soot.jimple.internal.AbstractStmt;
 import soot.jimple.internal.JAssignStmt;
 
 public class CLanguageGenerator extends CodeGenerator {
@@ -785,10 +787,10 @@ public class CLanguageGenerator extends CodeGenerator {
                 out.append(rStmt.getCode() + SEMICOLON + NEWLINE);
             else {
                 // if this method is a constructor, we set class_struct for this instance first
-                if (firstStmt && method.isConstructor()) {
+                /*if (firstStmt && method.isConstructor()) {
                     out.append("((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*)" + THIS_PARAMETER + ") -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + " = &" + name.get(method.getKlass()) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + SEMICOLON + NEWLINE);
                     firstStmt = false;
-                }
+                }*/
                 
                 // if this method is synchronized, then we need to unlock mutex before returning
                 if (method.isSynchronized() && (rStmt instanceof RRetStmt || rStmt instanceof RReturnStmt || rStmt instanceof RReturnVoidStmt)) {
@@ -805,12 +807,25 @@ public class CLanguageGenerator extends CodeGenerator {
                 out.append(stmt.get(rStmt) + SEMICOLON + NEWLINE);
                 
                 // if we called super constructor, then will need to set class_struct back
-                if (method.isConstructor() && rStmt.containsInvokeExpr() && rStmt.getInvokeExpr().isCallingSuperConstructor())
+                /*if (method.isConstructor() && rStmt.containsInvokeExpr() && rStmt.getInvokeExpr().isCallingSuperConstructor())
                     out.append("((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*)" + THIS_PARAMETER + ") -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + " = &" + name.get(method.getKlass()) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + SEMICOLON + NEWLINE);
+                    */
+                
+                // if this stmt creates new object, we need its class
+                if (rStmt.isObjectCreation()) {
+                    JAssignStmt sootStmt = (JAssignStmt) rStmt.internal();
+                    String classStruct = codeGetClassStruct(name.fromSootLocal((Local) ((JAssignStmt)sootStmt).getLeftOp()));
+                    String classStructInstance = name.get(rStmt.getCreatedObjectClass()) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX;
+                    out.append(classStruct + " = &" + classStructInstance + SEMICOLON + NEWLINE);
+                }
             }            
         }
 
         return out.toString();
+    }
+    
+    public static String codeGetClassStruct(String instance) {
+        return "((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*)" + instance + ") -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT;
     }
     
     public static String commentln(String s) {
