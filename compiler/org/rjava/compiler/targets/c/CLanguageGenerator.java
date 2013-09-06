@@ -329,6 +329,10 @@ public class CLanguageGenerator extends CodeGenerator {
             if (method.isHeuristicInlined() || method.hasInlineAnnotation())
                 continue;
             
+            // native method will have external implementation
+            if (method.isNative())
+                continue;
+            
             if (method.isMainMethod()) {
                 outMain.append(MAIN_METHOD_SIGNATURE + " {" + NEWLINE);
                 outMain.increaseIndent();
@@ -595,6 +599,9 @@ public class CLanguageGenerator extends CodeGenerator {
         CodeStringBuilder outMain2 = new CodeStringBuilder();
         outMain2.append(commentln("inline function definitions"));
         for (RMethod method : klass.getMethods()) {
+            if (method.isNative())
+                continue;
+            
             if (!method.isMainMethod() && method.isHeuristicInlined() || method.hasInlineAnnotation()) {
                 outMain2.append(getMethodSignature(method, true) + "{" + NEWLINE);
                 outMain2.increaseIndent();

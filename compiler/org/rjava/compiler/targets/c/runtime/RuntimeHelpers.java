@@ -172,7 +172,7 @@ public class RuntimeHelpers {
                                                                new HelperVariable("void*", "interface"),
                                                                new HelperVariable("int", "interface_size"),
                                                                new HelperVariable("char*", "name"),
-                                                               new HelperVariable(COMMON_CLASS_STRUCT + "*", "class")
+                                                               new HelperVariable(COMMON_CLASS_STRUCT + "*", "klass")
         });
         final String RJAVA_ADD_INTERFACE_TO_CLASS_SOURCE = 
                 INTERFACE_LIST_NODE + "* newNode = " + MALLOC + "(" + SIZE_OF + "(" + INTERFACE_LIST_NODE + "));" + NEWLINE +
@@ -182,9 +182,9 @@ public class RuntimeHelpers {
                 "strcpy(newNode->" + INTERFACE_LIST_NODE_ATTR_NAME + ",name);" + NEWLINE +
                 "newNode->" + INTERFACE_LIST_NODE_ATTR_NEXT + "=NULL;" + NEWLINE +
                 
-                INTERFACE_LIST_NODE + "* last = class->" + INTERFACE_LIST + ";" + NEWLINE +
-                "if (class->" + INTERFACE_LIST + " == NULL) " + NEWLINE +
-                "  class->" + INTERFACE_LIST + "=newNode;" + NEWLINE +
+                INTERFACE_LIST_NODE + "* last = klass->" + INTERFACE_LIST + ";" + NEWLINE +
+                "if (klass->" + INTERFACE_LIST + " == NULL) " + NEWLINE +
+                "  klass->" + INTERFACE_LIST + "=newNode;" + NEWLINE +
                 "else {" + NEWLINE +
                 "  while(last->" + INTERFACE_LIST_NODE_ATTR_NEXT + "!=NULL)" + NEWLINE +
                 "    last = last->" + INTERFACE_LIST_NODE_ATTR_NEXT + ";" + NEWLINE +
@@ -199,10 +199,10 @@ public class RuntimeHelpers {
         ALTER_INTERFACE = new HelperMethod("rjava_alter_interface", HelperMethod.RETURN_VOID, new HelperVariable[]{
                                                         new HelperVariable("void*", "interface"),
                                                         new HelperVariable("char*", "name"),
-                                                        new HelperVariable(COMMON_CLASS_STRUCT + "*", "class")
+                                                        new HelperVariable(COMMON_CLASS_STRUCT + "*", "klass")
         });
         final String RJAVA_ALTER_INTERFACE_SOURCE = 
-                INTERFACE_LIST_NODE + "* iter = class->" + INTERFACE_LIST + SEMICOLON + NEWLINE +
+                INTERFACE_LIST_NODE + "* iter = klass->" + INTERFACE_LIST + SEMICOLON + NEWLINE +
                 "do {" + NEWLINE + 
                 "  if (strcmp(iter->" + INTERFACE_LIST_NODE_ATTR_NAME + ", name) == 0) {" + NEWLINE + 
                 "    iter->" + INTERFACE_LIST_NODE_ATTR_ADDR + " = interface;" + NEWLINE +
@@ -364,8 +364,8 @@ public class RuntimeHelpers {
                         + "}" + NEWLINE) 
                         : 
                         "") +
-                "long ele_size = *((long*)(array + sizeof(int)));" + NEWLINE +
-                "return (array + sizeof(int) + sizeof(long) + ele_size * index);" + NEWLINE;
+                "long ele_size = *((long*)((char*)array + sizeof(int)));" + NEWLINE +
+                "return ((char*)array + sizeof(int) + sizeof(long) + ele_size * index);" + NEWLINE;
         ACCESS_ARRAY.setSource(RJAVA_ACCESS_ARRAY_SOURCE);
         ACCESS_ARRAY.setInline(true);
         
@@ -453,7 +453,7 @@ public class RuntimeHelpers {
          */
         UNIMPLEMENTED_METHOD = new HelperMethod("rjava_unimplemented_method", "void", null);
         final String RJAVA_UNIMPLEMENTED_METHOD_SOURCE = 
-                invoke(ASSERT, new String[]{"false", "\"this method isn't implemented yet, its either native or abstract. \""}) + SEMICOLON + NEWLINE;
+                invoke(ASSERT, new String[]{"false", "\"abstract method isn't implemented\""}) + SEMICOLON + NEWLINE;
         UNIMPLEMENTED_METHOD.setSource(RJAVA_UNIMPLEMENTED_METHOD_SOURCE);
         
         // the order matters
