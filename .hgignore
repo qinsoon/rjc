@@ -8,3 +8,4 @@ c_test\\*
 mmtk/src\\*
 mmtk/common/\\*
 build\\*
+uvm\\*

@@ -204,9 +204,17 @@ public class RJavaCompiler {
             if (baseDir.size() == 0)
                 throw new RuntimeException("Didn't name a base directory. Use -dir");
             
-            for (String base : baseDir)
+            for (int index = 0; index < baseDir.size(); index++) {
+                String base = baseDir.get(index);
                 if (!new File(base).isDirectory())
                     throw new RuntimeException("Base directory " + base + " is not a correct directory name. ");
+                else {
+                    // set canonical name
+                    String canonical = new File(base).getCanonicalPath();
+                    baseDir.set(index, canonical);
+                    println("changed base dir from " + base + " to " + canonical);
+                }
+            }
             
             // add all files in the base directory
             if (sources.size() == 0) {
@@ -242,7 +250,7 @@ public class RJavaCompiler {
 	    
 	    RJavaCompiler compiler = newRJavaCompiler(task);
 	    try {
-	        
+	        compiler.init();
 	        compiler.compile();
 	        compiler.success();
 	    } catch (RJavaWarning e) {
