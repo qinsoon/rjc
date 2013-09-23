@@ -2,6 +2,7 @@ package org.rjava.shootout;
 
 import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.pragma.Inline;
+import org.vmmagic.pragma.NoBoundsCheck;
 
 @RJavaCore
 public class Fannkuchredux_C {
@@ -11,6 +12,7 @@ public class Fannkuchredux_C {
         return a > b ? a : b;
     }
     
+    @NoBoundsCheck
     public static int fannkuchredux(int n) {
         int[] perm = new int[n];
         int[] perm1 = new int[n];

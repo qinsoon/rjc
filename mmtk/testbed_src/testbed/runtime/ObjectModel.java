@@ -1,6 +1,7 @@
 package testbed.runtime;
 
 import org.rjava.restriction.rulesets.RJavaCore;
+import org.vmmagic.pragma.Inline;
 import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.ObjectReference;
 import org.vmmagic.unboxed.Offset;
@@ -24,6 +25,7 @@ public abstract class ObjectModel {
     
     public static final Offset OFFSET_GC_HEADER     = OFFSET_HEADER.minus(MMTkConstants.GC_HEADER_BYTES());
     
+    @Inline
     public static final void initializeObject(ObjectReference objRef, TestbedObject object) {
         Address addr = objRef.toAddress();
         

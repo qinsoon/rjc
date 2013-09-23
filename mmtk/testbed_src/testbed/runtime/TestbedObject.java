@@ -1,6 +1,7 @@
 package testbed.runtime;
 
 import org.rjava.restriction.rulesets.RJavaCore;
+import org.vmmagic.pragma.Inline;
 import org.vmmagic.unboxed.ObjectReference;
 import org.vmmagic.unboxed.ObjectReferenceArray;
 
@@ -43,6 +44,7 @@ public class TestbedObject {
         return fields.get(i);
     }
     
+    @Inline
     public int getSize() {
         return size;
     }

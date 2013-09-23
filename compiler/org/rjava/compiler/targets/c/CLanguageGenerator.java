@@ -85,6 +85,7 @@ public class CLanguageGenerator extends CodeGenerator {
     protected CLanguageRuntime runtime = new CLanguageRuntime(this);
     
     protected RClass currentRClass;
+    protected RMethod currentRMethod;
     protected boolean generatingType = false;   // if we are generating type, when referencing other class, we dont include their methods header
     
     protected List<String> translatedCSource = new ArrayList<String>();
@@ -763,72 +764,78 @@ public class CLanguageGenerator extends CodeGenerator {
         if (method.isIntrinsic())
             return method.getCode();
         
-        CodeStringBuilder out = new CodeStringBuilder();
-        out.increaseIndent();
+        currentRMethod = method;
         
-        CLanguageStatementGenerator stmt = new CLanguageStatementGenerator(this);
-        out.append(commentln("locals"));
-        for (RLocal local : method.getLocals()) {
-            out.append(stmt.get(local) + SEMICOLON + NEWLINE);
-        }
-        out.append(NEWLINE);
-        out.append(commentln("stmts"));
-        
-        if (method.isSynchronized()) {
-            if (!method.isStatic()) {
-                // lock on instance monitor
-                out.append("pthread_mutex_lock(&(((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*) " + THIS_PARAMETER + ") -> " + CLanguageRuntime.INSTANCE_MUTEX + "))" + SEMICOLON + NEWLINE);
-            } else {
-                // lock on class monitor
-                out.append("pthread_mutex_lock(&(((" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)(&" + name.get(method.getKlass()) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + ")) -> " + CLanguageRuntime.CLASS_MUTEX + "))" + SEMICOLON + NEWLINE);
-            }
-        }     
-        
-        boolean firstStmt = true;
-        for (RStatement rStmt : method.getBody()) {
-            if (OUTPUT_JIMPLE_TO_SOURCE)
-                out.append(commentln("[" + rStmt.internal().getClass().toString() + "]" + rStmt.toString()));
-
+        try {
+            CodeStringBuilder out = new CodeStringBuilder();
+            out.increaseIndent();
             
-            if (rStmt.isIntrinsic())
-                out.append(rStmt.getCode() + SEMICOLON + NEWLINE);
-            else {
-                // if this method is a constructor, we set class_struct for this instance first
-                /*if (firstStmt && method.isConstructor()) {
-                    out.append("((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*)" + THIS_PARAMETER + ") -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + " = &" + name.get(method.getKlass()) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + SEMICOLON + NEWLINE);
-                    firstStmt = false;
-                }*/
+            CLanguageStatementGenerator stmt = new CLanguageStatementGenerator(this);
+            out.append(commentln("locals"));
+            for (RLocal local : method.getLocals()) {
+                out.append(stmt.get(local) + SEMICOLON + NEWLINE);
+            }
+            out.append(NEWLINE);
+            out.append(commentln("stmts"));
+            
+            if (method.isSynchronized()) {
+                if (!method.isStatic()) {
+                    // lock on instance monitor
+                    out.append("pthread_mutex_lock(&(((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*) " + THIS_PARAMETER + ") -> " + CLanguageRuntime.INSTANCE_MUTEX + "))" + SEMICOLON + NEWLINE);
+                } else {
+                    // lock on class monitor
+                    out.append("pthread_mutex_lock(&(((" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)(&" + name.get(method.getKlass()) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + ")) -> " + CLanguageRuntime.CLASS_MUTEX + "))" + SEMICOLON + NEWLINE);
+                }
+            }     
+            
+            boolean firstStmt = true;
+            for (RStatement rStmt : method.getBody()) {
+                if (OUTPUT_JIMPLE_TO_SOURCE)
+                    out.append(commentln("[" + rStmt.internal().getClass().toString() + "]" + rStmt.toString()));
+    
                 
-                // if this method is synchronized, then we need to unlock mutex before returning
-                if (method.isSynchronized() && (rStmt instanceof RRetStmt || rStmt instanceof RReturnStmt || rStmt instanceof RReturnVoidStmt)) {
-                    // unlock mutex
-                    if (!method.isStatic()) {
-                        // unlock on instance monitor
-                        out.append("pthread_mutex_unlock(&(((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*) " + THIS_PARAMETER + ") -> " + CLanguageRuntime.INSTANCE_MUTEX + "))" + SEMICOLON + NEWLINE);
-                    } else {
-                        // unlock on class monitor
-                        out.append("pthread_mutex_unlock(&(((" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)(&" + name.get(method.getKlass()) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + ")) -> " + CLanguageRuntime.CLASS_MUTEX + "))" + SEMICOLON + NEWLINE);
+                if (rStmt.isIntrinsic())
+                    out.append(rStmt.getCode() + SEMICOLON + NEWLINE);
+                else {
+                    // if this method is a constructor, we set class_struct for this instance first
+                    /*if (firstStmt && method.isConstructor()) {
+                        out.append("((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*)" + THIS_PARAMETER + ") -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + " = &" + name.get(method.getKlass()) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + SEMICOLON + NEWLINE);
+                        firstStmt = false;
+                    }*/
+                    
+                    // if this method is synchronized, then we need to unlock mutex before returning
+                    if (method.isSynchronized() && (rStmt instanceof RRetStmt || rStmt instanceof RReturnStmt || rStmt instanceof RReturnVoidStmt)) {
+                        // unlock mutex
+                        if (!method.isStatic()) {
+                            // unlock on instance monitor
+                            out.append("pthread_mutex_unlock(&(((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*) " + THIS_PARAMETER + ") -> " + CLanguageRuntime.INSTANCE_MUTEX + "))" + SEMICOLON + NEWLINE);
+                        } else {
+                            // unlock on class monitor
+                            out.append("pthread_mutex_unlock(&(((" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)(&" + name.get(method.getKlass()) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + ")) -> " + CLanguageRuntime.CLASS_MUTEX + "))" + SEMICOLON + NEWLINE);
+                        }
                     }
-                }
-                
-                out.append(stmt.get(rStmt) + SEMICOLON + NEWLINE);
-                
-                // if we called super constructor, then will need to set class_struct back
-                /*if (method.isConstructor() && rStmt.containsInvokeExpr() && rStmt.getInvokeExpr().isCallingSuperConstructor())
-                    out.append("((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*)" + THIS_PARAMETER + ") -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + " = &" + name.get(method.getKlass()) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + SEMICOLON + NEWLINE);
-                    */
-                
-                // if this stmt creates new object, we need its class
-                if (rStmt.isObjectCreation()) {
-                    JAssignStmt sootStmt = (JAssignStmt) rStmt.internal();
-                    String classStruct = codeGetClassStruct(name.fromSootLocal((Local) ((JAssignStmt)sootStmt).getLeftOp()));
-                    String classStructInstance = name.get(rStmt.getCreatedObjectClass()) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX;
-                    out.append(classStruct + " = &" + classStructInstance + SEMICOLON + NEWLINE);
-                }
-            }            
+                    
+                    out.append(stmt.get(rStmt) + SEMICOLON + NEWLINE);
+                    
+                    // if we called super constructor, then will need to set class_struct back
+                    /*if (method.isConstructor() && rStmt.containsInvokeExpr() && rStmt.getInvokeExpr().isCallingSuperConstructor())
+                        out.append("((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*)" + THIS_PARAMETER + ") -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + " = &" + name.get(method.getKlass()) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + SEMICOLON + NEWLINE);
+                        */
+                    
+                    // if this stmt creates new object, we need its class
+                    if (rStmt.isObjectCreation()) {
+                        JAssignStmt sootStmt = (JAssignStmt) rStmt.internal();
+                        String classStruct = codeGetClassStruct(name.fromSootLocal((Local) ((JAssignStmt)sootStmt).getLeftOp()));
+                        String classStructInstance = name.get(rStmt.getCreatedObjectClass()) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX;
+                        out.append(classStruct + " = &" + classStructInstance + SEMICOLON + NEWLINE);
+                    }
+                }            
+            }
+    
+            return out.toString();
+        } finally {
+            currentRMethod = null;
         }
-
-        return out.toString();
     }
     
     public static String codeGetClassStruct(String instance) {
@@ -949,5 +956,13 @@ public class CLanguageGenerator extends CodeGenerator {
     @Override
     public void init() {
         CLanguageRuntime.lateCLInit();
+    }
+    
+    public RClass getClassContext() {
+        return currentRClass;
+    }
+    
+    public RMethod getMethodContext() {
+        return currentRMethod;
     }
 }

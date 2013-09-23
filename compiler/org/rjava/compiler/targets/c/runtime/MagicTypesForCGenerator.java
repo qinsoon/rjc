@@ -338,12 +338,12 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
        else if (methodName.equals("get")) {
            assert(type.endsWith(Constants.MAGIC_ARRAY_SUFFIX));
            String base = getBaseTypeForMagicArrayType(type);
-           return "*((" + base + "*)" + RuntimeHelpers.invoke(RuntimeHelpers.ACCESS_ARRAY, new String[]{THIS_PARAMETER, param0}) + ")";
+           return "*((" + base + "*)" + RuntimeHelpers.invoke(RuntimeHelpers.ACCESS_ARRAY_NOBOUNDS_CHECK, new String[]{THIS_PARAMETER, param0}) + ")";
        }
        else if (methodName.equals("set")) {
            assert(type.endsWith(Constants.MAGIC_ARRAY_SUFFIX));
            String base = getBaseTypeForMagicArrayType(type);
-           return "*((" + base + "*)" + RuntimeHelpers.invoke(RuntimeHelpers.ACCESS_ARRAY, new String[]{THIS_PARAMETER, param0}) + ") = " + param1;
+           return "*((" + base + "*)" + RuntimeHelpers.invoke(RuntimeHelpers.ACCESS_ARRAY_NOBOUNDS_CHECK, new String[]{THIS_PARAMETER, param0}) + ") = " + param1;
        }
        else if (methodName.equals("length")) {
            assert(type.endsWith(Constants.MAGIC_ARRAY_SUFFIX));

@@ -9,6 +9,7 @@ import org.rjava.compiler.semantics.representation.RStatement;
 import org.rjava.compiler.semantics.representation.RType;
 import org.rjava.compiler.targets.c.runtime.CLanguageRuntime;
 import org.rjava.compiler.targets.c.runtime.RuntimeHelpers;
+import org.rjava.compiler.util.HelperMethod;
 
 import soot.Local;
 import soot.SootClass;
@@ -177,7 +178,11 @@ public class CLanguageNameGenerator {
         String type = getWithPointerIfProper(RType.initWithClassName(op.getType().toString()));
         
         String ret = "*((" + type + "*)";
-        ret += RuntimeHelpers.invoke(RuntimeHelpers.ACCESS_ARRAY, new String[]{op.getBase().toString(), op.getIndex().toString()});
+        HelperMethod accessArray;
+        if (generator.getMethodContext().hasNoBoundsCheckAnnotation() || !RJavaCompiler.getGeneratorOptions().allowArrayBoundCheck())
+            accessArray = RuntimeHelpers.ACCESS_ARRAY_NOBOUNDS_CHECK;
+        else accessArray = RuntimeHelpers.ACCESS_ARRAY;
+        ret += RuntimeHelpers.invoke(accessArray, new String[]{op.getBase().toString(), op.getIndex().toString()});
         ret += ")";
         
         return ret;

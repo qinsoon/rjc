@@ -68,6 +68,9 @@ public class Scheduler {
     }
     
     public static MMTkContext getCurrentContext() {
+        if (mutatorCount == 1)
+            return mutatorContexts[0];
+        
         Thread current = getCurrentThread();
         
         for (int i = 0; i < mutatorCount; i++)
@@ -148,6 +151,7 @@ public class Scheduler {
         }
         
         MMTkContext.allocEnd();
+        Main.println("Allocation volume: " + allocationVolumeSinceLastGC + " bytes");
         // 5. done
         synchronized (gcStateChangeLock) {
             gcState = GC;
@@ -170,7 +174,7 @@ public class Scheduler {
             else Main._assert(false, "Unexpected MMTkContext gc state: " + context.getGCState());
         }
         
-        Main.println("[DEBUG]GC" + gcTime + ", allocation volume since last GC:" + (allocationVolumeSinceLastGC >> 13) + "mb");
+        Main.println("[DEBUG]GC" + gcTime + ", allocation volume since last GC:" + (allocationVolumeSinceLastGC) + "bytes");
         gcTime ++;
         allocationVolumeSinceLastGC = 0;
     }

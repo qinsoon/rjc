@@ -1,6 +1,7 @@
 package testbed.mminterface.select;
 
 import org.mmtk.plan.marksweep.MS;
+import org.vmmagic.pragma.Inline;
 
 public class PlanSelect extends MS {
     private static PlanSelect plan;
@@ -15,6 +16,7 @@ public class PlanSelect extends MS {
         return "org.mmtk.plan.marksweep.MS";
     }
     
+    @Inline
     public static PlanSelect getPlan() {
         return plan;
     }

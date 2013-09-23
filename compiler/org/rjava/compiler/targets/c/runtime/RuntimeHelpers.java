@@ -111,6 +111,11 @@ public class RuntimeHelpers {
      */
     public static final HelperMethod ACCESS_ARRAY;
     /**
+     * used to implement array access (e.g. array[0])
+     * inline void* rjava_access_array_nobounds_check(void* array, int index);
+     */
+    public static final HelperMethod ACCESS_ARRAY_NOBOUNDS_CHECK;
+    /**
      * used to implement array.length
      * inline int rjava_length_of_array(void* array);
      */
@@ -353,21 +358,32 @@ public class RuntimeHelpers {
                                                      new HelperVariable("int", "index")
         });
         final String RJAVA_ACCESS_ARRAY_SOURCE = 
-                (RJavaCompiler.getGeneratorOptions().allowArrayBoundCheck() ?
-                        (
-                        CLanguageGenerator.commentln("bounds check") + NEWLINE +
-                        "int length = " + invoke(LENGTH_OF_ARRAY, new String[]{"array"}) + SEMICOLON + NEWLINE +
-                        "if (index >= length || index < 0) {" + NEWLINE +
-                        "char* str = (char*)" + CLanguageGenerator.MALLOC + "(1000)" + SEMICOLON + NEWLINE +
-                        "sprintf(str, \"index(%d) out of bounds(%d)\", index, length)" + SEMICOLON + NEWLINE +
-                        invoke(ASSERT, new String[]{"false", "str"}) + SEMICOLON + NEWLINE
-                        + "}" + NEWLINE) 
-                        : 
-                        "") +
+                // bounds check code
+                CLanguageGenerator.commentln("bounds check") + NEWLINE +
+                "int length = " + invoke(LENGTH_OF_ARRAY, new String[]{"array"}) + SEMICOLON + NEWLINE +
+                "if (index >= length || index < 0) {" + NEWLINE +
+                "char* str = (char*)" + CLanguageGenerator.MALLOC + "(1000)" + SEMICOLON + NEWLINE +
+                "sprintf(str, \"index(%d) out of bounds(%d)\", index, length)" + SEMICOLON + NEWLINE +
+                invoke(ASSERT, new String[]{"false", "str"}) + SEMICOLON + NEWLINE
+                + "}" + NEWLINE +
                 "long ele_size = *((long*)((char*)array + sizeof(int)));" + NEWLINE +
                 "return ((char*)array + sizeof(int) + sizeof(long) + ele_size * index);" + NEWLINE;
         ACCESS_ARRAY.setSource(RJAVA_ACCESS_ARRAY_SOURCE);
         ACCESS_ARRAY.setInline(true);
+        
+        /**
+         * used to implement array access (e.g. array[0])
+         * inline void* rjava_access_array_nobounds_check(void* array, int index);
+         */
+        ACCESS_ARRAY_NOBOUNDS_CHECK = new HelperMethod("rjava_access_array_nobounds_check", "void*", new HelperVariable[]{
+                                                                new HelperVariable("void*", "array"),
+                                                                new HelperVariable("int", "index")
+        });
+        final String RJAVA_ACCESS_ARRAY_NOBOUNDS_CHECK_SOURCE = 
+                "long ele_size = *((long*)((char*)array + sizeof(int)));" + NEWLINE +
+                "return ((char*)array + sizeof(int) + sizeof(long) + ele_size * index);" + NEWLINE;
+        ACCESS_ARRAY_NOBOUNDS_CHECK.setSource(RJAVA_ACCESS_ARRAY_NOBOUNDS_CHECK_SOURCE);
+        ACCESS_ARRAY_NOBOUNDS_CHECK.setInline(true);
         
         /**
          * used to implement newarray
@@ -466,6 +482,7 @@ public class RuntimeHelpers {
         CRT_HELPERS.add(NEW_ARRAY);
         CRT_HELPERS.add(LENGTH_OF_ARRAY);
         CRT_HELPERS.add(ACCESS_ARRAY);
+        CRT_HELPERS.add(ACCESS_ARRAY_NOBOUNDS_CHECK);
         CRT_HELPERS.add(INIT_ARGS);
         CRT_HELPERS.add(NEW_MULTIARRAY);
         CRT_HELPERS.add(C_ARRAY_TO_RJAVA_ARRAY);

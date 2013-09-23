@@ -222,6 +222,14 @@ public class RMethod implements DependencyEdgeNode, CompilationUnit{
         return false;
     }
     
+    public boolean hasNoBoundsCheckAnnotation() {
+        for (RAnnotation rAnno : annotations)
+            if (rAnno.getType().getClassName().equals(Constants.RJAVA_NOBOUNDSCHECK_ANNOTATION))
+                return true;
+        
+        return false;
+    }
+    
     /**
      * annotations on this method. 
      * Remember annotations on the declaring class also affect this method. 

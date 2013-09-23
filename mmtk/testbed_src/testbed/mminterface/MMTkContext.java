@@ -5,6 +5,7 @@ import org.mmtk.plan.MutatorContext;
 import org.rjava.osext.OSConcurrency;
 import org.rjava.osext.OSNative;
 import org.rjava.restriction.rulesets.RJavaCore;
+import org.vmmagic.pragma.Inline;
 import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.ObjectReference;
 import org.vmmagic.unboxed.ObjectReferenceArray;
@@ -12,6 +13,7 @@ import org.vmmagic.unboxed.Word;
 
 import testbed.Main;
 import testbed.TestbedRuntime;
+import testbed.mminterface.select.PlanSelect;
 import testbed.runtime.ObjectModel;
 import testbed.runtime.Scheduler;
 import testbed.runtime.TestbedObject;
@@ -48,6 +50,7 @@ public class MMTkContext implements Runnable{
         return this.thread;
     }
     
+    @Inline
     public MutatorContext mutator() {
         return mutator;
     }
@@ -76,9 +79,10 @@ public class MMTkContext implements Runnable{
             // mutator's job
             
             // allocSingleObject();
-            allocExhaustDeadObjects();
+            // allocExhaustDeadObjects();
             // allocExhaustObjectsRandomRoot();
             // allocExhaustObjectsRandomRootRandomField();
+            allocExtremePerformance();
         }
     }
     
@@ -92,6 +96,23 @@ public class MMTkContext implements Runnable{
             ObjectReference objRef = MemoryManager.alloc(obj).toObjectReference();
             
             ObjectModel.dumpObject(objRef);
+        }
+    }
+    
+    public void allocExtremePerformance() {
+        TestbedObject obj = new TestbedObject(0);
+        while(true) {
+            // allocation sequence
+            int allocator = PlanSelect.getPlan().ALLOC_DEFAULT;
+            int site = PlanSelect.getPlan().DEFAULT_SITE;
+            int size = obj.getSize();
+            
+            MutatorContext mutator = Scheduler.getCurrentContext().mutator;
+            Address ret = mutator.alloc(size, 0, 0, allocator, site);
+            testbed.runtime.ObjectModel.initializeObject(ret.toObjectReference(), obj);
+            mutator.postAlloc(ret.toObjectReference(), ObjectReference.nullReference(), size, allocator);
+            
+            allocationVolume += size;
         }
     }
     
