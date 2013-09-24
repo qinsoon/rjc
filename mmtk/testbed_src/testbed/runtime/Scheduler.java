@@ -68,9 +68,6 @@ public class Scheduler {
     }
     
     public static MMTkContext getCurrentContext() {
-        if (mutatorCount == 1)
-            return mutatorContexts[0];
-        
         Thread current = getCurrentThread();
         
         for (int i = 0; i < mutatorCount; i++)
