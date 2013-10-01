@@ -40,6 +40,7 @@ public class TestbedObject {
         fields.set(i, objRef);
     }
     
+    @Inline
     public ObjectReference getField(int i) {
         return fields.get(i);
     }
@@ -54,6 +55,7 @@ public class TestbedObject {
         computeSize();
     }
     
+    @Inline
     public int getFieldCount() {
         if (fields == null)
             return 0;

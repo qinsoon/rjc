@@ -7,44 +7,55 @@ import org.vmmagic.unboxed.ObjectReference;
 import org.vmmagic.unboxed.Offset;
 import org.vmmagic.unboxed.Word;
 
+import testbed.Main;
+import testbed.runtime.Scheduler;
+import org.mmtk.plan.CollectorContext;
+
 @RJavaCore
 public class ObjectModelExt extends ObjectModel {
 
     @Override
     public ObjectReference copy(ObjectReference from, int allocator) {
-        // TODO Auto-generated method stub
-        return null;
+        int size = testbed.runtime.ObjectModel.bytesRequiredWhenCopied(from);
+        int align = 0;
+        
+        CollectorContext c = Scheduler.getCurrentContext().collector();
+        allocator = c.copyCheckAllocator(from, size, align, allocator);
+        Address toRegion = c.allocCopy(from, size, align, 0, allocator);
+        ObjectReference to = toRegion.toObjectReference();
+        
+        testbed.runtime.ObjectModel.initializeCopiedObject(from, to);
+        
+        c.postCopy(to, null, size, allocator);
+        
+        return to;
     }
 
     @Override
     public Address copyTo(ObjectReference from, ObjectReference to,
             Address region) {
-        // TODO Auto-generated method stub
+        Main.unimplementedInterface();
         return null;
     }
 
     @Override
     public ObjectReference getReferenceWhenCopiedTo(ObjectReference from,
             Address to) {
-        // TODO Auto-generated method stub
-        return null;
+        return to.toObjectReference();
     }
 
     @Override
     public int getSizeWhenCopied(ObjectReference object) {
-        // TODO Auto-generated method stub
-        return 0;
+        return testbed.runtime.ObjectModel.bytesRequiredWhenCopied(object);
     }
 
     @Override
     public int getAlignWhenCopied(ObjectReference object) {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
     public int getAlignOffsetWhenCopied(ObjectReference object) {
-        // TODO Auto-generated method stub
         return 0;
     }
 

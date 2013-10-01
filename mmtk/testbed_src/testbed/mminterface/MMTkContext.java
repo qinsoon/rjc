@@ -13,6 +13,7 @@ import org.vmmagic.unboxed.Word;
 
 import testbed.Main;
 import testbed.TestbedRuntime;
+import testbed.mminterface.select.MutatorSelect;
 import testbed.mminterface.select.PlanSelect;
 import testbed.runtime.ObjectModel;
 import testbed.runtime.Scheduler;
@@ -26,7 +27,7 @@ public class MMTkContext implements Runnable{
     // which thread is running this context
     Thread thread;
     
-    protected MutatorContext mutator = new org.mmtk.plan.marksweep.MSMutator();
+    protected MutatorContext mutator = new MutatorSelect();
     protected CollectorContext collector;
     
     public MMTkContext() {
@@ -75,7 +76,7 @@ public class MMTkContext implements Runnable{
         if (isCollector()) {
             collector.run();
         } else {
-            allocStart();
+            Scheduler.statisticsAllocStart();
             // mutator's job
             
             // allocSingleObject();
@@ -102,12 +103,13 @@ public class MMTkContext implements Runnable{
     public void allocExtremePerformance() {
         TestbedObject obj = new TestbedObject(0);
         while(true) {
+            Scheduler.gcPoint();
+            
             // allocation sequence
             int allocator = PlanSelect.getPlan().ALLOC_DEFAULT;
             int site = PlanSelect.getPlan().DEFAULT_SITE;
             int size = obj.getSize();
             
-            MutatorContext mutator = Scheduler.getCurrentContext().mutator;
             Address ret = mutator.alloc(size, 0, 0, allocator, site);
             testbed.runtime.ObjectModel.initializeObject(ret.toObjectReference(), obj);
             mutator.postAlloc(ret.toObjectReference(), ObjectReference.nullReference(), size, allocator);
@@ -230,17 +232,5 @@ public class MMTkContext implements Runnable{
             gcState = MUTATOR;
             blockLock.notify();
         }
-    }
-    
-    static long startTime;
-    public static void allocStart() {
-        startTime = System.currentTimeMillis();
-    }
-    
-    public static void allocEnd() {
-        long endTime = System.currentTimeMillis();
-        Main.print("Allocating elapse time: ");
-        Main.print(endTime - startTime);
-        Main.println("ms");
     }
 }

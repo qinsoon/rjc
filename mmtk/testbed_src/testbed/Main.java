@@ -29,6 +29,11 @@ public class Main {
     public static double randomReferencingChance = 0.5;
     
     public static boolean sanityCheck = false;
+    
+    /**
+     * testbed exits after 10 gcs (0 means never exit)
+     */
+    public static int exitAfterSeveralGC = 10;
 
     public static void main(String[] args) {
         for (int i = 0; i < args.length; i++) {
@@ -127,5 +132,9 @@ public class Main {
     
     public static void sysExit(int code) {
         System.exit(code);
+    }
+    
+    public static void unimplementedInterface() {
+        sysFail("unimplemented interface");
     }
 }

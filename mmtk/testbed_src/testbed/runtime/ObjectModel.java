@@ -45,6 +45,24 @@ public abstract class ObjectModel {
         }            
     }
     
+    public static void initializeCopiedObject(ObjectReference fromObj, ObjectReference toObj) {
+        Address from = fromObj.toAddress();
+        Address to = toObj.toAddress();
+        
+        to.store(from.loadWord(OFFSET_CLIENT_HEADER), OFFSET_CLIENT_HEADER);
+        to.store(from.loadInt(OFFSET_OBJECT_SIZE), OFFSET_OBJECT_SIZE);
+        int fieldCount = from.loadInt(OFFSET_FIELD_COUNT);
+        to.store(fieldCount, OFFSET_FIELD_COUNT);
+        
+        Address fromCursor = from.plus(OFFSET_FIELD_START);
+        Address toCursor = to.plus(OFFSET_FIELD_START);
+        for (int i = 0; i < fieldCount; i++) {
+            toCursor.store(fromCursor.loadObjectReference());
+            toCursor = toCursor.plus(Constants.OBJECTREFERENCE_LENGTH_IN_BYTES);
+            fromCursor = fromCursor.plus(Constants.OBJECTREFERENCE_LENGTH_IN_BYTES);
+        }
+    }
+    
     public static final void writeClientHeader(ObjectReference obj, int header) {
         obj.toAddress().store(header, OFFSET_CLIENT_HEADER);
     }
@@ -82,6 +100,11 @@ public abstract class ObjectModel {
             Main.println(cursor.loadObjectReference());
             cursor = cursor.plus(Constants.OBJECTREFERENCE_LENGTH_IN_BYTES);
         }
+    }
+    
+    public static int bytesRequiredWhenCopied(ObjectReference objRef) {
+        Address addr = objRef.toAddress();
+        return addr.loadInt(OFFSET_OBJECT_SIZE);
     }
     
     /*

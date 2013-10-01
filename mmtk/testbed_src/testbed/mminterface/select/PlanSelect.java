@@ -1,9 +1,9 @@
 package testbed.mminterface.select;
 
-import org.mmtk.plan.marksweep.MS;
+import org.mmtk.plan.semispace.SS;
 import org.vmmagic.pragma.Inline;
 
-public class PlanSelect extends MS {
+public class PlanSelect extends SS {
     private static PlanSelect plan;
     
     private PlanSelect() {}
@@ -13,7 +13,7 @@ public class PlanSelect extends MS {
     }
     
     public static String getName() {
-        return "org.mmtk.plan.marksweep.MS";
+        return "org.mmtk.plan.semispace.SS";
     }
     
     @Inline

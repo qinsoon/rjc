@@ -99,7 +99,7 @@ public class CLanguageGenerator extends CodeGenerator {
     protected Set<String> referencedMethodClasses;
     
     public CLanguageGenerator() {
-        this.mainObj = RJavaCompiler.namedOutput;
+        
     }
 
     @Override
@@ -956,6 +956,7 @@ public class CLanguageGenerator extends CodeGenerator {
     @Override
     public void init() {
         CLanguageRuntime.lateCLInit();
+        this.mainObj = RJavaCompiler.namedOutput;
     }
     
     public RClass getClassContext() {

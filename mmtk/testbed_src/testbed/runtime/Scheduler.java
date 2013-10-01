@@ -2,6 +2,7 @@ package testbed.runtime;
 
 import org.rjava.osext.OSConcurrency;
 import org.rjava.restriction.rulesets.RJavaCore;
+import org.vmmagic.pragma.Inline;
 
 import testbed.Configuration;
 import testbed.Main;
@@ -84,9 +85,6 @@ public class Scheduler {
         return null;
     }
     
-    public static long allocationVolumeSinceLastGC = 0;
-    public static int gcTime = 1;
-    
     public static int gcState;
     public static final int MUTATOR = 0;
     public static final int WAITING_FOR_MUTATORS = 1;
@@ -102,11 +100,10 @@ public class Scheduler {
      * 2. Long-time execution are always associated with method call or loop. So call sites and loop back sites are also expected polling points. 
      * http://xiao-feng.blogspot.com.au/2008/01/gc-safe-point-and-safe-region.html
      */
+    @Inline
     public static void gcPoint() {
-        synchronized (gcStateChangeLock) {
-            if (gcState == MUTATOR)
-                return;
-        }
+        if (gcState == MUTATOR)
+            return;
 
         Main._assert(gcState == WAITING_FOR_MUTATORS, "at gcpoint, state should be WAITING_FOR_MUTATORS");
         getCurrentContext().informGoingToBlock();
@@ -141,39 +138,28 @@ public class Scheduler {
         
         // 3. stop other threads
         
-        // 4. get statistics
-        for (int i = 0; i < mutatorCount; i++) {
-            MMTkContext context = mutatorContexts[i];
-            allocationVolumeSinceLastGC += context.allocationVolume;
-        }
+        // 4. get statistics        
+        statisticsAllocEnd();
         
-        MMTkContext.allocEnd();
-        Main.println("Allocation volume: " + allocationVolumeSinceLastGC + " bytes");
         // 5. done
         synchronized (gcStateChangeLock) {
             gcState = GC;
         }
     }
     
-    public static void resumeAllMutators() {
+    public static void resumeAllMutators() {        
         synchronized (gcStateChangeLock) {
             gcState = MUTATOR;
         }
         
-        MMTkContext.allocStart();
+        statisticsAllocStart();
         // resume mutators here
         for (int i = 0; i < mutatorCount; i++) {
-            MMTkContext context = mutatorContexts[i];
-            context.allocationVolume = 0;
-            
+            MMTkContext context = mutatorContexts[i];           
             if (context.isBlocked())
                 context.unblockAfterGC();
             else Main._assert(false, "Unexpected MMTkContext gc state: " + context.getGCState());
         }
-        
-        Main.println("[DEBUG]GC" + gcTime + ", allocation volume since last GC:" + (allocationVolumeSinceLastGC) + "bytes");
-        gcTime ++;
-        allocationVolumeSinceLastGC = 0;
     }
 
     public static void currentThreadBlockForGC() {
@@ -184,5 +170,54 @@ public class Scheduler {
         }
         
         gcPoint();
+    }
+    
+    /*
+     * statistics
+     */
+    public static long allocStart;
+    public static long allocationVolumeSinceLastGC = 0;
+    public static int gcCount = -1;
+    public static double[] allocRate = new double[Main.exitAfterSeveralGC];
+    
+    public static void statisticsAllocStart() {
+        allocStart = System.currentTimeMillis();
+        gcCount ++;
+        allocationVolumeSinceLastGC = 0;
+        for (int i = 0; i < mutatorCount; i++) {
+            MMTkContext context = mutatorContexts[i];
+            context.allocationVolume = 0;
+        }
+        
+        if (Main.exitAfterSeveralGC == 0)
+            return;
+        else if (gcCount == Main.exitAfterSeveralGC) {
+            Main.println("===================");
+            Main.println(Main.exitAfterSeveralGC + " GCs done, exit.");
+            
+            // calc average alloc rate
+            double sum = 0;
+            for (int i = 0; i < allocRate.length; i++) {
+                sum += allocRate[i];
+            }
+            Main.println("Average alloc rate = " + sum / allocRate.length + " bytes/ms");
+            Main.sysExit(0);
+        }
+    }
+    
+    public static void statisticsAllocEnd() {
+        for (int i = 0; i < mutatorCount; i++) {
+            MMTkContext context = mutatorContexts[i];
+            allocationVolumeSinceLastGC += context.allocationVolume;
+        }
+        
+        long elapsedTime = System.currentTimeMillis() - allocStart;
+        
+        Main.println("[GC" + gcCount + "] allocVolume=" + allocationVolumeSinceLastGC + "bytes, elapsedTime=" + elapsedTime + "ms");
+        
+        if (Main.exitAfterSeveralGC != 0) {
+            // we need to record alloc rate
+            allocRate[gcCount] = allocationVolumeSinceLastGC / elapsedTime;
+        }
     }
 }
