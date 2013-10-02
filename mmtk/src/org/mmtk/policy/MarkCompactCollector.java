@@ -17,6 +17,7 @@ import org.mmtk.utility.Log;
 import org.mmtk.utility.alloc.Allocator;
 import org.mmtk.utility.alloc.BumpPointer;
 import org.mmtk.vm.VM;
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.Inline;
 import org.vmmagic.pragma.Uninterruptible;
 import org.vmmagic.unboxed.Address;
@@ -42,7 +43,7 @@ import org.vmmagic.unboxed.ObjectReference;
  * @see MarkCompactSpace
  * @see MarkCompactLocal
  */
-@Uninterruptible
+@MMTk
 public final class MarkCompactCollector {
 
   static final boolean VERBOSE = false;

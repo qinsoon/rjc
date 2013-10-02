@@ -12,8 +12,16 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
+@MMTk
 public class PretenureThresholdFraction extends org.vmutil.options.FloatOption {
-  private static final float DEFAULT_PRETENURE_THRESHOLD_FRACTION = 0.5f;  
+
+  /**
+   * if object is bigger than this fraction of nursery, pretenure to LOS
+   */
+  private static final float DEFAULT_PRETENURE_THRESHOLD_FRACTION = 0.5f;
+
   /**
    * Create the option.
    */

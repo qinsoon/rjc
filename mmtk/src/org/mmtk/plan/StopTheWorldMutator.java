@@ -12,6 +12,7 @@
  */
 package org.mmtk.plan;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
@@ -25,6 +26,6 @@ import org.vmmagic.pragma.*;
  *
  * @see MutatorContext
  */
-@Uninterruptible
+@MMTk
 public abstract class StopTheWorldMutator extends SimpleMutator {
 }

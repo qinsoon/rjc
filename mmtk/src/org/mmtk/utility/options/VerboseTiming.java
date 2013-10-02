@@ -12,9 +12,12 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * Should we display detailed breakdown of where GC time is spent?
  */
+@MMTk
 public final class VerboseTiming extends org.vmutil.options.BooleanOption {
   /**
    * Create the option.

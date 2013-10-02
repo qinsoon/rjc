@@ -13,6 +13,7 @@
 package org.mmtk.utility;
 
 import org.mmtk.vm.VM;
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.Uninterruptible;
 import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.ObjectReference;
@@ -26,7 +27,7 @@ import org.vmmagic.unboxed.ObjectReference;
  * successively reserved for global use, as necessary.  Any GC policy may use
  * those bits that are not reserved for global use.<p>
  */
-@Uninterruptible
+@MMTk
 public class HeaderByte {
   private static final int TOTAL_BITS = 8;
 

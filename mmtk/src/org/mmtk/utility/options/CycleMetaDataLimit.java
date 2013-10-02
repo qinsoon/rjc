@@ -12,9 +12,12 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * Trigger cycle detection if the meta data volume grows to this limit.
  */
+@MMTk
 public final class CycleMetaDataLimit extends org.vmutil.options.PagesOption {
   /**
    * Create the option.

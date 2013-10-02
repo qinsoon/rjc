@@ -16,6 +16,7 @@ import org.mmtk.utility.Constants;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
@@ -24,7 +25,7 @@ import org.vmmagic.pragma.*;
  * references.  In addition, this can sort the entries currently on
  * the shared stack.
  */
-@Uninterruptible public class SortTODObjectReferenceStack extends LocalDeque
+@MMTk public class SortTODObjectReferenceStack extends LocalDeque
   implements Constants {
 
   /****************************************************************************

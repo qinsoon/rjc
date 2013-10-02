@@ -13,6 +13,7 @@
 package org.mmtk.policy;
 
 import org.mmtk.utility.alloc.BumpPointer;
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.Uninterruptible;
 import org.vmmagic.unboxed.Extent;
 
@@ -24,7 +25,7 @@ import org.vmmagic.unboxed.Extent;
  * @see BumpPointer
  * @see MarkCompactSpace
  */
-@Uninterruptible
+@MMTk
 public final class MarkCompactLocal extends BumpPointer {
 
   /**

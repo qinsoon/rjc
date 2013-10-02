@@ -16,13 +16,14 @@ import org.mmtk.utility.Log;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
  * This class implements a simple event counter (counting number
  * events that occur for each phase).
  */
-@Uninterruptible
+@MMTk
 public class EventCounter extends Counter {
 
   /****************************************************************************

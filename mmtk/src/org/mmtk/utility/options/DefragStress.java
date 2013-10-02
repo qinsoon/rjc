@@ -12,9 +12,12 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * Should we force degfrag every time the immix space is collected?
  */
+@MMTk
 public final class DefragStress extends org.vmutil.options.BooleanOption {
   /**
    * Create the option.

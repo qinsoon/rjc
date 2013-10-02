@@ -129,21 +129,30 @@ public class RClass implements DependencyEdgeNode, CompilationUnit{
      * @return list of {@link RRestriction}
      */
     public List<RRestriction> getRestrictions() {
-	if (restrictions == null)
-	    restrictions = fetchRestrictions();		// build from annotations
-
-	return restrictions;
-    }    
+    	if (restrictions == null)
+    	    restrictions = fetchRestrictions();		// build from annotations
+    
+    	return restrictions;
+    }
 
     // fetch restrictions
     private List<RRestriction> fetchRestrictions() {
-	List<RRestriction> result = new ArrayList<RRestriction>();
-	for (RAnnotation anno : annotations) {
-	    List<RRestriction> restrictions = RRestriction.unfold(anno);
-	    if (restrictions != null)
-		result.addAll(restrictions);
-	}
-	return result;
+    	List<RRestriction> result = new ArrayList<RRestriction>();
+    	for (RAnnotation anno : annotations) {
+    	    List<RRestriction> restrictions = RRestriction.unfold(anno);
+    	    if (restrictions != null)
+    	        result.addAll(restrictions);
+    	}
+    	return result;
+    }
+    
+    public void addRestriction(RRestriction r) {
+        List<RRestriction> list = getRestrictions();
+        for (RRestriction every : list) 
+            if (every.equals(r))
+                return;
+        
+        list.add(r);
     }
 
     /**
@@ -376,6 +385,10 @@ public class RClass implements DependencyEdgeNode, CompilationUnit{
     @Override
     public boolean isClassNode() {
         return true;
+    }
+    
+    public boolean isInnerClass() {
+        return getName().contains("$");
     }
     
     public void dump() {

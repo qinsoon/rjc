@@ -18,6 +18,7 @@ import org.mmtk.utility.Log;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -64,7 +65,7 @@ import org.vmmagic.unboxed.*;
  * @see org.mmtk.vm.ActivePlan
  * @see Plan
  */
-@Uninterruptible
+@MMTk
 public abstract class CollectorContext implements Constants {
 
   /****************************************************************************

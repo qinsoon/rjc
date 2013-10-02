@@ -12,9 +12,12 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * Performance counter options.
  */
+@MMTk
 public class PerfEvents extends org.vmutil.options.StringOption {
   /**
    * Create the option.

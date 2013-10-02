@@ -16,6 +16,7 @@ import org.mmtk.plan.TransitiveClosure;
 import org.mmtk.utility.Constants;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -25,7 +26,7 @@ import org.vmmagic.unboxed.*;
  *
  * @see org.mmtk.plan.TransitiveClosure
  */
-@Uninterruptible
+@MMTk
 public abstract class ObjectReferenceBuffer extends TransitiveClosure implements Constants {
   /****************************************************************************
    *

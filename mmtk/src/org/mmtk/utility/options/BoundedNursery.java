@@ -13,11 +13,13 @@
 package org.mmtk.utility.options;
 
 import org.mmtk.plan.Plan;
+import org.rjava.restriction.rulesets.MMTk;
 
 /**
  * Provide an upper bound on nursery size. This option is not intended to
  * be created directly, but via NurserySize.
  */
+@MMTk
 public final class BoundedNursery extends org.vmutil.options.PagesOption {
   /**
    * Create the option.

@@ -19,6 +19,7 @@ import org.mmtk.utility.*;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
@@ -38,7 +39,7 @@ import org.vmmagic.pragma.*;
  * where the allocation that caused a GC or allocations immediately following
  * GC are run incorrectly.
  */
-@Uninterruptible
+@MMTk
 public abstract class Allocator implements Constants {
 
   /** Lock used for out of memory handling */
@@ -253,6 +254,9 @@ public abstract class Allocator implements Constants {
   public final Address allocSlowInline(int bytes, int alignment, int offset) {
     Allocator current = this;
     Space space = current.getSpace();
+
+    // Information about the previous collection.
+    boolean emergencyCollection = false;
     while (true) {
       // Try to allocate using the slow path
       Address result = current.allocSlowOnce(bytes, alignment, offset);
@@ -262,9 +266,6 @@ public abstract class Allocator implements Constants {
         if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(!result.isZero());
         return result;
       }
-
-      // Information about the previous collection.
-      boolean emergencyCollection = Plan.isEmergencyCollection();
 
       if (!result.isZero()) {
         // Report allocation success to assist OutOfMemory handling.
@@ -297,6 +298,13 @@ public abstract class Allocator implements Constants {
        * VMs that dynamically multiplex Java threads onto multiple mutator
        * contexts, */
       current = VM.activePlan.mutator().getAllocatorFromSpace(space);
+
+      /*
+       * Record whether last collection was an Emergency collection.
+       * If so, we make one more attempt to allocate before we signal
+       * an OOM.
+       */
+      emergencyCollection = Plan.isEmergencyCollection();
     }
   }
 }

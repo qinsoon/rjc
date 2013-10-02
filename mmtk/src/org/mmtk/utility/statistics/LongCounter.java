@@ -16,13 +16,14 @@ import org.mmtk.utility.Log;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
  * This abstract class implements a simple counter (counting some
  * integer (long) value for each phase).
  */
-@Uninterruptible
+@MMTk
 public abstract class LongCounter extends Counter {
 
   /****************************************************************************

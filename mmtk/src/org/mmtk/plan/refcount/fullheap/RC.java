@@ -12,7 +12,7 @@
  */
 package org.mmtk.plan.refcount.fullheap;
 
-import org.mmtk.plan.CollectorContext;
+import org.mmtk.plan.ParallelCollector;
 import org.mmtk.plan.refcount.RCBase;
 import org.vmmagic.pragma.*;
 
@@ -28,7 +28,7 @@ public class RC extends RCBase {
 
     @Override
     @Interruptible
-    public CollectorContext newCollectorContext() {
+    public ParallelCollector newCollectorContext() {
         return new RCCollector();
     }
 }

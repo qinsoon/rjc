@@ -12,10 +12,11 @@
  */
 package org.mmtk.vm;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.Uninterruptible;
 
 
-@Uninterruptible public abstract class Strings {
+@MMTk public abstract class Strings {
   /**
    * Log a message.
    *

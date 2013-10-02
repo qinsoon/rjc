@@ -16,6 +16,7 @@ import org.mmtk.plan.*;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -28,7 +29,7 @@ import org.vmmagic.unboxed.*;
  * @see StopTheWorldMutator
  * @see MutatorContext
  */
-@Uninterruptible
+@MMTk
 public abstract class ConcurrentMutator extends SimpleMutator {
 
   /****************************************************************************

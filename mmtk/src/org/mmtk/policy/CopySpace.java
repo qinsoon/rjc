@@ -21,6 +21,7 @@ import org.mmtk.utility.Log;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
@@ -29,7 +30,7 @@ import org.vmmagic.pragma.*;
  * space.  Since no state needs to be held globally or locally, all
  * methods are static.
  */
-@Uninterruptible public final class CopySpace extends Space
+@MMTk public final class CopySpace extends Space
   implements Constants {
 
   /****************************************************************************

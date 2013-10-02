@@ -22,6 +22,7 @@ import org.mmtk.utility.Log;
 import org.mmtk.utility.options.Options;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
@@ -30,7 +31,7 @@ import org.vmmagic.pragma.*;
  * closure over the heap graph, specifically in a defragmenting pass over
  * a generational immix collector.
  */
-@Uninterruptible
+@MMTk
 public final class GenImmixMatureDefragTraceLocal extends GenMatureTraceLocal{
 
   /**

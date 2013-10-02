@@ -12,11 +12,13 @@
  */
 package org.vmutil.options;
 
+import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.pragma.Uninterruptible;
 
 /**
  * An option with a simple integer value.
  */
+@RJavaCore
 public class IntOption extends Option {
   // values
   protected int defaultValue;

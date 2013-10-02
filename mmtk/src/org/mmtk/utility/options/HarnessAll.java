@@ -12,9 +12,12 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * Should we wrap the entire execution with a harnessBegin/harnessEnd?
  */
+@MMTk
 public final class HarnessAll extends org.vmutil.options.BooleanOption {
   /**
    * Create the option.

@@ -14,6 +14,7 @@ package org.mmtk.utility.deque;
 
 import org.mmtk.utility.Constants;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
@@ -23,7 +24,7 @@ import org.vmmagic.pragma.*;
  * more efficient to dequeue buffers and, for example, enables sorting of
  * its contents.
  */
-@Uninterruptible class Deque implements Constants {
+@MMTk class Deque implements Constants {
 
   /****************************************************************************
    *

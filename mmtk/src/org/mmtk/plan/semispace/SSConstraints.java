@@ -14,12 +14,13 @@ package org.mmtk.plan.semispace;
 
 import org.mmtk.plan.*;
 import org.mmtk.policy.CopySpace;
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
  * SemiSpace common constants.
  */
-@Uninterruptible
+@MMTk
 public class SSConstraints extends StopTheWorldConstraints {
   @Override
   public boolean movesObjects() { return true; }

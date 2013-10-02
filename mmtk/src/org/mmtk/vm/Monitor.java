@@ -12,13 +12,14 @@
  */
 package org.mmtk.vm;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.Uninterruptible;
 
 /**
  * Provides MMTk access to a heavy lock with condition variable.
  * Functionally similar to Java monitors, but safe in the darker corners of runtime code.
  */
-@Uninterruptible
+@MMTk
 public abstract class Monitor {
 
   /**

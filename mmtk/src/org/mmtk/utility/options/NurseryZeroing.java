@@ -12,12 +12,14 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.Uninterruptible;
 
 /**
  * The zeroing approach to use for new object allocations.
  * Affects each plan differently.
  */
+@MMTk
 @Uninterruptible
 public final class NurseryZeroing extends org.vmutil.options.EnumOption {
 

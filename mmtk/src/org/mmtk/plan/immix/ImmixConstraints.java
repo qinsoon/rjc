@@ -16,6 +16,7 @@ import org.mmtk.plan.StopTheWorldConstraints;
 import org.mmtk.policy.immix.ObjectHeader;
 import static org.mmtk.policy.immix.ImmixConstants.MAX_IMMIX_OBJECT_BYTES;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
@@ -24,7 +25,7 @@ import org.vmmagic.pragma.*;
  * separate from the main Plan/PlanLocal class in order to bypass any
  * issues with ordering of static initialization.
  */
-@Uninterruptible
+@MMTk
 public class ImmixConstraints extends StopTheWorldConstraints {
 
   @Override

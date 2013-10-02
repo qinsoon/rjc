@@ -18,6 +18,7 @@ import org.mmtk.policy.Space;
 import org.mmtk.utility.heap.VMRequest;
 import org.mmtk.utility.sanitychecker.SanityChecker;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.ObjectReference;
 
@@ -42,7 +43,7 @@ import org.vmmagic.unboxed.ObjectReference;
  * instances is crucial to understanding the correctness and
  * performance properties of MMTk plans.
  */
-@Uninterruptible public class MC extends StopTheWorld {
+@MMTk public class MC extends StopTheWorld {
 
   /****************************************************************************
    * Class variables
@@ -208,9 +209,9 @@ import org.vmmagic.unboxed.ObjectReference;
     super.registerSpecializedMethods();
   }
 
-@Override
-@Interruptible
-public CollectorContext newCollectorContext() {
+  @Override
+  @Interruptible
+  public ParallelCollector newCollectorContext() {
     return new MCCollector();
-}
+  }
 }

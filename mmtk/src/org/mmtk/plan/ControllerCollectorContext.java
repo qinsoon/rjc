@@ -18,9 +18,10 @@ import org.mmtk.utility.options.Options;
 import org.mmtk.vm.Monitor;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
-@Uninterruptible
+@MMTk
 public class ControllerCollectorContext extends CollectorContext {
 
   /** The lock to use to manage collection */

@@ -15,6 +15,7 @@ package org.mmtk.utility.deque;
 import org.mmtk.policy.RawPageSpace;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
@@ -22,7 +23,7 @@ import org.vmmagic.pragma.*;
  * This class specializes SortSharedQueue to sort objects according to
  * their time of death (TOD).
  */
-@Uninterruptible
+@MMTk
 public final class SortTODSharedDeque extends SortSharedDeque {
 
   /**

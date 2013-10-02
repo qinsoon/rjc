@@ -12,10 +12,11 @@
  */
 package org.mmtk.vm;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.Uninterruptible;
 import org.vmmagic.unboxed.*;
 
-@Uninterruptible
+@MMTk
 public abstract class ObjectModel {
 
   /**

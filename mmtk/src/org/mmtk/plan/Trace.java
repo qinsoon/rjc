@@ -16,6 +16,7 @@ import org.mmtk.utility.Constants;
 import org.mmtk.utility.deque.SharedDeque;
 import org.mmtk.policy.RawPageSpace;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
@@ -23,7 +24,7 @@ import org.vmmagic.pragma.*;
  * closure over the heap.  This class holds the global state, TraceLocal
  * and its super-classes handle per-thread state.
  */
-@Uninterruptible
+@MMTk
 public class Trace implements Constants {
 
   // Global pools for load-balancing deques

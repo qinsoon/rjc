@@ -14,13 +14,14 @@ package org.mmtk.utility;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
 /**
  * Error and trace logging.
  */
-@Uninterruptible
+@MMTk
 public class Log implements Constants {
 
   /****************************************************************************

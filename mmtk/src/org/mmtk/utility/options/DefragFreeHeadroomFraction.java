@@ -14,6 +14,9 @@ package org.mmtk.utility.options;
 
 import static org.mmtk.policy.immix.ImmixConstants.DEFAULT_DEFRAG_FREE_HEADROOM_FRACTION;
 
+import org.rjava.restriction.rulesets.MMTk;
+
+@MMTk
 public class DefragFreeHeadroomFraction extends org.vmutil.options.FloatOption {
   /**
    * Create the option.

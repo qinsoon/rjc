@@ -13,13 +13,14 @@
 package org.mmtk.utility.statistics;
 
 import org.mmtk.utility.Log;
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.Uninterruptible;
 import org.vmmagic.unboxed.Word;
 
 /**
  * Utility class for writing statistics out in XML format.
  */
-@Uninterruptible
+@MMTk
 public class Xml {
   /**
    * Mark the start of XML output

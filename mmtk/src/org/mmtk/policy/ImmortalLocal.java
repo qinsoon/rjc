@@ -14,6 +14,7 @@ package org.mmtk.policy;
 
 import org.mmtk.utility.alloc.BumpPointer;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
@@ -24,7 +25,7 @@ import org.vmmagic.pragma.*;
  * @see BumpPointer
  * @see ImmortalSpace
  */
-@Uninterruptible public final class ImmortalLocal extends BumpPointer {
+@MMTk public final class ImmortalLocal extends BumpPointer {
 
   /**
    * Constructor

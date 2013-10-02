@@ -18,6 +18,7 @@ import org.mmtk.policy.MarkSweepLocal;
 import org.mmtk.utility.alloc.Allocator;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -35,7 +36,7 @@ import org.vmmagic.unboxed.*;
  * @see StopTheWorldCollector
  * @see CollectorContext
  */
-@Uninterruptible
+@MMTk
 public class CopyMSCollector extends StopTheWorldCollector {
 
   /****************************************************************************

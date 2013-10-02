@@ -12,9 +12,12 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * Concurrent trigger percentage
  */
+@MMTk
 public class ConcurrentTrigger extends org.vmutil.options.IntOption {
   /**
    * Create the option.

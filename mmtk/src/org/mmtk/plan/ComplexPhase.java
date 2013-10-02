@@ -17,6 +17,7 @@ import org.mmtk.utility.statistics.Timer;
 import org.mmtk.utility.Log;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
@@ -25,7 +26,7 @@ import org.vmmagic.pragma.*;
  * A complex phase is a sequence of phases.
  *
  */
-@Uninterruptible
+@MMTk
 public final class ComplexPhase extends Phase
   implements Constants {
 

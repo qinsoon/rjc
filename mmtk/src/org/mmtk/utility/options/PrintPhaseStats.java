@@ -12,10 +12,13 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * When printing statistics, should statistics for each
  * gc-mutator phase be printed?
  */
+@MMTk
 public final class PrintPhaseStats extends org.vmutil.options.BooleanOption {
   /**
    * Create the option.

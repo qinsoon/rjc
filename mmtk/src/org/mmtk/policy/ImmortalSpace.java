@@ -21,6 +21,7 @@ import org.mmtk.utility.HeaderByte;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
@@ -31,7 +32,7 @@ import org.vmmagic.pragma.*;
  * actually collect.  This class does not hold any state, all methods
  * are static.
  */
-@Uninterruptible public final class ImmortalSpace extends Space
+@MMTk public final class ImmortalSpace extends Space
   implements Constants {
 
   /****************************************************************************

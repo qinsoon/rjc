@@ -15,13 +15,14 @@ package org.mmtk.utility.sanitychecker;
 import org.mmtk.plan.TraceLocal;
 import org.mmtk.plan.Trace;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
 /**
  * This class implements the simply sanity closure.
  */
-@Uninterruptible
+@MMTk
 public final class SanityTraceLocal extends TraceLocal {
 
   private final SanityChecker sanityChecker;

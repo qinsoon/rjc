@@ -15,6 +15,7 @@ package org.mmtk.plan.generational.immix;
 import org.mmtk.plan.generational.GenConstraints;
 import static org.mmtk.policy.immix.ImmixConstants.MAX_IMMIX_OBJECT_BYTES;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
@@ -24,7 +25,7 @@ import org.vmmagic.pragma.*;
  * issues with ordering of static initialization.
  *
  */
-@Uninterruptible
+@MMTk
 public class GenImmixConstraints extends GenConstraints {
   @Override
   public int numSpecializedScans() { return 2; }

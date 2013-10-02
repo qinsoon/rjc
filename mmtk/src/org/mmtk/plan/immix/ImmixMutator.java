@@ -18,6 +18,7 @@ import org.mmtk.policy.immix.MutatorLocal;
 
 import org.mmtk.utility.alloc.Allocator;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -35,7 +36,7 @@ import org.vmmagic.unboxed.*;
  * @see StopTheWorldMutator
  * @see MutatorContext
  */
-@Uninterruptible
+@MMTk
 public class ImmixMutator extends StopTheWorldMutator {
 
   /****************************************************************************

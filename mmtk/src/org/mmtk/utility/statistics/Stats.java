@@ -20,12 +20,13 @@ import org.mmtk.utility.options.XmlStats;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
  * This class implements basic statistics functionality
  */
-@Uninterruptible
+@MMTk
 public class Stats {
 
   /****************************************************************************
@@ -278,18 +279,20 @@ public class Stats {
   private static void closeStatXml() {
     Xml.closeMinorTag();
   }
- 
-  static class Phase {
-    public static Phase MUTATOR = new Phase("mu");
-    public static Phase GC = new Phase("gc");
-    public static Phase COMBINED = new Phase("all");
 
-    private final String name;
-    Phase(String name) {
-      this.name = name;
+  static class Phase {
+    public static final int MUTATOR = 0;
+    public static final int GC = 1;
+    public static final int COMBINED = 2;
+
+    public static String getPhaseName(int p) {
+        switch(p) {
+        case MUTATOR: return "mu";
+        case GC: return "gc";
+        case COMBINED: return "all";
+        default: return null;
+        }
     }
-    @Override
-    public String toString() { return name; }
   }
 
   /**
@@ -319,7 +322,7 @@ public class Stats {
    * @param phase The phase
    */
   @Interruptible
-  private static void printTotalXml(Counter c, Phase phase) {
+  private static void printTotalXml(Counter c, int phase) {
     openStatXml(c.getName());
     Xml.attribute("suffix", c.getColumnSuffix());
     Xml.openAttribute("value");
@@ -329,7 +332,7 @@ public class Stats {
       c.printTotal(phase == Phase.MUTATOR);
       Xml.closeAttribute();
       Xml.openAttribute("phase");
-      Log.write(phase.toString());
+      Log.write(Phase.getPhaseName(phase));
     }
     Xml.closeAttribute();
     closeStatXml();
@@ -343,7 +346,7 @@ public class Stats {
    * @param phase The phase (null, "mu" or "gc")
    */
   @Interruptible
-  private static void printPhaseStatXml(Counter c, int p, Phase phase) {
+  private static void printPhaseStatXml(Counter c, int p, int phase) {
     openStatXml(c.getName());
     Xml.attribute("suffix", c.getColumnSuffix());
     Xml.openAttribute("value");
@@ -353,7 +356,7 @@ public class Stats {
       c.printCount(p);
       Xml.closeAttribute();
       Xml.openAttribute("phase");
-      Log.write(phase.name);
+      Log.write(Phase.getPhaseName(phase));
    }
     Xml.closeAttribute();
     closeStatXml();

@@ -20,6 +20,7 @@ import org.mmtk.utility.options.*;
 import org.mmtk.utility.statistics.Timer;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
@@ -34,7 +35,7 @@ import org.vmmagic.pragma.*;
  * For details of the split between global and thread-local operations
  * @see org.mmtk.plan.Plan
  */
-@Uninterruptible
+@MMTk
 public abstract class Simple extends Plan implements Constants {
   /****************************************************************************
    * Constants
@@ -191,8 +192,9 @@ public abstract class Simple extends Plan implements Constants {
   @Inline
   public void collectionPhase(short phaseId) {
     if (phaseId == SET_COLLECTION_KIND) {
-      collectionAttempt = Allocator.determineCollectionAttempts();
-      emergencyCollection = !Plan.isInternalTriggeredCollection() && lastCollectionWasExhaustive() && collectionAttempt > 1;
+      collectionAttempt = Plan.isUserTriggeredCollection() ? 1 : Allocator.determineCollectionAttempts();
+      emergencyCollection = !Plan.isInternalTriggeredCollection() &&
+          lastCollectionWasExhaustive() && collectionAttempt > 1;
       if (emergencyCollection) {
         if (Options.verbose.getValue() >= 1) Log.write("[Emergency]");
         forceFullHeapCollection();
@@ -223,7 +225,7 @@ public abstract class Simple extends Plan implements Constants {
     }
 
     if (phaseId == STACK_ROOTS) {
-      VM.scanning.notifyInitialThreadScanComplete();
+      VM.scanning.notifyInitialThreadScanComplete(false);
       setGCStatus(GC_PROPER);
       return;
     }

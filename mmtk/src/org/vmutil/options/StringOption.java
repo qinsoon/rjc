@@ -12,11 +12,13 @@
  */
 package org.vmutil.options;
 
+import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.pragma.Uninterruptible;
 
 /**
  * An option that has a simple string value.
  */
+@RJavaCore
 public class StringOption extends Option {
   // values
   protected String defaultValue;

@@ -12,9 +12,12 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * Try to limit reference counting collections to this time cap.
  */
+@MMTk
 public final class GCTimeCap extends org.vmutil.options.MicrosecondsOption {
   /**
    * Create the option.

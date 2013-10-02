@@ -13,13 +13,14 @@
 package org.mmtk.vm;
 
 import org.mmtk.plan.TraceLocal;
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.Uninterruptible;
 
 /**
  * This class manages SoftReferences, WeakReferences, and
  * PhantomReferences.
  */
-@Uninterruptible
+@MMTk
 public abstract class ReferenceProcessor {
   public static final int SOFT_REFERENCE = 0;
   public static final int WEAK_REFERENCE = 1;

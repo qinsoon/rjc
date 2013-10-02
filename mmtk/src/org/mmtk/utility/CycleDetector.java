@@ -14,12 +14,13 @@ package org.mmtk.utility;
 
 import org.mmtk.utility.options.*;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
 /*
  */
-@Uninterruptible abstract class CycleDetector {
+@MMTk abstract class CycleDetector {
 
   static {
     Options.cycleFilterThreshold = new CycleFilterThreshold();

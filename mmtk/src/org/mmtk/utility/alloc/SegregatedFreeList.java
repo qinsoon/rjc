@@ -15,13 +15,14 @@ package org.mmtk.utility.alloc;
 import org.mmtk.policy.SegregatedFreeListSpace;
 import org.mmtk.utility.*;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
 /**
  * This abstract class implements the fast past for a segregated free list.
  */
-@Uninterruptible
+@MMTk
 public abstract class SegregatedFreeList<S extends SegregatedFreeListSpace> extends Allocator implements Constants {
 
   /****************************************************************************

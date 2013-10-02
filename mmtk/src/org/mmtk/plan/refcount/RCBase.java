@@ -12,7 +12,7 @@
  */
 package org.mmtk.plan.refcount;
 
-import org.mmtk.plan.CollectorContext;
+import org.mmtk.plan.ParallelCollector;
 import org.mmtk.plan.Phase;
 import org.mmtk.plan.StopTheWorld;
 import org.mmtk.plan.Trace;
@@ -56,6 +56,9 @@ public abstract class RCBase extends StopTheWorld {
   public static boolean performCycleCollection;
   public static final short BT_CLOSURE             = Phase.createSimple("closure-bt");
 
+  /** True if we are building for generational RC */
+  public static final boolean BUILD_FOR_GENRC = ((RCBaseConstraints) VM.activePlan.constraints()).buildForGenRC();
+
   // CHECKSTYLE:OFF
 
   /**
@@ -75,10 +78,21 @@ public abstract class RCBase extends StopTheWorld {
       Phase.scheduleGlobal     (BT_CLOSURE),
       Phase.scheduleCollector  (BT_CLOSURE));
 
+  protected static final short genRCCollectionPhase = Phase.createComplex("release", null,
+      Phase.scheduleGlobal     (PROCESS_OLDROOTBUFFER),
+      Phase.scheduleCollector  (PROCESS_OLDROOTBUFFER),
+      Phase.scheduleGlobal     (PROCESS_NEWROOTBUFFER),
+      Phase.scheduleCollector  (PROCESS_NEWROOTBUFFER),
+      Phase.scheduleMutator    (PROCESS_DECBUFFER),
+      Phase.scheduleGlobal     (PROCESS_DECBUFFER),
+      Phase.scheduleCollector  (PROCESS_DECBUFFER),
+      Phase.scheduleGlobal     (BT_CLOSURE),
+      Phase.scheduleCollector  (BT_CLOSURE));
+
   /**
    * Perform the initial determination of liveness from the roots.
    */
-  protected static final short rootClosurePhase = Phase.createComplex("initial-closure", null,
+  protected static final short refCountRootClosurePhase = Phase.createComplex("initial-closure", null,
       Phase.scheduleMutator    (PREPARE),
       Phase.scheduleGlobal     (PREPARE),
       Phase.scheduleCollector  (PREPARE),
@@ -89,13 +103,34 @@ public abstract class RCBase extends StopTheWorld {
       Phase.scheduleGlobal     (CLOSURE),
       Phase.scheduleCollector  (CLOSURE));
 
+  protected static final short genRCRootClosurePhase = Phase.createComplex("initial-closure", null,
+      Phase.scheduleMutator    (PREPARE),
+      Phase.scheduleGlobal     (PREPARE),
+      Phase.scheduleCollector  (PREPARE),
+      Phase.scheduleComplex    (prepareStacks),
+      Phase.scheduleCollector  (STACK_ROOTS),
+      Phase.scheduleCollector  (ROOTS),
+      Phase.scheduleGlobal     (ROOTS),
+      Phase.scheduleMutator    (PROCESS_MODBUFFER),
+      Phase.scheduleGlobal     (PROCESS_MODBUFFER),
+      Phase.scheduleCollector  (PROCESS_MODBUFFER),
+      Phase.scheduleGlobal     (CLOSURE),
+      Phase.scheduleCollector  (CLOSURE));
+
   /**
    * This is the phase that is executed to perform a collection.
    */
-  public short collection = Phase.createComplex("collection", null,
+  public short refCountCollection = Phase.createComplex("collection", null,
       Phase.scheduleComplex(initPhase),
-      Phase.scheduleComplex(rootClosurePhase),
+      Phase.scheduleComplex(refCountRootClosurePhase),
       Phase.scheduleComplex(refCountCollectionPhase),
+      Phase.scheduleComplex(completeClosurePhase),
+      Phase.scheduleComplex(finishPhase));
+
+  public short genRCCollection = Phase.createComplex("collection", null,
+      Phase.scheduleComplex(initPhase),
+      Phase.scheduleComplex(genRCRootClosurePhase),
+      Phase.scheduleComplex(genRCCollectionPhase),
       Phase.scheduleComplex(completeClosurePhase),
       Phase.scheduleComplex(finishPhase));
 
@@ -139,7 +174,6 @@ public abstract class RCBase extends StopTheWorld {
   public RCBase() {
     Options.noReferenceTypes.setDefaultValue(true);
     Options.noFinalizer.setDefaultValue(true);
-
     rootTrace = new Trace(metaDataSpace);
     backupTrace = new Trace(metaDataSpace);
     rcSweeper = new BTSweeper();
@@ -150,7 +184,6 @@ public abstract class RCBase extends StopTheWorld {
   @Interruptible
   public void processOptions() {
     super.processOptions();
-
     if (!Options.noReferenceTypes.getValue()) {
       VM.assertions.fail("Reference Types are not supported by RC");
     }
@@ -168,7 +201,7 @@ public abstract class RCBase extends StopTheWorld {
    *
    */
   public static final boolean isRCObject(ObjectReference object) {
-    return !object.isNull() && !Space.isInSpace(VM_SPACE, object);
+    return !object.isNull() && (Space.isInSpace(REF_COUNT, object) || Space.isInSpace(REF_COUNT_LOS, object));
   }
 
   @Override
@@ -182,7 +215,8 @@ public abstract class RCBase extends StopTheWorld {
       super.collectionPhase(phaseId);
       if (CC_ENABLED) {
         ccForceFull = Options.fullHeapSystemGC.getValue();
-        performCycleCollection |= (collectionAttempt > 1) || emergencyCollection || ccForceFull;
+        if (BUILD_FOR_GENRC) performCycleCollection = (collectionAttempt > 1) || emergencyCollection || ccForceFull;
+        else performCycleCollection |= (collectionAttempt > 1) || emergencyCollection || ccForceFull;
         if (performCycleCollection && Options.verbose.getValue() > 0) Log.write(" [CC] ");
       }
       return;
@@ -244,7 +278,7 @@ public abstract class RCBase extends StopTheWorld {
       } else {
         rcSpace.release();
       }
-      performCycleCollection =  getPagesAvail() < Options.cycleTriggerThreshold.getPages();
+      if (!BUILD_FOR_GENRC) performCycleCollection = getPagesAvail() < Options.cycleTriggerThreshold.getPages();
       return;
     }
 

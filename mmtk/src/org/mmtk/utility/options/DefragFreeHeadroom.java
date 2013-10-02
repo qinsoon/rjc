@@ -14,6 +14,9 @@ package org.mmtk.utility.options;
 
 import static org.mmtk.policy.immix.ImmixConstants.DEFAULT_DEFRAG_FREE_HEADROOM;
 
+import org.rjava.restriction.rulesets.MMTk;
+
+@MMTk
 public class DefragFreeHeadroom extends org.vmutil.options.PagesOption {
   /**
    * Create the option.

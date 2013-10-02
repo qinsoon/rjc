@@ -17,6 +17,7 @@ import org.mmtk.utility.Constants;
 import org.mmtk.utility.Conversions;
 import org.mmtk.utility.Log;
 import org.mmtk.vm.VM;
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.Inline;
 import org.vmmagic.pragma.NoInline;
 import org.vmmagic.pragma.Uninterruptible;
@@ -61,7 +62,7 @@ import org.vmmagic.unboxed.Word;
  * This class relies on the supporting virtual machine implementing the
  * getNextObject and related operations.
  */
-@Uninterruptible public class BumpPointer extends Allocator
+@MMTk public class BumpPointer extends Allocator
   implements Constants {
 
   /****************************************************************************
@@ -95,6 +96,8 @@ import org.vmmagic.unboxed.Word;
       MAX_ALIGNMENT, 0).toWord().toOffset();
 
   public static final int MINIMUM_DATA_SIZE = (1 << LOG_BLOCK_SIZE) - MAX_DATA_START_OFFSET.toInt();
+
+  private static final int SIZE_OF_TWO_X86_CACHE_LINES_IN_BYTES = 128;
 
   private static final boolean VERBOSE = false;
 
@@ -173,7 +176,7 @@ import org.vmmagic.unboxed.Word;
       return allocSlow(start, end, align, offset);
     fillAlignmentGap(cursor, start);
     cursor = end;
-    end.plus(128).prefetch();
+    end.plus(SIZE_OF_TWO_X86_CACHE_LINES_IN_BYTES).prefetch();
     return start;
   }
 

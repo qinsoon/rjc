@@ -14,13 +14,14 @@ package org.mmtk.utility.sanitychecker;
 
 import org.mmtk.utility.alloc.LinearScan;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.ObjectReference;
 
 /**
  * This class performs sanity checks for Simple collectors.
  */
-@Uninterruptible
+@MMTk
 final class SanityLinearScan extends LinearScan {
 
   private final SanityChecker sanityChecker;

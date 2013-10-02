@@ -12,11 +12,13 @@
  */
 package org.vmutil.options;
 
+import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.pragma.Uninterruptible;
 
 /**
  * A time option that stores values at a microsecond granularity.
  */
+@RJavaCore
 public class MicrosecondsOption extends Option {
   // values
   protected int defaultValue;

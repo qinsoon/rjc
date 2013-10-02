@@ -12,9 +12,12 @@
  */
 package org.mmtk.vm;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * Build-time configuration constants for MMTk.
  */
+@MMTk
 public abstract class BuildTimeConfig {
 
   /**

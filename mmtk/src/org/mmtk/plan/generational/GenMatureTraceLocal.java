@@ -19,6 +19,7 @@ import org.mmtk.utility.deque.*;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
@@ -26,7 +27,7 @@ import org.vmmagic.pragma.*;
  * This abstract class implements the core functionality for a transitive
  * closure over the heap graph.
  */
-@Uninterruptible
+@MMTk
 public abstract class GenMatureTraceLocal extends TraceLocal {
 
   /****************************************************************************

@@ -18,6 +18,7 @@ import org.mmtk.utility.options.Options;
 import org.mmtk.utility.statistics.Timer;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
@@ -32,7 +33,7 @@ import org.vmmagic.pragma.*;
  *
  * @see MutatorContext#collectionPhase
  */
-@Uninterruptible
+@MMTk
 public abstract class Phase implements Constants {
   /***********************************************************************
   *

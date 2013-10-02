@@ -123,9 +123,15 @@ public class RJavaCompiler {
         }
     }
     
-    public void success() throws IOException {
-        RJavaCompiler.println("\nCompilation successful");
-        RJavaCompiler.println("(output: " + new File(outputDir).getCanonicalPath() + ")");
+    public void finish() throws IOException {
+        RJavaCompiler.println("");
+        if (checker.needReport()) {
+            checker.report();
+        }
+        else {
+            RJavaCompiler.println("\nCompilation successful");
+        }
+        RJavaCompiler.println("\n(output: " + new File(outputDir).getCanonicalPath() + ")");
     }
     
     /**
@@ -252,7 +258,7 @@ public class RJavaCompiler {
 	    try {
 	        compiler.init();
 	        compiler.compile();
-	        compiler.success();
+	        compiler.finish();
 	    } catch (RJavaWarning e) {
 	        warning(e);
 	    } catch (RJavaError e) {
@@ -293,11 +299,11 @@ public class RJavaCompiler {
     }
 
     public static void warning(Object o) {
-        System.out.println("RJava compiler warning: " + o);
+        System.err.println("RJava compiler warning: " + o);
     }
     
     public static void error(Object o) {
-        System.out.println("RJava compiler error: " + o);
+        System.err.println("RJava compiler error: " + o);
         if (o instanceof Exception)
             ((Exception)o).printStackTrace();
     	System.exit(-1);

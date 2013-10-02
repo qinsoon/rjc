@@ -16,6 +16,7 @@ import org.mmtk.utility.Constants;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.Uninterruptible;
 
@@ -24,7 +25,7 @@ import org.vmmagic.pragma.Uninterruptible;
  * This supports <i>unsynchronized</i> enqueuing and dequeuing of
  * address triples
  */
-@Uninterruptible public class AddressTripleDeque extends LocalDeque implements Constants {
+@MMTk public class AddressTripleDeque extends LocalDeque implements Constants {
 
   /****************************************************************************
    *

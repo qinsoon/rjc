@@ -17,6 +17,7 @@ import org.mmtk.plan.generational.GenMatureTraceLocal;
 import org.mmtk.plan.Trace;
 import org.mmtk.policy.Space;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
@@ -25,7 +26,7 @@ import org.vmmagic.pragma.*;
  * closure over the heap graph, specifically in a Generational Mark-Sweep
  * collector.
  */
-@Uninterruptible
+@MMTk
 public final class GenMSMatureTraceLocal extends GenMatureTraceLocal{
 
   /**

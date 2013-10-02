@@ -15,12 +15,13 @@ package org.mmtk.plan.generational.copying;
 import org.mmtk.policy.CopySpace;
 import org.mmtk.policy.Space;
 import org.mmtk.plan.generational.*;
-import org.mmtk.plan.CollectorContext;
+import org.mmtk.plan.ParallelCollector;
 import org.mmtk.plan.Trace;
 import org.mmtk.plan.TransitiveClosure;
 import org.mmtk.utility.heap.VMRequest;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
@@ -53,7 +54,7 @@ import org.vmmagic.pragma.*;
  * instances is crucial to understanding the correctness and
  * performance properties of this plan.
  */
-@Uninterruptible public class GenCopy extends Gen {
+@MMTk public class GenCopy extends Gen {
 
   /****************************************************************************
    *
@@ -217,9 +218,9 @@ import org.vmmagic.pragma.*;
     super.registerSpecializedMethods();
   }
 
-@Override
-@Interruptible
-public CollectorContext newCollectorContext() {
+  @Override
+  @Interruptible
+  public ParallelCollector newCollectorContext() {
     return new GenCopyCollector();
-}
+  }
 }

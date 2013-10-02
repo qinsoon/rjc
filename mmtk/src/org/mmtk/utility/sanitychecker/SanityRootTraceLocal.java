@@ -16,13 +16,14 @@ import org.mmtk.plan.TraceLocal;
 import org.mmtk.plan.Trace;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
 /**
  * This class implements the parallel root-gathering part of a sanity check.
  */
-@Uninterruptible
+@MMTk
 public final class SanityRootTraceLocal extends TraceLocal {
 
   /**

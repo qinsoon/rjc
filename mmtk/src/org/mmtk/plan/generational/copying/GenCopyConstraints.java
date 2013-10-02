@@ -13,10 +13,11 @@
 package org.mmtk.plan.generational.copying;
 
 import org.mmtk.plan.generational.GenConstraints;
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
  * GenCopy constants.
  */
-@Uninterruptible public class GenCopyConstraints extends GenConstraints {
+@MMTk public class GenCopyConstraints extends GenConstraints {
 }

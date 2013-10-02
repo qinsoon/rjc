@@ -22,6 +22,7 @@ import org.mmtk.utility.GenericFreeList;
 import org.mmtk.vm.VM;
 import org.mmtk.utility.Constants;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
@@ -31,7 +32,7 @@ import org.vmmagic.pragma.*;
  * virtual address space are checked.  If the request for space can't
  * be satisfied (for either reason) a GC may be triggered.<p>
  */
-@Uninterruptible
+@MMTk
 public final class FreeListPageResource extends PageResource implements Constants {
 
   private final GenericFreeList freeList;

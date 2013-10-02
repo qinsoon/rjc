@@ -12,11 +12,13 @@
  */
 package org.vmutil.options;
 
+import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.pragma.Uninterruptible;
 
 /**
  * Base class for boolean options.
  */
+@RJavaCore
 public class BooleanOption extends Option {
   // values
   protected boolean defaultValue;

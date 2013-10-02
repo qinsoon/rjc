@@ -12,13 +12,14 @@
  */
 package org.mmtk.utility.statistics;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
  *
  * This abstract class describes the interface of a generic counter.
  */
-@Uninterruptible
+@MMTk
 public abstract class Counter {
 
   /****************************************************************************

@@ -16,6 +16,7 @@ import org.mmtk.utility.Constants;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
@@ -26,7 +27,7 @@ import org.vmmagic.pragma.*;
  * the ability for entries to be added to the head of the deque and popped
  * from the rear.
  */
-@Uninterruptible public class LocalDeque extends LocalQueue
+@MMTk public class LocalDeque extends LocalQueue
   implements Constants {
 
   /****************************************************************************

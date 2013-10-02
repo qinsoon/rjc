@@ -12,6 +12,7 @@
  */
 package org.mmtk.utility.statistics;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
@@ -22,7 +23,7 @@ import org.vmmagic.pragma.*;
  * The counter is trivially composed from two event counters (one for
  * counting the number of events, the other for counting the volume).
  */
-@Uninterruptible
+@MMTk
 public class SizeCounter {
 
   /****************************************************************************

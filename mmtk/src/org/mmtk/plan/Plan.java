@@ -31,6 +31,7 @@ import org.mmtk.utility.statistics.Stats;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -54,7 +55,7 @@ import org.vmmagic.unboxed.*;
  * instances is crucial to understanding the correctness and
  * performance properties of MMTk plans.
  */
-@Uninterruptible
+@MMTk
 public abstract class Plan implements Constants {
   /****************************************************************************
    * Constants
@@ -114,15 +115,13 @@ public abstract class Plan implements Constants {
   public static final ImmortalSpace immortalSpace = new ImmortalSpace("immortal", VMRequest.create());
 
   /** All meta data that is used by MMTk is allocated (and accounted for) in the meta data space. */
-  //public static final RawPageSpace metaDataSpace = new RawPageSpace("meta", VMRequest.create());
-  public static final RawPageSpace metaDataSpace = new RawPageSpace("meta", VMRequest.create(0.1f));
+  public static final RawPageSpace metaDataSpace = new RawPageSpace("meta", VMRequest.create());
 
   /** Large objects are allocated into a special large object space. */
   public static final LargeObjectSpace loSpace = new LargeObjectSpace("los", VMRequest.create());
 
   /** Space used by the sanity checker (used at runtime only if sanity checking enabled */
-  //public static final RawPageSpace sanitySpace = new RawPageSpace("sanity", VMRequest.create());
-  public static final RawPageSpace sanitySpace = new RawPageSpace("sanity", VMRequest.create(0.3f));
+  public static final RawPageSpace sanitySpace = new RawPageSpace("sanity", VMRequest.create());
 
   /** Space used to allocate objects that cannot be moved. we do not need a large space as the LOS is non-moving. */
   public static final MarkSweepSpace nonMovingSpace = new MarkSweepSpace("non-moving", VMRequest.create());
@@ -151,9 +150,6 @@ public abstract class Plan implements Constants {
   /** Global sanity checking state **/
   public static final SanityChecker sanityChecker = new SanityChecker();
 
-  /** Default collector context */
-  //protected final Class<? extends ParallelCollector> defaultCollectorContext;
-
   /****************************************************************************
    * Constructor.
    */
@@ -177,25 +173,11 @@ public abstract class Plan implements Constants {
     Options.debugAddress = new DebugAddress();
     Options.perfEvents = new PerfEvents();
     Options.useReturnBarrier = new UseReturnBarrier();
+    Options.useShortStackScans = new UseShortStackScans();
     Options.threads = new Threads();
     Options.cycleTriggerThreshold = new CycleTriggerThreshold();
     Map.finalizeStaticSpaceMap();
     registerSpecializedMethods();
-
-    // Determine the default collector context.
-    /*Class<? extends Plan> mmtkPlanClass = this.getClass().asSubclass(Plan.class);
-    while(!mmtkPlanClass.getName().startsWith("org.mmtk.plan")) {
-      mmtkPlanClass = mmtkPlanClass.getSuperclass().asSubclass(Plan.class);
-    }
-    String contextClassName = mmtkPlanClass.getName() + "Collector";
-    Class<? extends ParallelCollector> mmtkCollectorClass = null;
-    try {
-      mmtkCollectorClass = Class.forName(contextClassName).asSubclass(ParallelCollector.class);
-    } catch (Throwable t) {
-      t.printStackTrace();
-      System.exit(-1);
-    }
-    defaultCollectorContext = mmtkCollectorClass;*/
   }
 
   /****************************************************************************
@@ -232,9 +214,6 @@ public abstract class Plan implements Constants {
     if (Options.eagerMmapSpaces.getValue()) Space.eagerlyMmapMMTkSpaces();
     pretenureThreshold = (int) ((Options.nurserySize.getMaxNursery()<<LOG_BYTES_IN_PAGE) * Options.pretenureThresholdFraction.getValue());
   }
-  
-  @Interruptible
-  public abstract CollectorContext newCollectorContext();
 
   /**
    * The enableCollection method is called by the runtime after it is
@@ -246,17 +225,14 @@ public abstract class Plan implements Constants {
     Options.threads.updateDefaultValue(VM.collection.getDefaultThreads());
 
     // Create our parallel workers
-    System.out.println("Init parallel workers..");
     parallelWorkers.initGroup(Options.threads.getValue(), this);
 
     // Create the concurrent worker threads.
-    System.out.println("Init concurrent workers..");
     if (VM.activePlan.constraints().needsConcurrentWorkers()) {
       concurrentWorkers.initGroup(Options.threads.getValue(), this);
     }
 
     // Create our control thread.
-    System.out.println("new controller..");
     VM.collection.spawnCollectorContext(controlCollectorContext);
 
     // Allow mutators to trigger collection.
@@ -915,22 +891,8 @@ public abstract class Plan implements Constants {
    * @return <code>true</code> if a collection is requested by the plan.
    */
   protected boolean collectionRequired(boolean spaceFull, Space space) {
-    //Log.write("collection required?");
-    //Log.write("spaceFull=");
-    //Log.write(spaceFull);
-    
     boolean stressForceGC = stressTestGCRequired();
-    //Log.write(",stressForceGC=");
-    //Log.write(stressForceGC);
-    
     boolean heapFull = getPagesReserved() > getTotalPages();
-    //Log.write(",heapFull=");
-    //Log.write(heapFull);
-    //Log.write("(pageReserved=");
-    //Log.write(getPagesReserved());
-    //Log.write(",totalPages=");
-    //Log.write(getTotalPages());
-    //Log.writeln(")");
 
     return spaceFull || stressForceGC || heapFull;
   }
@@ -1001,4 +963,7 @@ public abstract class Plan implements Constants {
   public final String getSpecializedScanClass(int id) {
     return TransitiveClosure.getSpecializedScanClass(id);
   }
+
+  @Interruptible
+  public abstract ParallelCollector newCollectorContext();
 }

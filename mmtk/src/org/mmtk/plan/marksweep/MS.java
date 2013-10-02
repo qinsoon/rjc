@@ -17,6 +17,7 @@ import org.mmtk.policy.MarkSweepSpace;
 import org.mmtk.policy.Space;
 import org.mmtk.utility.heap.VMRequest;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -38,7 +39,7 @@ import org.vmmagic.unboxed.*;
  * instances is crucial to understanding the correctness and
  * performance properties of MMTk plans.
  */
-@Uninterruptible
+@MMTk
 public class MS extends StopTheWorld {
 
   /****************************************************************************
@@ -131,9 +132,9 @@ public class MS extends StopTheWorld {
     super.registerSpecializedMethods();
   }
 
-@Override
-@Interruptible
-public CollectorContext newCollectorContext() {
+  @Override
+  @Interruptible
+  public ParallelCollector newCollectorContext() {
     return new MSCollector();
-}
+  }
 }

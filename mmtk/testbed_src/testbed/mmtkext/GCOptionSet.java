@@ -1,5 +1,6 @@
 package testbed.mmtkext;
 
+import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.pragma.Uninterruptible;
 import org.vmmagic.unboxed.Extent;
 import org.vmmagic.unboxed.Word;
@@ -16,7 +17,7 @@ import org.vmutil.options.StringOption;
 
 import testbed.Constants;
 import testbed.Main;
-
+@RJavaCore
 public class GCOptionSet extends OptionSet {
     private String prefix;
     

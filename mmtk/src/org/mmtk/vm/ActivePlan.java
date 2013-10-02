@@ -19,12 +19,13 @@ import org.mmtk.plan.PlanConstraints;
 
 import org.mmtk.utility.Log;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
  * Stub to give access to plan local, constraint and global instances
  */
-@Uninterruptible public abstract class ActivePlan {
+@MMTk public abstract class ActivePlan {
 
   /** @return The active Plan instance. */
   public abstract Plan global();

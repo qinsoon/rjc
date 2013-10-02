@@ -12,9 +12,12 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * Should memory be protected on release?
  */
+@MMTk
 public final class ProtectOnRelease extends org.vmutil.options.BooleanOption {
   /**
    * Create the option.

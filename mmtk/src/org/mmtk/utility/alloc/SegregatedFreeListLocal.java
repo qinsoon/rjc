@@ -17,6 +17,7 @@ import org.mmtk.utility.*;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -40,7 +41,7 @@ import org.vmmagic.unboxed.*;
  * size class becomes the current block and its free list is used.  If
  * there are no more blocks the a new block is allocated.<p>
  */
-@Uninterruptible
+@MMTk
 public abstract class SegregatedFreeListLocal<S extends SegregatedFreeListSpace> extends SegregatedFreeList<S>
   implements Constants {
 

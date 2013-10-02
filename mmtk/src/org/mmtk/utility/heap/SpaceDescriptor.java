@@ -17,6 +17,7 @@ import org.mmtk.utility.Constants;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -35,7 +36,7 @@ import org.vmmagic.unboxed.*;
  * compiler can perform this decoding at compile time and produce
  * optimal code for the test.
  */
-@Uninterruptible public class SpaceDescriptor implements Constants {
+@MMTk public class SpaceDescriptor implements Constants {
 
   /****************************************************************************
    *

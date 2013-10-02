@@ -18,6 +18,7 @@ import org.mmtk.utility.Constants;
 import org.mmtk.utility.deque.*;
 import org.mmtk.utility.SimpleHashtable;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -27,7 +28,7 @@ import org.vmmagic.unboxed.*;
  *
  * This class is not thread safe.
  */
-@Uninterruptible
+@MMTk
 public final class SanityDataTable extends SimpleHashtable implements Constants {
 
   /** The number of bits for the normal reference count */

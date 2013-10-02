@@ -12,7 +12,7 @@
  */
 package org.mmtk.plan.refcount.generational;
 
-import org.mmtk.plan.CollectorContext;
+import org.mmtk.plan.ParallelCollector;
 import org.mmtk.plan.refcount.RCBase;
 import org.mmtk.policy.CopySpace;
 import org.mmtk.policy.Space;
@@ -110,9 +110,9 @@ public class GenRC extends RCBase {
     nurserySpace.setZeroingApproach(Options.nurseryZeroing.getNonTemporal(), Options.nurseryZeroing.getConcurrent());
   }
 
-@Override
-@Interruptible
-public CollectorContext newCollectorContext() {
+  @Override
+  @Interruptible
+  public ParallelCollector newCollectorContext() {
     return new GenRCCollector();
-}
+  }
 }

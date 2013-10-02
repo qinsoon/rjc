@@ -18,13 +18,14 @@ import org.mmtk.policy.MarkSweepSpace;
 import org.mmtk.policy.Space;
 import org.mmtk.utility.heap.VMRequest;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.ObjectReference;
 
 /**
  * This class implements the global state of a concurrent mark-sweep collector.
  */
-@Uninterruptible
+@MMTk
 public class CMS extends Concurrent {
 
   /****************************************************************************
@@ -108,7 +109,7 @@ public class CMS extends Concurrent {
 
 @Override
 @Interruptible
-public CollectorContext newCollectorContext() {
+public ParallelCollector newCollectorContext() {
     return new CMSCollector();
 }
 }

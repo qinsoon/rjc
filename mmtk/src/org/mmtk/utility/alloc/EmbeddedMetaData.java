@@ -14,6 +14,7 @@ package org.mmtk.utility.alloc;
 
 import org.mmtk.utility.Constants;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
@@ -28,7 +29,7 @@ import org.vmmagic.pragma.*;
  * of each page which will cause those few cache lines corresponding
  * to the start of each page to be heavily conflicted).
  */
-@Uninterruptible
+@MMTk
 public final class EmbeddedMetaData implements Constants {
 
   /* The (log of the) size of each region of meta data management */

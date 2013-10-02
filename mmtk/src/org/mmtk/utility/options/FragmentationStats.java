@@ -12,9 +12,12 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * Option to print fragmentation information for the free list.
  */
+@MMTk
 public final class FragmentationStats extends org.vmutil.options.BooleanOption {
   /**
    * Create the option.

@@ -17,6 +17,7 @@ import org.mmtk.utility.*;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -29,7 +30,7 @@ import org.vmmagic.unboxed.*;
  * Virtual memory space is taken from a VM resource, and pages
  * consumed by blocks are accounted for by a memory resource.
  */
-@Uninterruptible
+@MMTk
 public final class BlockAllocator implements Constants {
   /****************************************************************************
    *

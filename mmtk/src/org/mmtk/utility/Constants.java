@@ -14,6 +14,7 @@ package org.mmtk.utility;
 
 import org.mmtk.utility.alloc.EmbeddedMetaData;
 import org.mmtk.vm.VM;
+import org.rjava.restriction.rulesets.RJavaCore;
 
 /**
  * MMTk follows the pattern set by Jikes RVM for defining sizes of
@@ -26,6 +27,7 @@ import org.mmtk.vm.VM;
  * static final int BITS_IN_INT = 1<<LOG_BITS_IN_INT;
  * </pre>
  */
+@RJavaCore
 public interface Constants {
 
   /****************************************************************************
@@ -131,7 +133,6 @@ public interface Constants {
   int BITS_IN_PAGE = 1 << LOG_BITS_IN_PAGE;
 
   /* Assume byte-addressability */
-  // FIXME: need to make the code work for the case that address space doesn't start from Address.zero()
   byte LOG_BYTES_IN_ADDRESS_SPACE = (byte) BITS_IN_ADDRESS;
 
   /**

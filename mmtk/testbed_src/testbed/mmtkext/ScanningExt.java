@@ -39,11 +39,6 @@ public class ScanningExt extends Scanning {
     }
 
     @Override
-    public void notifyInitialThreadScanComplete() {
-        Scheduler.getCurrentContext().mutator().flushRememberedSets();
-    }
-
-    @Override
     public void computeStaticRoots(TraceLocal trace) {
         // TODO Auto-generated method stub
     }
@@ -70,6 +65,23 @@ public class ScanningExt extends Scanning {
     public void computeBootImageRoots(TraceLocal trace) {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public void notifyInitialThreadScanComplete(boolean partialScan) {
+        Scheduler.getCurrentContext().mutator().flushRememberedSets();
+    }
+
+    @Override
+    public void computeNewThreadRoots(TraceLocal trace) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public boolean supportsReturnBarrier() {
+        // TODO Auto-generated method stub
+        return false;
     }
 
 }

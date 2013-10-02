@@ -1,8 +1,10 @@
 package testbed.mminterface.select;
 
 import org.mmtk.plan.semispace.SS;
+import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.pragma.Inline;
 
+@RJavaCore
 public class PlanSelect extends SS {
     private static PlanSelect plan;
     

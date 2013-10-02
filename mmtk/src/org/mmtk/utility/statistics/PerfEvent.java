@@ -14,12 +14,13 @@ package org.mmtk.utility.statistics;
 
 import org.mmtk.utility.Log;
 import org.mmtk.vm.VM;
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.Uninterruptible;
 
 /**
  * This class represents a perf event, such as cache misses, etc.
  */
-@Uninterruptible
+@MMTk
 public final class PerfEvent extends LongCounter {
   /** {@code true} if the counter did not run due to contention for a physical counter */
   private boolean contended;

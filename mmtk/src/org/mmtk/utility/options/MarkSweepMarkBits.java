@@ -13,10 +13,12 @@
 package org.mmtk.utility.options;
 
 import org.mmtk.policy.MarkSweepSpace;
+import org.rjava.restriction.rulesets.MMTk;
 
 /**
  * Number of bits to use for the header cycle of mark sweep spaces.
  */
+@MMTk
 public final class MarkSweepMarkBits extends org.vmutil.options.IntOption {
   /**
    * Create the option.

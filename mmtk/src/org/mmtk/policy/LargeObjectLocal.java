@@ -15,6 +15,7 @@ package org.mmtk.policy;
 import org.mmtk.utility.alloc.LargeObjectAllocator;
 import org.mmtk.utility.Constants;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
@@ -29,7 +30,7 @@ import org.vmmagic.pragma.*;
  * If there are C CPUs and T TreadmillSpaces, there must be C X T
  * instances of this class, one for each CPU, TreadmillSpace pair.
  */
-@Uninterruptible
+@MMTk
 public final class LargeObjectLocal extends LargeObjectAllocator implements Constants {
 
   /****************************************************************************

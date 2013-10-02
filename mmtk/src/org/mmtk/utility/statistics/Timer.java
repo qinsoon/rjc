@@ -15,12 +15,13 @@ package org.mmtk.utility.statistics;
 import org.mmtk.utility.Log;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
  * This class implements a simple timer.
  */
-@Uninterruptible
+@MMTk
 public class Timer extends LongCounter {
 
   /****************************************************************************

@@ -19,6 +19,7 @@ import org.mmtk.utility.alloc.BumpPointer;
 import org.mmtk.utility.alloc.ImmixAllocator;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.ObjectReference;
@@ -46,7 +47,7 @@ import org.vmmagic.unboxed.ObjectReference;
  * @see CollectorContext
  * @see Phase
  */
-@Uninterruptible
+@MMTk
 public class ImmixCollector extends StopTheWorldCollector {
 
   /****************************************************************************

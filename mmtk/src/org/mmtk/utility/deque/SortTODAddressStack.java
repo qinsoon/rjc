@@ -16,6 +16,7 @@ import org.mmtk.utility.Constants;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
@@ -23,7 +24,7 @@ import org.vmmagic.pragma.*;
  * This supports <i>unsynchronized</i> pushing and popping of addresses.
  * In addition, this can sort the entries currently on the shared stack.
  */
-@Uninterruptible public class SortTODAddressStack extends LocalDeque
+@MMTk public class SortTODAddressStack extends LocalDeque
   implements Constants {
 
   /****************************************************************************

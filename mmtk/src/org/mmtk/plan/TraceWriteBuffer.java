@@ -13,6 +13,7 @@
 package org.mmtk.plan;
 
 import org.mmtk.utility.deque.WriteBuffer;
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -23,7 +24,7 @@ import org.vmmagic.unboxed.*;
  *
  * @see org.mmtk.plan.TraceLocal
  */
-@Uninterruptible
+@MMTk
 public final class TraceWriteBuffer extends TransitiveClosure {
   /****************************************************************************
    *

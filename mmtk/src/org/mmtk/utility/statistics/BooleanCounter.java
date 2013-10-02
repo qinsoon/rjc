@@ -16,13 +16,14 @@ import org.mmtk.utility.Log;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
  * This class implements a simple boolean counter (counting number of
  * phases where some boolean event is true).
  */
-@Uninterruptible
+@MMTk
 public class BooleanCounter extends Counter {
 
   /****************************************************************************

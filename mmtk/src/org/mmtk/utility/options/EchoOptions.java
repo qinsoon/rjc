@@ -12,9 +12,12 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * Echo when options are set?
  */
+@MMTk
 public final class EchoOptions extends org.vmutil.options.BooleanOption {
   /**
    * Create the option.

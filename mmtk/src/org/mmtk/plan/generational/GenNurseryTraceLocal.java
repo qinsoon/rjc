@@ -18,6 +18,7 @@ import org.mmtk.utility.HeaderByte;
 import org.mmtk.utility.deque.*;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -25,7 +26,7 @@ import org.vmmagic.unboxed.*;
  * This class implements the core functionality for a transitive
  * closure over the heap graph.
  */
-@Uninterruptible
+@MMTk
 public final class GenNurseryTraceLocal extends TraceLocal {
 
   /****************************************************************************
@@ -64,7 +65,7 @@ public final class GenNurseryTraceLocal extends TraceLocal {
     if (Gen.inNursery(object)) {
       return Gen.nurserySpace.isLive(object);
     }
-    if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(super.isLive(object));
+    /* During a nursery trace, all objects not in the nursery are considered alive */
     return true;
   }
 

@@ -16,6 +16,7 @@ import org.mmtk.plan.*;
 import org.mmtk.plan.concurrent.ConcurrentCollector;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
@@ -23,7 +24,7 @@ import org.vmmagic.pragma.*;
  * and state for the <i>CMS</i> plan, which implements a full-heap
  * concurrent mark-sweep collector.<p>
  */
-@Uninterruptible
+@MMTk
 public class CMSCollector extends ConcurrentCollector {
 
   /****************************************************************************

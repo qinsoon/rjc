@@ -15,6 +15,7 @@ package org.mmtk.utility.alloc;
 import org.mmtk.policy.BaseLargeObjectSpace;
 import org.mmtk.utility.Constants;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
@@ -29,7 +30,7 @@ import org.vmmagic.pragma.*;
  * This is a first cut implementation, with plenty of room for
  * improvement...
  */
-@Uninterruptible
+@MMTk
 public abstract class LargeObjectAllocator extends Allocator implements Constants {
 
   /****************************************************************************

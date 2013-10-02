@@ -12,11 +12,13 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
  * The granularity of the trace being produced.
  */
+@MMTk
 public final class TraceRate extends org.vmutil.options.IntOption
   implements org.mmtk.utility.Constants {
   /**

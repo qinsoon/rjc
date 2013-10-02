@@ -20,6 +20,7 @@ import org.mmtk.utility.Treadmill;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -27,7 +28,7 @@ import org.vmmagic.unboxed.*;
  * Each instance of this class corresponds to one explicitly managed
  * large object space.
  */
-@Uninterruptible
+@MMTk
 public final class LargeObjectSpace extends BaseLargeObjectSpace {
 
   /****************************************************************************

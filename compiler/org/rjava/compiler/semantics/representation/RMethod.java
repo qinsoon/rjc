@@ -236,6 +236,8 @@ public class RMethod implements DependencyEdgeNode, CompilationUnit{
      * But they are NOT included in this list
      */
     List<RAnnotation> annotations;
+    List<RRestriction> restrictions;
+    
     private List<RAnnotation> fetchAnnotations(SootMethod method) {
         List<RAnnotation> ret = new ArrayList<RAnnotation>();
         for (Tag tag : method.getTags()) {

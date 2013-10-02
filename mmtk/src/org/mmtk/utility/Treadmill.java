@@ -12,6 +12,7 @@
  */
 package org.mmtk.utility;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
@@ -31,7 +32,7 @@ import org.vmmagic.pragma.*;
  *
  * Access to the instances may be synchronized depending on the constructor argument.
  */
-@Uninterruptible
+@MMTk
 public final class Treadmill implements Constants {
 
   /****************************************************************************

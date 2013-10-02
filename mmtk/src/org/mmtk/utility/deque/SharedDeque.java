@@ -18,6 +18,7 @@ import org.mmtk.utility.Constants;
 import org.mmtk.utility.Log;
 import org.mmtk.vm.Lock;
 import org.mmtk.vm.VM;
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.Entrypoint;
 import org.vmmagic.pragma.Inline;
 import org.vmmagic.pragma.Uninterruptible;
@@ -29,7 +30,7 @@ import org.vmmagic.unboxed.Offset;
  * for shared use.  The data can be added to and removed from either end
  * of the deque.
  */
-@Uninterruptible
+@MMTk
 public class SharedDeque extends Deque implements Constants {
   private static final boolean DISABLE_WAITING = true;
   private static final Offset NEXT_OFFSET = Offset.zero();
@@ -192,7 +193,7 @@ public class SharedDeque extends Deque implements Constants {
 
   @Inline
   public final int enqueuedPages() {
-    return (int) (bufsenqueued * PAGES_PER_BUFFER);
+    return bufsenqueued * PAGES_PER_BUFFER;
   }
 
   /****************************************************************************

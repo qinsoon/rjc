@@ -13,6 +13,7 @@
 package org.mmtk.plan;
 
 import org.mmtk.policy.SegregatedFreeListSpace;
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
@@ -21,7 +22,7 @@ import org.vmmagic.pragma.*;
  * separate from the main Plan/PlanLocal class in order to bypass any
  * issues with ordering of static initialization.
  */
-@Uninterruptible public abstract class PlanConstraints {
+@MMTk public abstract class PlanConstraints {
   /** @return {@code true} if this Plan requires read barriers on java.lang.reference types. */
   public boolean needsJavaLangReferenceReadBarrier() { return false; }
 

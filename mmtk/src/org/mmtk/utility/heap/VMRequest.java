@@ -14,6 +14,7 @@ package org.mmtk.utility.heap;
 
 import org.mmtk.utility.Constants;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 
 /**
@@ -22,6 +23,7 @@ import org.vmmagic.unboxed.*;
  * By encapsulating this aspect of the construction of a space, we greatly
  * reduce the number of constructors required.
  */
+@MMTk
 public final class VMRequest implements Constants {
 
   public static final int REQUEST_DISCONTIGUOUS = 0;

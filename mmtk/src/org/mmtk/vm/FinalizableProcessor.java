@@ -13,12 +13,13 @@
 package org.mmtk.vm;
 
 import org.mmtk.plan.TraceLocal;
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.Uninterruptible;
 
 /**
  * This class manages finalizable objects.
  */
-@Uninterruptible
+@MMTk
 public abstract class FinalizableProcessor {
 
   /**

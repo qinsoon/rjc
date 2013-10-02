@@ -14,6 +14,7 @@ package org.mmtk.utility;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
@@ -26,7 +27,7 @@ import org.vmmagic.pragma.*;
  *
  * FIXME: Why can't these operations be performed at word-granularity?
  */
-@Uninterruptible
+@MMTk
 public class Memory implements Constants {
 
   /****************************************************************************

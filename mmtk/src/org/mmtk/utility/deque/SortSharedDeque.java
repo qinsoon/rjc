@@ -16,6 +16,7 @@ import org.mmtk.policy.RawPageSpace;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -26,7 +27,7 @@ import org.vmmagic.unboxed.*;
  * routines were modified from code written by Narendran Sachindran and
  * Matthew Hertz for GCTk.
  */
-@Uninterruptible public abstract class SortSharedDeque extends SharedDeque {
+@MMTk public abstract class SortSharedDeque extends SharedDeque {
 
 
   private static final int BYTES_PUSHED = BYTES_IN_ADDRESS * 5;

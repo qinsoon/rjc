@@ -13,6 +13,7 @@
 package org.mmtk.vm;
 
 import org.mmtk.plan.TraceLocal;
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.Uninterruptible;
 import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.ObjectReference;
@@ -20,7 +21,7 @@ import org.vmmagic.unboxed.ObjectReference;
 /**
  *
  */
-@Uninterruptible
+@MMTk
 public abstract class Debug {
   /**
    * Global switch for debugging - if {@code false} the other methods of this

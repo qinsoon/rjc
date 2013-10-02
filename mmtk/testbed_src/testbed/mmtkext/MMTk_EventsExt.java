@@ -2,11 +2,12 @@ package testbed.mmtkext;
 
 import org.mmtk.policy.Space;
 import org.mmtk.vm.MMTk_Events;
+import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.Extent;
 
 import testbed.Main;
-
+@RJavaCore
 public class MMTk_EventsExt extends MMTk_Events {
 
     @Override

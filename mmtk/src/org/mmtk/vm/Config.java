@@ -14,7 +14,9 @@ package org.mmtk.vm;
 
 import org.mmtk.utility.Log;
 import org.mmtk.utility.statistics.Xml;
+import org.rjava.restriction.rulesets.MMTk;
 
+@MMTk
 public class Config {
   /** The name of the active plan */
   private final String ACTIVE_PLAN;

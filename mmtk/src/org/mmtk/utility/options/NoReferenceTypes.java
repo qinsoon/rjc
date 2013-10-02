@@ -12,9 +12,12 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * Should reference type processing be disabled?
  */
+@MMTk
 public final class NoReferenceTypes extends org.vmutil.options.BooleanOption {
   /**
    * Create the option.

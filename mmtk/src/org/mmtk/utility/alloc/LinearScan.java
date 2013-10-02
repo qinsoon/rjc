@@ -12,6 +12,7 @@
  */
 package org.mmtk.utility.alloc;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
@@ -19,7 +20,7 @@ import org.vmmagic.pragma.*;
  * Callbacks from BumpPointer during a linear scan are dispatched through
  * a subclass of this object.
  */
-@Uninterruptible
+@MMTk
 public abstract class LinearScan {
   /**
    * Scan an object.

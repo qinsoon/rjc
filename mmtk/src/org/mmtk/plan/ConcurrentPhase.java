@@ -17,6 +17,7 @@ import org.mmtk.utility.statistics.Timer;
 import org.mmtk.utility.Log;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
@@ -24,7 +25,7 @@ import org.vmmagic.pragma.*;
  *
  * A concurrent phase runs concurrently with mutator activity.
  */
-@Uninterruptible
+@MMTk
 public final class ConcurrentPhase extends Phase
   implements Constants {
 

@@ -12,12 +12,14 @@
  */
 package org.vmutil.options;
 
+import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.pragma.Uninterruptible;
 import org.vmmagic.unboxed.Extent;
 
 /**
  * A memory option that stores values as a whole number of pages.
  */
+@RJavaCore
 public class PagesOption extends Option {
   // values
   protected int defaultValue;

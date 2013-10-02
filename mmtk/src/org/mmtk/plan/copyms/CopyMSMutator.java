@@ -19,6 +19,7 @@ import org.mmtk.policy.Space;
 
 import org.mmtk.utility.alloc.Allocator;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -36,7 +37,7 @@ import org.vmmagic.unboxed.*;
  * @see org.mmtk.plan.StopTheWorldMutator
  * @see org.mmtk.plan.MutatorContext
  */
-@Uninterruptible
+@MMTk
 public class CopyMSMutator extends StopTheWorldMutator {
 
   /****************************************************************************

@@ -19,10 +19,11 @@ import org.mmtk.vm.Statistics;
 import org.mmtk.vm.Strings;
 import org.mmtk.vm.SynchronizedCounter;
 import org.mmtk.vm.TraceInterface;
+import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmutil.options.OptionSet;
 
 import testbed.Configuration;
-
+@RJavaCore
 public class FactoryExt extends Factory {
     // Option set, used by FactoryExt
     public static OptionSet gcOptions = new GCOptionSet("-X:gc");

@@ -23,6 +23,7 @@ import org.mmtk.utility.statistics.Stats;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -44,7 +45,7 @@ import org.vmmagic.unboxed.*;
  * @see org.mmtk.plan.StopTheWorldCollector
  * @see org.mmtk.plan.CollectorContext
  */
-@Uninterruptible
+@MMTk
 public class GenImmixCollector extends GenCollector {
 
   /*****************************************************************************

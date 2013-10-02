@@ -12,13 +12,14 @@
  */
 package org.mmtk.vm;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.Uninterruptible;
 
 
 /**
  * A counter that supports atomic increment and reset.
  */
-@Uninterruptible public abstract class SynchronizedCounter {
+@MMTk public abstract class SynchronizedCounter {
 
   /**
    * Reset the counter to 0, returning its previous value.

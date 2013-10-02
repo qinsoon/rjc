@@ -16,6 +16,7 @@ import org.mmtk.plan.TraceLocal;
 import org.mmtk.plan.Trace;
 import org.mmtk.policy.Space;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -23,7 +24,7 @@ import org.vmmagic.unboxed.*;
  * This class implements the thread-local core functionality for a transitive
  * closure over the heap graph.
  */
-@Uninterruptible
+@MMTk
 public final class NoGCTraceLocal extends TraceLocal {
 
   /**

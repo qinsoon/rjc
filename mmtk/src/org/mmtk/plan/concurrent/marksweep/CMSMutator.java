@@ -20,6 +20,7 @@ import org.mmtk.policy.Space;
 import org.mmtk.utility.alloc.Allocator;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -39,7 +40,7 @@ import org.vmmagic.unboxed.*;
  * @see StopTheWorldMutator
  * @see MutatorContext
  */
-@Uninterruptible
+@MMTk
 public class CMSMutator extends ConcurrentMutator {
 
   /****************************************************************************

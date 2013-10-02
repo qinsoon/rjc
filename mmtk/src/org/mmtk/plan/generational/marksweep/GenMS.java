@@ -13,13 +13,14 @@
 package org.mmtk.plan.generational.marksweep;
 
 import org.mmtk.plan.generational.Gen;
-import org.mmtk.plan.CollectorContext;
+import org.mmtk.plan.ParallelCollector;
 import org.mmtk.plan.Trace;
 import org.mmtk.plan.TransitiveClosure;
 import org.mmtk.policy.MarkSweepSpace;
 import org.mmtk.policy.Space;
 import org.mmtk.utility.heap.VMRequest;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -46,7 +47,7 @@ import org.vmmagic.unboxed.*;
  * For general comments about the global/local distinction among classes refer
  * to Plan.java and PlanLocal.java.
  */
-@Uninterruptible
+@MMTk
 public class GenMS extends Gen {
 
   /*****************************************************************************
@@ -148,9 +149,9 @@ public class GenMS extends Gen {
     super.registerSpecializedMethods();
   }
 
-@Override
-@Interruptible
-public CollectorContext newCollectorContext() {
+  @Override
+  @Interruptible
+  public ParallelCollector newCollectorContext() {
     return new GenMSCollector();
-}
+  }
 }

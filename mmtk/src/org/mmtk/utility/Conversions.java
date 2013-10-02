@@ -16,6 +16,7 @@ import org.mmtk.utility.heap.*;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
@@ -23,7 +24,7 @@ import org.vmmagic.pragma.*;
  import org.jikesrvm.Offset;
  * Conversions between different units.
  */
-@Uninterruptible public class Conversions implements Constants {
+@MMTk public class Conversions implements Constants {
 
   // public static Address roundDownVM(Address addr) {
   //   return roundDown(addr.toWord(), VMResource.LOG_BYTES_IN_REGION).toAddress();

@@ -17,13 +17,14 @@ import org.mmtk.utility.*;
 import org.mmtk.vm.Lock;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
 /**
  * This class implements mmapping and protection of virtual memory.
  */
-@Uninterruptible public final class Mmapper implements Constants {
+@MMTk public final class Mmapper implements Constants {
 
   /****************************************************************************
    * Constants
@@ -125,11 +126,7 @@ import org.vmmagic.pragma.*;
   public static void ensureMapped(Address start, int pages) {
     int startChunk = Conversions.addressToMmapChunksDown(start);
     int endChunk = Conversions.addressToMmapChunksUp(start.plus(Conversions.pagesToBytes(pages)));
-    //Log.write("mapped array size:");
-    //Log.writeln(MMAP_NUM_CHUNKS);
     for (int chunk = startChunk; chunk < endChunk; chunk++) {
-      //Log.write("access:");
-      //Log.writeln(chunk);
       if (mapped[chunk] == MAPPED) continue;
       Address mmapStart = Conversions.mmapChunksToAddress(chunk);
       lock.acquire();

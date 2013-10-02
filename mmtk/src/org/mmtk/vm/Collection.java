@@ -15,9 +15,10 @@ package org.mmtk.vm;
 import org.mmtk.plan.CollectorContext;
 import org.mmtk.plan.MutatorContext;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
-@Uninterruptible public abstract class Collection {
+@MMTk public abstract class Collection {
 
   /****************************************************************************
    *

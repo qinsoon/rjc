@@ -20,6 +20,7 @@ import org.mmtk.policy.Space;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -28,7 +29,7 @@ import org.vmmagic.unboxed.*;
  * closure over the heap graph, specifically in a Generational copying
  * collector.
  */
-@Uninterruptible
+@MMTk
 public final class GenCopyMatureTraceLocal extends GenMatureTraceLocal {
 
   /**

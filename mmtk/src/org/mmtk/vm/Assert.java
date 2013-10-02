@@ -12,9 +12,10 @@
  */
 package org.mmtk.vm;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.Uninterruptible;
 
-@Uninterruptible public abstract class Assert {
+@MMTk public abstract class Assert {
   /**
    * Logs a message and traceback, then exits.
    *

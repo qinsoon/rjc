@@ -20,6 +20,7 @@ import org.mmtk.utility.options.Options;
 import org.mmtk.vm.Lock;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -35,7 +36,7 @@ import org.vmmagic.unboxed.*;
  * more restrictive (useful for copying collectors which allocate
  * monotonically before freeing the entire space and starting over).
  */
-@Uninterruptible
+@MMTk
 public abstract class PageResource implements Constants {
 
   /****************************************************************************

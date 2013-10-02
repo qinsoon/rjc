@@ -10,3 +10,4 @@
 7. System.out.print() only outputs limited number of chars (probably problem with internal length of String)
    7.1 internal length of String is 10000 now, otherwise there might be problem. 
 8. RawConcurrency.threadSuspend/Resume() is quite not safe, since a thread might be blocked inside boehm gc and cause dead lock.  
+9. Nested class is supported, but nested class cannot have another nested class

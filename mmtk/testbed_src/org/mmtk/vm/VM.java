@@ -14,6 +14,7 @@ package org.mmtk.vm;
 
 import testbed.mmtkext.FactoryExt;
 import org.mmtk.utility.options.Options;
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.Untraced;
 import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.Offset;
@@ -41,6 +42,7 @@ import org.vmmagic.unboxed.Offset;
  * <code>mmtk.hostjvm</code> to load the VM-specific concrete classes
  * and initialize the constants and singletons defined here.
  */
+@MMTk
 public final class VM {
   /*
    * VM-specific constant values

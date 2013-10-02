@@ -12,9 +12,12 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * Should we eagerly finish sweeping at the start of a collection
  */
+@MMTk
 public final class EagerCompleteSweep extends org.vmutil.options.BooleanOption {
   /**
    * Create the option.

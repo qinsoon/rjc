@@ -13,6 +13,7 @@
 package org.mmtk.plan;
 
 import org.mmtk.vm.VM;
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
@@ -26,7 +27,7 @@ import org.vmmagic.pragma.*;
  *
  * @see CollectorContext
  */
-@Uninterruptible
+@MMTk
 public abstract class StopTheWorldCollector extends SimpleCollector {
 
   /****************************************************************************

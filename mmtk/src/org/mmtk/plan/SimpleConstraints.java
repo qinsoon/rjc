@@ -12,11 +12,12 @@
  */
 package org.mmtk.plan;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
  * Constraints specific to simple collectors.
  */
-@Uninterruptible
+@MMTk
 public abstract class SimpleConstraints extends PlanConstraints {
 }

@@ -15,13 +15,14 @@ package org.mmtk.utility.alloc;
 import org.mmtk.vm.VM;
 import org.mmtk.utility.Log;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
 /**
  * Simple linear scan to dump object information.
  */
-@Uninterruptible
+@MMTk
 public final class DumpLinearScan extends LinearScan {
   @Override
   @Inline

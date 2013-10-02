@@ -12,9 +12,12 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * A sample enumeration for testing.
  */
+@MMTk
 public final class DummyEnum extends org.vmutil.options.EnumOption {
 
   // enumeration values.

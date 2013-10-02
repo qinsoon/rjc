@@ -12,9 +12,12 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * Should we print verbose fragmentation statistics for the free list allocator?
  */
+@MMTk
 public final class VerboseFragmentationStats extends org.vmutil.options.BooleanOption {
   /**
    * Create the option.

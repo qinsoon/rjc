@@ -17,6 +17,7 @@ import org.mmtk.policy.Space;
 import org.mmtk.plan.*;
 import org.mmtk.utility.heap.VMRequest;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -38,7 +39,7 @@ import org.vmmagic.unboxed.*;
  * instances is crucial to understanding the correctness and
  * performance properties of this plan.
  */
-@Uninterruptible
+@MMTk
 public class SS extends StopTheWorld {
 
   /****************************************************************************
@@ -50,11 +51,11 @@ public class SS extends StopTheWorld {
   public static boolean hi = false;
 
   /** One of the two semi spaces that alternate roles at each collection */
-  public static final CopySpace copySpace0 = new CopySpace("ss0", false, VMRequest.create(0.2f));
+  public static final CopySpace copySpace0 = new CopySpace("ss0", false, VMRequest.create());
   public static final int SS0 = copySpace0.getDescriptor();
 
   /** One of the two semi spaces that alternate roles at each collection */
-  public static final CopySpace copySpace1 = new CopySpace("ss1", true, VMRequest.create(0.2f));
+  public static final CopySpace copySpace1 = new CopySpace("ss1", true, VMRequest.create());
   public static final int SS1 = copySpace1.getDescriptor();
 
   public final Trace ssTrace;
@@ -185,9 +186,9 @@ public class SS extends StopTheWorld {
     super.registerSpecializedMethods();
   }
 
-@Override
-@Interruptible
-public CollectorContext newCollectorContext() {
+  @Override
+  @Interruptible
+  public ParallelCollector newCollectorContext() {
     return new SSCollector();
-}
+  }
 }

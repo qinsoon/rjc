@@ -13,6 +13,7 @@
 package org.mmtk.utility;
 
 import org.mmtk.vm.VM;
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.Inline;
 import org.vmmagic.pragma.Uninterruptible;
 import org.vmmagic.unboxed.ObjectReference;
@@ -30,7 +31,7 @@ import org.vmmagic.unboxed.Word;
  * The two lowest order bits are used for object forwarding because forwarding
  * generally must steal the unused two low order bits of the forwarding pointer.
  */
-@Uninterruptible
+@MMTk
 public class ForwardingWord {
   /*
    *  The forwarding process uses three states to deal with a GC race:

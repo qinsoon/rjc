@@ -12,6 +12,8 @@
  */
 package org.vmutil.options;
 
+import org.rjava.restriction.rulesets.RJavaCore;
+
 /**
  * The abstract base class for all options. This class also has
  * the static interfaces to access the options system to set
@@ -29,6 +31,7 @@ package org.vmutil.options;
  * when performing this mapping but may remove spaces and change
  * the case of any character.
  */
+@RJavaCore
 public abstract class Option {
   // Option types
   public static final int BOOLEAN_OPTION = 1;

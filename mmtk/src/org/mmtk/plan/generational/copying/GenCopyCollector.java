@@ -22,6 +22,7 @@ import org.mmtk.utility.HeaderByte;
 import org.mmtk.utility.alloc.Allocator;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
@@ -43,7 +44,7 @@ import org.vmmagic.pragma.*;
  * @see org.mmtk.plan.StopTheWorldCollector
  * @see org.mmtk.plan.CollectorContext
  */
-@Uninterruptible
+@MMTk
 public class GenCopyCollector extends GenCollector {
 
   /******************************************************************

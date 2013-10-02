@@ -18,10 +18,12 @@ import static org.mmtk.utility.Constants.LOG_BYTES_IN_PAGE;
 
 import org.mmtk.plan.Plan;
 import org.mmtk.vm.VM;
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.Word;
 
+@MMTk
 public class ImmixConstants {
-  public static final boolean BUILD_FOR_STICKYIMMIX = VM.activePlan.constraints().needsLogBitInHeader();
+  public static final boolean BUILD_FOR_STICKYIMMIX = Plan.NEEDS_LOG_BIT_IN_HEADER;
 
   /* start temporary experimental constants --- should not be allowed to lurk longer than necessary */
   public static final int TMP_MIN_SPILL_THRESHOLD = 2;

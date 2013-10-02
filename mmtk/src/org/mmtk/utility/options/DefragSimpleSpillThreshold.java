@@ -14,6 +14,9 @@ package org.mmtk.utility.options;
 
 import static org.mmtk.policy.immix.ImmixConstants.DEFAULT_SIMPLE_SPILL_THRESHOLD;
 
+import org.rjava.restriction.rulesets.MMTk;
+
+@MMTk
 public class DefragSimpleSpillThreshold extends org.vmutil.options.FloatOption {
   /**
    * Create the option.

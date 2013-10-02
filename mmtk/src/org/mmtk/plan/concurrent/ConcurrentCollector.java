@@ -20,13 +20,14 @@ import org.mmtk.utility.Log;
 import org.mmtk.utility.options.Options;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
  * This class implements <i>per-collector thread</i> behavior
  * and state for a concurrent collector.
  */
-@Uninterruptible
+@MMTk
 public abstract class ConcurrentCollector extends SimpleCollector {
 
   /****************************************************************************

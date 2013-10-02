@@ -18,12 +18,13 @@ import org.mmtk.utility.Log;
 import org.mmtk.utility.options.ConcurrentTrigger;
 import org.mmtk.utility.options.Options;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
  * This class implements the global state of a concurrent collector.
  */
-@Uninterruptible
+@MMTk
 public abstract class Concurrent extends Simple {
 
   /****************************************************************************

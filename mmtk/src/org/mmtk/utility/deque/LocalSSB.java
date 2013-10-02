@@ -16,6 +16,7 @@ import org.mmtk.utility.Constants;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -44,7 +45,7 @@ import org.vmmagic.unboxed.*;
  * overflows on inserts and pops (underflow actually) will always arise
  * when then cursor is buffer-size aligned.
  */
-@Uninterruptible class LocalSSB extends Deque implements Constants {
+@MMTk class LocalSSB extends Deque implements Constants {
 
   /****************************************************************************
    *

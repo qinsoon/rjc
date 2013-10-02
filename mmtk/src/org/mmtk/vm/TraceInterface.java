@@ -12,6 +12,7 @@
  */
 package org.mmtk.vm;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
@@ -19,7 +20,7 @@ import org.vmmagic.pragma.*;
  * Class that supports scanning Objects or Arrays for references
  * during tracing, handling those references, and computing death times
  */
-@Uninterruptible public abstract class TraceInterface {
+@MMTk public abstract class TraceInterface {
 
 
   /***********************************************************************

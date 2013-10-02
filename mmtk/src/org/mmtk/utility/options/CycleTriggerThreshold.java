@@ -12,9 +12,12 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * Trigger cycle detection if the space available falls below this threshold.
  */
+@MMTk
 public final class CycleTriggerThreshold extends org.vmutil.options.PagesOption {
   /**
    * Create the option.

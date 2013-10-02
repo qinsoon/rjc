@@ -15,6 +15,7 @@ package org.mmtk.plan.marksweep;
 import org.mmtk.plan.*;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
@@ -33,7 +34,7 @@ import org.vmmagic.pragma.*;
  * @see StopTheWorldCollector
  * @see CollectorContext
  */
-@Uninterruptible
+@MMTk
 public class MSCollector extends StopTheWorldCollector {
 
   /****************************************************************************

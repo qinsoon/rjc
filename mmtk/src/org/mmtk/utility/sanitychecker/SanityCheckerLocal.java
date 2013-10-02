@@ -18,12 +18,13 @@ import org.mmtk.utility.Constants;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
  * This class performs sanity checks for Simple collectors.
  */
-@Uninterruptible
+@MMTk
 public final class SanityCheckerLocal implements Constants {
 
   /** Trace */

@@ -14,12 +14,13 @@ package org.mmtk.plan;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
  * TODO: Documentation.
  */
-@Uninterruptible
+@MMTk
 public abstract class ParallelCollector extends CollectorContext {
 
   /****************************************************************************
@@ -27,7 +28,7 @@ public abstract class ParallelCollector extends CollectorContext {
    */
 
   /** The group that this collector context is running in (may be null) */
-  protected ParallelCollectorGroup group = null;
+  protected ParallelCollectorGroup group;
 
   /** Last group trigger index (see CollectorContextGroup) */
   int lastTriggerCount;

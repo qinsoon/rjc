@@ -25,6 +25,7 @@ import org.mmtk.utility.Constants;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -43,7 +44,7 @@ import org.vmmagic.unboxed.*;
  * memory).<p>
  *
  */
-@Uninterruptible
+@MMTk
 public abstract class Space implements Constants {
 
   /****************************************************************************
@@ -57,9 +58,7 @@ public abstract class Space implements Constants {
   private static boolean DEBUG = false;
 
   // the following is somewhat arbitrary for the 64 bit system at this stage
-  // FIXME: need to make the code work for 64 bits
-  public static final int LOG_ADDRESS_SPACE = (BYTES_IN_ADDRESS == 4) ? 32 : 40;    // FIXME: 64 bits - why 40?
-  //public static final int LOG_ADDRESS_SPACE = Constants.LOG_BYTES_IN_ADDRESS_SPACE;
+  public static final int LOG_ADDRESS_SPACE = (BYTES_IN_ADDRESS == 4) ? 32 : 40;
   public static final int LOG_BYTES_IN_CHUNK = 22;
   public static final int BYTES_IN_CHUNK = 1 << LOG_BYTES_IN_CHUNK;
   public static final int PAGES_IN_CHUNK = 1 << (LOG_BYTES_IN_CHUNK - LOG_BYTES_IN_PAGE);
@@ -167,6 +166,7 @@ public abstract class Space implements Constants {
         VM.assertions.fail(name + " starting on non-aligned boundary: " + start.toLong() + " bytes");
       }
     } else if (vmRequest.top) {
+      if (Map.isFinalized()) VM.assertions.fail("heap is narrowed after regionMap is finalized: "+ name);
       heapLimit = heapLimit.minus(extent);
       start = heapLimit;
     } else {
@@ -494,6 +494,18 @@ public abstract class Space implements Constants {
       headDiscontiguousRegion = Map.getNextContiguousRegion(chunk);
     }
     return Map.freeContiguousChunks(chunk);
+  }
+
+  /**
+   * @return The address of the head of the discontiguous chunk map.
+   */
+  public Address getHeadDiscontiguousRegion() {
+    return headDiscontiguousRegion;
+  }
+
+  public void releaseAllChunks() {
+    Map.freeAllChunks(headDiscontiguousRegion);
+    headDiscontiguousRegion = Address.zero();
   }
 
   /**

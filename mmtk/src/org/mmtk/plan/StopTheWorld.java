@@ -14,6 +14,7 @@ package org.mmtk.plan;
 
 import org.mmtk.utility.Log;
 import org.mmtk.utility.options.Options;
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
@@ -29,7 +30,7 @@ import org.vmmagic.pragma.*;
  * For details of the split between global and thread-local operations
  * @see org.mmtk.plan.Plan
  */
-@Uninterruptible
+@MMTk
 public abstract class StopTheWorld extends Simple {
 
   // CHECKSTYLE:OFF

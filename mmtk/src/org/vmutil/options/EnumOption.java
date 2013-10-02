@@ -12,6 +12,7 @@
  */
 package org.vmutil.options;
 
+import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.pragma.Uninterruptible;
 
 /**
@@ -21,6 +22,7 @@ import org.vmmagic.pragma.Uninterruptible;
  * <p>
  * Enumerations are case sensitive.
  */
+@RJavaCore
 public class EnumOption extends Option {
   // values
   protected int defaultValue;

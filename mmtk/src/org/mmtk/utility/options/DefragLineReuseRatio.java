@@ -14,6 +14,9 @@ package org.mmtk.utility.options;
 
 import static org.mmtk.policy.immix.ImmixConstants.DEFAULT_DEFRAG_LINE_REUSE_RATIO;
 
+import org.rjava.restriction.rulesets.MMTk;
+
+@MMTk
 public class DefragLineReuseRatio extends org.vmutil.options.FloatOption {
   /**
    * Create the option.

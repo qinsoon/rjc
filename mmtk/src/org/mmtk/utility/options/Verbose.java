@@ -12,9 +12,12 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * GC verbosity level.
  */
+@MMTk
 public final class Verbose extends org.vmutil.options.IntOption {
   /**
    * Create the option.

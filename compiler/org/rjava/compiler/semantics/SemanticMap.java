@@ -13,6 +13,7 @@ import org.rjava.compiler.CompilationTask;
 import org.rjava.compiler.Constants;
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.pass.DependencyGraphPass;
+import org.rjava.compiler.pass.RestrictionPass;
 import org.rjava.compiler.semantics.representation.*;
 import org.rjava.compiler.util.JGraphTUtils;
 
@@ -96,6 +97,10 @@ public abstract class SemanticMap {
         DependencyGraphPass pass = new DependencyGraphPass();
         pass.start();
         dependencyGraph.generateClassDependencyGraph();
+        
+        // init restrictions
+        RestrictionPass rPass = new RestrictionPass();
+        rPass.start();
     }
 
     private static void buildCallGraph() {
@@ -182,5 +187,12 @@ public abstract class SemanticMap {
         for (String key : types.keySet()) {
             RJavaCompiler.println(key + "->" + types.get(key).toString());
         }
+    }
+    
+    public static RClass getOuterClass(RClass inner) {
+        RJavaCompiler.assertion(inner.isInnerClass(), inner.getName() + " is not an inner class");
+        int cut = inner.getName().indexOf('$');
+        String outerClassName = inner.getName().substring(0, cut);
+        return classes.get(outerClassName);
     }
 }

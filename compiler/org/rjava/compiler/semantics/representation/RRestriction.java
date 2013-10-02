@@ -17,28 +17,32 @@ public class RRestriction{
     private String name;
     
     public RRestriction(RAnnotation anno) {
-	this.anno = anno;
-	this.name = anno.getType().getClassName();
+    	this.anno = anno;
+    	this.name = anno.getType().getClassName();
     }
 
     public static List<RRestriction> unfold(RAnnotation anno) {
-	if (anno.isRestrictionRule()) {
-	    return Arrays.asList(new RRestriction(anno));
-	}	    
-	else if (anno.isRestrictionRuleset()) {
-	    List<RRestriction> result = new ArrayList<RRestriction>();
-	    
-	    RClass annoClass = new RClass(SootEngine.resolveAndGetClass(anno.getType().getClassName()));
-	    for (RAnnotation rAnno : annoClass.getAnnotations()) {
-		result.addAll(unfold(rAnno));
-	    }
-	    
-	    return result;
-	}
-	return new ArrayList<RRestriction>();
+    	if (anno.isRestrictionRule()) {
+    	    return Arrays.asList(new RRestriction(anno));
+    	}	    
+    	else if (anno.isRestrictionRuleset()) {
+    	    List<RRestriction> result = new ArrayList<RRestriction>();
+    	    
+    	    RClass annoClass = new RClass(SootEngine.resolveAndGetClass(anno.getType().getClassName()));
+    	    for (RAnnotation rAnno : annoClass.getAnnotations()) {
+    		result.addAll(unfold(rAnno));
+    	    }
+    	    
+    	    return result;
+    	}
+    	return new ArrayList<RRestriction>();
     }
     
     public String getName() {
-	return name;
+        return name;
+    }
+    
+    public boolean equals(Object o) {
+        return name.equals(((RRestriction)o).name);
     }
 }

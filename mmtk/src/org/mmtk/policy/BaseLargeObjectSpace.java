@@ -16,6 +16,7 @@ import org.mmtk.utility.heap.FreeListPageResource;
 import org.mmtk.utility.heap.VMRequest;
 import org.mmtk.utility.Constants;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -30,7 +31,7 @@ import org.vmmagic.unboxed.*;
  * and called on a per-thread basis, where each instance of
  * TreadmillLocal corresponds to one thread operating over one space.
  */
-@Uninterruptible
+@MMTk
 public abstract class BaseLargeObjectSpace extends Space implements Constants {
 
   /****************************************************************************

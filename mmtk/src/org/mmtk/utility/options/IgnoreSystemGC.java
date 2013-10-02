@@ -12,9 +12,12 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * Should we ignore calls to java.lang.System.gc?
  */
+@MMTk
 public final class IgnoreSystemGC extends org.vmutil.options.BooleanOption {
   /**
    * Create the option.

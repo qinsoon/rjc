@@ -20,6 +20,7 @@ import org.mmtk.utility.options.Options;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -32,7 +33,7 @@ import org.vmmagic.unboxed.*;
  * @see org.mmtk.plan.Plan
  * @see org.mmtk.plan.Trace
  */
-@Uninterruptible
+@MMTk
 public abstract class TraceLocal extends TransitiveClosure implements Constants {
   /****************************************************************************
    *

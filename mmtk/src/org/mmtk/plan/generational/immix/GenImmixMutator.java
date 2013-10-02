@@ -19,6 +19,7 @@ import org.mmtk.utility.alloc.Allocator;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -42,7 +43,7 @@ import org.vmmagic.unboxed.*;
  * @see org.mmtk.plan.MutatorContext
  * @see org.mmtk.plan.Phase
  */
-@Uninterruptible
+@MMTk
 public class GenImmixMutator extends GenMutator {
 
   /******************************************************************

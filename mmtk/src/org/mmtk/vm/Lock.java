@@ -12,12 +12,13 @@
  */
 package org.mmtk.vm;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.Uninterruptible;
 
 /**
  * Simple, fair locks with deadlock detection.
  */
-@Uninterruptible
+@MMTk
 public abstract class Lock {
 
   /**

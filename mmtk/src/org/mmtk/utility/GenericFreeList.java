@@ -15,6 +15,7 @@ package org.mmtk.utility;
 import org.mmtk.plan.Plan;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
@@ -90,7 +91,7 @@ import org.vmmagic.pragma.*;
  * coalesce.  The top sentinel also serves as the head and tail of
  * the doubly linked list of free blocks.
  */
-@Uninterruptible
+@MMTk
 public final class GenericFreeList extends BaseGenericFreeList implements Constants {
 
   /****************************************************************************

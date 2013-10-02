@@ -15,6 +15,7 @@ package org.mmtk.policy;
 import org.mmtk.utility.alloc.SegregatedFreeListLocal;
 import org.mmtk.utility.Constants;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
@@ -25,7 +26,7 @@ import org.vmmagic.pragma.*;
  * @see org.mmtk.utility.alloc.SegregatedFreeList
  * @see ExplicitFreeListSpace
  */
-@Uninterruptible
+@MMTk
 public final class ExplicitFreeListLocal extends SegregatedFreeListLocal<ExplicitFreeListSpace> implements Constants {
 
   /****************************************************************************

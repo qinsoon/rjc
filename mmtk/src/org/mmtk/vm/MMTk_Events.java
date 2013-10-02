@@ -14,6 +14,7 @@
 package org.mmtk.vm;
 
 import org.mmtk.policy.Space;
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.Uninterruptible;
 import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.Extent;
@@ -21,7 +22,7 @@ import org.vmmagic.unboxed.Extent;
 /**
  * Event generation interface for MMTk.
  */
-@Uninterruptible
+@MMTk
 public abstract class MMTk_Events {
   public abstract void tracePageAcquired(Space space, Address startAddress, int numPages);
 

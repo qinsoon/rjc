@@ -12,9 +12,12 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * Should spaces be eagerly demand zero mmapped?
  */
+@MMTk
 public final class EagerMmapSpaces extends org.vmutil.options.BooleanOption {
   /**
    * Create the option.

@@ -22,6 +22,7 @@ import org.mmtk.utility.HeaderByte;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -34,7 +35,7 @@ import org.vmmagic.unboxed.*;
  * threads.  Thus unlike this class, synchronization is not necessary
  * in the instance methods of MarkSweepLocal.
  */
-@Uninterruptible
+@MMTk
 public final class MarkSweepSpace extends SegregatedFreeListSpace implements Constants {
 
   /****************************************************************************
@@ -282,7 +283,7 @@ public final class MarkSweepSpace extends SegregatedFreeListSpace implements Con
    */
   @Override
   @Inline
-  public boolean isLive(ObjectReference object) { 
+  public boolean isLive(ObjectReference object) {
     if (HEADER_MARK_BITS) {
       return testMarkState(object);
     } else {

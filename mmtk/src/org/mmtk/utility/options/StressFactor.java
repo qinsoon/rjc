@@ -13,10 +13,12 @@
 package org.mmtk.utility.options;
 
 import org.mmtk.utility.Constants;
+import org.rjava.restriction.rulesets.MMTk;
 
 /**
  * Force frequent collections after amounts of allocation.
  */
+@MMTk
 public final class StressFactor extends org.vmutil.options.PagesOption {
   /**
    * Create the option, defaulting to the maximum possible value.

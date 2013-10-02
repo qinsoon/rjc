@@ -12,9 +12,12 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * Should a major GC be performed when a system GC is triggered?
  */
+@MMTk
 public final class FullHeapSystemGC extends org.vmutil.options.BooleanOption {
   /**
    * Create the option.

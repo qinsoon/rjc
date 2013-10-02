@@ -16,6 +16,7 @@ import org.mmtk.plan.*;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
@@ -31,7 +32,7 @@ import org.vmmagic.pragma.*;
  * @see NoGCMutator
  * @see CollectorContext
  */
-@Uninterruptible
+@MMTk
 public class NoGCCollector extends ParallelCollector {
 
   /************************************************************************

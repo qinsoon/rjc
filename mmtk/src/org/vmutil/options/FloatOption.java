@@ -12,11 +12,13 @@
  */
 package org.vmutil.options;
 
+import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.pragma.Uninterruptible;
 
 /**
  * An option that has a simple single precision floating point value.
  */
+@RJavaCore
 public class FloatOption extends Option {
   // values
   protected float defaultValue;

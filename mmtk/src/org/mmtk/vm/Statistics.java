@@ -12,11 +12,12 @@
  */
 package org.mmtk.vm;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.Interruptible;
 import org.vmmagic.pragma.Uninterruptible;
 
 
-@Uninterruptible
+@MMTk
 public abstract class Statistics {
   /**
    * Read cycle counter

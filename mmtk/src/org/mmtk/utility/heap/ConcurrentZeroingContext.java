@@ -19,12 +19,13 @@ import org.mmtk.utility.options.Options;
 import org.mmtk.vm.Monitor;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
  * This context concurrently zeroes a space when triggered.
  */
-@Uninterruptible
+@MMTk
 public class ConcurrentZeroingContext extends CollectorContext {
 
   private PageResource pr;

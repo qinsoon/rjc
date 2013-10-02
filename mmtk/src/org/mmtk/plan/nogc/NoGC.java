@@ -17,6 +17,7 @@ import org.mmtk.policy.ImmortalSpace;
 import org.mmtk.utility.heap.VMRequest;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 
@@ -24,7 +25,7 @@ import org.vmmagic.pragma.*;
  * This class implements the global state of a a simple allocator
  * without a collector.
  */
-@Uninterruptible
+@MMTk
 public class NoGC extends Plan {
 
   /*****************************************************************************
@@ -98,9 +99,9 @@ public class NoGC extends Plan {
     super.registerSpecializedMethods();
   }
 
-@Override
-@Interruptible
-public CollectorContext newCollectorContext() {
+  @Override
+  @Interruptible
+  public ParallelCollector newCollectorContext() {
     return new NoGCCollector();
-}
+  }
 }

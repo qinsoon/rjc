@@ -18,6 +18,7 @@ import org.mmtk.utility.deque.*;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
@@ -34,7 +35,7 @@ import org.vmmagic.pragma.*;
  * @see StopTheWorldCollector
  * @see CollectorContext
  */
-@Uninterruptible public abstract class GenCollector extends StopTheWorldCollector {
+@MMTk public abstract class GenCollector extends StopTheWorldCollector {
 
   /*****************************************************************************
    * Instance fields
@@ -93,7 +94,10 @@ import org.vmmagic.pragma.*;
       nurseryTrace.prepare();
       return;
     }
-
+    if (phaseId == Simple.STACK_ROOTS && !global().gcFullHeap) {
+      VM.scanning.computeNewThreadRoots(getCurrentTrace());
+      return;
+    }
     if (phaseId == StopTheWorld.ROOTS) {
       VM.scanning.computeGlobalRoots(getCurrentTrace());
       if (!Gen.USE_NON_HEAP_OBJECT_REFERENCE_WRITE_BARRIER || global().traceFullHeap()) {

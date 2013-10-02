@@ -17,6 +17,7 @@ import org.mmtk.policy.MarkCompactCollector;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
@@ -33,7 +34,7 @@ import org.vmmagic.pragma.*;
  * @see StopTheWorldCollector
  * @see CollectorContext
  */
-@Uninterruptible
+@MMTk
 public class MCCollector extends StopTheWorldCollector {
 
   private static final boolean TRACE_MARK = false;

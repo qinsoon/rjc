@@ -21,6 +21,7 @@ import org.mmtk.utility.HeaderByte;
 import org.mmtk.utility.deque.ObjectReferenceDeque;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -28,7 +29,7 @@ import org.vmmagic.unboxed.*;
  * This class implements the thread-local functionality for a transitive
  * closure over an immix space.
  */
-@Uninterruptible
+@MMTk
 public final class ImmixTraceLocal extends TraceLocal {
 
   /****************************************************************************

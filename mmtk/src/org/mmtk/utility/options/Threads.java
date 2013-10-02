@@ -12,11 +12,14 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * The number of GC threads to use for parallel collection.
  *
  * This is slightly unclean as the default value is not known at build time.
  */
+@MMTk
 public final class Threads extends org.vmutil.options.IntOption {
 
   /** Has a value been set? */

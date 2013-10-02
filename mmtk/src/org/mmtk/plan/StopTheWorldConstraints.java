@@ -12,11 +12,12 @@
  */
 package org.mmtk.plan;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
  * Constraints specific to Stop-the-world collectors.
  */
-@Uninterruptible
+@MMTk
 public abstract class StopTheWorldConstraints extends SimpleConstraints {
 }

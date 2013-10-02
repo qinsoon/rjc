@@ -18,6 +18,7 @@ import org.mmtk.policy.immix.ImmixSpace;
 import org.mmtk.policy.immix.ObjectHeader;
 import org.mmtk.utility.heap.VMRequest;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -42,7 +43,7 @@ import org.vmmagic.unboxed.*;
  * instances is crucial to understanding the correctness and
  * performance properties of MMTk plans.
  */
-@Uninterruptible
+@MMTk
 public class Immix extends StopTheWorld {
 
   /****************************************************************************
@@ -167,9 +168,9 @@ public class Immix extends StopTheWorld {
     super.registerSpecializedMethods();
   }
 
-@Override
-@Interruptible
-public CollectorContext newCollectorContext() {
+  @Override
+  @Interruptible
+  public ParallelCollector newCollectorContext() {
     return new ImmixCollector();
-}
+  }
 }

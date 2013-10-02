@@ -12,12 +12,14 @@
  */
 package org.vmutil.options;
 
+import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.pragma.Uninterruptible;
 import org.vmmagic.unboxed.Address;
 
 /**
  * An option with a simple integer value.
  */
+@RJavaCore
 public class AddressOption extends Option {
   // values
   protected Address defaultValue;

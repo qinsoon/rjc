@@ -12,9 +12,12 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * Should we shrink/grow the heap to adjust to application working set?
  */
+@MMTk
 public final class VariableSizeHeap extends org.vmutil.options.BooleanOption {
   /**
    * Create the option.

@@ -12,9 +12,12 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * Should finalization be disabled?
  */
+@MMTk
 public final class NoFinalizer extends org.vmutil.options.BooleanOption {
   /**
    * Create the option.

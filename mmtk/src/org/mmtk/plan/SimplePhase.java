@@ -16,12 +16,13 @@ import org.mmtk.utility.Constants;
 import org.mmtk.utility.statistics.Timer;
 import org.mmtk.utility.Log;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
  * Phases of a garbage collection.
  */
-@Uninterruptible
+@MMTk
 public final class SimplePhase extends Phase
   implements Constants {
   /****************************************************************************

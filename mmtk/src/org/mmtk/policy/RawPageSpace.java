@@ -19,6 +19,7 @@ import org.mmtk.utility.Constants;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -28,7 +29,7 @@ import org.vmmagic.unboxed.*;
  * This class provides access to raw memory for managing internal meta
  * data.
  */
-@Uninterruptible
+@MMTk
 public final class RawPageSpace extends Space implements Constants {
 
   /**

@@ -12,9 +12,12 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * Should we use a generational approach to cycle detection?
  */
+@MMTk
 public final class GenCycleDetection extends org.vmutil.options.BooleanOption {
   /**
    * Create the option.

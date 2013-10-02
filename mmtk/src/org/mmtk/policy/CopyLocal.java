@@ -14,6 +14,7 @@ package org.mmtk.policy;
 
 import org.mmtk.utility.alloc.BumpPointer;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
@@ -24,7 +25,7 @@ import org.vmmagic.pragma.*;
  * @see BumpPointer
  * @see CopySpace
  */
-@Uninterruptible public final class CopyLocal extends BumpPointer {
+@MMTk public final class CopyLocal extends BumpPointer {
 
   /**
    * Constructor

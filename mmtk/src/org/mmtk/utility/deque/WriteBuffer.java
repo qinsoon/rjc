@@ -14,13 +14,14 @@ package org.mmtk.utility.deque;
 
 import org.mmtk.utility.Constants;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
 /**
  * This supports <i>unsynchronized</i> insertion of write buffer values.
  */
-@Uninterruptible public class WriteBuffer extends LocalSSB
+@MMTk public class WriteBuffer extends LocalSSB
   implements Constants {
 
   /****************************************************************************

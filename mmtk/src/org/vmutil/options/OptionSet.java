@@ -12,6 +12,7 @@
  */
 package org.vmutil.options;
 
+import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.pragma.Uninterruptible;
 import org.vmmagic.unboxed.*;
 
@@ -32,6 +33,7 @@ import org.vmmagic.unboxed.*;
  * when performing this mapping but may remove spaces and change
  * the case of any character.
  */
+@RJavaCore
 public abstract class OptionSet {
   private Option head;
   private Option tail;

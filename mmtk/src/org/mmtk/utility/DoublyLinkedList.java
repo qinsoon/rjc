@@ -15,6 +15,7 @@ package org.mmtk.utility;
 import org.mmtk.vm.Lock;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -35,7 +36,7 @@ import org.vmmagic.unboxed.*;
  * Access to the instances may be synchronized depending on the
  * constructor argument.
  */
-@Uninterruptible public final class DoublyLinkedList implements Constants {
+@MMTk public final class DoublyLinkedList implements Constants {
 
   /****************************************************************************
    *

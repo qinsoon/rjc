@@ -24,6 +24,7 @@ import org.mmtk.utility.Memory;
 import org.mmtk.vm.Lock;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -36,7 +37,7 @@ import org.vmmagic.unboxed.*;
  * threads.  Thus unlike this class, synchronization is not necessary
  * in the instance methods of MarkSweepLocal.
  */
-@Uninterruptible
+@MMTk
 public abstract class SegregatedFreeListSpace extends Space implements Constants {
 
   /****************************************************************************

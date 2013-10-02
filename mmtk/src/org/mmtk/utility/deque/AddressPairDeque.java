@@ -16,6 +16,7 @@ import org.mmtk.utility.Constants;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
 
@@ -23,7 +24,7 @@ import org.vmmagic.pragma.*;
  * This supports <i>unsynchronized</i> enqueuing and dequeuing of
  * address pairs
  */
-@Uninterruptible public class AddressPairDeque extends LocalDeque implements Constants {
+@MMTk public class AddressPairDeque extends LocalDeque implements Constants {
 
   /****************************************************************************
    *

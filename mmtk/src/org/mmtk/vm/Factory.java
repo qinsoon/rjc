@@ -12,6 +12,7 @@
  */
 package org.mmtk.vm;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmutil.options.OptionSet;
 
 /**
@@ -20,6 +21,7 @@ import org.vmutil.options.OptionSet;
  * build time, we leave it to a concrete vm-specific instance of this class
  * to perform the object instantiation.
  */
+@MMTk
 public abstract class Factory {
 
   /**

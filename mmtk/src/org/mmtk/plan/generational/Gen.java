@@ -26,6 +26,7 @@ import org.mmtk.utility.statistics.*;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -44,7 +45,7 @@ import org.vmmagic.unboxed.*;
  * See also Plan.java for general comments on local vs global plan
  * classes.
  */
-@Uninterruptible
+@MMTk
 public abstract class Gen extends StopTheWorld {
 
   /*****************************************************************************
@@ -55,7 +56,6 @@ public abstract class Gen extends StopTheWorld {
   /**
    *
    */
-  public static final float DEFAULT_PRETENURE_THRESHOLD_FRACTION = 0.5f; // if object is bigger than this fraction of nursery, pretenure to LOS
   protected static final float SURVIVAL_ESTIMATE = 0.8f; // est yield
   protected static final float MATURE_FRACTION = 0.5f; // est yield
   private static final float WORST_CASE_COPY_EXPANSION = 1.5f; // worst case for addition of one word overhead due to address based hashing
@@ -186,6 +186,12 @@ public abstract class Gen extends StopTheWorld {
         remsetPool.clearDeque(1);
         arrayRemsetPool.clearDeque(2);
       }
+      return;
+    }
+
+    if (phaseId == STACK_ROOTS) {
+      VM.scanning.notifyInitialThreadScanComplete(!traceFullHeap());
+      setGCStatus(GC_PROPER);
       return;
     }
 

@@ -12,10 +12,13 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * Display statistics and options in XML rather than human-readable
  * format.
  */
+@MMTk
 public final class XmlStats extends org.vmutil.options.BooleanOption {
 
   /**

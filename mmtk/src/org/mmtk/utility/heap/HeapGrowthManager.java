@@ -18,6 +18,7 @@ import org.mmtk.utility.options.Options;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -25,7 +26,7 @@ import org.vmmagic.unboxed.*;
  * This class is responsible for growing and shrinking the
  * heap size by observing heap utilization and GC load.
  */
-@Uninterruptible public abstract class HeapGrowthManager implements Constants {
+@MMTk public abstract class HeapGrowthManager implements Constants {
 
   /**
    * The initial heap size (-Xms) in bytes
@@ -163,7 +164,7 @@ import org.vmmagic.unboxed.*;
     Extent reserved = Plan.reservedMemory();
     double liveRatio = reserved.toLong() / ((double) currentHeapSize.toLong());
     double ratio = computeHeapChangeRatio(liveRatio);
-    Extent newSize = Word.fromIntSignExtend((int)(ratio * (double) (oldSize.toLong()>>LOG_BYTES_IN_MBYTE))).lsh(LOG_BYTES_IN_MBYTE).toExtent(); // do arith in MB to avoid overflow
+    Extent newSize = Word.fromIntSignExtend((int)(ratio * (oldSize.toLong()>>LOG_BYTES_IN_MBYTE))).lsh(LOG_BYTES_IN_MBYTE).toExtent(); // do arith in MB to avoid overflow
     if (newSize.LT(reserved)) newSize = reserved;
     newSize = newSize.plus(BYTES_IN_MBYTE - 1).toWord().rshl(LOG_BYTES_IN_MBYTE).lsh(LOG_BYTES_IN_MBYTE).toExtent(); // round to next megabyte
     if (newSize.GT(maxHeapSize)) newSize = maxHeapSize;

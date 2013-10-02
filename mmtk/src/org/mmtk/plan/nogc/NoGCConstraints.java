@@ -14,6 +14,7 @@ package org.mmtk.plan.nogc;
 
 import org.mmtk.plan.PlanConstraints;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
@@ -22,7 +23,7 @@ import org.vmmagic.pragma.*;
  * separate from the main Plan/PlanLocal class in order to bypass any
  * issues with ordering of static initialization.
  */
-@Uninterruptible
+@MMTk
 public class NoGCConstraints extends PlanConstraints {
   @Override
   public int gcHeaderBits() { return 0; }

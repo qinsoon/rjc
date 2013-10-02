@@ -17,13 +17,14 @@ import org.mmtk.utility.Constants;
 import org.mmtk.vm.Monitor;
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
  * This class represents a pool of collector contexts that can be triggered
  * to perform collection activity.
  */
-@Uninterruptible
+@MMTk
 public class ParallelCollectorGroup implements Constants {
 
   /****************************************************************************

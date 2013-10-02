@@ -12,11 +12,13 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.Address;
 
 /**
  * Allow an address to be specified on the command line for use in debugging.
  */
+@MMTk
 public final class DebugAddress extends org.vmutil.options.AddressOption {
   /**
    * Create the option

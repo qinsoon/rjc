@@ -12,11 +12,13 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmutil.options.OptionSet;
 
 /**
  * Repository for all option instances.
  */
+@MMTk
 public final class Options {
   public static OptionSet set;
 
@@ -39,9 +41,6 @@ public final class Options {
   public static EagerMmapSpaces eagerMmapSpaces;
   public static FragmentationStats fragmentationStats;
   public static FullHeapSystemGC fullHeapSystemGC;
-  public static GCspyPort gcspyPort;
-  public static GCspyTileSize gcspyTileSize;
-  public static GCspyWait gcspyWait;
   public static GCTimeCap gcTimeCap;
   public static GenCycleDetection genCycleDetection;
   public static HarnessAll harnessAll;
@@ -61,6 +60,7 @@ public final class Options {
   public static Threads threads;
   public static TraceRate traceRate;
   public static UseReturnBarrier useReturnBarrier;
+  public static UseShortStackScans useShortStackScans;
   public static VariableSizeHeap variableSizeHeap;
   public static VerboseFragmentationStats verboseFragmentationStats;
   public static Verbose verbose;

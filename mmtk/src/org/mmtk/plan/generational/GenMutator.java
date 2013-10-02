@@ -23,6 +23,7 @@ import org.mmtk.vm.VM;
 import static org.mmtk.plan.generational.Gen.USE_OBJECT_BARRIER_FOR_AASTORE;
 import static org.mmtk.plan.generational.Gen.USE_OBJECT_BARRIER_FOR_PUTFIELD;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -39,7 +40,7 @@ import org.vmmagic.unboxed.*;
  * @see StopTheWorldMutator
  * @see MutatorContext
  */
-@Uninterruptible public class GenMutator extends StopTheWorldMutator {
+@MMTk public class GenMutator extends StopTheWorldMutator {
 
   /*****************************************************************************
    *

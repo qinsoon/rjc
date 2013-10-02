@@ -20,6 +20,7 @@ import org.mmtk.utility.heap.VMRequest;
 import org.mmtk.utility.options.Options;
 import org.mmtk.utility.sanitychecker.SanityChecker;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.ObjectReference;
 
@@ -44,7 +45,7 @@ import org.vmmagic.unboxed.ObjectReference;
  * instances is crucial to understanding the correctness and
  * performance properties of MMTk plans.
  */
-@Uninterruptible
+@MMTk
 public class CopyMS extends StopTheWorld {
 
   /****************************************************************************
@@ -186,9 +187,9 @@ public class CopyMS extends StopTheWorld {
   }
 
 
-@Override
-@Interruptible
-public CollectorContext newCollectorContext() {
+  @Override
+  @Interruptible
+  public ParallelCollector newCollectorContext() {
     return new CopyMSCollector();
-}
+  }
 }

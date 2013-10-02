@@ -12,9 +12,12 @@
  */
 package org.mmtk.utility.options;
 
+import org.rjava.restriction.rulesets.MMTk;
+
 /**
  * Provide a bound on how much metadata is allowed before a GC is triggered.
  */
+@MMTk
 public final class MetaDataLimit extends org.vmutil.options.PagesOption {
   /**
    * Create the option.

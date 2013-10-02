@@ -19,7 +19,7 @@ public class NoDynamicLoading_CHECK {
     
     public static Boolean checkClass (RClass klass) throws RJavaRestrictionViolation {
     	boolean pass = true;
-    	/*for (RMethod method : klass.getMethods()) {
+    	for (RMethod method : klass.getMethods()) {
     	    for (RStatement statement : method.getBody()) {
     		if (statement.internal().containsInvokeExpr()) {
     		    InvokeExpr invoke = statement.internal().getInvokeExpr();
@@ -27,22 +27,20 @@ public class NoDynamicLoading_CHECK {
     			// check if the invoke is Class.forName(String);
     			JStaticInvokeExpr staticInvoke = (JStaticInvokeExpr) invoke;
     			if (staticInvoke.getMethodRef().getSignature().equals(CLASS_FORNAME)) {
-    			    String violationMessage = "Statement " + statement.internal() + " invokes " + CLASS_FORNAME + ", which breaks NoDynamicLoading rule. ";
-    			    StaticRestrictionChecker.addRestrictionViolation(new RJavaRestrictionViolation(violationMessage));
+    			    StaticRestrictionChecker.addRestrictionViolation(RJavaRestrictionViolation.newRestrictionViolation("NoDynamicLoading", statement));
     			    pass = false;
     			}
     		    } else if (invoke instanceof JVirtualInvokeExpr) {
     			// check if the invoke is aClassLoader.loadClass(String); or laodClass(String, boolean);
     			JVirtualInvokeExpr virtualInvoke = (JVirtualInvokeExpr) invoke;
     			if (virtualInvoke.getBase().getType().toString().equals("java.lang.ClassLoader") && virtualInvoke.getMethodRef().getSignature().equals(CLASSLOADER_LOADCLASS)) {
-    			    String violationMessage = "Statement " + statement.internal() + " invokes " + CLASSLOADER_LOADCLASS + ", which breaks NoDynamicLoading rule. ";
-    			    StaticRestrictionChecker.addRestrictionViolation(new RJavaRestrictionViolation(violationMessage));
+    			    StaticRestrictionChecker.addRestrictionViolation(RJavaRestrictionViolation.newRestrictionViolation("NoDynamicLoading", statement));
     			    pass = false;
     			}
     		    }
     		}
     	}
-	}*/
+	}
 	
 	return pass;
     }

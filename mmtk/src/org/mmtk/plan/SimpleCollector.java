@@ -18,6 +18,7 @@ import org.mmtk.utility.sanitychecker.SanityCheckerLocal;
 
 import org.mmtk.vm.VM;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
 /**
@@ -31,7 +32,7 @@ import org.vmmagic.pragma.*;
  *
  * @see CollectorContext
  */
-@Uninterruptible
+@MMTk
 public abstract class SimpleCollector extends ParallelCollector {
 
   /****************************************************************************

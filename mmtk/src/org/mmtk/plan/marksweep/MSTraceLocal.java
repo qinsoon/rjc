@@ -18,6 +18,7 @@ import org.mmtk.policy.Space;
 import org.mmtk.utility.HeaderByte;
 import org.mmtk.utility.deque.ObjectReferenceDeque;
 
+import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
@@ -25,7 +26,7 @@ import org.vmmagic.unboxed.*;
  * This class implements the thread-local functionality for a transitive
  * closure over a mark-sweep space.
  */
-@Uninterruptible
+@MMTk
 public final class MSTraceLocal extends TraceLocal {
   /****************************************************************************
    * Instance fields
