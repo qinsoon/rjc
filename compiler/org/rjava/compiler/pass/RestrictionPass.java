@@ -48,12 +48,6 @@ public class RestrictionPass extends CompilationPass {
     }
 
     @Override
-    public void visit(RStatement stmt) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
     public void visit(RAssignStmt stmt) {
         // TODO Auto-generated method stub
         

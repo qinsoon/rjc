@@ -287,6 +287,23 @@ public class RClass implements DependencyEdgeNode, CompilationUnit{
         return null;
     }
     
+    public static RClass whoImplementsMethodLastInTypeHierarchy(RClass base, RMethod method) {
+        RClass cursor = base;
+        while(cursor != null) {
+            if (cursor.internal.declaresMethod(method.internal.getName(), method.internal.getParameterTypes())) {
+                return cursor;
+            }
+            
+            if (cursor.hasSuperClass())
+                cursor = cursor.getSuperClass();
+            else cursor = null;
+        }
+        
+        RJavaCompiler.fail("Can't find an implementation of method " + method.getName() + " in class " + base.getName());
+        return null;
+    }
+    
+    
     /**
      * returns the class who declares the method but whose parent(s) doesnt declare such method
      * @param base

@@ -19,7 +19,40 @@ public abstract class CompilationPass {
      */
     public abstract void visit(RClass klass);
     public abstract void visit(RMethod method);
-    public abstract void visit(RStatement stmt);
+    public void visit(RStatement stmt) {
+        switch(stmt.getType()) {
+        case RStatement.ASSIGN_STMT: 
+            visit((RAssignStmt)stmt); break;
+        case RStatement.BREAKPOINT_STMT:
+            visit((RBreakpointStmt)stmt); break;
+        case RStatement.ENTER_MONITOR_STMT:
+            visit((REnterMonitorStmt)stmt); break;
+        case RStatement.EXIT_MONITOR_STMT:
+            visit((RExitMonitorStmt)stmt); break;
+        case RStatement.GOTO_STMT:
+            visit((RGotoStmt)stmt); break;
+        case RStatement.IDENTITY_STMT:
+            visit((RIdentityStmt)stmt); break;
+        case RStatement.IF_STMT:
+            visit((RIfStmt)stmt); break;
+        case RStatement.INVOKE_STMT:
+            visit((RInvokeStmt)stmt); break;
+        case RStatement.LOOKUP_SWITCH_STMT:
+            visit((RLookupSwitchStmt)stmt); break;
+        case RStatement.NOP_STMT:
+            visit((RNopStmt)stmt); break;
+        case RStatement.RET_STMT:
+            visit((RRetStmt)stmt); break;
+        case RStatement.RETURN_STMT:
+            visit((RReturnStmt)stmt); break;
+        case RStatement.RETURN_VOID_STMT:
+            visit((RReturnVoidStmt)stmt); break;
+        case RStatement.TABLE_SWITCH_STMT:
+            visit((RTableSwitchStmt)stmt); break;
+        case RStatement.THROW_STMT:
+            visit((RThrowStmt)stmt); break;
+        }
+    }
     
     /*
      * statement

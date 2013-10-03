@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.exception.RJavaError;
+import org.rjava.compiler.pass.TypeInferencePass;
+import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.semantics.representation.RLocal;
 import org.rjava.compiler.semantics.representation.RMethod;
@@ -13,6 +15,7 @@ import org.rjava.compiler.semantics.representation.RType;
 import org.rjava.compiler.semantics.representation.stmt.*;
 import org.rjava.compiler.targets.c.runtime.CLanguageRuntime;
 import org.rjava.compiler.targets.c.runtime.RuntimeHelpers;
+import org.rjava.compiler.util.Statistics;
 
 import soot.Local;
 import soot.PointsToAnalysis;
@@ -198,7 +201,18 @@ public class CLanguageStatementGenerator {
         // check type
         String rightOpWithCast = typeCasting(leftOp.getType(), rightOp.getType(), rightOpStr);
         
-        return leftOpStr + " = " + rightOpWithCast;
+        if (RType.initWithSootType(leftOp.getType()).isAppType()) {            
+            String pointsTo = "";
+            for (Value v : TypeInferencePass.tracePointsTo(leftOp)) {
+                pointsTo += v + "->";
+            }
+            
+            Type actualType = TypeInferencePass.inferType(leftOp);
+            pointsTo += actualType != null ? actualType.toString() : "???";
+            
+            return CLanguageGenerator.commentln(pointsTo) + leftOpStr + " = " + rightOpWithCast;
+        } else return leftOpStr + " = " + rightOpWithCast;
+        
     }
 
     private String get(RBreakpointStmt stmt) throws RJavaError {
@@ -371,6 +385,46 @@ public class CLanguageStatementGenerator {
      * @return
      */
     private String fromSootJVirtualInvokeExpr_appCall(soot.jimple.internal.JVirtualInvokeExpr virtualInvoke) {
+        /* trying to devirtualize the invoke first */
+        Statistics.increaseCounterByOne(Statistics.VIRTUAL_CALL_COUNT);
+        if (RJavaCompiler.OPT_DEVIRTUALIZATION) {
+            Type inferred = TypeInferencePass.inferType(virtualInvoke.getBase());
+            if (inferred != null) {
+                // devirtualize
+                Statistics.increaseCounterByOne("devirtualize");
+                StringBuilder ret = new StringBuilder();
+                
+                RType inferredRType = RType.initWithSootType(inferred);
+                RClass targetClass = SemanticMap.getRClassFromRType(inferredRType);
+                RClass actualClass = RClass.whoImplementsMethodLastInTypeHierarchy(targetClass, RMethod.getFromSootMethod(virtualInvoke.getMethod()));
+                RMethod directInvoke = actualClass.getMethodByMatchingNameAndParameters(virtualInvoke.getMethod());
+                
+                generator.referencing(directInvoke);
+                
+                ret.append(CLanguageGenerator.commentln("devirtualize to " + actualClass.getName() + "." + virtualInvoke.getMethod()));
+                ret.append(name.get(actualClass));
+                ret.append("_");
+                ret.append(name.getFunctionPointerNameFromSootMethod(virtualInvoke.getMethod()));
+                ret.append("(");
+                
+                String base = name.fromSootLocal((Local) virtualInvoke.getBase());
+                ret.append(base);
+                
+                if (virtualInvoke.getArgCount() == 0)
+                    ret.append(")");
+                else {
+                    for (int i = 0; i < virtualInvoke.getArgCount(); i++) {
+                        //ret += ", " + name.fromSootValue(virtualInvoke.getArg(i));
+                        ret.append(", " + typeCastingForInvokeParameter(virtualInvoke, i));
+                    }
+                    ret.append(")");
+                }
+                return ret.toString();
+            }
+        }
+        
+        /* virtual call */
+        
         // for a call to cat.speak()
         // we will have ((Animal_class) ((RJava_Common_Instance*) cat) -> class_struct) -> speak(cat);
         //             1. who declares speak() 2. use common instance to get class_struct

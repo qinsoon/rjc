@@ -243,7 +243,7 @@ public class RType {
     }
     
     public boolean isAppType() {
-        return SemanticMap.isApplicationClass(getClassName());
+        return !isPrimitive() && SemanticMap.isApplicationClass(getClassName());
     }
 
     public void setIntrinsicType(boolean intrinsicType) {

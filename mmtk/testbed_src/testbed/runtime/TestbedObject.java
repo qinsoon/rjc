@@ -9,7 +9,7 @@ import testbed.Main;
 
 @RJavaCore
 public class TestbedObject {
-    private ObjectReferenceArray fields;
+    private ObjectReferenceArray fields = ObjectReferenceArray.create(0);
     private int size;
     
     public TestbedObject() {
@@ -17,7 +17,6 @@ public class TestbedObject {
     }
     
     public TestbedObject(int fieldCount) {
-        // copy fields
         this.fields = ObjectReferenceArray.create(fieldCount);
         computeSize();
     }
@@ -30,9 +29,7 @@ public class TestbedObject {
     private void computeSize() {
         int minSize = ObjectModel.objectMinSize();
 
-        if (fields == null)
-            this.size = minSize;
-        else this.size = minSize +
+        this.size = minSize +
                 testbed.Constants.OBJECTREFERENCE_LENGTH_IN_BYTES * getFieldCount();//fields
     }
     
@@ -57,8 +54,6 @@ public class TestbedObject {
     
     @Inline
     public int getFieldCount() {
-        if (fields == null)
-            return 0;
-        else return fields.length();
+        return fields.length();
     }
 }

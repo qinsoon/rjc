@@ -13,6 +13,7 @@ import org.rjava.compiler.CompilationTask;
 import org.rjava.compiler.Constants;
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.pass.DependencyGraphPass;
+import org.rjava.compiler.pass.TypeInferencePass;
 import org.rjava.compiler.pass.RestrictionPass;
 import org.rjava.compiler.semantics.representation.*;
 import org.rjava.compiler.util.JGraphTUtils;
@@ -101,6 +102,11 @@ public abstract class SemanticMap {
         // init restrictions
         RestrictionPass rPass = new RestrictionPass();
         rPass.start();
+        
+        // points to analysis
+        TypeInferencePass pPass = new TypeInferencePass();
+        pPass.start();
+        pPass.report();
     }
 
     private static void buildCallGraph() {

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -20,6 +21,7 @@ import org.rjava.compiler.targets.CodeGenerator;
 import org.rjava.compiler.targets.GeneratorOptions;
 import org.rjava.compiler.targets.c.CLanguageGenerator;
 import org.rjava.compiler.targets.c.CLanguageGeneratorOptions;
+import org.rjava.compiler.util.Statistics;
 import org.rjava.restriction.StaticRestrictionChecker;
 
 public class RJavaCompiler {
@@ -267,6 +269,8 @@ public class RJavaCompiler {
 	        e.printStackTrace();
 	        error(e);
 	    }
+	    
+        Statistics.report();
     }
     
     private static RJavaCompiler singleton;
@@ -299,11 +303,11 @@ public class RJavaCompiler {
     }
 
     public static void warning(Object o) {
-        System.err.println("RJava compiler warning: " + o);
+        err.println("RJava compiler warning: " + o);
     }
     
     public static void error(Object o) {
-        System.err.println("RJava compiler error: " + o);
+        err.println("RJava compiler error: " + o);
         if (o instanceof Exception)
             ((Exception)o).printStackTrace();
     	System.exit(-1);
@@ -317,13 +321,17 @@ public class RJavaCompiler {
      * wrap standard out, so the compiler can be completely mute. 
      */
     public static boolean mute = false;
+    
+    private static final PrintWriter out = new PrintWriter(System.out, true);
+    private static final PrintWriter err = new PrintWriter(System.err, true);
+    
     public static void print(Object o) {
         if (!mute)
-            System.out.print(o);
+            out.print(o);
     }
     public static void println(Object o) {
         if (!mute)
-            System.out.println(o);
+            out.println(o);
     }
     
     public static final boolean ENABLE_ASSERTION = true;
@@ -341,4 +349,6 @@ public class RJavaCompiler {
     public static void incompleteImplementationError() {
         error("Incomplete implementation, please check source code");
     }
+    
+    public static final boolean OPT_DEVIRTUALIZATION = true;
 }
