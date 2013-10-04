@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.rjava.compiler.RJavaCompiler;
+import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.semantics.representation.RStatement;
@@ -33,7 +34,9 @@ import soot.Type;
 import soot.Value;
 import soot.jimple.Constant;
 import soot.jimple.InstanceFieldRef;
+import soot.jimple.ParameterRef;
 import soot.jimple.StaticFieldRef;
+import soot.jimple.ThisRef;
 import soot.jimple.internal.JArrayRef;
 import soot.jimple.internal.JAssignStmt;
 import soot.jimple.internal.JInstanceFieldRef;
@@ -134,18 +137,22 @@ public class TypeInferencePass extends CompilationPass {
             if (right instanceof JNewExpr) {
                 typeRoots.put(right, ((JNewExpr)right).getType());
             }
-        } else {        
-            if (collectionContainsValue(pointsToBlacklist, left))
-                return;
-            
-            if (collectionContainsValue(pointsToSet.keySet(), left)) {
-                // reassign
-                Value delete = collectionGetsValue(pointsToSet.keySet(), left);
-                pointsToSet.remove(delete);
-                pointsToBlacklist.add(left);
-            } else {
-                pointsToSet.put(left, right);
-            }
+        } else if (pass == 2){        
+            addToPointsToSet(left, right);
+        }
+    }
+    
+    private void addToPointsToSet(Value from, Value to) {
+        if (collectionContainsValue(pointsToBlacklist, from))
+            return;
+        
+        if (collectionContainsValue(pointsToSet.keySet(), from)) {
+            // reassign
+            Value delete = collectionGetsValue(pointsToSet.keySet(), from);
+            pointsToSet.remove(delete);
+            pointsToBlacklist.add(from);
+        } else {
+            pointsToSet.put(from, to);
         }
     }
 
@@ -175,8 +182,19 @@ public class TypeInferencePass extends CompilationPass {
 
     @Override
     public void visit(RIdentityStmt stmt) {
-        // TODO Auto-generated method stub
-        
+        if (pass == 1) {
+            Value right = stmt.internal().getRightOp();
+            
+            if (right instanceof ThisRef) {
+                if (stmt.getMethod().getKlass().isDefactoFinal()) {
+                    typeRoots.put(right, right.getType());
+                }
+            } else if (right instanceof ParameterRef) {
+                
+            }
+        } else if (pass == 2) {
+            addToPointsToSet(stmt.internal().getLeftOp(), stmt.internal().getRightOp());
+        }
     }
 
     @Override

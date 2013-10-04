@@ -127,4 +127,8 @@ public class Tree<T> {
     public TreeBreadthFirstIterator<T> getBreadthFirstIterator() {
         return new TreeBreadthFirstIterator<T>(this);
     }
+    
+    public ArrayList<Tree<T>> getLeafs() {
+        return leafs;
+    }
 }

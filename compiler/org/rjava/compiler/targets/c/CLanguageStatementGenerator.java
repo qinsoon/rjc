@@ -201,18 +201,7 @@ public class CLanguageStatementGenerator {
         // check type
         String rightOpWithCast = typeCasting(leftOp.getType(), rightOp.getType(), rightOpStr);
         
-        if (RType.initWithSootType(leftOp.getType()).isAppType()) {            
-            String pointsTo = "";
-            for (Value v : TypeInferencePass.tracePointsTo(leftOp)) {
-                pointsTo += v + "->";
-            }
-            
-            Type actualType = TypeInferencePass.inferType(leftOp);
-            pointsTo += actualType != null ? actualType.toString() : "???";
-            
-            return CLanguageGenerator.commentln(pointsTo) + leftOpStr + " = " + rightOpWithCast;
-        } else return leftOpStr + " = " + rightOpWithCast;
-        
+        return leftOpStr + " = " + rightOpWithCast;        
     }
 
     private String get(RBreakpointStmt stmt) throws RJavaError {
@@ -387,8 +376,19 @@ public class CLanguageStatementGenerator {
     private String fromSootJVirtualInvokeExpr_appCall(soot.jimple.internal.JVirtualInvokeExpr virtualInvoke) {
         /* trying to devirtualize the invoke first */
         Statistics.increaseCounterByOne(Statistics.VIRTUAL_CALL_COUNT);
+        String typeInfo = "";
         if (RJavaCompiler.OPT_DEVIRTUALIZATION) {
-            Type inferred = TypeInferencePass.inferType(virtualInvoke.getBase());
+            Value baseValue = virtualInvoke.getBase();
+            Type inferred = TypeInferencePass.inferType(baseValue);
+            
+            String pointsTo = "";
+            for (Value v : TypeInferencePass.tracePointsTo(baseValue)) {
+                pointsTo += v + "->";
+            }
+            pointsTo += inferred != null ? inferred.toString() : "???";
+            
+            typeInfo = CLanguageGenerator.commentln(pointsTo);
+            
             if (inferred != null) {
                 // devirtualize
                 Statistics.increaseCounterByOne("devirtualize");
@@ -401,7 +401,6 @@ public class CLanguageStatementGenerator {
                 
                 generator.referencing(directInvoke);
                 
-                ret.append(CLanguageGenerator.commentln("devirtualize to " + actualClass.getName() + "." + virtualInvoke.getMethod()));
                 ret.append(name.get(actualClass));
                 ret.append("_");
                 ret.append(name.getFunctionPointerNameFromSootMethod(virtualInvoke.getMethod()));
@@ -419,7 +418,7 @@ public class CLanguageStatementGenerator {
                     }
                     ret.append(")");
                 }
-                return ret.toString();
+                return ret.toString() + typeInfo;
             }
         }
         
@@ -454,7 +453,7 @@ public class CLanguageStatementGenerator {
             ret.append(")");
         }
         
-        return ret.toString();
+        return ret.toString() + typeInfo;
     }
     
     

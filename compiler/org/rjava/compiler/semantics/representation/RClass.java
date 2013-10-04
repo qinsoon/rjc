@@ -12,6 +12,7 @@ import org.rjava.compiler.semantics.DependencyEdgeNode;
 import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.SootEngine;
 
+import soot.Modifier;
 import soot.SootClass;
 import soot.SootField;
 import soot.SootMethod;
@@ -413,5 +414,17 @@ public class RClass implements DependencyEdgeNode, CompilationUnit{
         RJavaCompiler.debug("Methods:");
         for (RMethod m : methods)
             RJavaCompiler.debug(m);
+    }
+    
+    public boolean isFinal() {
+        return Modifier.isFinal(internal.getModifiers());
+    }
+    
+    public boolean isDefactoFinal() {
+        if (isFinal())
+            return true;
+        
+        // check class hierarchy
+        return SemanticMap.hierarchy.getTree(this).getLeafs().size() == 0;
     }
 }

@@ -16,6 +16,7 @@ import org.rjava.compiler.util.TreeBreadthFirstIterator;
 
 import soot.Body;
 import soot.Local;
+import soot.Modifier;
 import soot.SootClass;
 import soot.SootMethod;
 import soot.Type;
@@ -403,5 +404,24 @@ public class RMethod implements DependencyEdgeNode, CompilationUnit{
     @Override
     public boolean isClassNode() {
         return false;
+    }
+    
+    public boolean isFinal() {
+        return Modifier.isFinal(internal.getModifiers());
+    }
+    
+    public boolean isDefactoFinal() {
+        if (isFinal() || klass.isDefactoFinal())
+            return true;
+        
+        // check subclasses
+        Tree<RClass> subclasses = SemanticMap.hierarchy.getTree(klass);
+        TreeBreadthFirstIterator<RClass> iter = subclasses.getBreadthFirstIterator();
+        while(iter.hasNext()) {
+            RClass subclass = iter.next();
+            if (subclass.getMethodByMatchingNameAndParameters(internal) != null)
+                return false;
+        }
+        return true;
     }
 }
