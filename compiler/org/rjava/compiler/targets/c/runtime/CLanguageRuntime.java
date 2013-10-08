@@ -437,7 +437,7 @@ public class CLanguageRuntime {
         CodeStringBuilder body = new CodeStringBuilder();
         
         // init c struct for those classes
-        for (Tree<RClass> root : SemanticMap.hierarchy.getRoots()) {
+        for (Tree<RClass> root : SemanticMap.cha.getClassHierarchy().getRoots()) {
             TreeBreadthFirstIterator<RClass> iter = root.getBreadthFirstIterator();
             while (iter.hasNext()) {
                 RClass current = iter.next();
@@ -451,7 +451,7 @@ public class CLanguageRuntime {
         
         // calling <clinit> for those classes        
         body.append(CLanguageGenerator.commentln("calling <clinit> for RJava classes"));
-        for (RClass klass : SemanticMap.dependencyGraph.getClassInitializationOrder()) {
+        for (RClass klass : SemanticMap.dg.getDependencyGraph().getClassInitializationOrder()) {
             if (klass.getCLInitMethod() != null) {
                 body.append(name.get(klass.getCLInitMethod()) + "();\n");
             }

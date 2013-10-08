@@ -43,25 +43,35 @@ import soot.jimple.internal.JInstanceFieldRef;
 import soot.jimple.internal.JNewExpr;
 import soot.jimple.internal.JimpleLocal;
 
-public class TypeInferencePass extends CompilationPass {
-    public static Map<Value, Value> pointsToSet = new HashMap<Value, Value>();
-    public static List<Value> pointsToBlacklist = new ArrayList<Value>();
-    public static Map<Value, Type> typeRoots = new HashMap<Value, Type>();
+public class PointsToAnalysisPass extends CompilationPass {
+    private Map<Value, Value> pointsToSet;
+    private List<Value> pointsToBlacklist;
+    private Map<Value, Type> typeRoots;
     
     int pass;
     @Override
     public void start() {
+        pointsToSet = new HashMap<Value, Value>();
+        pointsToBlacklist = new ArrayList<Value>();
+        typeRoots = new HashMap<Value, Type>();
+        
+        // find type roots (all the 'new's)
         pass = 1;
         super.start();
         
+        // find points-to
         pass = 2;
+        super.start();
+        
+        // more analysis - especially inter-procedural parameter type inference
+        pass = 3;
         super.start();
     }
     
     public void report() {
     }
     
-    public static List<Value> tracePointsTo(Value v) {
+    public List<Value> tracePointsTo(Value v) {
         ArrayList<Value> ret = new ArrayList<Value>();
         
         Value trace = v;
@@ -75,7 +85,7 @@ public class TypeInferencePass extends CompilationPass {
         return ret;
     }
     
-    public static Type inferType(Value v) {
+    public Type inferType(Value v) {
         List<Value> trace = tracePointsTo(v);
         Value last = trace.get(trace.size()-1);
         Type ret = typeRoots.get(last);
@@ -189,11 +199,33 @@ public class TypeInferencePass extends CompilationPass {
                 if (stmt.getMethod().getKlass().isDefactoFinal()) {
                     typeRoots.put(right, right.getType());
                 }
-            } else if (right instanceof ParameterRef) {
-                
             }
         } else if (pass == 2) {
-            addToPointsToSet(stmt.internal().getLeftOp(), stmt.internal().getRightOp());
+            if (stmt.internal().getRightOp() instanceof ThisRef) {
+                addToPointsToSet(stmt.internal().getLeftOp(), stmt.internal().getRightOp());
+            }
+        } else if (pass == 3) {
+            Value right = stmt.internal().getRightOp();
+            
+            if (right instanceof ParameterRef) {
+                List<RStatement> callsites = 
+                        SemanticMap.cg.getCallGraph().getCallSites(stmt.getMethod());
+                if (callsites == null || callsites.size() == 0) {
+                    Statistics.increaseCounterByOne("no call site");
+                    return;
+                } else if (callsites.size() == 1) {
+                    Statistics.increaseCounterByOne("unique call site");
+                    RStatement callsite = callsites.get(0);
+                    Value arg = 
+                            callsite.getInvokeExpr().getInternal().getArg(((ParameterRef)right).getIndex());
+                    addToPointsToSet(right, arg);
+                    addToPointsToSet(stmt.internal().getLeftOp(), right);
+                } else {
+                    // TODO: if arguments of different call sites can be type-inferred, and they have the same type
+                    // we can infer the parameter's type
+                    Statistics.increaseCounterByOne("multiple call sites");
+                }
+            }
         }
     }
 

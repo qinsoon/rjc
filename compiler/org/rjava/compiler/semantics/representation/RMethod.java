@@ -360,7 +360,7 @@ public class RMethod implements DependencyEdgeNode, CompilationUnit{
     public List<RMethod> getOverridingMethod() {
         List<RMethod> ret = new ArrayList<RMethod>();
         
-        Tree<RClass> subclasses = SemanticMap.hierarchy.getTree(klass);
+        Tree<RClass> subclasses = SemanticMap.cha.getClassHierarchy().getTree(klass);
         TreeBreadthFirstIterator<RClass> iter = subclasses.getBreadthFirstIterator();
         while(iter.hasNext()) {
             RClass cursor = iter.next();
@@ -415,7 +415,7 @@ public class RMethod implements DependencyEdgeNode, CompilationUnit{
             return true;
         
         // check subclasses
-        Tree<RClass> subclasses = SemanticMap.hierarchy.getTree(klass);
+        Tree<RClass> subclasses = SemanticMap.cha.getClassHierarchy().getTree(klass);
         TreeBreadthFirstIterator<RClass> iter = subclasses.getBreadthFirstIterator();
         while(iter.hasNext()) {
             RClass subclass = iter.next();

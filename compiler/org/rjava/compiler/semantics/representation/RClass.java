@@ -425,6 +425,6 @@ public class RClass implements DependencyEdgeNode, CompilationUnit{
             return true;
         
         // check class hierarchy
-        return SemanticMap.hierarchy.getTree(this).getLeafs().size() == 0;
+        return SemanticMap.cha.getClassHierarchy().getTree(this).getLeafs().size() == 0;
     }
 }

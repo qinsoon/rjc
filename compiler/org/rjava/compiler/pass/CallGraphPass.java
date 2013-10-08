@@ -1,5 +1,6 @@
 package org.rjava.compiler.pass;
 
+import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.CallGraph;
 import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RClass;
@@ -25,8 +26,19 @@ import org.rjava.compiler.semantics.representation.stmt.RThrowStmt;
 import soot.jimple.StaticFieldRef;
 
 public class CallGraphPass extends CompilationPass {
-    public static CallGraph callGraph = new CallGraph();
-
+    private CallGraph callGraph;
+    
+    @Override
+    public void start() {
+        callGraph = new CallGraph();
+        super.start();
+    }
+    
+    public CallGraph getCallGraph() {
+        RJavaCompiler.assertion(callGraph != null, "Call graph is not ready since CallGraphPass hasn't run yet");
+        return callGraph;
+    }
+    
     @Override
     public void visit(RClass klass) {
         // TODO Auto-generated method stub
@@ -45,8 +57,10 @@ public class CallGraphPass extends CompilationPass {
             RMethod target = stmt.getInvokeExpr().getTargetMethod();
             
             // we only care about application classes
-            if (target != null)
+            if (target != null) {
                 callGraph.addCallEdge(stmt.getMethod(), target);
+                callGraph.addCallSite(stmt, target);
+            }
         }
     }
 

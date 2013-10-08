@@ -17,23 +17,14 @@ import org.rjava.compiler.util.TreeBreadthFirstIterator;
  * @author Yi
  *
  */
-public class TypeHierarchy {
+public class ClassHierarchy {
     List<Tree<RClass>> internal;
     
-    protected TypeHierarchy() {
+    public ClassHierarchy() {
         internal = new ArrayList<Tree<RClass>>();
     }
 
-    public static TypeHierarchy init() {
-        TypeHierarchy ret = new TypeHierarchy();
-        
-        for (RClass klass : SemanticMap.classes.values()) 
-            ret.add(klass);
-        
-        return ret;
-    }
-
-    private void add(RClass klass) {
+    public void add(RClass klass) {
         if (contains(klass))
             return;
         

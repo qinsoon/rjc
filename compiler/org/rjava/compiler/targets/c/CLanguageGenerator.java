@@ -40,8 +40,16 @@ import soot.jimple.internal.JAssignStmt;
 
 public class CLanguageGenerator extends CodeGenerator {
     public static final boolean OUTPUT_JIMPLE_TO_CONSOLE = false;
+    public static final List<String> OUTPUT_CLASS = new ArrayList<String>();
+    static {
+        OUTPUT_CLASS.add("org.mmtk.utility.alloc.LargeObjectAllocator");
+        OUTPUT_CLASS.add("org.mmtk.policy.LargeObjectLocal");
+    }
+    
     public static final boolean OUTPUT_C_TO_CONSOLE = false;
-    public static final boolean OUTPUT_JIMPLE_TO_SOURCE = true;
+    public static final boolean OUTPUT_JIMPLE_WITH_C = true; // as comments
+    public static final boolean OUTPUT_JIMPLE_SOURCE = true;
+    
     /*
      * Java spec
      */
@@ -105,7 +113,7 @@ public class CLanguageGenerator extends CodeGenerator {
     @Override
     public void translate(RClass klass)
 	    throws RJavaWarning, RJavaError {
-        if (OUTPUT_JIMPLE_TO_CONSOLE) {
+        if (OUTPUT_JIMPLE_TO_CONSOLE && OUTPUT_CLASS.contains(klass.getName())) {
             RJavaCompiler.debug("Methods for " + klass.getName());
             for (RMethod method : klass.getMethods()) {
                 RJavaCompiler.debug(method + "{");
@@ -119,6 +127,27 @@ public class CLanguageGenerator extends CodeGenerator {
                 }
                 RJavaCompiler.debug("}");
             }
+        }
+        
+        if (OUTPUT_JIMPLE_SOURCE) {
+            CodeStringBuilder str = new CodeStringBuilder();
+            str.append(klass.getName() + NEWLINE);
+            for (RMethod method : klass.getMethods()) {
+                str.append(method + "{" + NEWLINE);
+                str.increaseIndent();
+                str.append("Locals:" + NEWLINE);
+                for (RLocal local : method.getLocals()) {
+                    str.append(local + NEWLINE);
+                }
+                str.append("Locals end. + NEWLINE");
+                for (RStatement stmt : method.getBody()) {
+                    str.append(stmt + NEWLINE);
+                }
+                str.decreaseIndent();
+                str.append("}" + NEWLINE + NEWLINE);
+            }
+            
+            writeTo(str.toString(), RJavaCompiler.outputDir + klass.getName() + ".jimple");
         }
         
         currentRClass = klass;
@@ -790,7 +819,7 @@ public class CLanguageGenerator extends CodeGenerator {
             
             boolean firstStmt = true;
             for (RStatement rStmt : method.getBody()) {
-                if (OUTPUT_JIMPLE_TO_SOURCE)
+                if (OUTPUT_JIMPLE_WITH_C)
                     out.append(commentln("[" + rStmt.internal().getClass().toString() + "]" + rStmt.toString()));
     
                 

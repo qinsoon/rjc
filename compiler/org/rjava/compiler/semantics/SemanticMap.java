@@ -12,8 +12,10 @@ import java.util.Set;
 import org.rjava.compiler.CompilationTask;
 import org.rjava.compiler.Constants;
 import org.rjava.compiler.RJavaCompiler;
+import org.rjava.compiler.pass.CallGraphPass;
+import org.rjava.compiler.pass.ClassHierarchyPass;
 import org.rjava.compiler.pass.DependencyGraphPass;
-import org.rjava.compiler.pass.TypeInferencePass;
+import org.rjava.compiler.pass.PointsToAnalysisPass;
 import org.rjava.compiler.pass.RestrictionPass;
 import org.rjava.compiler.semantics.representation.*;
 import org.rjava.compiler.util.JGraphTUtils;
@@ -30,18 +32,19 @@ public abstract class SemanticMap {
     public static Map<String, RType> types;
     
     // class hierarchy
-    public static TypeHierarchy hierarchy;
+    public static ClassHierarchyPass cha;
     
     // interfaces
     public static List<RClass> interfacesThatNeedInit = new ArrayList<RClass>();
     
     // class initialization dependency
-    // FIXME: do not use it until code generation is done (use it in post-translation)
-    public static DependencyGraph dependencyGraph;
+    public static DependencyGraphPass dg;
     
     // call graph
-    // FIXME: do not use it until code generation is done (use it in post-translation)
-    public static CallGraph callGraph;
+    public static CallGraphPass cg;
+    
+    // points-to
+    public static PointsToAnalysisPass pta;
     
     public static SootEngine engine;
 
@@ -66,15 +69,16 @@ public abstract class SemanticMap {
 	        task.addClassByClassName(name);
     	}
     	
-    	// init hierarchy
-    	hierarchy = TypeHierarchy.init();
+    	// init hierarchy - we need this for the next step below
+    	cha = new ClassHierarchyPass();
+    	cha.start();
     	if (DEBUG)
-    	    hierarchy.printHierarchy();
+    	    cha.getClassHierarchy().printHierarchy();
     	
     	// if one class is named to be compiled, we have to compile all its ancestor    	
     	for (int i = 0; i < task.getClasses().toArray().length; i++) {
     	    String className = (String) task.getClasses().toArray()[i];
-    	    Set<RClass> needToCompile = hierarchy.getAncestorsOf(classes.get(className));
+    	    Set<RClass> needToCompile = cha.getClassHierarchy().getAncestorsOf(classes.get(className));
     	    
     	    for (RClass klass : needToCompile) {
     	        task.addClassByClassName(klass.getName());
@@ -88,41 +92,20 @@ public abstract class SemanticMap {
     	}
     	
         // init call graph
-        callGraph = new CallGraph();
-        buildCallGraph();
-        if (CallGraph.DEBUG)
-            callGraph.dumpGraph();
+        cg = new CallGraphPass();
+        cg.start();
         
         // init class initialization dependency
-        dependencyGraph = new DependencyGraph();
-        DependencyGraphPass pass = new DependencyGraphPass();
-        pass.start();
-        dependencyGraph.generateClassDependencyGraph();
+        dg = new DependencyGraphPass();
+        dg.start();
         
         // init restrictions
         RestrictionPass rPass = new RestrictionPass();
         rPass.start();
         
         // points to analysis
-        TypeInferencePass pPass = new TypeInferencePass();
-        pPass.start();
-        pPass.report();
-    }
-
-    private static void buildCallGraph() {
-        for (RClass klass : classes.values()) {
-            for (RMethod method : klass.getMethods()) {
-                for (RStatement stmt : method.getBody()) {
-                    if (stmt.containsInvokeExpr()) {
-                        RMethod target = stmt.getInvokeExpr().getTargetMethod();
-                        
-                        // we only care about application classes
-                        if (target != null)
-                            callGraph.addCallEdge(method, target);
-                    }
-                }
-            }
-        }
+        pta = new PointsToAnalysisPass();
+        pta.start();
     }
 
     public static Map<String, RClass> getAllClasses() {

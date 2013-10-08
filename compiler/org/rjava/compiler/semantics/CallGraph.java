@@ -1,8 +1,11 @@
 package org.rjava.compiler.semantics;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
@@ -10,11 +13,35 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.representation.RMethod;
+import org.rjava.compiler.semantics.representation.RStatement;
 import org.rjava.compiler.util.JGraphTUtils;
 
 public class CallGraph {
     public static final boolean DEBUG = false && RJavaCompiler.DEBUG;
     DefaultDirectedGraph<RMethod, DefaultEdge> cg = new DefaultDirectedGraph<RMethod, DefaultEdge>(DefaultEdge.class);
+    
+    Map<RStatement, RMethod> callsites = new HashMap<RStatement, RMethod>();
+    
+    public void addCallSite(RStatement callsite, RMethod callee) {
+        callsites.put(callsite, callee);
+    }
+    
+    /**
+     * get all call sites of an RMethod
+     * @param callee
+     * @return null if the method is never called
+     */
+    public List<RStatement> getCallSites(RMethod callee) {
+        if (!callsites.values().contains(callee))
+            return null;
+        
+        List<RStatement> ret = new ArrayList<RStatement>();
+        for (RStatement stmt : callsites.keySet()) {
+            if (callsites.get(stmt).equals(callee))
+                ret.add(stmt);
+        }
+        return ret;
+    }
     
     public void addCallEdge(RMethod from, RMethod to) {
         if (!cg.containsVertex(from))

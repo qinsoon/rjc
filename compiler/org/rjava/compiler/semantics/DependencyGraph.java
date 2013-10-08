@@ -44,7 +44,7 @@ public class DependencyGraph {
      */
     DefaultDirectedGraph<RClass, DefaultEdge> classGraph;
     
-    DependencyGraph() {
+    public DependencyGraph() {
  
     }
     

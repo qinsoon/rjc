@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.exception.RJavaError;
-import org.rjava.compiler.pass.TypeInferencePass;
+import org.rjava.compiler.pass.PointsToAnalysisPass;
 import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.semantics.representation.RLocal;
@@ -379,10 +379,10 @@ public class CLanguageStatementGenerator {
         String typeInfo = "";
         if (RJavaCompiler.OPT_DEVIRTUALIZATION) {
             Value baseValue = virtualInvoke.getBase();
-            Type inferred = TypeInferencePass.inferType(baseValue);
+            Type inferred = SemanticMap.pta.inferType(baseValue);
             
             String pointsTo = "";
-            for (Value v : TypeInferencePass.tracePointsTo(baseValue)) {
+            for (Value v : SemanticMap.pta.tracePointsTo(baseValue)) {
                 pointsTo += v + "->";
             }
             pointsTo += inferred != null ? inferred.toString() : "???";
