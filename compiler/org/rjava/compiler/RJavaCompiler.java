@@ -310,6 +310,7 @@ public class RJavaCompiler {
         err.println("RJava compiler error: " + o);
         if (o instanceof Exception)
             ((Exception)o).printStackTrace();
+        else Thread.dumpStack();
     	System.exit(-1);
     }
     
@@ -339,8 +340,9 @@ public class RJavaCompiler {
         if (ENABLE_ASSERTION == false)
             error("Assertion must be guarded by ENABLE_ASSERTION");
         
-        if (!a)
+        if (!a) {
             error("Assertion failed: " + message);
+        }
     }
     public static void fail(String message) {
         error("Fail: " + message);
@@ -351,4 +353,5 @@ public class RJavaCompiler {
     }
     
     public static final boolean OPT_DEVIRTUALIZATION = true;
+    public static final boolean OPT_OBJECT_INLINING =  false;   // doesnt work, dont turn it on
 }

@@ -1,9 +1,11 @@
 package org.rjava.compiler.pass;
 
-import org.rjava.compiler.semantics.SemanticMap;
+import org.jgrapht.alg.ConnectivityInspector;
+import org.jgrapht.graph.DefaultDirectedGraph;
+import org.jgrapht.graph.DefaultEdge;
 import org.rjava.compiler.semantics.representation.RClass;
+import org.rjava.compiler.semantics.representation.RField;
 import org.rjava.compiler.semantics.representation.RMethod;
-import org.rjava.compiler.semantics.representation.RRestriction;
 import org.rjava.compiler.semantics.representation.RStatement;
 import org.rjava.compiler.semantics.representation.stmt.RAssignStmt;
 import org.rjava.compiler.semantics.representation.stmt.RBreakpointStmt;
@@ -24,21 +26,50 @@ import org.rjava.compiler.semantics.representation.stmt.RThrowStmt;
 
 import soot.jimple.StaticFieldRef;
 
-public class RestrictionPass extends CompilationPass {
-
+/**
+ * if two or more types that have instance fields that references each other, they are circular types
+ * @author yi
+ *
+ */
+public class CircularTypePass extends CompilationPass {
+    DefaultDirectedGraph<RClass, DefaultEdge> graph = new DefaultDirectedGraph<RClass, DefaultEdge>(DefaultEdge.class);
+    ConnectivityInspector<RClass, DefaultEdge> inspector;
+    
+    @Override
+    public void start() {
+        super.start();
+        
+        inspector = new ConnectivityInspector<RClass, DefaultEdge>(graph);
+    }
+    
     @Override
     public void visit(RClass klass) {
-        // all inner class will have the same restriction as outer class
-        if (klass.getName().contains("$")) {
-            int cut = klass.getName().indexOf('$');
-            String outClassName = klass.getName().substring(0, cut);
-            for (RClass k : SemanticMap.getAllClasses().values())
-                if (k.getName().equals(outClassName)) {
-                    // add all its restrictions to current klass
-                    for (RRestriction r : k.getRestrictions())
-                        klass.addRestriction(r);
-                }
+        for (RField f : klass.getFields()) {
+            if (f.isInstanceField() && f.getType().isAppType()) {
+                RClass k1 = klass;
+                RClass k2 = RClass.fromClassName(f.getType().getClassName());
+                
+                if (!graph.containsVertex(k1))
+                    graph.addVertex(k1);
+                if (!graph.containsVertex(k2))
+                    graph.addVertex(k2);
+                
+                graph.addEdge(klass, RClass.fromClassName(f.getType().getClassName()));
+            }
         }
+        
+        if (klass.hasSuperClass() && klass.getSuperClass().isAppClass()) {
+            if (!graph.containsVertex(klass))
+                graph.addVertex(klass);
+            if (!graph.containsVertex(klass.getSuperClass()))
+                graph.addVertex(klass.getSuperClass());
+            
+            graph.addEdge(klass, klass.getSuperClass());
+        }
+    }
+    
+    public boolean isCircular(RClass a, RClass b) {
+        return inspector.pathExists(a, b);
     }
 
     @Override

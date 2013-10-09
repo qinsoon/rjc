@@ -8,6 +8,7 @@ import org.rjava.compiler.exception.RJavaError;
 import org.rjava.compiler.pass.PointsToAnalysisPass;
 import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RClass;
+import org.rjava.compiler.semantics.representation.RField;
 import org.rjava.compiler.semantics.representation.RLocal;
 import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.semantics.representation.RStatement;
@@ -152,7 +153,10 @@ public class CLanguageStatementGenerator {
             rightOpStr = name.fromSootLocal((Local) rightOp);
         } 
         else if (rightOp instanceof soot.jimple.internal.JInstanceFieldRef) {
-            rightOpStr = name.fromSootInstanceFieldRef((JInstanceFieldRef) rightOp);
+            String fetchField = name.fromSootInstanceFieldRef((JInstanceFieldRef) rightOp);;
+            if (RJavaCompiler.OPT_OBJECT_INLINING && RField.fromSootField(((soot.jimple.internal.JInstanceFieldRef) rightOp).getField()).isInlinable()) {
+                rightOpStr = "&(" + fetchField + ")";
+            } else rightOpStr = fetchField;
         } 
         else if (rightOp instanceof soot.jimple.InvokeExpr) {
             rightOpStr = fromSootInvokeExpr((InvokeExpr) rightOp);

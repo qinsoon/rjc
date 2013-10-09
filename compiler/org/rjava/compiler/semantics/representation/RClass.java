@@ -44,19 +44,19 @@ public class RClass implements DependencyEdgeNode, CompilationUnit{
      */
     public static RClass fromSootClass(SootClass sootClass) {
         String className = sootClass.getName();
-        RClass rClass = SemanticMap.classes.get(className);
+        RClass rClass = SemanticMap.getAllClasses().get(className);
         if (rClass == null) {
             rClass = new RClass(sootClass);
-            SemanticMap.classes.put(className, rClass);
+            SemanticMap.getAllClasses().put(className, rClass);
         }
         return rClass;
     }
     
     public static RClass fromClassName(String className) {
-        RClass rClass = SemanticMap.classes.get(className);
+        RClass rClass = SemanticMap.getAllClasses().get(className);
         if (rClass == null) {
             rClass = new RClass(SootEngine.resolveAndGetClass(className));
-            SemanticMap.classes.put(className, rClass);
+            SemanticMap.getAllClasses().put(className, rClass);
         }
         return rClass;
     }

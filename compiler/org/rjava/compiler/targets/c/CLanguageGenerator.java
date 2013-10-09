@@ -42,13 +42,12 @@ public class CLanguageGenerator extends CodeGenerator {
     public static final boolean OUTPUT_JIMPLE_TO_CONSOLE = false;
     public static final List<String> OUTPUT_CLASS = new ArrayList<String>();
     static {
-        OUTPUT_CLASS.add("org.mmtk.utility.alloc.LargeObjectAllocator");
-        OUTPUT_CLASS.add("org.mmtk.policy.LargeObjectLocal");
+        //OUTPUT_CLASS.add("org.mmtk.utility.alloc.LargeObjectAllocator");
     }
     
     public static final boolean OUTPUT_C_TO_CONSOLE = false;
     public static final boolean OUTPUT_JIMPLE_WITH_C = true; // as comments
-    public static final boolean OUTPUT_JIMPLE_SOURCE = true;
+    public static final boolean OUTPUT_JIMPLE_SOURCE = false; // as *.jimple
     
     /*
      * Java spec
@@ -313,7 +312,7 @@ public class CLanguageGenerator extends CodeGenerator {
 
     protected void generateIntrinsic(RClass klass) {
         // translate intrinsic types, e.g. java.lang.String/Integer, or org.vmmagic.unboxed.Address
-        for (RType type : SemanticMap.types.values()) {
+        for (RType type : SemanticMap.getAllTypes().values()) {
             intrinsic.generate(type);
         }
         
@@ -451,7 +450,7 @@ public class CLanguageGenerator extends CodeGenerator {
         outMain.append(commentln("instance fields"));
         for (RField field : klass.getFields()) {
             if (!field.isStatic())
-                outMain.append(name.getWithPointerIfProper(field.getType()) + " " + name.get(field) + SEMICOLON + NEWLINE);
+                outMain.append(getInstanceFieldDeclaration(field) + SEMICOLON + NEWLINE);
         }
         
         outMain.decreaseIndent();
@@ -756,6 +755,12 @@ public class CLanguageGenerator extends CodeGenerator {
        }
        out.append(")");
        return out.toString();
+    }
+    
+    public String getInstanceFieldDeclaration(RField field) {
+        if (!RJavaCompiler.OPT_OBJECT_INLINING || !field.isInlinable())
+            return (name.getWithPointerIfProper(field.getType()) + " " + name.get(field));
+        else return name.get(field.getType()) + " " + name.get(field);
     }
     
     /**

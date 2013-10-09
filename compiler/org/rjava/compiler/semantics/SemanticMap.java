@@ -13,8 +13,10 @@ import org.rjava.compiler.CompilationTask;
 import org.rjava.compiler.Constants;
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.pass.CallGraphPass;
+import org.rjava.compiler.pass.CircularTypePass;
 import org.rjava.compiler.pass.ClassHierarchyPass;
 import org.rjava.compiler.pass.DependencyGraphPass;
+import org.rjava.compiler.pass.DetectInlinableFieldPass;
 import org.rjava.compiler.pass.PointsToAnalysisPass;
 import org.rjava.compiler.pass.RestrictionPass;
 import org.rjava.compiler.semantics.representation.*;
@@ -26,10 +28,10 @@ public abstract class SemanticMap {
     public static final boolean DEBUG = true;
     
     // task.class <-> RClass
-    public static Map<String, RClass> classes;
+    private static Map<String, RClass> classes;
     
     // task.class <-> task.sources
-    public static Map<String, RType> types;
+    private static Map<String, RType> types;
     
     // class hierarchy
     public static ClassHierarchyPass cha;
@@ -106,10 +108,22 @@ public abstract class SemanticMap {
         // points to analysis
         pta = new PointsToAnalysisPass();
         pta.start();
+        
+        if (RJavaCompiler.OPT_OBJECT_INLINING) {
+            CircularTypePass circularTypePass = new CircularTypePass();
+            circularTypePass.start();
+            
+            DetectInlinableFieldPass oiPass = new DetectInlinableFieldPass(circularTypePass);
+            oiPass.start();
+        }
     }
 
     public static Map<String, RClass> getAllClasses() {
         return classes;
+    }
+    
+    public static Map<String, RType> getAllTypes() {
+        return types;
     }
 
     /*public static Map<String, String> getSources() {

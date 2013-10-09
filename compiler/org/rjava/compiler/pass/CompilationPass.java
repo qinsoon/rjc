@@ -10,8 +10,9 @@ import soot.jimple.StaticFieldRef;
 
 public abstract class CompilationPass {
     public void start() {
-        for (RClass klass : SemanticMap.classes.values())
-            klass.accept(this);
+        for (RClass klass : SemanticMap.getAllClasses().values())
+            if (klass.isAppClass())
+                klass.accept(this);
     }
     
     /*

@@ -1,5 +1,7 @@
 package org.rjava.compiler.targets.c;
 
+import java.util.List;
+
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RClass;
@@ -10,6 +12,7 @@ import org.rjava.compiler.semantics.representation.RType;
 import org.rjava.compiler.targets.c.runtime.CLanguageRuntime;
 import org.rjava.compiler.targets.c.runtime.RuntimeHelpers;
 import org.rjava.compiler.util.HelperMethod;
+import org.rjava.compiler.util.Statistics;
 
 import soot.Local;
 import soot.SootClass;
@@ -142,12 +145,31 @@ public class CLanguageNameGenerator {
     }
 
     public String fromSootInstanceFieldRef(JInstanceFieldRef ref) {
+        RField rf = RField.fromSootField(ref.getField());
         RClass target = RClass.whoOwnsFieldInTypeHierarchy(RClass.fromClassName(ref.getBase().getType().toString()), RType.initWithClassName(ref.getField().getType().toString()), ref.getField().getName());
         StringBuilder ret = new StringBuilder();
         ret.append("(");
         ret.append("(" + get(target) + "*)");
         ret.append(ref.getBase() + ")");
-        ret.append(" -> " + ref.getField().getName());
+        
+        boolean fieldInlined = false;
+        if (RJavaCompiler.OPT_OBJECT_INLINING) {
+            Value base = ref.getBase();
+            List<Value> pointsTo = SemanticMap.pta.tracePointsTo(base);
+            for (Value v : pointsTo) {
+                if (v instanceof JInstanceFieldRef) {
+                    if (RField.fromSootField(((JInstanceFieldRef)v).getField()).isInlinable()) {
+                        fieldInlined = true;
+                        Statistics.increaseCounterByOne("actual inlinedLoad");
+                    }
+                }
+            }
+        }
+        
+        if (fieldInlined)
+            ret.append("." + ref.getField().getName());
+        else ret.append(" -> " + ref.getField().getName());
+        
         return ret.toString();
     }
     

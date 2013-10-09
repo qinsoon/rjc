@@ -68,8 +68,8 @@ public class RType {
      */
     public static RType initWithTypeName(String type) {
         String classNameTmp = getClassNameFromType(type);
-        if (SemanticMap.types.get(classNameTmp) != null) {
-            return SemanticMap.types.get(classNameTmp);
+        if (SemanticMap.getAllTypes().get(classNameTmp) != null) {
+            return SemanticMap.getAllTypes().get(classNameTmp);
         }
         
     	RType r = new RType();
@@ -87,7 +87,7 @@ public class RType {
      * @param r
      */
     private static void saveToSemanticMap(String className, RType r) {
-        SemanticMap.types.put(className, r);
+        SemanticMap.getAllTypes().put(className, r);
         
         if (r.isArray()) {
             String baseClassName = r.getClassName();
@@ -103,8 +103,8 @@ public class RType {
      * @return corresponding RType
      */
     public static RType initWithClassName(String className) {
-        if (SemanticMap.types.get(className) != null) {
-            return SemanticMap.types.get(className);
+        if (SemanticMap.getAllTypes().get(className) != null) {
+            return SemanticMap.getAllTypes().get(className);
         }
         
     	RType r = new RType();
