@@ -48,6 +48,9 @@ public abstract class SemanticMap {
     // points-to
     public static PointsToAnalysisPass pta;
     
+    // object inlining
+    public static DetectInlinableFieldPass oi;
+    
     public static SootEngine engine;
 
     public static void initSemanticMap(CompilationTask task) {
@@ -113,8 +116,8 @@ public abstract class SemanticMap {
             CircularTypePass circularTypePass = new CircularTypePass();
             circularTypePass.start();
             
-            DetectInlinableFieldPass oiPass = new DetectInlinableFieldPass(circularTypePass);
-            oiPass.start();
+            oi = new DetectInlinableFieldPass(circularTypePass);
+            oi.start();
         }
     }
 

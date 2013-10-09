@@ -15,12 +15,14 @@ import org.rjava.compiler.semantics.representation.RClass;
 
 public class JGraphTUtils {
     public static <V, E> void dumpGraph(DirectedGraph<V, E> graph) {
+        RJavaCompiler.println("Dumping graph <<<<<<<<<<<");
         BreadthFirstIterator<V, E> iter = new BreadthFirstIterator<V, E>(graph);
         while (iter.hasNext()) {
             V next = iter.next();
             for (E edge : graph.outgoingEdgesOf(next))
                 RJavaCompiler.println(next + "->" + graph.getEdgeTarget(edge));
         }
+        RJavaCompiler.println(">>>>>>>>>>");
     }
     
     public static <V, E> void visualizeGraph(DirectedGraph<V, E> graph, String fileName) {
@@ -61,5 +63,15 @@ public class JGraphTUtils {
             
             RJavaCompiler.fail("Found bad cycle in graph " + graphName);
         }
+    }
+    
+    public static <V, E> boolean isBiconnected(DirectedGraph<V, E> graph, V node1, V node2) {
+        List<Set<V>> stronglyConnectedSets = new StrongConnectivityInspector<V, E>(graph).stronglyConnectedSets();
+        for (Set<V> set : stronglyConnectedSets) {
+            if (set.contains(node1) && set.contains(node2))
+                return true;
+        }
+        
+        return false;
     }
 }

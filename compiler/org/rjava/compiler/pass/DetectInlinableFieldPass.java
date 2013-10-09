@@ -1,12 +1,14 @@
 package org.rjava.compiler.pass;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.semantics.representation.RField;
+import org.rjava.compiler.semantics.representation.RLocal;
 import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.semantics.representation.RStatement;
 import org.rjava.compiler.semantics.representation.RType;
@@ -53,12 +55,31 @@ public class DetectInlinableFieldPass extends CompilationPass {
                 continue;
             
             for (RField f : klass.getFields()) {
-                if (f.isInstanceField() && f.isInlinable() && f.getType().isAppType()) {
-                    if (circularDetector.isCircular(klass, RClass.fromClassName(f.getType().getClassName()))) {
+                if (f.isInlinable()) {
+                    RClass from = klass;
+                    RClass to = RClass.fromClassName(f.getType().getClassName());
+                    RJavaCompiler.print("?checking circular from " + from.getName() + " to " + to.getName());
+                    RJavaCompiler.println(" -> " + circularDetector.isCircular(from, to));
+                    if (circularDetector.isCircular(from, to)) {
+                        RJavaCompiler.println("-cant be inlined (circular):" + f.getName() + " in " + f.getDeclaringClass().getName());
                         f.setInlinable(false);
                     }                            
                 }
             }
+        }
+        
+        // locals that point to an inlinable field should be value rather than reference
+        for (RClass klass : SemanticMap.getAllClasses().values()) {
+            if (!klass.isAppClass())
+                continue;
+            
+            for (RMethod m : klass.getMethods()) 
+                for (RLocal local : m.getLocals()) {
+                    RJavaCompiler.println("? checking local:" + local.getName() + " in " + m.getKlass().getName() + "." + m.getName() + "() ByValue:");
+                    if (doesPointToInlinableField(local.getInternal())) {
+                        local.setByValue(true);
+                    }
+                }
         }
         
         // statistics only
@@ -79,14 +100,30 @@ public class DetectInlinableFieldPass extends CompilationPass {
          * we will set them individually as non-inlinable if its assigned at least twice
          */
         for (RField f : klass.getFields()) {
-            if (!f.isStatic() 
-                    && f.getType().isReferenceType() 
-                    && !f.getType().isArray()
-                    && !f.getType().isMagicType()) {
+            if (isCandidateForObjectInlining(f)) {
                 f.setInlinable(true);
                 Statistics.increaseCounterByOne("instance fields");
+                RJavaCompiler.println("+reference instance field:" + f.getName() + " in " + f.getDeclaringClass().getName());
             }
         }
+    }
+    
+    public boolean isCandidateForObjectInlining(RField f) {
+        // we dont inline array at the moment
+        return f.isInstanceField() && f.getType().isAppType() && !f.getType().isArray();
+    }
+    
+    public boolean doesPointToInlinableField(Value base) {
+        List<Value> pointsTo = SemanticMap.pta.tracePointsTo(base);
+        for (Value v : pointsTo) {
+            RJavaCompiler.println(" ->" + v);
+            if (v instanceof JInstanceFieldRef) {
+                if (RField.fromSootField(((JInstanceFieldRef)v).getField()).isInlinable()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
@@ -101,10 +138,12 @@ public class DetectInlinableFieldPass extends CompilationPass {
         
         if (left instanceof InstanceFieldRef) {
             RField rf = RField.fromSootField(((InstanceFieldRef)left).getField());
-            if (assignedFields.contains(rf)) {  
-                rf.setInlinable(false);
-            }
-            else assignedFields.add(rf);
+            if (isCandidateForObjectInlining(rf))
+                if (assignedFields.contains(rf)) {  
+                    RJavaCompiler.println("-cant be inlined (reassign):" + rf.getName() + " in " + rf.getDeclaringClass().getName());
+                    rf.setInlinable(false);
+                }
+                else assignedFields.add(rf);
         }
     }
 

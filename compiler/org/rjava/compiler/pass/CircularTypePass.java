@@ -23,6 +23,7 @@ import org.rjava.compiler.semantics.representation.stmt.RReturnStmt;
 import org.rjava.compiler.semantics.representation.stmt.RReturnVoidStmt;
 import org.rjava.compiler.semantics.representation.stmt.RTableSwitchStmt;
 import org.rjava.compiler.semantics.representation.stmt.RThrowStmt;
+import org.rjava.compiler.util.JGraphTUtils;
 
 import soot.jimple.StaticFieldRef;
 
@@ -33,19 +34,16 @@ import soot.jimple.StaticFieldRef;
  */
 public class CircularTypePass extends CompilationPass {
     DefaultDirectedGraph<RClass, DefaultEdge> graph = new DefaultDirectedGraph<RClass, DefaultEdge>(DefaultEdge.class);
-    ConnectivityInspector<RClass, DefaultEdge> inspector;
     
     @Override
     public void start() {
         super.start();
-        
-        inspector = new ConnectivityInspector<RClass, DefaultEdge>(graph);
     }
     
     @Override
     public void visit(RClass klass) {
         for (RField f : klass.getFields()) {
-            if (f.isInstanceField() && f.getType().isAppType()) {
+            if (f.isInstanceField() && f.getType().isAppType() && !f.getType().isArray()) {
                 RClass k1 = klass;
                 RClass k2 = RClass.fromClassName(f.getType().getClassName());
                 
@@ -69,7 +67,7 @@ public class CircularTypePass extends CompilationPass {
     }
     
     public boolean isCircular(RClass a, RClass b) {
-        return inspector.pathExists(a, b);
+        return JGraphTUtils.isBiconnected(graph, a, b);
     }
 
     @Override

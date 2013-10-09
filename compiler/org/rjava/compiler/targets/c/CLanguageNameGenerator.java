@@ -145,7 +145,6 @@ public class CLanguageNameGenerator {
     }
 
     public String fromSootInstanceFieldRef(JInstanceFieldRef ref) {
-        RField rf = RField.fromSootField(ref.getField());
         RClass target = RClass.whoOwnsFieldInTypeHierarchy(RClass.fromClassName(ref.getBase().getType().toString()), RType.initWithClassName(ref.getField().getType().toString()), ref.getField().getName());
         StringBuilder ret = new StringBuilder();
         ret.append("(");
@@ -155,15 +154,7 @@ public class CLanguageNameGenerator {
         boolean fieldInlined = false;
         if (RJavaCompiler.OPT_OBJECT_INLINING) {
             Value base = ref.getBase();
-            List<Value> pointsTo = SemanticMap.pta.tracePointsTo(base);
-            for (Value v : pointsTo) {
-                if (v instanceof JInstanceFieldRef) {
-                    if (RField.fromSootField(((JInstanceFieldRef)v).getField()).isInlinable()) {
-                        fieldInlined = true;
-                        Statistics.increaseCounterByOne("actual inlinedLoad");
-                    }
-                }
-            }
+            fieldInlined = SemanticMap.oi.doesPointToInlinableField(base);
         }
         
         if (fieldInlined)

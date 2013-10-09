@@ -353,5 +353,5 @@ public class RJavaCompiler {
     }
     
     public static final boolean OPT_DEVIRTUALIZATION = true;
-    public static final boolean OPT_OBJECT_INLINING =  false;   // doesnt work, dont turn it on
+    public static final boolean OPT_OBJECT_INLINING =  true;   // doesnt work, dont turn it on
 }

@@ -12,12 +12,7 @@ import org.rjava.compiler.semantics.SootEngine;
 import soot.SootClass;
 import soot.Type;
 
-public class RType {
-    // full class name <-> soot classes
-    public static Map<String, SootClass> resolvedClasses = new HashMap<String, SootClass>();
-    // class name <-> full class name
-    public static Map<String, String> fullClassNames = new HashMap<String, String>();
-    
+public class RType {    
     private String type;
     private String className;
     private String packageName;
@@ -175,12 +170,12 @@ public class RType {
      * @return type
      */
     public String getType() {
-	if (type == null) {
-	    type = className;
-	    type = (array ? "[" : "") + "L" + type.replace('.', '/') + ";";
-	}
-	
-	return type;
+    	if (type == null) {
+    	    type = className;
+    	    type = (array ? "[" : "") + "L" + type.replace('.', '/') + ";";
+    	}
+    	
+    	return type;
     }
 
     /**
@@ -189,29 +184,29 @@ public class RType {
      * @return package name
      */
     public String getPackageName() {
-	if (packageName == null) {
-	    packageName = getClassName();
-	    packageName = packageName
-		    .substring(0, packageName.lastIndexOf('.'));
-	}
-
-	return packageName;
+    	if (packageName == null) {
+    	    packageName = getClassName();
+    	    packageName = packageName
+    		    .substring(0, packageName.lastIndexOf('.'));
+    	}
+    
+    	return packageName;
     }
 
     public boolean isPrimitive() {
-	return primitive;
+        return primitive;
     }
 
     public void setPrimitive(boolean primitive) {
-	this.primitive = primitive;
+        this.primitive = primitive;
     }
 
     public boolean isArray() {
-	return array;
+        return array;
     }
 
     public void setArray(boolean array) {
-	this.array = array;
+        this.array = array;
     }
 
     public boolean isVoidType() {

@@ -111,18 +111,18 @@ public class RClass implements DependencyEdgeNode, CompilationUnit{
      * @return list of RAnnotation
      */
     private List<RAnnotation> fetchAnnotations(SootClass klass) {
-	List<RAnnotation> result = new ArrayList<RAnnotation>();
-	for (Tag tag : klass.getTags()) {
-	    // only deal with VisibilityAnnotationTag
-	    if (tag instanceof VisibilityAnnotationTag) {
-		VisibilityAnnotationTag annoTag = (VisibilityAnnotationTag) tag;
-		for (AnnotationTag t : annoTag.getAnnotations()) {
-		    result.add(new RAnnotation(t));  
-		}
-	    }
-	}
-	
-	return result;
+    	List<RAnnotation> result = new ArrayList<RAnnotation>();
+    	for (Tag tag : klass.getTags()) {
+    	    // only deal with VisibilityAnnotationTag
+    	    if (tag instanceof VisibilityAnnotationTag) {
+    		VisibilityAnnotationTag annoTag = (VisibilityAnnotationTag) tag;
+    		for (AnnotationTag t : annoTag.getAnnotations()) {
+    		    result.add(new RAnnotation(t));  
+    		}
+    	    }
+    	}
+    	
+    	return result;
     }
 
     /**

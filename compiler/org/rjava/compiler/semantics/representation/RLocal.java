@@ -9,6 +9,11 @@ public class RLocal {
     RType type;
     String name;
     
+    /**
+     * for inlining object, some locals will be value (pointing to the inlined object)
+     */
+    boolean byValue = false;
+    
     public RLocal(RMethod method, Local internal) {
         this.method = method;
         this.internal = internal;
@@ -35,5 +40,13 @@ public class RLocal {
 
     public String getName() {
         return name;
+    }
+    
+    public boolean isByValue() {
+        return byValue;
+    }
+    
+    public void setByValue(boolean byValue) {
+        this.byValue = byValue;
     }
 }

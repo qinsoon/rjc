@@ -88,7 +88,7 @@ public class CLanguageStatementGenerator {
         // array to pointer
         if (localType.isArray())
             ret += CLanguageGenerator.POINTER;
-        if (!localType.isPrimitive() && !localType.isVoidType())
+        if (!localType.isPrimitive() && !localType.isVoidType() && !local.isByValue())
             ret += CLanguageGenerator.POINTER;
         ret += " " + local.getName();
         return ret;
@@ -153,10 +153,7 @@ public class CLanguageStatementGenerator {
             rightOpStr = name.fromSootLocal((Local) rightOp);
         } 
         else if (rightOp instanceof soot.jimple.internal.JInstanceFieldRef) {
-            String fetchField = name.fromSootInstanceFieldRef((JInstanceFieldRef) rightOp);;
-            if (RJavaCompiler.OPT_OBJECT_INLINING && RField.fromSootField(((soot.jimple.internal.JInstanceFieldRef) rightOp).getField()).isInlinable()) {
-                rightOpStr = "&(" + fetchField + ")";
-            } else rightOpStr = fetchField;
+            rightOpStr = name.fromSootInstanceFieldRef((JInstanceFieldRef) rightOp);
         } 
         else if (rightOp instanceof soot.jimple.InvokeExpr) {
             rightOpStr = fromSootInvokeExpr((InvokeExpr) rightOp);
@@ -204,6 +201,20 @@ public class CLanguageStatementGenerator {
         
         // check type
         String rightOpWithCast = typeCasting(leftOp.getType(), rightOp.getType(), rightOpStr);
+        
+        if (RJavaCompiler.OPT_OBJECT_INLINING) {
+            if (leftOp instanceof JInstanceFieldRef && RField.fromSootField(((JInstanceFieldRef)leftOp).getField()).isInlinable()) {
+                if (rightOp instanceof JimpleLocal)
+                    return leftOpStr + " = " + rightOpWithCast;
+                else return leftOpStr + " = *(" + rightOpWithCast + ")";
+            }
+            
+            if (rightOp instanceof JInstanceFieldRef && RField.fromSootField(((JInstanceFieldRef)rightOp).getField()).isInlinable()) {
+                if (leftOp instanceof JimpleLocal)
+                    return leftOpStr + " = " + rightOpWithCast;
+                else return leftOpStr + " = &(" + rightOpWithCast + ")";
+            }
+        }
         
         return leftOpStr + " = " + rightOpWithCast;        
     }
