@@ -116,7 +116,6 @@ public class DetectInlinableFieldPass extends CompilationPass {
     public boolean doesPointToInlinableField(Value base) {
         List<Value> pointsTo = SemanticMap.pta.tracePointsTo(base);
         for (Value v : pointsTo) {
-            RJavaCompiler.println(" ->" + v);
             if (v instanceof JInstanceFieldRef) {
                 if (RField.fromSootField(((JInstanceFieldRef)v).getField()).isInlinable()) {
                     return true;

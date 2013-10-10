@@ -1,6 +1,7 @@
 package org.rjava.compiler.targets.c;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.rjava.compiler.RJavaCompiler;
@@ -35,6 +36,7 @@ import soot.jimple.ParameterRef;
 import soot.jimple.StaticFieldRef;
 import soot.jimple.StringConstant;
 import soot.jimple.internal.AbstractStmt;
+import soot.jimple.internal.JArrayRef;
 import soot.jimple.internal.JAssignStmt;
 import soot.jimple.internal.JCastExpr;
 import soot.jimple.internal.JCmpExpr;
@@ -117,14 +119,14 @@ public class CLanguageStatementGenerator {
             default: return null;
         }
     }
-
-    private String get(RAssignStmt stmt) throws RJavaError {
-        JAssignStmt internal = stmt.internal();
-        
+    
+    private boolean isValidSootLValue(Value v) {
+        return v instanceof JimpleLocal || v instanceof JInstanceFieldRef || v instanceof StaticFieldRef || v instanceof JArrayRef;
+    }
+    
+    private String fromSootLValue(Value leftOp) {
         // left op -> local | field | local.field | local[imm]
-        Value leftOp = internal.getLeftOp();
         String leftOpStr = CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
-        
         if (leftOp instanceof soot.jimple.internal.JimpleLocal) {
             leftOpStr = name.fromSootLocal((Local) leftOp);
         } else if (leftOp instanceof soot.jimple.internal.JInstanceFieldRef) {
@@ -136,15 +138,18 @@ public class CLanguageStatementGenerator {
         }
         else {
             RJavaCompiler.println("leftOp:" + leftOp.getClass());
-            throw stmt.newIncompleteImplementationError("leftOp:" + leftOp.getClass());
+            RJavaCompiler.incompleteImplementationError();
         }
         
+        return leftOpStr;
+    }
+    
+    private String fromSootRValue(Value rightOp) {
         // right op -> rvalue | imm
         // rvalue -> concreteRef | imm | expr
         // concreteRef -> field | local.field | local[imm]
         // expr -> imm1 binop imm2 | (type) imm | imm instanceof type | invokeExpr | new refType | newarray (type) [imm] | newmultiarray(type)[imm1]...[immn][]* | length imm | neg imm;
         // invokeExpr -> specialinvoke/interfaceinvoke/virtualinvoke local.m(imm1,...,immn) | staticinvoke m(imm1,...,immn)
-        Value rightOp = internal.getRightOp();
         String rightOpStr = CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
         if (rightOp instanceof soot.jimple.StaticFieldRef) {
             rightOpStr = name.fromSootStaticFieldRef((StaticFieldRef) rightOp);
@@ -196,22 +201,66 @@ public class CLanguageStatementGenerator {
         }
         else {
             RJavaCompiler.println("rightOp:" + rightOp.getClass());
-            throw stmt.newIncompleteImplementationError("rightOp:" + rightOp.getClass());
+            RJavaCompiler.incompleteImplementationError();
         }
+        
+        return rightOpStr;
+    }
+
+    private String get(RAssignStmt stmt) throws RJavaError {
+        JAssignStmt internal = stmt.internal();
+        
+
+        Value leftOp = internal.getLeftOp();
+        String leftOpStr = fromSootLValue(leftOp);
+        
+        Value rightOp = internal.getRightOp();
+        String rightOpStr = fromSootRValue(rightOp);
         
         // check type
         String rightOpWithCast = typeCasting(leftOp.getType(), rightOp.getType(), rightOpStr);
         
         if (RJavaCompiler.OPT_OBJECT_INLINING) {
-            if (leftOp instanceof JInstanceFieldRef && RField.fromSootField(((JInstanceFieldRef)leftOp).getField()).isInlinable()) {
-                if (rightOp instanceof JimpleLocal)
-                    return leftOpStr + " = " + rightOpWithCast;
+            if (leftOp instanceof JInstanceFieldRef) {
+                JInstanceFieldRef lInstanceRef = (JInstanceFieldRef) leftOp;
+                // if leftOp's base is a by-value local, then we need to find out the actual memory to store
+                if (lInstanceRef.getBase() instanceof Local && RLocal.fromSootLocal(generator.getMethodContext(), ((Local) lInstanceRef.getBase())).isByValue()) {
+                    RJavaCompiler.println("-checking actual memory store for " + lInstanceRef);
+                    List<Value> pointsTo = SemanticMap.pta.tracePointsTo(lInstanceRef.getBase());
+                    Value lastNonByValue = null;
+                    for (Value v : pointsTo) {
+                        RJavaCompiler.print("->" + v);
+                        boolean isLocal = v instanceof Local;
+                        boolean isLocalInSameContext = false;
+                        boolean isLocalByValue = false;
+                        if (isLocal) {
+                            RLocal rl = RLocal.fromSootLocal(generator.getMethodContext(), (Local) v);
+                            isLocalInSameContext = rl != null;
+                            if (isLocalInSameContext)
+                                isLocalByValue = rl.isByValue();
+                        }
+                        if ((!isLocal || (isLocal && isLocalInSameContext && !isLocalByValue)) && isValidSootLValue(v)) {
+                            lastNonByValue = v;
+                            RJavaCompiler.print(" [actualMemoryStore]");
+                        }
+                        RJavaCompiler.println("");
+                    }
+                    
+                    RJavaCompiler.assertion(lastNonByValue != null, "failed to find an actual memory storage for " + leftOp);
+                    
+                    leftOpStr = name.fromSootInstanceFieldRef(lInstanceRef, fromSootLValue(lastNonByValue));
+                }
+            }
+            
+            if (leftOp instanceof JInstanceFieldRef && RField.fromSootField(((JInstanceFieldRef)leftOp).getField()).isInlinable()) {                
+                if (rightOp instanceof JimpleLocal && RLocal.fromSootLocal(generator.getMethodContext(), (Local) rightOp).isByValue())
+                    return leftOpStr + " = " + typeCastingByValue(leftOp.getType(), rightOp.getType(), rightOpStr);
                 else return leftOpStr + " = *(" + rightOpWithCast + ")";
             }
             
             if (rightOp instanceof JInstanceFieldRef && RField.fromSootField(((JInstanceFieldRef)rightOp).getField()).isInlinable()) {
-                if (leftOp instanceof JimpleLocal)
-                    return leftOpStr + " = " + rightOpWithCast;
+                if (leftOp instanceof JimpleLocal && RLocal.fromSootLocal(generator.getMethodContext(), (Local) leftOp).isByValue())
+                    return leftOpStr + " = " + typeCastingByValue(leftOp.getType(), rightOp.getType(), rightOpStr);
                 else return leftOpStr + " = &(" + rightOpWithCast + ")";
             }
         }
@@ -709,6 +758,20 @@ public class CLanguageStatementGenerator {
     /*
      * type cast
      */
+    /**
+     * used when expect and current types are both value (instead of pointer)
+     * @param expect
+     * @param current
+     * @param value
+     * @return
+     */
+    private String typeCastingByValue(Type expect, Type current, String value) {
+        if (expect.equals(current))
+            return value;
+        
+        String ret = "(" + name.fromSootType(expect) + ")" + value;
+        return ret;
+    }
     /**
      * generate typecasting expr
      * @param expect expect type

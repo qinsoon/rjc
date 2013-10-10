@@ -353,5 +353,22 @@ public class RJavaCompiler {
     }
     
     public static final boolean OPT_DEVIRTUALIZATION = true;
-    public static final boolean OPT_OBJECT_INLINING =  true;   // doesnt work, dont turn it on
+    
+    /**
+     * only works in the simplest testcase (see org.rjava.test.opt.objectinline)
+     * and this opt seems not making code faster
+     * 
+     * with object inlining: 
+     *   real    0m3.839s
+     *   user    0m4.050s
+     *   sys     0m0.750s
+     *   
+     * without object inlining:
+     *   real    0m3.857s
+     *   user    0m3.870s
+     *   sys     0m0.510s
+     *   
+     * turned it off. and probably not going to work on it any more
+     */
+    public static final boolean OPT_OBJECT_INLINING =  false;   
 }

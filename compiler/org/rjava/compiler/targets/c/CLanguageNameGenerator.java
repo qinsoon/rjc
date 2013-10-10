@@ -16,6 +16,8 @@ import org.rjava.compiler.util.Statistics;
 
 import soot.Local;
 import soot.SootClass;
+import soot.SootField;
+import soot.SootFieldRef;
 import soot.Type;
 import soot.Value;
 import soot.jimple.IntConstant;
@@ -143,25 +145,32 @@ public class CLanguageNameGenerator {
     public String fromSootLocal(Local local) {
         return local.getName();
     }
-
-    public String fromSootInstanceFieldRef(JInstanceFieldRef ref) {
-        RClass target = RClass.whoOwnsFieldInTypeHierarchy(RClass.fromClassName(ref.getBase().getType().toString()), RType.initWithClassName(ref.getField().getType().toString()), ref.getField().getName());
+    
+    public String fromSootInstanceFieldRef(JInstanceFieldRef ref, String actualBase) {
+        Value base = ref.getBase();
+        SootField field = ref.getField();
+        RClass target = RClass.whoOwnsFieldInTypeHierarchy(RClass.fromClassName(base.getType().toString()), RType.initWithClassName(field.getType().toString()), field.getName());
+        
+        if (RJavaCompiler.OPT_OBJECT_INLINING && SemanticMap.oi.doesPointToInlinableField(base)) {
+            StringBuilder ret = new StringBuilder();
+            ret.append("(*(");
+            ret.append("(" + get(target) + "*)");
+            ret.append("&" + actualBase + "))");
+            ret.append("." + field.getName());
+            return ret.toString();
+        }
+        
         StringBuilder ret = new StringBuilder();
         ret.append("(");
         ret.append("(" + get(target) + "*)");
-        ret.append(ref.getBase() + ")");
-        
-        boolean fieldInlined = false;
-        if (RJavaCompiler.OPT_OBJECT_INLINING) {
-            Value base = ref.getBase();
-            fieldInlined = SemanticMap.oi.doesPointToInlinableField(base);
-        }
-        
-        if (fieldInlined)
-            ret.append("." + ref.getField().getName());
-        else ret.append(" -> " + ref.getField().getName());
+        ret.append(actualBase + ")");
+        ret.append(" -> " + field.getName());
         
         return ret.toString();
+    }
+    
+    public String fromSootInstanceFieldRef(JInstanceFieldRef ref) {
+        return fromSootInstanceFieldRef(ref, ref.getBase().toString());
     }
     
     public String fromSootType(Type type) {

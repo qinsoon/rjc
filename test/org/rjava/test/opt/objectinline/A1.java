@@ -5,9 +5,11 @@ public class A1 {
     C field2;       // cant be inlined - circular reference
     B field3;       // cant be inlined - assigned twice
     
+    public A1 next;
+    
     public A1() {
         field = new B();
-        field2 = new C();
+        //field2 = new C();
         field3 = new B();
     }
     

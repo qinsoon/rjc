@@ -1,5 +1,7 @@
 package org.rjava.compiler.semantics.representation;
 
+import org.rjava.compiler.RJavaCompiler;
+
 import soot.Local;
 
 public class RLocal {
@@ -20,6 +22,22 @@ public class RLocal {
         
         this.type = RType.initWithClassName(internal.getType().toString());
         this.name = internal.getName();
+    }
+    
+    /**
+     * 
+     * @param method
+     * @param internal
+     * @return null if cannot find the named local in such method
+     */
+    public static RLocal fromSootLocal(RMethod method, Local internal) {
+        for (RLocal l : method.getLocals()) {
+            if (l.internal.equals(internal))
+                return l;
+        }
+        
+        //RJavaCompiler.fail("cant find local: " + internal + " in method " + method.getName() + "()");
+        return null;
     }
 
     public String toString() {

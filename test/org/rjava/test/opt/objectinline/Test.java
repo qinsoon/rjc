@@ -1,18 +1,30 @@
 package org.rjava.test.opt.objectinline;
 
 public class Test {
+    public static final int LIST_LENGTH = 1000000;
 
     /**
      * @param args
      */
     public static void main(String[] args) {
-        A1 a1 = new A1();
-        for (int i = 0; i < 100; i++)
-            a1.field.number += i;
+        // construct list
+        A1 list = new A1();
+        A1 head = list;
+        for (int i = 0; i < LIST_LENGTH; i++) {
+            list.next = new A1();
+            list = list.next;
+        }
         
-        A2 a2 = new A2();
-        for (int i = 0; i < 100; i++)
-            a2.field.number += i;
+        System.out.println("setting field..");
+        
+        for (int i = 0; i < 100; i++) {
+            list = head;
+            for (int j = 0; j < LIST_LENGTH; j++) {
+                list.field.number += i;
+                list = list.next;
+            }
+        }
+        
+        System.out.println("field.number=" + head.field.number);
     }
-
 }
