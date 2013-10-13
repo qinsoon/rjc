@@ -443,17 +443,28 @@ public class CLanguageStatementGenerator {
         String typeInfo = "";
         if (RJavaCompiler.OPT_DEVIRTUALIZATION) {
             Value baseValue = virtualInvoke.getBase();
-            Type inferred = SemanticMap.pta.inferType(baseValue);
+            Type baseType = baseValue.getType();
+            Type inferred;
             
-            String pointsTo = "";
-            for (Value v : SemanticMap.pta.tracePointsTo(baseValue)) {
-                pointsTo += v + "->";
+            String typeInferenceInfo = "";
+            if (RClass.fromClassName(RType.initWithSootType(baseType).getClassName()).isDefactoFinal()) {
+                inferred = baseType;
+                
+                typeInferenceInfo = baseValue.toString() + "(final) -> " + inferred.toString();
+            } else {            
+                inferred = SemanticMap.pta.inferType(baseValue);
+                
+                for (Value v : SemanticMap.pta.tracePointsTo(baseValue)) {
+                    typeInferenceInfo += v + "->";
+                }
+                typeInferenceInfo += inferred != null ? inferred.toString() : "???";
             }
-            pointsTo += inferred != null ? inferred.toString() : "???";
             
-            typeInfo = CLanguageGenerator.commentln(pointsTo);
+            typeInfo = CLanguageGenerator.commentln(typeInferenceInfo);
             
             if (inferred != null) {
+                Statistics.increaseCounterByOne("type inference success");
+                
                 // devirtualize
                 Statistics.increaseCounterByOne("devirtualize");
                 StringBuilder ret = new StringBuilder();
@@ -484,6 +495,8 @@ public class CLanguageStatementGenerator {
                 }
                 return ret.toString() + typeInfo;
             }
+            
+            Statistics.increaseCounterByOne("type inference fail");
         }
         
         /* virtual call */

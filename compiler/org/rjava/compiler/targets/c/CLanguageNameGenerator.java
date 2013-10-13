@@ -149,14 +149,22 @@ public class CLanguageNameGenerator {
     public String fromSootInstanceFieldRef(JInstanceFieldRef ref, String actualBase) {
         Value base = ref.getBase();
         SootField field = ref.getField();
-        RClass target = RClass.whoOwnsFieldInTypeHierarchy(RClass.fromClassName(base.getType().toString()), RType.initWithClassName(field.getType().toString()), field.getName());
+        RClass current = RClass.fromClassName(base.getType().toString());
+        RClass target = RClass.whoOwnsFieldInTypeHierarchy(current, RType.initWithClassName(field.getType().toString()), field.getName());
         
         if (RJavaCompiler.OPT_OBJECT_INLINING && SemanticMap.oi.doesPointToInlinableField(base)) {
             StringBuilder ret = new StringBuilder();
-            ret.append("(*(");
-            ret.append("(" + get(target) + "*)");
-            ret.append("&" + actualBase + "))");
-            ret.append("." + field.getName());
+            
+            if (current.equals(target)) {
+                ret.append("(");
+                ret.append(actualBase);
+                ret.append(")." + field.getName());
+            } else {            
+                ret.append("(*(");
+                ret.append("(" + get(target) + "*)");
+                ret.append("&" + actualBase + "))");
+                ret.append("." + field.getName());
+            }
             return ret.toString();
         }
         

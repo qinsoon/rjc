@@ -88,13 +88,7 @@ public class PointsToAnalysisPass extends CompilationPass {
     public Type inferType(Value v) {
         List<Value> trace = tracePointsTo(v);
         Value last = trace.get(trace.size()-1);
-        Type ret = typeRoots.get(last);
-        
-        if (ret != null) {
-            Statistics.increaseCounterByOne("type inference success");            
-        } else 
-            Statistics.increaseCounterByOne("type inference fail");
-        
+        Type ret = typeRoots.get(last);        
         return ret;
     }
     
