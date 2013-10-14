@@ -2,6 +2,12 @@ package org.rjava.compiler.targets.c;
 
 import org.rjava.compiler.targets.c.runtime.CLanguageRuntime;
 
+/**
+ * Methods from this class serve as 'macros' to access attributes in instance or class
+ * All parameters are strings (well-formatted identifiers/method names/etc.)
+ * @author yi
+ *
+ */
 public abstract class Code {
     
     /**
@@ -9,11 +15,11 @@ public abstract class Code {
      * @param instance rjava object instance
      * @return
      */
-    public static String getClassStruct(String instance) {
+    public static String getClassStructFromInstance(String instance) {
         return "((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*)" + instance + ") -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT;
     }
     
-    public static String getClassStructInstance(String klass) {
+    public static String getClassStruct(String klass) {
         return klass + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX;
     }
     
@@ -24,7 +30,7 @@ public abstract class Code {
      * @return
      */
     public static String getClassAttribute(String klass, String attr) {
-        return "((" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)(&" + getClassStructInstance(klass) + "))->" + attr;
+        return "((" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)(&" + getClassStruct(klass) + "))->" + attr;
     }
     
     /**
@@ -35,7 +41,33 @@ public abstract class Code {
      * @return
      */
     public static String getClassAttribute(String klass, String fromKlass, String attr) {
-        return "((" + fromKlass + CLanguageRuntime.CLASS_STRUCT_SUFFIX + "*)(&" + getClassStructInstance(klass) + "))->" + attr;
+        return "((" + fromKlass + CLanguageRuntime.CLASS_STRUCT_SUFFIX + "*)(&" + getClassStruct(klass) + "))->" + attr;
+    }
+    
+    public static String getClassAttributeFromInstance(String instance, String klass, String attr) {
+        StringBuilder ret = new StringBuilder();
+        ret.append("(");
+        ret.append("(" + klass + CLanguageRuntime.CLASS_STRUCT_SUFFIX + "*)");
+        ret.append("(");
+        ret.append(getClassStructFromInstance(instance));
+        ret.append("))");
+        ret.append("->" + attr);
+        return ret.toString();
+    }
+    
+    public static String getClassAttributeFromInstance(String instance, String attr) {
+        StringBuilder ret = new StringBuilder();
+        ret.append("(");
+        ret.append("(" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)");
+        ret.append("(");
+        ret.append(getClassStructFromInstance(instance));
+        ret.append("))");
+        ret.append("->" + attr);
+        return ret.toString();
+    }
+    
+    public static String getInstanceAttribute(String instance, String klass, String attr) {
+        return "((" + klass + "*)" + instance + ")->" + attr;
     }
     
     public static String mutexLockOnInstance(String instance) {

@@ -27,10 +27,10 @@ import soot.jimple.StringConstant;
 import soot.jimple.internal.JArrayRef;
 import soot.jimple.internal.JInstanceFieldRef;
 
-public class CIdentifier {
+public class CIdentifiers {
     CLanguageGenerator generator;
     
-    public CIdentifier(CLanguageGenerator generator) {
+    public CIdentifiers(CLanguageGenerator generator) {
         this.generator = generator;
     }
 

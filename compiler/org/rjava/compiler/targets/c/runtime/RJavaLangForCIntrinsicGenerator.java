@@ -6,7 +6,7 @@ import org.rjava.compiler.semantics.representation.stmt.RAssignStmt;
 import org.rjava.compiler.semantics.representation.stmt.RInvokeStmt;
 import org.rjava.compiler.targets.c.CLanguageGenerator;
 import org.rjava.compiler.targets.c.Intrinsics;
-import org.rjava.compiler.targets.c.CIdentifier;
+import org.rjava.compiler.targets.c.CIdentifiers;
 
 import soot.jimple.InvokeExpr;
 import soot.jimple.internal.JAssignStmt;

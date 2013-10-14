@@ -19,7 +19,7 @@ import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.targets.CodeStringBuilder;
 import org.rjava.compiler.targets.c.CLanguageGenerator;
-import org.rjava.compiler.targets.c.CIdentifier;
+import org.rjava.compiler.targets.c.CIdentifiers;
 import org.rjava.compiler.targets.c.Code;
 import org.rjava.compiler.util.HelperMethod;
 import org.rjava.compiler.util.HelperVariable;
@@ -181,11 +181,11 @@ public class CLanguageRuntime {
     public static final String INSTANCE_COND_VAR = "instance_cond";
     
     CLanguageGenerator generator;
-    CIdentifier name;
+    CIdentifiers name;
     
     public CLanguageRuntime(CLanguageGenerator generator) {
         this.generator = generator;
-        name = new CIdentifier(generator);
+        name = new CIdentifiers(generator);
     }    
     
     public void generateCRuntime() throws RJavaError {

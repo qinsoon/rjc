@@ -40,7 +40,7 @@ import soot.util.HashChain;
 public class Intrinsics {
     public static final boolean DEBUG = true;
     
-    protected CIdentifier name;
+    protected CIdentifiers name;
     protected CLanguageGenerator languageGenerator;
     
     public static final Map<String, String> JAVA_PRIMITIVE_TO_C_TYPE = new HashMap<String, String>();
@@ -53,7 +53,7 @@ public class Intrinsics {
     
     public Intrinsics(CLanguageGenerator generator) {
         this.languageGenerator = generator;
-        name = new CIdentifier(generator);
+        name = new CIdentifiers(generator);
     }
 
     public void generate(RType type) {

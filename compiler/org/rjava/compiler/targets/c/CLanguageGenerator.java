@@ -87,7 +87,7 @@ public class CLanguageGenerator extends CodeGenerator {
      */
     public static final String INCOMPLETE_IMPLEMENTATION = "***Incomplete Implementation***";
     
-    protected CIdentifier id = new CIdentifier(this);
+    protected CIdentifiers id = new CIdentifiers(this);
     protected Intrinsics intrinsic = new Intrinsics(this);
     protected CLanguageRuntime runtime = new CLanguageRuntime(this);
     
@@ -470,9 +470,9 @@ public class CLanguageGenerator extends CodeGenerator {
             
             // calling rjava_init_header()
             CodeStringBuilder classInitTemp = new CodeStringBuilder();
-            String thisClass = "&" + Code.getClassStructInstance(id.get(klass));
-            String superClass = "&" + Code.getClassStructInstance(id.get(klass.getSuperClass()));
-            String superClassSize = SIZE_OF + "(" + Code.getClassStructInstance(id.get(klass.getSuperClass())) + ")";
+            String thisClass = "&" + Code.getClassStruct(id.get(klass));
+            String superClass = "&" + Code.getClassStruct(id.get(klass.getSuperClass()));
+            String superClassSize = SIZE_OF + "(" + Code.getClassStruct(id.get(klass.getSuperClass())) + ")";
             classInitTemp.append(RuntimeHelpers.invoke(RuntimeHelpers.INIT_HEADER, new String[]{thisClass, superClass, superClassSize}) + SEMICOLON + NEWLINE);
             
             // class_name
@@ -864,7 +864,7 @@ public class CLanguageGenerator extends CodeGenerator {
                     // if this stmt creates new object, we need its class
                     if (rStmt.isObjectCreation()) {
                         JAssignStmt sootStmt = (JAssignStmt) rStmt.internal();
-                        String classStruct = Code.getClassStruct(id.fromSootLocal((Local) ((JAssignStmt)sootStmt).getLeftOp()));
+                        String classStruct = Code.getClassStructFromInstance(id.fromSootLocal((Local) ((JAssignStmt)sootStmt).getLeftOp()));
                         String classStructInstance = id.get(rStmt.getCreatedObjectClass()) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX;
                         out.append(classStruct + " = &" + classStructInstance + SEMICOLON + NEWLINE);
                     }
