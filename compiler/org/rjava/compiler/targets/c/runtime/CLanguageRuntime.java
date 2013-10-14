@@ -75,6 +75,14 @@ public class CLanguageRuntime {
     public static final String GC_LINUX = "boehm-gc_linux.a";
     public static final String GC_LINUX_32 = "boehm-gc_linux_32.a";
     
+    // for their run-time initialization, see RuntimeHelpers.RUNTIME_GLOBAL_INIT
+    public static final ArrayList<String> RJAVA_RUNTIME_GLOBALS = new ArrayList<String>();
+    static {
+        if (RJavaCompiler.LOG_FUNCTION_EXECUTION) {
+            RJAVA_RUNTIME_GLOBALS.add("struct FunctionLog* func_log_head");
+        }
+    }
+    
     public static void lateCLInit() {
         if (memoryManagement == GC_MALLOC || memoryManagement == GC_MALLOC_PREBUILT) {
             RJAVA_RUNTIME_DEFINE_BEFORE_INCLUDE.put("GC_THREADS", "");
@@ -269,6 +277,19 @@ public class CLanguageRuntime {
         out.append(getTypedefs());
         out.append(NEWLINE);
         
+        if (RJavaCompiler.LOG_FUNCTION_EXECUTION) {
+            out.append(CLanguageGenerator.commentln("function log - debug use"));
+            out.append(STRUCT_FUNCTION_LOG);
+            out.append(NEWLINE);
+        }
+        
+        // runtime globals
+        out.append(CLanguageGenerator.commentln("rjava runtime globals"));
+        for (String global : RJAVA_RUNTIME_GLOBALS) {
+            out.append(global + SEMICOLON + NEWLINE);
+        }
+        out.append(NEWLINE);
+        
         // helper methods
         out.append(RuntimeHelpers.signature(RuntimeHelpers.CLASS_INIT) + SEMICOLON + NEWLINE);
         for (HelperMethod method : RuntimeHelpers.CRT_HELPERS) {            
@@ -331,6 +352,7 @@ public class CLanguageRuntime {
         }
         
         init.append(RuntimeHelpers.invoke(RuntimeHelpers.INIT_THREAD_SUSPENDING, null) + SEMICOLON + NEWLINE);
+        init.append(RuntimeHelpers.invoke(RuntimeHelpers.RUNTIME_GLOBAL_INIT, null) + SEMICOLON + NEWLINE);
         
         return init.toString();
     }
@@ -497,4 +519,11 @@ public class CLanguageRuntime {
     public static String includeNonStandardHeader(String header) {
         return "#include \"" + header + "\"";
     }
+    
+    public static final String STRUCT_FUNCTION_LOG = 
+            "struct FunctionLog {" + NEWLINE +
+            "  char func_name[500];" + NEWLINE +
+            "  long func_count;" + NEWLINE +
+            "  struct FunctionLog* next;" + NEWLINE +
+            "};";
 }

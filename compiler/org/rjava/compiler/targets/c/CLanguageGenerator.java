@@ -665,6 +665,7 @@ public class CLanguageGenerator extends CodeGenerator {
      * @param klass
      * @return
      */
+    @Deprecated
     private Map<RField, String> getConstantValues(RClass klass) {
         HashMap<RField, String> ret = new HashMap<RField, String>();
         
@@ -795,8 +796,13 @@ public class CLanguageGenerator extends CodeGenerator {
     }
     
     public String getMethodBody(RMethod method) throws RJavaError {
+        String prologue = "";
+        if (RJavaCompiler.LOG_FUNCTION_EXECUTION) {
+            prologue = RuntimeHelpers.invoke(RuntimeHelpers.DEBUG_LOG_FUNC_EXEC, new String[]{"__func__"}) + SEMICOLON + NEWLINE;
+        }
+        
         if (method.isIntrinsic())
-            return method.getCode();
+            return prologue + method.getCode();
         
         currentRMethod = method;
         
@@ -866,7 +872,7 @@ public class CLanguageGenerator extends CodeGenerator {
                 }            
             }
     
-            return out.toString();
+            return prologue + out.toString();
         } finally {
             currentRMethod = null;
         }

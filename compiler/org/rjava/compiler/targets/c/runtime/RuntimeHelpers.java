@@ -52,6 +52,11 @@ public class RuntimeHelpers {
      * void rjava_lib_init()
      */
     public static final HelperMethod LIB_INIT;
+    /**
+     * init rjava c runtime globals
+     * void rjava_runtime_global_init()
+     */
+    public static final HelperMethod RUNTIME_GLOBAL_INIT;
     
     /**
      * add an interface (instance) to class, used during crt initialization
@@ -78,6 +83,16 @@ public class RuntimeHelpers {
      * void rjava_debug_print_header(void* this_class, char* name);
      */
     public static final HelperMethod DEBUG_PRINT_HEADER;
+    /**
+     * increase the function execution counter for the function
+     * void rjava_debug_log_func_exec(char* func_name);
+     */
+    public static final HelperMethod DEBUG_LOG_FUNC_EXEC;
+    /**
+     * report function logs
+     * void rjava_debug_report_func_log();
+     */
+    public static final HelperMethod DEBUG_REPORT_FUNC_LOG;
     /**
      * assert
      * void rjava_assert(bool cond);
@@ -168,6 +183,21 @@ public class RuntimeHelpers {
          * void rjava_lib_init()
          */
         LIB_INIT = new HelperMethod("rjava_lib_init", HelperMethod.RETURN_VOID, null); 
+        
+        /**
+         * init rjava c runtime globals
+         * void rjava_runtime_global_init()
+         */
+        RUNTIME_GLOBAL_INIT = new HelperMethod("rjava_runtime_global_init", HelperMethod.RETURN_VOID, null);
+        String RJAVA_RUNTIME_GLOBAL_INIT_SOURCE = "";
+        if (RJavaCompiler.LOG_FUNCTION_EXECUTION) {
+            RJAVA_RUNTIME_GLOBAL_INIT_SOURCE += 
+                    "func_log_head = (struct FunctionLog*) malloc(sizeof(struct FunctionLog));" + NEWLINE +
+                    "strcpy(func_log_head->func_name, \"log head\");" + NEWLINE +
+                    "func_log_head->func_count = 0;" + NEWLINE +
+                    "func_log_head->next = NULL;" + NEWLINE;
+        }
+        RUNTIME_GLOBAL_INIT.setSource(RJAVA_RUNTIME_GLOBAL_INIT_SOURCE);
         
         /**
          * add an interface (instance) to class, used during crt initialization
@@ -310,6 +340,45 @@ public class RuntimeHelpers {
                 "}" + NEWLINE;
         DEBUG_PRINT_HEADER.setSource(RJAVA_DEBUG_PRINT_HEADER_SOURCE);
         
+        /**
+         * increase the function execution counter for the function
+         * void rjava_debug_log_func_exec(const char* func_name);
+         */
+        DEBUG_LOG_FUNC_EXEC = new HelperMethod("rjava_debug_log_func_exec", HelperMethod.RETURN_VOID, new HelperVariable[]{
+                                                            new HelperVariable("const char*", "func_name")
+        });
+        final String RJAVA_DEBUG_LOG_FUNC_EXEC_SOURCE = 
+                "struct FunctionLog* cursor = func_log_head;" + NEWLINE +
+                "while (1) {" + NEWLINE +
+                "  if (strcmp(cursor->func_name, func_name) == 0) {" + NEWLINE +
+                "    cursor->func_count++;" + NEWLINE +
+                "    return;" + NEWLINE +
+                "  }" + NEWLINE +
+                "  if (cursor->next != NULL) {" + NEWLINE +
+                "    cursor = cursor->next;" + NEWLINE +
+                "  } else break;" + NEWLINE +
+                "}" + NEWLINE +
+                "/* add to function log */" + NEWLINE +
+                "struct FunctionLog* newLog = (struct FunctionLog*) malloc(sizeof(struct FunctionLog));" + NEWLINE +
+                "strcpy(newLog->func_name, func_name);" + NEWLINE +
+                "newLog->func_count = 1;" + NEWLINE +
+                "cursor->next = newLog;" + NEWLINE +
+                "newLog->next = NULL;" + NEWLINE;
+        DEBUG_LOG_FUNC_EXEC.setSource(RJAVA_DEBUG_LOG_FUNC_EXEC_SOURCE);
+        
+        /**
+         * report function logs
+         * void rjava_debug_report_func_log();
+         */
+        DEBUG_REPORT_FUNC_LOG = new HelperMethod("rjava_debug_report_func_log", HelperMethod.RETURN_VOID, null);
+        final String RJAVA_DEBUG_REPORT_FUNC_LOG_SOURCE = 
+                "printf(\"-------------FUNCTION LOG-------------\\n\");" + NEWLINE +
+                "struct FunctionLog* cursor = func_log_head;" + NEWLINE +
+                "while (cursor != NULL) {" + NEWLINE +
+                "  printf(\"%s,%ld\\n\", cursor->func_name, cursor->func_count);" + NEWLINE +
+                "  cursor = cursor->next;" + NEWLINE +
+                "}" + NEWLINE;
+        DEBUG_REPORT_FUNC_LOG.setSource(RJAVA_DEBUG_REPORT_FUNC_LOG_SOURCE);
         /**
          * implements instanceof bytecode
          * bool rjava_instanceof(void* instance, void* class_struct);
@@ -489,6 +558,11 @@ public class RuntimeHelpers {
         CRT_HELPERS.add(INSTANCEOF);
         CRT_HELPERS.add(INIT_THREAD_SUSPENDING);
         CRT_HELPERS.add(UNIMPLEMENTED_METHOD);
+        CRT_HELPERS.add(RUNTIME_GLOBAL_INIT);
+        if (RJavaCompiler.LOG_FUNCTION_EXECUTION) {
+            CRT_HELPERS.add(DEBUG_LOG_FUNC_EXEC);
+            CRT_HELPERS.add(DEBUG_REPORT_FUNC_LOG);
+        }
     }
     
     /**

@@ -120,7 +120,12 @@ public class CLanguageIntrinsicGenerator {
         // call rjava_join_all_threads() before main method returns
         else if (stmt instanceof RReturnVoidStmt && stmt.getMethod().isMainMethod()) {
             stmt.setIntrinsic(true);
-            stmt.setCode("rjava_join_all_threads();return 0");
+            String joinAllThreads = "rjava_join_all_threads();";
+            String reportFuncLog = "";
+            if (RJavaCompiler.LOG_FUNCTION_EXECUTION)
+                reportFuncLog = RuntimeHelpers.invoke(RuntimeHelpers.DEBUG_REPORT_FUNC_LOG, null) + ";";
+            String ret = "return 0";
+            stmt.setCode(joinAllThreads + reportFuncLog + ret);
         }
     }
 

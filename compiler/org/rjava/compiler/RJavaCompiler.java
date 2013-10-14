@@ -61,6 +61,12 @@ public class RJavaCompiler {
     // which os the C code will run on
     public static int hostOS = HOST_MACOSX;
     
+    /**
+     * log how many times each function is executed
+     * Turning on this results in very slow execution. So leave if off for large programs
+     */
+    public static final boolean LOG_FUNCTION_EXECUTION = false;
+    
     private RJavaCompiler(CompilationTask task) {
     	this.task = task;
     }

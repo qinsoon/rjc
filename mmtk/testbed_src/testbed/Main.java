@@ -33,7 +33,7 @@ public class Main {
     /**
      * testbed exits after 10 gcs (0 means never exit)
      */
-    public static int exitAfterSeveralGC = 10;
+    public static int exitAfterSeveralGC = 1;
 
     public static void main(String[] args) {
         for (int i = 0; i < args.length; i++) {
