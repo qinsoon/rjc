@@ -5,15 +5,15 @@ import org.rjava.compiler.semantics.representation.RStatement;
 import org.rjava.compiler.semantics.representation.stmt.RAssignStmt;
 import org.rjava.compiler.semantics.representation.stmt.RInvokeStmt;
 import org.rjava.compiler.targets.c.CLanguageGenerator;
-import org.rjava.compiler.targets.c.CLanguageIntrinsicGenerator;
-import org.rjava.compiler.targets.c.CLanguageNameGenerator;
+import org.rjava.compiler.targets.c.Intrinsics;
+import org.rjava.compiler.targets.c.CIdentifier;
 
 import soot.jimple.InvokeExpr;
 import soot.jimple.internal.JAssignStmt;
 import soot.jimple.internal.JStaticInvokeExpr;
 
 public class RJavaLangForCIntrinsicGenerator extends
-        CLanguageIntrinsicGenerator {
+        Intrinsics {
 
     public RJavaLangForCIntrinsicGenerator(CLanguageGenerator generator) {
         super(generator);

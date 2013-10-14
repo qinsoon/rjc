@@ -37,6 +37,22 @@ public abstract class Code {
     public static String getClassAttribute(String klass, String fromKlass, String attr) {
         return "((" + fromKlass + CLanguageRuntime.CLASS_STRUCT_SUFFIX + "*)(&" + getClassStructInstance(klass) + "))->" + attr;
     }
+    
+    public static String mutexLockOnInstance(String instance) {
+        return "pthread_mutex_lock(&(((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*) " + instance + ") -> " + CLanguageRuntime.INSTANCE_MUTEX + "))";
+    }
+    
+    public static String mutexUnlockOnInstance(String instance) {
+        return "pthread_mutex_unlock(&(((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*) " + instance + ") -> " + CLanguageRuntime.INSTANCE_MUTEX + "))";
+    }
+    
+    public static String mutexLockOnClass(String klass) {
+        return "pthread_mutex_lock(&(((" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)(&" + klass + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + ")) -> " + CLanguageRuntime.CLASS_MUTEX + "))";
+    }
+    
+    public static String mutexUnlockOnClass(String klass) {
+        return "pthread_mutex_unlock(&(((" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)(&" + klass + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + ")) -> " + CLanguageRuntime.CLASS_MUTEX + "))";
+    }
 
     /**
      * #include <header>

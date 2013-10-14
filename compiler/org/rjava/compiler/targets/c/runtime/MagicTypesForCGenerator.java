@@ -66,8 +66,8 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
         String cHeaderSource = getSource(klass.getName(), ".h");
         
         // include guard
-        outInc.append("#ifndef " + name.get(klass).toUpperCase() + "_H" + NEWLINE);
-        outInc.append("#define " + name.get(klass).toUpperCase() + "_H" + NEWLINE);
+        outInc.append("#ifndef " + id.get(klass).toUpperCase() + "_H" + NEWLINE);
+        outInc.append("#define " + id.get(klass).toUpperCase() + "_H" + NEWLINE);
         
         // include rjava lib
         for (String inc : INCLUDES) {
@@ -77,7 +77,7 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
         outMain.append(NEWLINE);
         
         // define type
-        String type = name.get(klass);
+        String type = id.get(klass);
         String c_type = MAGIC_TYPE_TO_C_TYPE.get(klass.getName());
         outMain.append("#define " + type + " " + c_type + NEWLINE);
         
@@ -89,7 +89,7 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
             if (method.isConstructor())
                 continue;
             
-            outMain.append("#define " + name.get(method) + "(");
+            outMain.append("#define " + id.get(method) + "(");
             if (!method.isStatic()) {
                 outMain.append(THIS_PARAMETER);
                 if (method.getParameters().size() != 0)
@@ -125,7 +125,7 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
     
     private String getBaseTypeForMagicArrayType(String arrayType) throws RJavaError {
         if (arrayType.endsWith(Constants.MAGIC_ARRAY_SUFFIX)) {
-            return name.javaNameToCName(arrayType.replace(Constants.MAGIC_ARRAY_SUFFIX, ""));
+            return id.javaNameToCName(arrayType.replace(Constants.MAGIC_ARRAY_SUFFIX, ""));
         }
         else throw new RJavaError("Can't find base type for " + arrayType);
     }
@@ -172,7 +172,7 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
            return "(int64_t) " + THIS_PARAMETER;
        }
        else if (methodName.equals("toWord")) {
-           return "(" + name.get(method.getReturnType()) + ") " + THIS_PARAMETER;
+           return "(" + id.get(method.getReturnType()) + ") " + THIS_PARAMETER;
        }
        // Address only
        else if (methodName.equals("fromLong")) {
@@ -245,7 +245,7 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
         * memory access operators
         */
        else if (methodName.startsWith("load") || methodName.startsWith("prepare")) {
-           String returnType = name.get(method.getReturnType());
+           String returnType = id.get(method.getReturnType());
            
            String ret = "*((" + returnType + "*) (" + THIS_PARAMETER;
            if (method.getParameters().size() == 1)
@@ -255,7 +255,7 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
            return ret;
        }
        else if (methodName.startsWith("store")) {
-           String storeType = name.get(method.getParameters().get(0));
+           String storeType = id.get(method.getParameters().get(0));
            
            String ret = "*((" + storeType + "*) (" + THIS_PARAMETER;
            if (method.getParameters().size() == 2)
@@ -266,7 +266,7 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
        }
        else if (methodName.equals("attempt")) {
            String CAS = "__sync_bool_compare_and_swap";
-           String ptrType = name.get(method.getParameters().get(0));
+           String ptrType = id.get(method.getParameters().get(0));
            String ret = CAS + "( (" + ptrType + "*)(" + THIS_PARAMETER;
            
            // offset
@@ -356,7 +356,7 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
        else if (methodName.equals("one")) {
            // equivalent as XXX.fromIntSignExtend(1)
            // i.e. XXX_fromIntSignExtend_uint32_t(1);
-           return name.get(method.getKlass()) + "_fromIntSignExtend_" + JAVA_INT + "(1)";
+           return id.get(method.getKlass()) + "_fromIntSignExtend_" + JAVA_INT + "(1)";
        }
        return INCOMPLETE_IMPLEMENTATION;
     }

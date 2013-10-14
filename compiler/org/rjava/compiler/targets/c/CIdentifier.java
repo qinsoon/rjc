@@ -27,10 +27,10 @@ import soot.jimple.StringConstant;
 import soot.jimple.internal.JArrayRef;
 import soot.jimple.internal.JInstanceFieldRef;
 
-public class CLanguageNameGenerator {
+public class CIdentifier {
     CLanguageGenerator generator;
     
-    public CLanguageNameGenerator(CLanguageGenerator generator) {
+    public CIdentifier(CLanguageGenerator generator) {
         this.generator = generator;
     }
 
@@ -90,10 +90,6 @@ public class CLanguageNameGenerator {
     /*
      * generating c style name from soot element 
      */
-    public String fromSootStaticFieldRef(soot.jimple.StaticFieldRef ref) {
-        RClass klass = RClass.fromSootClass(ref.getField().getDeclaringClass());
-        return CLanguageGenerator.C_GLOBAL_VAR_PREFIX + get(klass) + "_" + ref.getField().getName();
-    }
     
     public String fromSootMethod(soot.SootMethod method) {
         String classPrefix = fromSootClass(method.getDeclaringClass());
@@ -146,41 +142,6 @@ public class CLanguageNameGenerator {
         return local.getName();
     }
     
-    public String fromSootInstanceFieldRef(JInstanceFieldRef ref, String actualBase) {
-        Value base = ref.getBase();
-        SootField field = ref.getField();
-        RClass current = RClass.fromClassName(base.getType().toString());
-        RClass target = RClass.whoOwnsFieldInTypeHierarchy(current, RType.initWithClassName(field.getType().toString()), field.getName());
-        
-        if (RJavaCompiler.OPT_OBJECT_INLINING && SemanticMap.oi.doesPointToInlinableField(base)) {
-            StringBuilder ret = new StringBuilder();
-            
-            if (current.equals(target)) {
-                ret.append("(");
-                ret.append(actualBase);
-                ret.append(")." + field.getName());
-            } else {            
-                ret.append("(*(");
-                ret.append("(" + get(target) + "*)");
-                ret.append("&" + actualBase + "))");
-                ret.append("." + field.getName());
-            }
-            return ret.toString();
-        }
-        
-        StringBuilder ret = new StringBuilder();
-        ret.append("(");
-        ret.append("(" + get(target) + "*)");
-        ret.append(actualBase + ")");
-        ret.append(" -> " + field.getName());
-        
-        return ret.toString();
-    }
-    
-    public String fromSootInstanceFieldRef(JInstanceFieldRef ref) {
-        return fromSootInstanceFieldRef(ref, ref.getBase().toString());
-    }
-    
     public String fromSootType(Type type) {
         return get(RType.initWithClassName(type.toString()));
     }
@@ -202,19 +163,5 @@ public class CLanguageNameGenerator {
             return "INT_MIN";
         }
         else return value.toString();
-    }
-
-    public String fromSootJArrayRef(JArrayRef op) {
-        String type = getWithPointerIfProper(RType.initWithClassName(op.getType().toString()));
-        
-        String ret = "*((" + type + "*)";
-        HelperMethod accessArray;
-        if (generator.getMethodContext().hasNoBoundsCheckAnnotation() || !RJavaCompiler.getGeneratorOptions().allowArrayBoundCheck())
-            accessArray = RuntimeHelpers.ACCESS_ARRAY_NOBOUNDS_CHECK;
-        else accessArray = RuntimeHelpers.ACCESS_ARRAY;
-        ret += RuntimeHelpers.invoke(accessArray, new String[]{op.getBase().toString(), op.getIndex().toString()});
-        ret += ")";
-        
-        return ret;
     }
 }

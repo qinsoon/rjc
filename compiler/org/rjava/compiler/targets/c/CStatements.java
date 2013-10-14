@@ -17,6 +17,7 @@ import org.rjava.compiler.semantics.representation.RType;
 import org.rjava.compiler.semantics.representation.stmt.*;
 import org.rjava.compiler.targets.c.runtime.CLanguageRuntime;
 import org.rjava.compiler.targets.c.runtime.RuntimeHelpers;
+import org.rjava.compiler.util.HelperMethod;
 import org.rjava.compiler.util.Statistics;
 
 import soot.Local;
@@ -24,6 +25,7 @@ import soot.PointsToAnalysis;
 import soot.PointsToSet;
 import soot.Scene;
 import soot.SootClass;
+import soot.SootField;
 import soot.Type;
 import soot.Unit;
 import soot.Value;
@@ -67,17 +69,17 @@ import soot.jimple.internal.JUshrExpr;
 import soot.jimple.internal.JVirtualInvokeExpr;
 import soot.jimple.internal.JimpleLocal;
 
-public class CLanguageStatementGenerator {
-    CLanguageNameGenerator name;
+public class CStatements {
+    CIdentifier id;
     CLanguageGenerator generator;
     
     private int labelIndex = 0;
     // <target.hashCode(), labelIndex>
     private Map<Integer, Integer> jumpLabels = new HashMap<Integer, Integer>();
     
-    public CLanguageStatementGenerator(CLanguageGenerator generator) {
+    public CStatements(CLanguageGenerator generator) {
         this.generator = generator;
-        name = new CLanguageNameGenerator(generator);
+        id = new CIdentifier(generator);
     }
     
     /*
@@ -86,7 +88,7 @@ public class CLanguageStatementGenerator {
     public String get(RLocal local) {
         String ret = "";
         RType localType = local.getType();
-        ret += name.get(localType);
+        ret += id.get(localType);
         // array to pointer
         if (localType.isArray())
             ret += CLanguageGenerator.POINTER;
@@ -128,13 +130,13 @@ public class CLanguageStatementGenerator {
         // left op -> local | field | local.field | local[imm]
         String leftOpStr = CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
         if (leftOp instanceof soot.jimple.internal.JimpleLocal) {
-            leftOpStr = name.fromSootLocal((Local) leftOp);
+            leftOpStr = id.fromSootLocal((Local) leftOp);
         } else if (leftOp instanceof soot.jimple.internal.JInstanceFieldRef) {
-            leftOpStr = name.fromSootInstanceFieldRef((JInstanceFieldRef) leftOp);
+            leftOpStr = fromSootInstanceFieldRef((JInstanceFieldRef) leftOp);
         } else if (leftOp instanceof soot.jimple.StaticFieldRef) {
-            leftOpStr = name.fromSootStaticFieldRef((StaticFieldRef) leftOp);
+            leftOpStr = fromSootStaticFieldRef((StaticFieldRef) leftOp);
         } else if (leftOp instanceof soot.jimple.internal.JArrayRef) {
-            leftOpStr = name.fromSootJArrayRef((soot.jimple.internal.JArrayRef) leftOp);
+            leftOpStr = fromSootJArrayRef((soot.jimple.internal.JArrayRef) leftOp);
         }
         else {
             RJavaCompiler.println("leftOp:" + leftOp.getClass());
@@ -152,13 +154,13 @@ public class CLanguageStatementGenerator {
         // invokeExpr -> specialinvoke/interfaceinvoke/virtualinvoke local.m(imm1,...,immn) | staticinvoke m(imm1,...,immn)
         String rightOpStr = CLanguageGenerator.INCOMPLETE_IMPLEMENTATION;
         if (rightOp instanceof soot.jimple.StaticFieldRef) {
-            rightOpStr = name.fromSootStaticFieldRef((StaticFieldRef) rightOp);
+            rightOpStr = fromSootStaticFieldRef((StaticFieldRef) rightOp);
         } 
         else if (rightOp instanceof soot.jimple.internal.JimpleLocal) {
-            rightOpStr = name.fromSootLocal((Local) rightOp);
+            rightOpStr = id.fromSootLocal((Local) rightOp);
         } 
         else if (rightOp instanceof soot.jimple.internal.JInstanceFieldRef) {
-            rightOpStr = name.fromSootInstanceFieldRef((JInstanceFieldRef) rightOp);
+            rightOpStr = fromSootInstanceFieldRef((JInstanceFieldRef) rightOp);
         } 
         else if (rightOp instanceof soot.jimple.InvokeExpr) {
             rightOpStr = fromSootInvokeExpr((InvokeExpr) rightOp);
@@ -167,16 +169,16 @@ public class CLanguageStatementGenerator {
             rightOpStr = fromSootBinopExpr((BinopExpr) rightOp);
         } 
         else if (rightOp instanceof soot.jimple.NumericConstant) {
-            rightOpStr = name.fromSootValue((NumericConstant) rightOp);
+            rightOpStr = id.fromSootValue((NumericConstant) rightOp);
         } 
         else if (rightOp instanceof soot.jimple.internal.JNewExpr) {
             rightOpStr = fromSootJNewExpr((JNewExpr) rightOp);
         } 
         else if (rightOp instanceof soot.jimple.StringConstant) {
-            rightOpStr = name.fromSootValue((soot.jimple.StringConstant) rightOp);
+            rightOpStr = id.fromSootValue((soot.jimple.StringConstant) rightOp);
         } 
         else if (rightOp instanceof soot.jimple.NullConstant) {
-            rightOpStr = name.fromSootValue((soot.jimple.NullConstant)rightOp);
+            rightOpStr = id.fromSootValue((soot.jimple.NullConstant)rightOp);
         } 
         else if (rightOp instanceof soot.jimple.internal.JLengthExpr) {
             rightOpStr = fromSootJLengthExpr((soot.jimple.internal.JLengthExpr) rightOp);
@@ -188,7 +190,7 @@ public class CLanguageStatementGenerator {
             rightOpStr = fromSootJNewMultiArrayExpr((soot.jimple.internal.JNewMultiArrayExpr) rightOp);
         }
         else if (rightOp instanceof soot.jimple.internal.JArrayRef) {
-            rightOpStr = name.fromSootJArrayRef((soot.jimple.internal.JArrayRef) rightOp);
+            rightOpStr = fromSootJArrayRef((soot.jimple.internal.JArrayRef) rightOp);
         }
         else if (rightOp instanceof soot.jimple.internal.JCastExpr) {
             rightOpStr = fromSootJCastExpr((soot.jimple.internal.JCastExpr) rightOp);
@@ -248,7 +250,7 @@ public class CLanguageStatementGenerator {
                     
                     RJavaCompiler.assertion(lastNonByValue != null, "failed to find an actual memory storage for " + leftOp);
                     
-                    leftOpStr = name.fromSootInstanceFieldRef(lInstanceRef, fromSootLValue(lastNonByValue));
+                    leftOpStr = fromSootInstanceFieldRef(lInstanceRef, fromSootLValue(lastNonByValue));
                 }
             }
             
@@ -274,12 +276,12 @@ public class CLanguageStatementGenerator {
     
     private String get(REnterMonitorStmt stmt) throws RJavaError {
         JEnterMonitorStmt internal = stmt.internal();
-        return "pthread_mutex_lock(&(((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*) " + name.fromSootValue(internal.getOp()) + ") -> " + CLanguageRuntime.INSTANCE_MUTEX + "))";
+        return "pthread_mutex_lock(&(((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*) " + id.fromSootValue(internal.getOp()) + ") -> " + CLanguageRuntime.INSTANCE_MUTEX + "))";
     }
     
     private String get(RExitMonitorStmt stmt) throws RJavaError {
         JExitMonitorStmt internal = stmt.internal();
-        return "pthread_mutex_unlock(&(((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*) " + name.fromSootValue(internal.getOp()) + ") -> " + CLanguageRuntime.INSTANCE_MUTEX + "))";
+        return "pthread_mutex_unlock(&(((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*) " + id.fromSootValue(internal.getOp()) + ") -> " + CLanguageRuntime.INSTANCE_MUTEX + "))";
     }
     
     private String get(RGotoStmt stmt) {
@@ -293,13 +295,13 @@ public class CLanguageStatementGenerator {
         Value rightOp = internal.getRightOp();
         if (rightOp instanceof soot.jimple.ParameterRef) {
             // left op
-            ret = name.fromSootValue(internal.getLeftOp()) + " = ";
+            ret = id.fromSootValue(internal.getLeftOp()) + " = ";
             
             // right op
             soot.jimple.ParameterRef parameterRef = (ParameterRef) rightOp;
             ret += CLanguageGenerator.FORMAL_PARAMETER + parameterRef.getIndex();
         } else if (rightOp instanceof soot.jimple.ThisRef) {
-            ret = name.fromSootValue(internal.getLeftOp()) + " = " + CLanguageGenerator.THIS_PARAMETER;
+            ret = id.fromSootValue(internal.getLeftOp()) + " = " + CLanguageGenerator.THIS_PARAMETER;
         } else if (rightOp instanceof soot.jimple.internal.JCaughtExceptionRef) {
             ret = exceptionLabel(stmt);
         }
@@ -337,7 +339,7 @@ public class CLanguageStatementGenerator {
     private String get(RReturnStmt stmt) {
         RType returnType = stmt.getMethod().getReturnType();
         RType valueType = RType.initWithSootType(stmt.internal().getOp().getType());
-        return CLanguageGenerator.RETURN + " " + typeCasting(returnType, valueType, name.fromSootValue(stmt.internal().getOp()));
+        return CLanguageGenerator.RETURN + " " + typeCasting(returnType, valueType, id.fromSootValue(stmt.internal().getOp()));
     }
     
     private String get(RReturnVoidStmt stmt) {
@@ -362,7 +364,7 @@ public class CLanguageStatementGenerator {
         JLookupSwitchStmt internal = stmt.internal();
         StringBuilder ret = new StringBuilder();
         
-        ret.append("switch (" + name.fromSootValue(internal.getKey()) + ") {\n");
+        ret.append("switch (" + id.fromSootValue(internal.getKey()) + ") {\n");
         for (int i = 0; i < internal.getLookupValues().size(); i++) {
             ret.append("  case " + internal.getLookupValue(i) + ":");
             ret.append("goto " + jumpToLabel((AbstractStmt) internal.getTarget(i)) + ";\n");
@@ -414,8 +416,8 @@ public class CLanguageStatementGenerator {
      * @return
      */
     private String fromSootJVirtualInvokeExpr_libCall(soot.jimple.internal.JVirtualInvokeExpr virtualInvoke) {
-        String methodName = name.fromSootMethod(virtualInvoke.getMethod());
-        String base = name.fromSootLocal((Local) virtualInvoke.getBase());
+        String methodName = id.fromSootMethod(virtualInvoke.getMethod());
+        String base = id.fromSootLocal((Local) virtualInvoke.getBase());
          
         String ret = methodName + "(" + base;
         
@@ -476,12 +478,12 @@ public class CLanguageStatementGenerator {
                 
                 generator.referencing(directInvoke);
                 
-                ret.append(name.get(actualClass));
+                ret.append(id.get(actualClass));
                 ret.append("_");
-                ret.append(name.getFunctionPointerNameFromSootMethod(virtualInvoke.getMethod()));
+                ret.append(id.getFunctionPointerNameFromSootMethod(virtualInvoke.getMethod()));
                 ret.append("(");
                 
-                String base = name.fromSootLocal((Local) virtualInvoke.getBase());
+                String base = id.fromSootLocal((Local) virtualInvoke.getBase());
                 ret.append(base);
                 
                 if (virtualInvoke.getArgCount() == 0)
@@ -510,12 +512,12 @@ public class CLanguageStatementGenerator {
         RClass targetClass = RClass.whoOwnsMethodInTypeHierarchy(baseClass, virtualInvoke.getMethod());
         
         // use class_struct to get function ptr
-        String methodName = name.getFunctionPointerNameFromSootMethod(virtualInvoke.getMethod());
-        String base = name.fromSootLocal((Local) virtualInvoke.getBase());
+        String methodName = id.getFunctionPointerNameFromSootMethod(virtualInvoke.getMethod());
+        String base = id.fromSootLocal((Local) virtualInvoke.getBase());
         
         StringBuilder ret = new StringBuilder();
         ret.append("(");
-        ret.append("(" + name.get(targetClass) + CLanguageRuntime.CLASS_STRUCT_SUFFIX + "*)");
+        ret.append("(" + id.get(targetClass) + CLanguageRuntime.CLASS_STRUCT_SUFFIX + "*)");
         ret.append("(((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*) " + base + ")");
         ret.append(" -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + "))");
         ret.append(" -> " + methodName + "(" + base);   //base is the first parameter
@@ -544,15 +546,15 @@ public class CLanguageStatementGenerator {
         
         // get the interface name first
         RClass interfaceClass = RClass.fromClassName(invoke.getBase().getType().toString());
-        String methodName = name.getFunctionPointerNameFromSootMethod(invoke.getMethod());
-        String base = name.fromSootLocal((Local) invoke.getBase());
+        String methodName = id.getFunctionPointerNameFromSootMethod(invoke.getMethod());
+        String base = id.fromSootLocal((Local) invoke.getBase());
         
         ret.append("(");
-        ret.append("(" + name.get(interfaceClass) + "*) ");
+        ret.append("(" + id.get(interfaceClass) + "*) ");
         String interfaceList = "((" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)" + 
                     "((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*) " + base + ")" +
                     " -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT + ") -> " + CLanguageRuntime.INTERFACE_LIST;
-        String interfaceName = "\"" + name.get(interfaceClass) + "\"";
+        String interfaceName = "\"" + id.get(interfaceClass) + "\"";
         ret.append(RuntimeHelpers.invoke(RuntimeHelpers.GET_INTERFACE, new String[]{interfaceList, interfaceName}));
         ret.append(")");
         ret.append(" -> " + methodName + "(" + base);
@@ -571,8 +573,8 @@ public class CLanguageStatementGenerator {
     }
     
     private String fromSootJSpecialInvokeExpr(soot.jimple.internal.JSpecialInvokeExpr specialInvoke) {
-        String methodName = name.fromSootMethod(specialInvoke.getMethod());
-        String base = name.fromSootLocal((Local) specialInvoke.getBase());
+        String methodName = id.fromSootMethod(specialInvoke.getMethod());
+        String base = id.fromSootLocal((Local) specialInvoke.getBase());
         
         String ret = methodName + "(" + base;
         
@@ -591,7 +593,7 @@ public class CLanguageStatementGenerator {
 
     private String fromSootJStaticInvokeExpr(JStaticInvokeExpr actualInvoke) {
         String ret = "";
-        ret = name.fromSootMethod(actualInvoke.getMethod());
+        ret = id.fromSootMethod(actualInvoke.getMethod());
         
         ret += "(";
         for (int i = 0; i < actualInvoke.getArgCount(); i++) { 
@@ -605,7 +607,7 @@ public class CLanguageStatementGenerator {
     }
     
     private String fromSootJNegExpr(JNegExpr rightOp) {
-        return "-(" + name.fromSootValue(rightOp.getOp()) + ")";
+        return "-(" + id.fromSootValue(rightOp.getOp()) + ")";
     }
     
     private String fromSootConditionExpr(soot.jimple.ConditionExpr conditionExpr) {
@@ -614,12 +616,12 @@ public class CLanguageStatementGenerator {
             RType left = RType.initWithClassName(conditionExpr.getOp1().getType().toString());
             RType right = RType.initWithClassName(conditionExpr.getOp2().getType().toString()); 
             if (left.isReferenceType() && right.isReferenceType()) {
-                return "(intptr_t)" + name.fromSootValue(conditionExpr.getOp1()) + " " + conditionExpr.getSymbol() + " (intptr_t)" + name.fromSootValue(conditionExpr.getOp2());
+                return "(intptr_t)" + id.fromSootValue(conditionExpr.getOp1()) + " " + conditionExpr.getSymbol() + " (intptr_t)" + id.fromSootValue(conditionExpr.getOp2());
             }
         }
         
         // default
-        return name.fromSootValue(conditionExpr.getOp1()) + conditionExpr.getSymbol() + name.fromSootValue(conditionExpr.getOp2());
+        return id.fromSootValue(conditionExpr.getOp1()) + conditionExpr.getSymbol() + id.fromSootValue(conditionExpr.getOp2());
     }
     
     private String fromSootBinopExpr(soot.jimple.BinopExpr binopExpr) {
@@ -643,8 +645,8 @@ public class CLanguageStatementGenerator {
             // So translated C:
             // int result = (a < b) ? -1 : ((a == b) ? 0 : 1)
             
-            String op1 = name.fromSootValue(binopExpr.getOp1());
-            String op2 = name.fromSootValue(binopExpr.getOp2());
+            String op1 = id.fromSootValue(binopExpr.getOp1());
+            String op2 = id.fromSootValue(binopExpr.getOp2());
             
             String ret = "(" + op1 + "<" + op2 + ") ? -1 : ((" + op1 + "==" + op2 + ") ? 0 : 1)";  
             return ret;
@@ -660,17 +662,17 @@ public class CLanguageStatementGenerator {
             
             // So translated C:
             // int result = (a > b) ? : 1 ((a == b) ? 0 : -1)
-            String op1 = name.fromSootValue(binopExpr.getOp1());
-            String op2 = name.fromSootValue(binopExpr.getOp2());
+            String op1 = id.fromSootValue(binopExpr.getOp1());
+            String op2 = id.fromSootValue(binopExpr.getOp2());
             String ret = "(" + op1 + ">" + op2 + ") ? 1 : ((" + op1 + "==" + op2 + ") ? 0 : -1)";
             return ret;
         }
         if (binopExpr instanceof JUshrExpr) {
-            return "(unsigned int)(" + name.fromSootValue(binopExpr.getOp1()) + " >> " + name.fromSootValue(binopExpr.getOp2()) + ")";
+            return "(unsigned int)(" + id.fromSootValue(binopExpr.getOp1()) + " >> " + id.fromSootValue(binopExpr.getOp2()) + ")";
         }
         
         // default
-        return name.fromSootValue(binopExpr.getOp1()) + binopExpr.getSymbol() + name.fromSootValue(binopExpr.getOp2());
+        return id.fromSootValue(binopExpr.getOp1()) + binopExpr.getSymbol() + id.fromSootValue(binopExpr.getOp2());
     }
     
     private String fromSootJNewExpr(soot.jimple.internal.JNewExpr newExpr) {
@@ -679,7 +681,7 @@ public class CLanguageStatementGenerator {
             return "0";
         
         // otherwise, we malloc
-        String type = name.fromSootType(newExpr.getType());
+        String type = id.fromSootType(newExpr.getType());
         String ret = "(" + type + CLanguageGenerator.POINTER + ") " + CLanguageGenerator.MALLOC + "(";
         ret += CLanguageGenerator.SIZE_OF + "(" + type + "))";
         return ret;
@@ -687,7 +689,7 @@ public class CLanguageStatementGenerator {
     
 
     private String fromSootJCastExpr(JCastExpr castExpr) {
-        return "(" + name.getWithPointerIfProper(RType.initWithClassName(castExpr.getCastType().toString())) + ")" + castExpr.getOp().toString();
+        return "(" + id.getWithPointerIfProper(RType.initWithClassName(castExpr.getCastType().toString())) + ")" + castExpr.getOp().toString();
     }
     
     /*
@@ -699,7 +701,7 @@ public class CLanguageStatementGenerator {
 
     private String fromSootJNewArrayExpr(JNewArrayExpr rightOp) {
         String length = rightOp.getSize().toString();
-        String eleSize = "(long) sizeof(" + name.getWithPointerIfProper(RType.initWithClassName(rightOp.getBaseType().toString())) + ")";
+        String eleSize = "(long) sizeof(" + id.getWithPointerIfProper(RType.initWithClassName(rightOp.getBaseType().toString())) + ")";
         return RuntimeHelpers.invoke(RuntimeHelpers.NEW_ARRAY, new String[]{length, eleSize});
     }
     
@@ -713,7 +715,7 @@ public class CLanguageStatementGenerator {
         dimensionArray += "}";
         
         String dimensionSize = String.valueOf(rightOp.getSizeCount());
-        String eleSize = "sizeof(" + name.fromSootType(rightOp.getBaseType()) + ")";
+        String eleSize = "sizeof(" + id.fromSootType(rightOp.getBaseType()) + ")";
         return RuntimeHelpers.invoke(RuntimeHelpers.NEW_MULTIARRAY, new String[]{dimensionArray, dimensionSize, eleSize});
     }
     
@@ -724,8 +726,8 @@ public class CLanguageStatementGenerator {
         // e.g. temp instanceof org.mmtk.plan.ComplexPhase
         // will translate to a call to helper method rjava_instanceof(temp, &org_mmtk_plan_CompelxPhase_class_instance);
         String ret = RuntimeHelpers.invoke(RuntimeHelpers.INSTANCEOF, new String[]{
-                "(void*)" + name.fromSootValue(expr.getOp()),
-                "(void*)&" + name.fromSootType(expr.getCheckType()) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX
+                "(void*)" + id.fromSootValue(expr.getOp()),
+                "(void*)&" + id.fromSootType(expr.getCheckType()) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX
                 });
         return ret;
     }
@@ -782,7 +784,7 @@ public class CLanguageStatementGenerator {
         if (expect.equals(current))
             return value;
         
-        String ret = "(" + name.fromSootType(expect) + ")" + value;
+        String ret = "(" + id.fromSootType(expect) + ")" + value;
         return ret;
     }
     /**
@@ -817,7 +819,7 @@ public class CLanguageStatementGenerator {
         // type cast
         // TODO: check type cast
         else //if (expectRType.isReferenceType()) 
-            expr = "(" + name.getWithPointerIfProper(expectRType) + ")" + value;
+            expr = "(" + id.getWithPointerIfProper(expectRType) + ")" + value;
         
         return expr;
     }
@@ -825,7 +827,62 @@ public class CLanguageStatementGenerator {
     private String typeCastingForInvokeParameter(InvokeExpr invoke, int arg) {
         Type expect = invoke.getMethod().getParameterType(arg);
         Type current = invoke.getArg(arg).getType();
-        String value = name.fromSootValue(invoke.getArg(arg));
+        String value = id.fromSootValue(invoke.getArg(arg));
         return typeCasting(expect, current, value);
+    }
+    
+    public String fromSootInstanceFieldRef(JInstanceFieldRef ref, String actualBase) {
+        Value base = ref.getBase();
+        SootField field = ref.getField();
+        RClass current = RClass.fromClassName(base.getType().toString());
+        RClass target = RClass.whoOwnsFieldInTypeHierarchy(current, RType.initWithClassName(field.getType().toString()), field.getName());
+        
+        if (RJavaCompiler.OPT_OBJECT_INLINING && SemanticMap.oi.doesPointToInlinableField(base)) {
+            StringBuilder ret = new StringBuilder();
+            
+            if (current.equals(target)) {
+                ret.append("(");
+                ret.append(actualBase);
+                ret.append(")." + field.getName());
+            } else {            
+                ret.append("(*(");
+                ret.append("(" + id.get(target) + "*)");
+                ret.append("&" + actualBase + "))");
+                ret.append("." + field.getName());
+            }
+            return ret.toString();
+        }
+        
+        StringBuilder ret = new StringBuilder();
+        ret.append("(");
+        ret.append("(" + id.get(target) + "*)");
+        ret.append(actualBase + ")");
+        ret.append(" -> " + field.getName());
+        
+        return ret.toString();
+    }
+    
+    public String fromSootInstanceFieldRef(JInstanceFieldRef ref) {
+        return fromSootInstanceFieldRef(ref, ref.getBase().toString());
+    }
+    
+
+    public String fromSootJArrayRef(JArrayRef op) {
+        String type = id.getWithPointerIfProper(RType.initWithClassName(op.getType().toString()));
+        
+        String ret = "*((" + type + "*)";
+        HelperMethod accessArray;
+        if (generator.getMethodContext().hasNoBoundsCheckAnnotation() || !RJavaCompiler.getGeneratorOptions().allowArrayBoundCheck())
+            accessArray = RuntimeHelpers.ACCESS_ARRAY_NOBOUNDS_CHECK;
+        else accessArray = RuntimeHelpers.ACCESS_ARRAY;
+        ret += RuntimeHelpers.invoke(accessArray, new String[]{op.getBase().toString(), op.getIndex().toString()});
+        ret += ")";
+        
+        return ret;
+    }
+    
+    public String fromSootStaticFieldRef(soot.jimple.StaticFieldRef ref) {
+        RClass klass = RClass.fromSootClass(ref.getField().getDeclaringClass());
+        return CLanguageGenerator.C_GLOBAL_VAR_PREFIX + id.get(klass) + "_" + ref.getField().getName();
     }
 }

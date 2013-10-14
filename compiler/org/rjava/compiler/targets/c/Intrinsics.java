@@ -37,10 +37,10 @@ import soot.jimple.internal.JimpleLocal;
 import soot.util.Chain;
 import soot.util.HashChain;
 
-public class CLanguageIntrinsicGenerator {
+public class Intrinsics {
     public static final boolean DEBUG = true;
     
-    protected CLanguageNameGenerator name;
+    protected CIdentifier name;
     protected CLanguageGenerator languageGenerator;
     
     public static final Map<String, String> JAVA_PRIMITIVE_TO_C_TYPE = new HashMap<String, String>();
@@ -51,9 +51,9 @@ public class CLanguageIntrinsicGenerator {
         JAVA_PRIMITIVE_TO_C_TYPE.put("long", "int64_t");
     }
     
-    public CLanguageIntrinsicGenerator(CLanguageGenerator generator) {
+    public Intrinsics(CLanguageGenerator generator) {
         this.languageGenerator = generator;
-        name = new CLanguageNameGenerator(generator);
+        name = new CIdentifier(generator);
     }
 
     public void generate(RType type) {
