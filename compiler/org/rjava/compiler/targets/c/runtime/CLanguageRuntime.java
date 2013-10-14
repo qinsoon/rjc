@@ -214,6 +214,7 @@ public class CLanguageRuntime {
         out.append(NEWLINE);
         
         /* some defines */
+        
         if (RJavaCompiler.debugTarget) {
             // allow external source code to know it is debug mode
             RJAVA_RUNTIME_DEFINE.put("DEBUG_TARGET", "1");
@@ -223,10 +224,15 @@ public class CLanguageRuntime {
         } else {
             RJAVA_RUNTIME_DEFINE.put("GDB_BREAKPOINT", "");
         }
+        
         if (RJavaCompiler.hostOS == RJavaCompiler.HOST_MACOSX) {
             RJAVA_RUNTIME_DEFINE.put("__OS_MACOSX_", "");
         } else if (RJavaCompiler.hostOS == RJavaCompiler.HOST_LINUX) {
             RJAVA_RUNTIME_DEFINE.put("__OS_LINUX_", "");
+        }
+        
+        if (RJavaCompiler.LOG_FUNCTION_EXECUTION) {
+            RJAVA_RUNTIME_DEFINE.put("LOG_FUNCTION_EXEC", "");
         }
         
         out.append(Code.commentln("defines"));
