@@ -13,6 +13,7 @@ import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.targets.CodeStringBuilder;
 import org.rjava.compiler.targets.GeneratorOptions;
 import org.rjava.compiler.targets.c.CLanguageGenerator;
+import org.rjava.compiler.targets.c.Code;
 
 public class MagicTypesForCGenerator extends CLanguageGenerator {
     public static final String[] INCLUDES = {
@@ -83,7 +84,7 @@ public class MagicTypesForCGenerator extends CLanguageGenerator {
         outMain.append(NEWLINE);
         
         // functions
-        outMain.append(commentln("function definitions"));
+        outMain.append(Code.commentln("function definitions"));
         for (RMethod method : klass.getMethods()) {
             if (method.isConstructor())
                 continue;

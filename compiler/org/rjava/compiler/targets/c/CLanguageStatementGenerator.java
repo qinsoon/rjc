@@ -327,7 +327,7 @@ public class CLanguageStatementGenerator {
     
     private String get(RNopStmt stmt) {
         // intentionally return empty
-        return CLanguageGenerator.SEMICOLON + CLanguageGenerator.comment("nop");
+        return CLanguageGenerator.SEMICOLON + Code.comment("nop");
     }
     
     private String get(RRetStmt stmt) throws RJavaError {
@@ -373,7 +373,7 @@ public class CLanguageStatementGenerator {
     }
     
     private String get(RThrowStmt stmt) throws RJavaError {
-        return CLanguageGenerator.comment(stmt.internal().toString());
+        return Code.comment(stmt.internal().toString());
     }
     
     /*
@@ -460,7 +460,7 @@ public class CLanguageStatementGenerator {
                 typeInferenceInfo += inferred != null ? inferred.toString() : "???";
             }
             
-            typeInfo = CLanguageGenerator.commentln(typeInferenceInfo);
+            typeInfo = Code.commentln(typeInferenceInfo);
             
             if (inferred != null) {
                 Statistics.increaseCounterByOne("type inference success");
@@ -746,12 +746,12 @@ public class CLanguageStatementGenerator {
     private String exceptionLabel(RStatement stmt) {
         Integer storedLabel = jumpLabels.get(stmt.internal().hashCode());
         if (storedLabel == null) {
-            String ret = "label" + labelIndex + ":" + CLanguageGenerator.comment("exception handler");
+            String ret = "label" + labelIndex + ":" + Code.comment("exception handler");
             jumpLabels.put(stmt.internal().hashCode(), labelIndex);
             labelIndex ++;
             return ret;
         }
-        else return "label" + storedLabel + ":" + CLanguageGenerator.comment("exception handler");
+        else return "label" + storedLabel + ":" + Code.comment("exception handler");
     }
     
     private String destLabel(RStatement stmt) {

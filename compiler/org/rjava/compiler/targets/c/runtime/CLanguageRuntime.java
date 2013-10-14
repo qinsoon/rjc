@@ -20,6 +20,7 @@ import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.targets.CodeStringBuilder;
 import org.rjava.compiler.targets.c.CLanguageGenerator;
 import org.rjava.compiler.targets.c.CLanguageNameGenerator;
+import org.rjava.compiler.targets.c.Code;
 import org.rjava.compiler.util.HelperMethod;
 import org.rjava.compiler.util.HelperVariable;
 import org.rjava.compiler.util.Tree;
@@ -122,7 +123,7 @@ public class CLanguageRuntime {
             break;
         case GC_MALLOC:
             CLanguageGenerator.MALLOC = "GC_malloc";
-            EXTRA_INCLUDE.add(includeNonStandardHeader("boehm-gc/include/gc.h"));
+            EXTRA_INCLUDE.add(Code.includeNonStandardHeader("boehm-gc/include/gc.h"));
             MAKE_SUBTASK.put("boehm-gc.a", "boehm-gc.a:\n" +
                     "\tcd boehm-gc;autoreconf -vif;automake --add-missing;" + 
                     (RJavaCompiler.m32 ? "CFLAGS=-m32 " : "") + "./configure --enable-threads=posix --enable-static;make\n" +
@@ -130,7 +131,7 @@ public class CLanguageRuntime {
             break;
         case GC_MALLOC_PREBUILT:
             CLanguageGenerator.MALLOC = "GC_malloc";
-            EXTRA_INCLUDE.add(includeNonStandardHeader("boehm-gc/include/gc.h"));
+            EXTRA_INCLUDE.add(Code.includeNonStandardHeader("boehm-gc/include/gc.h"));
             if (RJavaCompiler.hostOS == RJavaCompiler.HOST_MACOSX) {
                 if (RJavaCompiler.m32) {
                     MAKE_SUBTASK.put(GC_OSX_32, GC_OSX_32 + ":\n" +
@@ -195,18 +196,18 @@ public class CLanguageRuntime {
         out.append("#ifndef RJAVA_CRT_H" + NEWLINE);
         out.append("#define RJAVA_CRT_H" + NEWLINE);
         
-        out.append(CLanguageGenerator.commentln("c std lib"));
+        out.append(Code.commentln("c std lib"));
         for (String inc : C_STD_LIB_HEADER) {
-            out.append(includeStandardHeader(inc) + NEWLINE);
+            out.append(Code.includeStandardHeader(inc) + NEWLINE);
         }
         
-        out.append(CLanguageGenerator.commentln("some defines prior to include"));
+        out.append(Code.commentln("some defines prior to include"));
         for (String key : RJAVA_RUNTIME_DEFINE_BEFORE_INCLUDE.keySet()) {
             out.append("#define " + key + " " + RJAVA_RUNTIME_DEFINE_BEFORE_INCLUDE.get(key) + NEWLINE);
         }
         out.append(NEWLINE);
         
-        out.append(CLanguageGenerator.commentln("extra header"));
+        out.append(Code.commentln("extra header"));
         for (String inc : EXTRA_INCLUDE) {
             out.append(inc + NEWLINE);
         }
@@ -228,7 +229,7 @@ public class CLanguageRuntime {
             RJAVA_RUNTIME_DEFINE.put("__OS_LINUX_", "");
         }
         
-        out.append(CLanguageGenerator.commentln("defines"));
+        out.append(Code.commentln("defines"));
         for (String key : RJAVA_RUNTIME_DEFINE.keySet()) {
             out.append("#define " + key + " " + RJAVA_RUNTIME_DEFINE.get(key) + NEWLINE);
         }
@@ -273,18 +274,18 @@ public class CLanguageRuntime {
         out.append(NEWLINE);
         
         // types defines
-        out.append(CLanguageGenerator.commentln("application type defines"));
+        out.append(Code.commentln("application type defines"));
         out.append(getTypedefs());
         out.append(NEWLINE);
         
         if (RJavaCompiler.LOG_FUNCTION_EXECUTION) {
-            out.append(CLanguageGenerator.commentln("function log - debug use"));
+            out.append(Code.commentln("function log - debug use"));
             out.append(STRUCT_FUNCTION_LOG);
             out.append(NEWLINE);
         }
         
         // runtime globals
-        out.append(CLanguageGenerator.commentln("rjava runtime globals"));
+        out.append(Code.commentln("rjava runtime globals"));
         for (String global : RJAVA_RUNTIME_GLOBALS) {
             out.append(global + SEMICOLON + NEWLINE);
         }
@@ -295,7 +296,7 @@ public class CLanguageRuntime {
         for (HelperMethod method : RuntimeHelpers.CRT_HELPERS) {            
             if (method.isInline() && method.getSource() != null) {
                 out.append(NEWLINE);
-                out.append(CLanguageGenerator.commentln(RuntimeHelpers.signature(method)));
+                out.append(Code.commentln(RuntimeHelpers.signature(method)));
                 out.append(RuntimeHelpers.signature(method) + " {" + NEWLINE);
                 out.appendWithIndent(method.getSource());
                 out.append("}" + NEWLINE + NEWLINE);
@@ -312,10 +313,10 @@ public class CLanguageRuntime {
          *  generating runtime source - for class init()
          */
         CodeStringBuilder crtSource = new CodeStringBuilder();
-        crtSource.append(includeNonStandardHeader(RJAVA_CRT + ".h") + NEWLINE);
-        crtSource.append(includeNonStandardHeader(RJAVA_LIB + ".h") + NEWLINE);
+        crtSource.append(Code.includeNonStandardHeader(RJAVA_CRT + ".h") + NEWLINE);
+        crtSource.append(Code.includeNonStandardHeader(RJAVA_LIB + ".h") + NEWLINE);
         for (String app : generator.getTranslatedCHeader()) {
-            crtSource.append(includeNonStandardHeader(app) + NEWLINE);
+            crtSource.append(Code.includeNonStandardHeader(app) + NEWLINE);
         }
         crtSource.append(NEWLINE);
         
@@ -333,7 +334,7 @@ public class CLanguageRuntime {
         for (HelperMethod method : RuntimeHelpers.CRT_HELPERS) {
             if (method.getSource() != null && !method.isInline()) {
                 crtSource.append(NEWLINE);
-                crtSource.append(CLanguageGenerator.commentln(RuntimeHelpers.signature(method)));
+                crtSource.append(Code.commentln(RuntimeHelpers.signature(method)));
                 crtSource.append(RuntimeHelpers.signature(method) + " {" + NEWLINE);
                 crtSource.appendWithIndent(method.getSource());
                 crtSource.append("}" + NEWLINE);
@@ -345,7 +346,7 @@ public class CLanguageRuntime {
     public String getRuntimeInitCode() {
         CodeStringBuilder init = new CodeStringBuilder();
         
-        init.append(CLanguageGenerator.commentln("init runtime"));
+        init.append(Code.commentln("init runtime"));
         
         if (memoryManagement == GC_MALLOC || memoryManagement == GC_MALLOC_PREBUILT) {
             init.append("GC_init()" + SEMICOLON + NEWLINE);
@@ -464,7 +465,7 @@ public class CLanguageRuntime {
             while (iter.hasNext()) {
                 RClass current = iter.next();
                 if (generator.getClassInitMap().containsKey(current.getName())) {
-                    body.append(CLanguageGenerator.commentln("init for " + name.get(current)));
+                    body.append(Code.commentln("init for " + name.get(current)));
                     body.append(generator.getClassInitMap().get(current.getName()).toString());
                     body.append("\n\n");
                 }
@@ -472,7 +473,7 @@ public class CLanguageRuntime {
         }
         
         // calling <clinit> for those classes        
-        body.append(CLanguageGenerator.commentln("calling <clinit> for RJava classes"));
+        body.append(Code.commentln("calling <clinit> for RJava classes"));
         for (RClass klass : SemanticMap.dg.getDependencyGraph().getClassInitializationOrder()) {
             if (klass.getCLInitMethod() != null) {
                 body.append(name.get(klass.getCLInitMethod()) + "();\n");
@@ -498,26 +499,6 @@ public class CLanguageRuntime {
             defs.append("typedef struct " + typedef + CLASS_STRUCT_SUFFIX + " " + typedef + CLASS_STRUCT_SUFFIX + SEMICOLON + NEWLINE);
         }
         return defs.toString();
-    }
-    
-
-    
-    /**
-     * #include <header>
-     * @param header
-     * @return
-     */
-    public static String includeStandardHeader(String header) {
-        return "#include <" + header + ">";
-    }
-    
-    /**
-     * #include "header"
-     * @param header
-     * @return
-     */
-    public static String includeNonStandardHeader(String header) {
-        return "#include \"" + header + "\"";
     }
     
     public static final String STRUCT_FUNCTION_LOG = 

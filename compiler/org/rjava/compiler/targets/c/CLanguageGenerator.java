@@ -203,16 +203,16 @@ public class CLanguageGenerator extends CodeGenerator {
             String cCodeSource = getSource(klass.getName(), ".c");
             
             // include its own header
-            outInc.append("#include \"" + getSource(klass.getName(), ".h") + "\"" + NEWLINE);
+            outInc.append(Code.includeNonStandardHeader(getSource(klass.getName(), ".h")) + NEWLINE);
             // include c std
             for (String cStd : CLanguageRuntime.C_STD_LIB_HEADER) {
-                outInc.append(CLanguageRuntime.includeStandardHeader(cStd) + NEWLINE);
+                outInc.append(Code.includeStandardHeader(cStd) + NEWLINE);
             }
             
             outMain.append(NEWLINE);
             
-            // generating code for each method           
-            outMain.append(commentln(clinit.getKlass().getName() + "." + clinit.getName() + "()"));
+            // generating code for <clinit>           
+            outMain.append(Code.commentln(clinit.getKlass().getName() + "." + clinit.getName() + "()"));
             outMain.append(getMethodSignature(clinit, false) + " {" + NEWLINE);
             
             outMain.increaseIndent();
@@ -223,10 +223,10 @@ public class CLanguageGenerator extends CodeGenerator {
             
             // get referenced
             for (String reference : referencedClasses) {
-                outInc.append("#include \"" + reference + ".h\"" + NEWLINE);
+                outInc.append(Code.includeNonStandardHeader(reference + ".h")+ NEWLINE);
             }
             for (String reference : referencedMethodClasses) {
-                outInc.append(CLanguageRuntime.includeNonStandardHeader(reference) + ".h" + NEWLINE);
+                outInc.append(Code.includeNonStandardHeader(reference + ".h") + NEWLINE);
             }
             
             if (OUTPUT_C_TO_CONSOLE) {
@@ -259,7 +259,7 @@ public class CLanguageGenerator extends CodeGenerator {
         outInc.append("#define " + name.get(klass).toUpperCase() + "_H" + NEWLINE);
         
         // include rjava lib
-        outInc.append(CLanguageRuntime.includeNonStandardHeader(CLanguageRuntime.RJAVA_CRT + ".h") + NEWLINE);
+        outInc.append(Code.includeNonStandardHeader(CLanguageRuntime.RJAVA_CRT + ".h") + NEWLINE);
         
         outMain.append(NEWLINE);
         
@@ -270,7 +270,7 @@ public class CLanguageGenerator extends CodeGenerator {
         runtime.addTypedef(name.get(klass));
         outMain.append("struct " + name.get(klass) + CLanguageRuntime.INTERFACE_STRUCT_SUFFIX + " {" + NEWLINE);
         outMain.increaseIndent();
-        outMain.append(commentln("function pointers"));
+        outMain.append(Code.commentln("function pointers"));
         for (RMethod method : klass.getMethods()) {
             if (!method.isStatic())
                 outMain.append(getFunctionPointerForMethod(method) + SEMICOLON + NEWLINE);
@@ -297,7 +297,7 @@ public class CLanguageGenerator extends CodeGenerator {
         
         // get referenced
         for (String reference : referencedClasses) {
-            outInc.append("#include \"" + reference + ".h\"" + NEWLINE);
+            outInc.append(Code.includeNonStandardHeader(reference + ".h") + NEWLINE);
         }
         
         if (OUTPUT_C_TO_CONSOLE) {
@@ -344,10 +344,10 @@ public class CLanguageGenerator extends CodeGenerator {
         String cCodeSource = getSource(klass.getName(), METHOD_SOURCE_SUFFIX + ".c");
         
         // include its own header
-        outInc.append("#include \"" + getSource(klass.getName(), METHOD_SOURCE_SUFFIX + ".h") + "\"" + NEWLINE);
+        outInc.append(Code.includeNonStandardHeader(getSource(klass.getName(), METHOD_SOURCE_SUFFIX + ".h")) + NEWLINE);
         // include c std
         for (String cStd : CLanguageRuntime.C_STD_LIB_HEADER) {
-            outInc.append(CLanguageRuntime.includeStandardHeader(cStd) + NEWLINE);
+            outInc.append(Code.includeStandardHeader(cStd) + NEWLINE);
         }
         
         outMain.append(NEWLINE);
@@ -369,7 +369,7 @@ public class CLanguageGenerator extends CodeGenerator {
                 outMain.append(RuntimeHelpers.invoke(RuntimeHelpers.CLASS_INIT, null) + SEMICOLON + NEWLINE);
                 containsMain = true;
             } else {
-                outMain.append(commentln(method.getKlass().getName() + "." + method.getName() + "()"));
+                outMain.append(Code.commentln(method.getKlass().getName() + "." + method.getName() + "()"));
                 outMain.append(getMethodSignature(method, false) + " {" + NEWLINE);
                 outMain.increaseIndent();
             }
@@ -382,10 +382,10 @@ public class CLanguageGenerator extends CodeGenerator {
         
         // get referenced
         for (String reference : referencedClasses) {
-            outInc.append("#include \"" + reference + ".h\"" + NEWLINE);
+            outInc.append(Code.includeNonStandardHeader(reference + ".h") + NEWLINE);
         }
         for (String reference : referencedMethodClasses) {
-            outInc.append(CLanguageRuntime.includeNonStandardHeader(reference + ".h") + NEWLINE);
+            outInc.append(Code.includeNonStandardHeader(reference + ".h") + NEWLINE);
         }
         
         if (OUTPUT_C_TO_CONSOLE) {
@@ -421,8 +421,8 @@ public class CLanguageGenerator extends CodeGenerator {
         outInc.append("#define " + name.get(klass).toUpperCase() + "_H" + NEWLINE);
         
         // include rjava lib
-        outInc.append(CLanguageRuntime.includeNonStandardHeader(CLanguageRuntime.RJAVA_CRT + ".h") + NEWLINE);
-        outInc.append(CLanguageRuntime.includeNonStandardHeader(CLanguageRuntime.RJAVA_LIB + ".h") + NEWLINE);
+        outInc.append(Code.includeNonStandardHeader(CLanguageRuntime.RJAVA_CRT + ".h") + NEWLINE);
+        outInc.append(Code.includeNonStandardHeader(CLanguageRuntime.RJAVA_LIB + ".h") + NEWLINE);
         
         outMain.append(NEWLINE);
         
@@ -436,10 +436,10 @@ public class CLanguageGenerator extends CodeGenerator {
         // we contain a struct for its super class object
         // if this class doesnt have super class, we use common instance struct
         if (klass.hasSuperClass()) {
-            outMain.append(commentln("contains super instance struct"));
+            outMain.append(Code.commentln("contains super instance struct"));
             outMain.append(name.getStruct(klass.getSuperClass()) + " " + CLanguageRuntime.EMBED_SUPER_OBJECT + SEMICOLON + NEWLINE);
         } else {
-            outMain.append(commentln("contains common instance struct"));
+            outMain.append(Code.commentln("contains common instance struct"));
             outMain.append(CLanguageRuntime.COMMON_INSTANCE_STRUCT + " " + CLanguageRuntime.EMBED_SUPER_OBJECT + SEMICOLON + NEWLINE);
         }
         outMain.append(NEWLINE);
@@ -447,7 +447,7 @@ public class CLanguageGenerator extends CodeGenerator {
         /*
          * Generating instance field
          */
-        outMain.append(commentln("instance fields"));
+        outMain.append(Code.commentln("instance fields"));
         for (RField field : klass.getFields()) {
             if (!field.isStatic())
                 outMain.append(getInstanceFieldDeclaration(field) + SEMICOLON + NEWLINE);
@@ -465,47 +465,47 @@ public class CLanguageGenerator extends CodeGenerator {
         
         if (klass.hasSuperClass()) {
             // contain a struct for its super class
-            outMain.append(commentln("contains super class struct"));
+            outMain.append(Code.commentln("contains super class struct"));
             outMain.append(name.get(klass.getSuperClass()) + CLanguageRuntime.CLASS_STRUCT_SUFFIX + " " + CLanguageRuntime.EMBED_SUPER_CLASS + SEMICOLON + NEWLINE);
             
             // calling rjava_init_header()
             CodeStringBuilder classInitTemp = new CodeStringBuilder();
-            String thisClass = "&" + name.get(klass) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX;
-            String superClass = "&" + name.get(klass.getSuperClass()) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX;
-            String superClassSize = SIZE_OF + "(" + name.get(klass.getSuperClass()) + CLanguageRuntime.CLASS_STRUCT_SUFFIX + ")";
+            String thisClass = "&" + Code.getClassStructInstance(name.get(klass));
+            String superClass = "&" + Code.getClassStructInstance(name.get(klass.getSuperClass()));
+            String superClassSize = SIZE_OF + "(" + Code.getClassStructInstance(name.get(klass.getSuperClass())) + ")";
             classInitTemp.append(RuntimeHelpers.invoke(RuntimeHelpers.INIT_HEADER, new String[]{thisClass, superClass, superClassSize}) + SEMICOLON + NEWLINE);
             
             // class_name
             if (RJavaCompiler.debugTarget) {
-                classInitTemp.append("((" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)(&" + name.get(klass) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + "))");
-                classInitTemp.append(" -> " + CLanguageRuntime.CLASS_NAME + " = \"" + name.get(klass) + "\"" + SEMICOLON + NEWLINE);
+                classInitTemp.append(Code.getClassAttribute(name.get(klass), CLanguageRuntime.CLASS_NAME));
+                classInitTemp.append(" = \"" + name.get(klass) + "\"" + SEMICOLON + NEWLINE);
             }
             
             addToClassInitMap(klass.getName(), classInitTemp.toString());
         } else {
             // contains common class struct
-            outMain.append(commentln("contains common class struct"));
+            outMain.append(Code.commentln("contains common class struct"));
             outMain.append(CLanguageRuntime.COMMON_CLASS_STRUCT + " " + CLanguageRuntime.EMBED_SUPER_CLASS + SEMICOLON + NEWLINE);
             
             // this class has no super class, thus we initialize super and interface to NULL
             CodeStringBuilder classInitTemp = new CodeStringBuilder();
             // super_class = NULL
-            classInitTemp.append("((" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)(&" + name.get(klass) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + "))");
-            classInitTemp.append(" -> " + CLanguageRuntime.SUPER_CLASS + " = NULL" + SEMICOLON + NEWLINE);
+            classInitTemp.append(Code.getClassAttribute(name.get(klass), CLanguageRuntime.SUPER_CLASS));
+            classInitTemp.append(" = NULL" + SEMICOLON + NEWLINE);
             // interfaces = NULL
-            classInitTemp.append("((" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)(&" + name.get(klass) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + "))");
-            classInitTemp.append(" -> " + CLanguageRuntime.INTERFACE_LIST + " = NULL" + SEMICOLON + NEWLINE);
+            classInitTemp.append(Code.getClassAttribute(name.get(klass), CLanguageRuntime.INTERFACE_LIST));
+            classInitTemp.append(" = NULL" + SEMICOLON + NEWLINE);
             // class_name
             if (RJavaCompiler.debugTarget) {
-                classInitTemp.append("((" + CLanguageRuntime.COMMON_CLASS_STRUCT + "*)(&" + name.get(klass) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + "))");
-                classInitTemp.append(" -> " + CLanguageRuntime.CLASS_NAME + " = \"" + name.get(klass) + "\"" + SEMICOLON + NEWLINE);
+                classInitTemp.append(Code.getClassAttribute(name.get(klass), CLanguageRuntime.CLASS_NAME));
+                classInitTemp.append(" = \"" + name.get(klass) + "\"" + SEMICOLON + NEWLINE);
             }
             
             addToClassInitMap(klass.getName(), classInitTemp.toString());
         }
         outMain.append(NEWLINE);
         
-        outMain.append(commentln("function pointers"));
+        outMain.append(Code.commentln("function pointers"));
         for (RMethod method : klass.getMethods()) {
             // if a method is 
             // 1. not static
@@ -520,9 +520,8 @@ public class CLanguageGenerator extends CodeGenerator {
                 RClass target = RClass.whoOwnsMethodInTypeHierarchy(method.getKlass(), method);
                 // we need to type cast the class instance to its super most class instance, and then set function ptr
                 CodeStringBuilder classInitTemp = new CodeStringBuilder();
-                classInitTemp.append("((" + name.get(target) + CLanguageRuntime.CLASS_STRUCT_SUFFIX + "*)");
-                classInitTemp.append("(&" + name.get(klass) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + "))");
-                classInitTemp.append(" -> " + name.getFunctionPointerName(method) + " = " + name.get(method) + SEMICOLON + NEWLINE);
+                classInitTemp.append(Code.getClassAttribute(name.get(klass), name.get(target), name.getFunctionPointerName(method)));
+                classInitTemp.append(" = " + name.get(method) + SEMICOLON + NEWLINE);
                 addToClassInitMap(klass.getName(), classInitTemp.toString());
             }
         }
@@ -533,13 +532,13 @@ public class CLanguageGenerator extends CodeGenerator {
         outMain.append(NEWLINE);
         
         // class_instance as global variable
-        outMain.append(commentln("class instance"));
+        outMain.append(Code.commentln("class instance"));
         outMain.append(name.get(klass) + CLanguageRuntime.CLASS_STRUCT_SUFFIX + " ");
         outMain.append(name.get(klass) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX + SEMICOLON + NEWLINE);
         outMain.append(NEWLINE);
         
         // generate global fields (static field)
-        outMain.append(commentln("static field (global)"));
+        outMain.append(Code.commentln("static field (global)"));
         for (RField field : klass.getFields()) {
             //if (field.isStatic() && !field.isFinal()) {
             if (field.isStatic()) {
@@ -560,7 +559,7 @@ public class CLanguageGenerator extends CodeGenerator {
         
         // get referenced
         for (String reference : referencedClasses) {
-            outInc.append("#include \"" + reference + ".h\"" + NEWLINE);
+            outInc.append(Code.includeNonStandardHeader(reference + ".h") + NEWLINE);
         }
         
         if (OUTPUT_C_TO_CONSOLE) {
@@ -602,12 +601,12 @@ public class CLanguageGenerator extends CodeGenerator {
         outInc.append("#define " + name.get(klass).toUpperCase() + METHOD_SOURCE_SUFFIX.toUpperCase() + "_H" + NEWLINE);
         
         // include its own type
-        outInc.append(CLanguageRuntime.includeNonStandardHeader(getSource(klass.getName(), ".h")) + NEWLINE);
+        outInc.append(Code.includeNonStandardHeader(getSource(klass.getName(), ".h")) + NEWLINE);
         
         outMain.append(NEWLINE);
 
         // functions
-        outMain.append(commentln("function declarations"));
+        outMain.append(Code.commentln("function declarations"));
         for (RMethod method : klass.getMethods()) {
             if (!method.isMainMethod()) {
                 outMain.append(getMethodSignature(method, true) + SEMICOLON + NEWLINE);
@@ -617,7 +616,7 @@ public class CLanguageGenerator extends CodeGenerator {
         
         // get referenced
         for (String reference : referencedClasses) {
-            outInc.append("#include \"" + reference + ".h\"" + NEWLINE);
+            outInc.append(Code.includeNonStandardHeader(reference + ".h") + NEWLINE);
         }
         
         Set<String> oldReferencedClasses = new HashSet<String>();
@@ -626,7 +625,7 @@ public class CLanguageGenerator extends CodeGenerator {
         
         // put inline function definition in the header
         CodeStringBuilder outMain2 = new CodeStringBuilder();
-        outMain2.append(commentln("inline function definitions"));
+        outMain2.append(Code.commentln("inline function definitions"));
         for (RMethod method : klass.getMethods()) {
             if (method.isNative())
                 continue;
@@ -644,10 +643,10 @@ public class CLanguageGenerator extends CodeGenerator {
         CodeStringBuilder outInc2 = new CodeStringBuilder();
         for (String reference : referencedClasses) {
             if (!oldReferencedClasses.contains(reference))
-                outInc2.append(CLanguageRuntime.includeNonStandardHeader(reference + ".h") + NEWLINE);
+                outInc2.append(Code.includeNonStandardHeader(reference + ".h") + NEWLINE);
         }
         for (String reference : referencedMethodClasses) {
-            outInc2.append(CLanguageRuntime.includeNonStandardHeader(reference + ".h") + NEWLINE);
+            outInc2.append(Code.includeNonStandardHeader(reference + ".h") + NEWLINE);
         }
         
         if (OUTPUT_C_TO_CONSOLE) {
@@ -683,7 +682,7 @@ public class CLanguageGenerator extends CodeGenerator {
                     if (sootStmt.getLeftOp() instanceof soot.jimple.StaticFieldRef && f.getName().equals(((StaticFieldRef) sootStmt.getLeftOp()).getField().getName())) {
                         ret.put(f, name.fromSootValue(sootStmt.getRightOp()));
                         stmt.setIntrinsic(true);
-                        stmt.setCode(comment("constant definition for " + f.getName()));
+                        stmt.setCode(Code.comment("constant definition for " + f.getName()));
                     }
                 }
             }
@@ -811,12 +810,12 @@ public class CLanguageGenerator extends CodeGenerator {
             out.increaseIndent();
             
             CLanguageStatementGenerator stmt = new CLanguageStatementGenerator(this);
-            out.append(commentln("locals"));
+            out.append(Code.commentln("locals"));
             for (RLocal local : method.getLocals()) {
                 out.append(stmt.get(local) + SEMICOLON + NEWLINE);
             }
             out.append(NEWLINE);
-            out.append(commentln("stmts"));
+            out.append(Code.commentln("stmts"));
             
             if (method.isSynchronized()) {
                 if (!method.isStatic()) {
@@ -831,7 +830,7 @@ public class CLanguageGenerator extends CodeGenerator {
             boolean firstStmt = true;
             for (RStatement rStmt : method.getBody()) {
                 if (OUTPUT_JIMPLE_WITH_C)
-                    out.append(commentln("[" + rStmt.internal().getClass().toString() + "]" + rStmt.toString()));
+                    out.append(Code.commentln("[" + rStmt.internal().getClass().toString() + "]" + rStmt.toString()));
     
                 
                 if (rStmt.isIntrinsic())
@@ -865,7 +864,7 @@ public class CLanguageGenerator extends CodeGenerator {
                     // if this stmt creates new object, we need its class
                     if (rStmt.isObjectCreation()) {
                         JAssignStmt sootStmt = (JAssignStmt) rStmt.internal();
-                        String classStruct = codeGetClassStruct(name.fromSootLocal((Local) ((JAssignStmt)sootStmt).getLeftOp()));
+                        String classStruct = Code.getClassStruct(name.fromSootLocal((Local) ((JAssignStmt)sootStmt).getLeftOp()));
                         String classStructInstance = name.get(rStmt.getCreatedObjectClass()) + CLanguageRuntime.CLASS_STRUCT_INSTANCE_SUFFIX;
                         out.append(classStruct + " = &" + classStructInstance + SEMICOLON + NEWLINE);
                     }
@@ -878,18 +877,6 @@ public class CLanguageGenerator extends CodeGenerator {
         }
     }
     
-    public static String codeGetClassStruct(String instance) {
-        return "((" + CLanguageRuntime.COMMON_INSTANCE_STRUCT + "*)" + instance + ") -> " + CLanguageRuntime.POINTER_TO_CLASS_STRUCT;
-    }
-    
-    public static String commentln(String s) {
-        return "/* " + s + " */" + NEWLINE;
-    }
-    
-    public static String comment(String s) {
-        return "//" + s;
-    }
-
     @Override
     public void postTranslationWork() throws RJavaWarning, RJavaError {
         runtime.generateCRuntime();

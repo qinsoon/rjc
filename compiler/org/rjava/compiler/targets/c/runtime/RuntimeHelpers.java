@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.targets.c.CLanguageGenerator;
+import org.rjava.compiler.targets.c.Code;
 import org.rjava.compiler.util.HelperMethod;
 import org.rjava.compiler.util.HelperVariable;
 
@@ -428,7 +429,7 @@ public class RuntimeHelpers {
         });
         final String RJAVA_ACCESS_ARRAY_SOURCE = 
                 // bounds check code
-                CLanguageGenerator.commentln("bounds check") + NEWLINE +
+                Code.commentln("bounds check") + NEWLINE +
                 "int length = " + invoke(LENGTH_OF_ARRAY, new String[]{"array"}) + SEMICOLON + NEWLINE +
                 "if (index >= length || index < 0) {" + NEWLINE +
                 "char* str = (char*)" + CLanguageGenerator.MALLOC + "(1000)" + SEMICOLON + NEWLINE +
