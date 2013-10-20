@@ -1,6 +1,7 @@
 package testbed.runtime;
 
 import org.rjava.osext.OSConcurrency;
+import org.rjava.restriction.rules.RegisterField;
 import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.pragma.Inline;
 
@@ -85,7 +86,9 @@ public class Scheduler {
         return null;
     }
     
+    //@RegisterField
     public static int gcState;
+    
     public static final int MUTATOR = 0;
     public static final int WAITING_FOR_MUTATORS = 1;
     public static final int STOPPING_MUTATORS = 2;
@@ -105,7 +108,7 @@ public class Scheduler {
         if (gcState == MUTATOR)
             return;
 
-        Main._assert(gcState == WAITING_FOR_MUTATORS, "at gcpoint, state should be WAITING_FOR_MUTATORS");
+        Main._assert(gcState == WAITING_FOR_MUTATORS, "at gcpoint, state should be WAITING_FOR_MUTATORS. State is " + gcState);
         getCurrentContext().informGoingToBlock();
         getCurrentContext().blockForGC();
     }

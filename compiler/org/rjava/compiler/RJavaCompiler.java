@@ -65,7 +65,7 @@ public class RJavaCompiler {
      * log how many times each function is executed
      * Turning on this results in extremely slow execution. So be careful to turn it on for large programs
      */
-    public static final boolean LOG_FUNCTION_EXECUTION = true;
+    public static final boolean LOG_FUNCTION_EXECUTION = false;
     
     private RJavaCompiler(CompilationTask task) {
     	this.task = task;

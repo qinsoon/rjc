@@ -1,8 +1,15 @@
 package org.rjava.compiler.semantics.representation;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.rjava.compiler.Constants;
 import org.rjava.compiler.RJavaCompiler;
 
 import soot.SootField;
+import soot.tagkit.AnnotationTag;
+import soot.tagkit.Tag;
+import soot.tagkit.VisibilityAnnotationTag;
 
 public class RField {
     RClass klass;
@@ -10,6 +17,8 @@ public class RField {
     
     RType type;
     String name;
+    
+    List<RAnnotation> annos = new ArrayList<RAnnotation>();
     
     /**
      * this field will be updated by DetectInlinableFieldPass
@@ -22,6 +31,26 @@ public class RField {
         
         this.type = RType.initWithClassName(f.getType().toString());
         this.name = f.getName();
+        
+        fetchAnnotations(f);
+    }
+
+    private void fetchAnnotations(SootField f) {
+        for (Tag tag : f.getTags()) {
+            if (tag instanceof VisibilityAnnotationTag) {
+                VisibilityAnnotationTag annoTag = (VisibilityAnnotationTag) tag;
+                for (AnnotationTag t : annoTag.getAnnotations())
+                    annos.add(new RAnnotation(t));
+            }
+        }
+    }
+    
+    public boolean isRegisterField() {
+        for (RAnnotation rAnno : annos)
+            if (rAnno.getType().getClassName().equals(Constants.RJAVA_REGISTERFIELD_ANNOTATION))
+                return true;
+        
+        return false;
     }
 
     public RType getType() {

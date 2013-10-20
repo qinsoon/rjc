@@ -542,7 +542,7 @@ public class CLanguageGenerator extends CodeGenerator {
         for (RField field : klass.getFields()) {
             //if (field.isStatic() && !field.isFinal()) {
             if (field.isStatic()) {
-                outMain.append(id.getWithPointerIfProper(field.getType()) + " " + id.get(field) + SEMICOLON + NEWLINE);
+                outMain.append(getStaticFieldDeclaration(field) + SEMICOLON + NEWLINE);
             }
         }
         outMain.append(NEWLINE);
@@ -755,6 +755,14 @@ public class CLanguageGenerator extends CodeGenerator {
        }
        out.append(")");
        return out.toString();
+    }
+    
+    public String getStaticFieldDeclaration(RField field) {
+        String fieldDecl = id.getWithPointerIfProper(field.getType()) + " " + id.get(field);
+        
+        if (field.isRegisterField())
+            return "register " +  fieldDecl + " asm(\"xmm0\")";
+        else return fieldDecl;
     }
     
     public String getInstanceFieldDeclaration(RField field) {
