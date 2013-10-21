@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="/Users/apple/Documents/workspace_research/RJava_Prototype/components/jgrapht-jdk1.6.jar"/>
 	<classpathentry kind="lib" path="/Users/apple/Documents/workspace_research/RJava_Prototype/components/commons-io-2.2.jar"/>
 	<classpathentry kind="lib" path="/Users/apple/Documents/workspace_research/RJava_Prototype/components/soot/soot-2.5.0.jar"/>
+	<classpathentry kind="lib" path="/Users/apple/Documents/workspace_research/RJava_Prototype/components/commons-collections-3.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

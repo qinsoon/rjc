@@ -406,6 +406,9 @@ public class CExpressions {
     }
 
     public String fromSootBinopExpr(soot.jimple.BinopExpr binopExpr) {
+        // FIXME: it seems cmp/cmpg/cmpl is identical...
+        // also check eval() in ConstantPropagation
+        
         if (binopExpr instanceof JCmpExpr || binopExpr instanceof JCmpgExpr) {
             // Java:
             // a < b in java

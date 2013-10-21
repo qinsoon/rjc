@@ -15,6 +15,8 @@ import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.pass.CallGraphPass;
 import org.rjava.compiler.pass.CircularTypePass;
 import org.rjava.compiler.pass.ClassHierarchyPass;
+import org.rjava.compiler.pass.ConstantDefinitionPass;
+import org.rjava.compiler.pass.ConstantPropagationPass;
 import org.rjava.compiler.pass.DependencyGraphPass;
 import org.rjava.compiler.pass.DetectInlinableFieldPass;
 import org.rjava.compiler.pass.PointsToAnalysisPass;
@@ -51,6 +53,9 @@ public abstract class SemanticMap {
     // object inlining
     public static DetectInlinableFieldPass oi;
     
+    // constant propagation
+    public static ConstantPropagationPass cp;
+    
     public static SootEngine engine;
 
     public static void initSemanticMap(CompilationTask task) {
@@ -73,6 +78,10 @@ public abstract class SemanticMap {
 	        // add to compilation task
 	        task.addClassByClassName(name);
     	}
+    	
+    	/*
+    	 * The order of the following passes matters. DONT CHANGE 
+    	 */
     	
     	// init hierarchy - we need this for the next step below
     	cha = new ClassHierarchyPass();
@@ -118,6 +127,14 @@ public abstract class SemanticMap {
             
             oi = new DetectInlinableFieldPass(circularTypePass);
             oi.start();
+        }
+        
+        if (RJavaCompiler.OPT_CONSTANT_PROPAGATION) {
+            ConstantDefinitionPass constantDefPass = new ConstantDefinitionPass();
+            constantDefPass.start();
+            
+            cp = new ConstantPropagationPass(constantDefPass);
+            cp.start();
         }
     }
 

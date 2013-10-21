@@ -1,7 +1,6 @@
 package org.rjava.compiler.pass;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +27,7 @@ import org.rjava.compiler.semantics.representation.stmt.RReturnStmt;
 import org.rjava.compiler.semantics.representation.stmt.RReturnVoidStmt;
 import org.rjava.compiler.semantics.representation.stmt.RTableSwitchStmt;
 import org.rjava.compiler.semantics.representation.stmt.RThrowStmt;
+import org.rjava.compiler.util.SootCollectionUtils;
 import org.rjava.compiler.util.Statistics;
 
 import soot.Type;
@@ -77,8 +77,8 @@ public class PointsToAnalysisPass extends CompilationPass {
         Value trace = v;
         ret.add(v);
         
-        while(collectionContainsValue(pointsToSet.keySet(), trace)) {
-            trace = pointsToSet.get(collectionGetsValue(pointsToSet.keySet(), trace));
+        while(SootCollectionUtils.contains(pointsToSet.keySet(), trace)) {
+            trace = pointsToSet.get(SootCollectionUtils.gets(pointsToSet.keySet(), trace));
             ret.add(trace);
         }
         
@@ -90,29 +90,6 @@ public class PointsToAnalysisPass extends CompilationPass {
         Value last = trace.get(trace.size()-1);
         Type ret = typeRoots.get(last);        
         return ret;
-    }
-    
-    private static boolean collectionContainsValue(Collection<? extends Value> collection, Value v) {
-        return collectionGetsValue(collection, v) != null;
-    }
-    
-    private static Value collectionGetsValue(Collection<? extends Value> collection, Value v) {
-        for (Value cur : collection) {
-            if (valueEquals(cur, v))
-                return cur;
-        }
-        return null;
-    }
-    
-    // instance field is slightly different
-    private static boolean valueEquals(Value a, Value b) {
-        if (a instanceof InstanceFieldRef && b instanceof InstanceFieldRef) {
-            InstanceFieldRef refA = (InstanceFieldRef)a;
-            InstanceFieldRef refB = (InstanceFieldRef)b;
-            
-            return refA.getField().getDeclaringClass().equals(refB.getField().getDeclaringClass())
-                    && refA.getField().getName().equals(refB.getField().getName());
-        } else return a.equivTo(b);
     }
 
     @Override
@@ -147,12 +124,12 @@ public class PointsToAnalysisPass extends CompilationPass {
     }
     
     private void addToPointsToSet(Value from, Value to) {
-        if (collectionContainsValue(pointsToBlacklist, from))
+        if (SootCollectionUtils.contains(pointsToBlacklist, from))
             return;
         
-        if (collectionContainsValue(pointsToSet.keySet(), from)) {
+        if (SootCollectionUtils.contains(pointsToSet.keySet(), from)) {
             // reassign
-            Value delete = collectionGetsValue(pointsToSet.keySet(), from);
+            Value delete = SootCollectionUtils.gets(pointsToSet.keySet(), from);
             pointsToSet.remove(delete);
             pointsToBlacklist.add(from);
         } else {

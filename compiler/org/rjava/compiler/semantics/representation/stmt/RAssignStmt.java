@@ -27,10 +27,27 @@ public class RAssignStmt extends RStatement {
             pass.visit(this, (StaticFieldRef)internal().getRightOp());
     }
     
+    public static final boolean verboseUseBoxes = true;
+    
     @Override
     public String toString() {
         String leftOp = internal().getLeftOp().getClass().toString();
         String rightOp = internal().getRightOp().getClass().toString();
-        return super.toString() + "[left:" + leftOp + ",right:" + rightOp +"]";
+        
+        StringBuilder ret = new StringBuilder();
+        ret.append(super.toString() + "\n[left:" + leftOp + ",right:" + rightOp +"]");
+        
+        if (verboseUseBoxes) {
+            ret.append("\nRH Useboxes:\n");
+            for (Object o : internal().getRightOp().getUseBoxes()) {
+                ret.append("-" + o.toString() + "\n");
+            }
+            ret.append("LH Useboxes:\n");
+            for (Object o : internal().getLeftOp().getUseBoxes()) {
+                ret.append("-" + o.toString() + "\n");
+            }
+        }
+        
+        return ret.toString(); 
     }
 }

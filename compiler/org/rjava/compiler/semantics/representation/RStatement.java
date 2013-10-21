@@ -10,6 +10,7 @@ import org.rjava.compiler.semantics.representation.stmt.*;
 
 import soot.Unit;
 import soot.UnitBox;
+import soot.Value;
 import soot.ValueBox;
 import soot.jimple.InvokeExpr;
 import soot.jimple.internal.AbstractStmt;
@@ -113,9 +114,13 @@ public abstract class RStatement implements CompilationUnit{
     }
     
     public static final boolean verbose = false;
-    public static final boolean verboseInvoke = false;
+    public static final boolean verboseInvoke = false;    
     
     public String toString() {
+        return internal.toString();
+    }
+    
+    public String toSimpleString() {
         return internal.toString();
     }
 
@@ -181,5 +186,27 @@ public abstract class RStatement implements CompilationUnit{
         pass.visit(this);
         if (containsInvokeExpr())
             invokeExpr.accept(pass);
+    }
+    
+    public Value getLeftOp() {
+        if (this instanceof RAssignStmt) {
+            return ((RAssignStmt)this).internal().getLeftOp();
+        } else if (this instanceof RIdentityStmt) {
+            return ((RIdentityStmt)this).internal().getLeftOp();
+        } else {
+            RJavaCompiler.error("No right/left op from such statement type:" + getClass());
+            return null;
+        }
+    }
+    
+    public Value getRightOp() {
+        if (this instanceof RAssignStmt) {
+            return ((RAssignStmt)this).internal().getRightOp();
+        } else if (this instanceof RIdentityStmt) {
+            return ((RIdentityStmt)this).internal().getRightOp();
+        } else {
+            RJavaCompiler.error("No right/left op from such statement type:" + getClass());
+            return null;
+        }
     }
 }
