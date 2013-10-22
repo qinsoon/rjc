@@ -3,6 +3,7 @@ package org.rjava.compiler.pass;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,7 @@ import soot.jimple.NumericConstant;
 import soot.jimple.StaticFieldRef;
 import soot.jimple.internal.JAddExpr;
 import soot.jimple.internal.JAndExpr;
+import soot.jimple.internal.JCastExpr;
 import soot.jimple.internal.JCmpExpr;
 import soot.jimple.internal.JCmpgExpr;
 import soot.jimple.internal.JCmplExpr;
@@ -68,6 +70,13 @@ import soot.jimple.internal.JXorExpr;
 import soot.util.HashMultiMap;
 
 public class ConstantPropagationPass extends CompilationPass {
+    public static final boolean ASSERT_CORRECTNESS = false;
+    public static final boolean USE_CONSTANT = true;
+    static {
+        RJavaCompiler.assertion(!ASSERT_CORRECTNESS || !USE_CONSTANT, "In ConstantPropagationPass, using ASSERT_CORRECTNESS when turning on USE_CONSTANT is meaningless. ");
+    }
+    
+    public static final boolean DEBUG = false;
     
     public ConstantPropagationPass(ConstantDefinitionPass constantDefs) {
         //this.constantDefs = constantDefs;
@@ -77,12 +86,13 @@ public class ConstantPropagationPass extends CompilationPass {
         UNKNOWN, CONSTANT, NONCONSTANT
     }
     
-    SootValueMap<Lattice> valueStatus = new SootValueMap<Lattice>();
-    SootValueMap<Number>  result = new SootValueMap<Number>();
+    public SootValueMap<Lattice> valueStatus = new SootValueMap<Lattice>();
+    public SootValueMap<Number>  result = new SootValueMap<Number>();
     
     SootValueMultiMap<RStatement> defuse = new SootValueMultiMap<RStatement>();
     
     Queue<RStatement> worklist = new LinkedList<RStatement>();
+    Set<RStatement> worklistHistory = new HashSet<RStatement>();
     
     int pass;
     
@@ -95,13 +105,20 @@ public class ConstantPropagationPass extends CompilationPass {
         pass = 1;
         super.start();
         
-        for (Object o : defuse.keySet()) {
-            System.out.println("def:" + o);
-            System.out.println("use:");
-            for (RStatement o2 : defuse.get((Value) o)) {
-                System.out.println("-" + o2.toSimpleString());
+        if (DEBUG) {
+            for (Object o : defuse.keySet()) {
+                System.out.println("def:" + o);
+                System.out.println("use:");
+                for (RStatement o2 : defuse.get((Value) o)) {
+                    System.out.println("-" + o2.toSimpleString());
+                }
+                System.out.println();
             }
-            System.out.println();
+            
+            System.out.println("value status:");
+            for (Value k : valueStatus.keySet()) {
+                System.out.println(k + ":=" + getValueStatus(k));
+            }
         }
         
         System.out.println("Start propagation---------------");
@@ -110,7 +127,8 @@ public class ConstantPropagationPass extends CompilationPass {
         while (!worklist.isEmpty()) {
             // choose and remove statement x from worklist
             RStatement x = worklist.poll();
-            System.out.println("examining " + x.toSimpleString());
+            if (DEBUG)
+                System.out.println("examining " + x.toSimpleString());
             
             // x should either be assign or identity statement
             // let v denote the output variable for x
@@ -118,7 +136,33 @@ public class ConstantPropagationPass extends CompilationPass {
             Value v = left;
             
             // newval:= symbolic interpretation of x
-            Number newval = eval(right);
+            Number newval = null;
+            try{
+                newval = eval(right);
+                
+                // type cast
+                if (right instanceof IntConstant || right.getType().toString().equals("int"))
+                    newval = (Integer) newval;
+                else if (right instanceof LongConstant || right.getType().toString().equals("long"))
+                    newval = (Long) newval;
+                else if (right instanceof FloatConstant || right.getType().toString().equals("float"))
+                    newval = (Float) newval;
+                else if (right instanceof DoubleConstant || right.getType().toString().equals("double"))
+                    newval = (Double) newval;
+                else if (right.getType().toString().equals("short") 
+                        || right.getType().toString().equals("boolean") 
+                        || right.getType().toString().equals("byte") 
+                        || right.getType().toString().equals("char"))
+                    newval = (Integer) newval;
+                else {
+                    RJavaCompiler.fail("Unknown numeric type: " + right.getType());
+                }
+            } catch (RuntimeException e) {
+                continue;
+            }
+            if (getValueStatus(left) == Lattice.NONCONSTANT)
+                continue;
+            
             // if newval != valout(v,x)
             if (!evalEqual(v, newval)) {
                 // valout(v,x) := newval
@@ -127,13 +171,16 @@ public class ConstantPropagationPass extends CompilationPass {
                 // for all (x,y) from def-use
                 Set<RStatement> uses = (Set<RStatement>) defuse.get(v);
                 if (uses == null || uses.isEmpty()) {
-                    System.out.println("val not used, no more propgating");
+                    if (DEBUG)
+                        System.out.println("val not used, no more propgating");
                     continue;
                 }
                 
-                System.out.println("propagating from " + v);
+                if (DEBUG)
+                    System.out.println("propagating from " + v);
                 for (RStatement y : uses) {
-                    System.out.println(y.toSimpleString());
+                    if (DEBUG)
+                        System.out.println(y.toSimpleString());
                     // oldval := valin(v, y)
                     // valin(v,y) := oldval ^ valout(v,x)
                     // if valin(v,y) != oldval then worklist := worklist + {y}
@@ -143,32 +190,47 @@ public class ConstantPropagationPass extends CompilationPass {
                     Value yRight = y.getRightOp();
                     List<ValueBox> yRightUses = (List<ValueBox>)yRight.getUseBoxes();
                     boolean canEvaluate = true;
-                    
+                                     
                     if (yRightUses == null || yRightUses.isEmpty()) {
-                        if (valueStatus.get(yRight) != Lattice.CONSTANT)
+                        if (getValueStatus(yRight) != Lattice.CONSTANT)
                             canEvaluate = false;
                     } else {
+                        // right op is an expression, we check if all use boxes are constant, and also check if the expr can be evaluated
                         for (ValueBox val : yRightUses) {
-                            if (valueStatus.get(val.getValue()) != Lattice.CONSTANT)
+                            if (getValueStatus(val.getValue()) != Lattice.CONSTANT)
                                 canEvaluate = false;
                         }
+                        if (!exprCanBeEvaluated(yRight))
+                            canEvaluate = false;   
                     }
+                    if (worklistHistory.contains(y))
+                        canEvaluate = false;
+                    
                     if (canEvaluate) {
                         worklist.add(y);
-                        System.out.println("adding " + y.toSimpleString() + " to work list");
+                        worklistHistory.add(y);
+                        if (DEBUG)
+                            System.out.println("adding " + y.toSimpleString() + " to work list");
                     }
                 }
             }
             
             // end of one iteration
-            System.out.println("\n");
+            if (DEBUG)
+                System.out.println("\n");
         }
         
         report();
     }
     
-    public boolean evalEqual(Value v, Number val) {
-        System.out.println("***evalEqual(" + v + "," + val + ")");
+    private boolean exprCanBeEvaluated(Value expr) {
+        return expr instanceof Immediate 
+                || expr instanceof JNegExpr 
+                || expr instanceof JCastExpr
+                || expr instanceof BinopExpr;
+    }
+    
+    private boolean evalEqual(Value v, Number val) {
         return false;
     }
     
@@ -177,9 +239,12 @@ public class ConstantPropagationPass extends CompilationPass {
      * @param value
      * @return
      */
-    public Number eval(Value value) {
+    private Number eval(Value value) throws RuntimeException{
+        if (getValueStatus(value) == Lattice.NONCONSTANT)
+            throw new RuntimeException();
+        
         // evaluated constant
-        if (valueStatus.get(value) == Lattice.CONSTANT)
+        if (getValueStatus(value) == Lattice.CONSTANT)
             return result.get(value);
         
         // immediate constant
@@ -190,6 +255,11 @@ public class ConstantPropagationPass extends CompilationPass {
         if (value instanceof JNegExpr) {
             JNegExpr neg = (JNegExpr) value;
             return -eval(neg.getOp()).doubleValue();
+        }
+        
+        if (value instanceof JCastExpr) {
+            JCastExpr cast = (JCastExpr) value;
+            return eval(cast.getOp()).doubleValue();
         }
         
         RJavaCompiler.assertion(value instanceof BinopExpr, "value:" + value + " is not binop expr");
@@ -294,11 +364,11 @@ public class ConstantPropagationPass extends CompilationPass {
         if (pass == 1) {
             Value valOut = stmt.internal().getLeftOp();
             
-            if (SootCollectionUtils.contains(valueStatus.keySet(), valOut)) {
-                valueStatus.put(valOut, Lattice.NONCONSTANT);
+            if (valueStatus.contains(valOut)) {
+                setValueStatus(valOut, Lattice.NONCONSTANT);
             } else {            
                 // for each output v of s do valout(v,s) := unknown
-                valueStatus.put(valOut, Lattice.UNKNOWN);
+                setValueStatus(valOut, Lattice.UNKNOWN);
             }
 
             // for each input w of s - valin(w,s) 
@@ -309,9 +379,10 @@ public class ConstantPropagationPass extends CompilationPass {
                 
                 // add all statement of constant form, e.g. X=5
                 worklist.add(stmt);
+                worklistHistory.add(stmt);
             } else {
                 // if w is variable, valin(w,s) := unknown
-                valueStatus.put(rightOp, Lattice.UNKNOWN);
+                setValueStatus(rightOp, Lattice.UNKNOWN);
             }
             
             //System.out.println("Adding defuse for stmt " + stmt);
@@ -334,10 +405,27 @@ public class ConstantPropagationPass extends CompilationPass {
         }        
     }
     
+    private Lattice getValueStatus(Value v) {
+        return valueStatus.get(v);
+    }
+    
+    private void setValueStatus(Value v, Lattice l) {
+        if (!valueStatus.contains(v)) {
+            valueStatus.put(v, l);
+            return;
+        }
+        
+        Lattice old = valueStatus.get(v);
+        //RJavaCompiler.assertion(old.ordinal() <= l.ordinal(), "Trying to set status for " + v + " from " + old + " to " + l);
+        if (old.ordinal() < l.ordinal())
+            valueStatus.put(v, l);
+    }
+    
     public void newConstant(Value v, Number n) {
-        valueStatus.put(v, Lattice.CONSTANT);
+        setValueStatus(v, Lattice.CONSTANT);
         result.put(v, n);
-        System.out.println("Found constant:" + v + "=" + n);
+        if (DEBUG)
+            System.out.println("Found constant:" + v + "=" + n);
     }
 
     public Number getNumberFromValue(Value valIn) {
@@ -450,6 +538,20 @@ public class ConstantPropagationPass extends CompilationPass {
     public void visit(RStatement stmt, StaticFieldRef staticRef) {
         // TODO Auto-generated method stub
         
+    }
+    
+    public boolean isConstant(Value v) {
+        return getValueStatus(v) != null && getValueStatus(v) == Lattice.CONSTANT;
+    }
+    
+    public Number getConstant(Value v) {
+        RJavaCompiler.assertion(isConstant(v), "Value " + v + " is not a constant. Check with isConstant() first");
+        
+        Number ret = result.get(v);
+        
+        RJavaCompiler.assertion(ret != null, "Constant for value:" + v + " from result set is null");
+        
+        return ret;
     }
 
     public void report() {

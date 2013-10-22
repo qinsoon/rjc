@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.exception.RJavaError;
+import org.rjava.compiler.pass.ConstantPropagationPass;
 import org.rjava.compiler.pass.PointsToAnalysisPass;
 import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RClass;
@@ -179,6 +180,19 @@ public class CStatements {
                 if (leftOp instanceof JimpleLocal && RLocal.fromSootLocal(generator.getMethodContext(), (Local) leftOp).isByValue())
                     return leftOpStr + " = " + expr.typeCastingByValue(leftOp.getType(), rightOp.getType(), rightOpStr);
                 else return leftOpStr + " = &(" + rightOpWithCast + ")";
+            }
+        }
+        
+        if (RJavaCompiler.OPT_CONSTANT_PROPAGATION) {
+            if (SemanticMap.cp.isConstant(leftOp)) {
+                if (ConstantPropagationPass.ASSERT_CORRECTNESS) {
+                    String assertion = "assert (" + leftOpStr + " == " + id.fromJavaNumber(SemanticMap.cp.getConstant(leftOp)) + ")";
+                    return leftOpStr + " = " + rightOpWithCast + ";" + assertion;
+                }
+                if (ConstantPropagationPass.USE_CONSTANT) {
+                    String constantRight = id.fromJavaNumber(SemanticMap.cp.getConstant(leftOp));
+                    return leftOpStr + " = " + expr.typeCasting(leftOp.getType(), rightOp.getType(), constantRight);
+                }
             }
         }
         

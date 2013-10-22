@@ -3,8 +3,10 @@ package org.rjava.compiler.util;
 import java.util.Collection;
 
 
+import soot.Local;
 import soot.Value;
 import soot.jimple.InstanceFieldRef;
+import soot.jimple.internal.JimpleLocal;
 
 public abstract class SootCollectionUtils {
 
@@ -22,6 +24,9 @@ public abstract class SootCollectionUtils {
 
     // instance field is slightly different
     public static boolean isEqualValue(Value a, Value b) {
+        /*if (a instanceof Local && b instanceof Local) {
+            return a.equals(b);
+        }*/
         if (a instanceof InstanceFieldRef && b instanceof InstanceFieldRef) {
             InstanceFieldRef refA = (InstanceFieldRef)a;
             InstanceFieldRef refB = (InstanceFieldRef)b;

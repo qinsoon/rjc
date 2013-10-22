@@ -73,6 +73,11 @@ public class CExpressions {
     }
 
     public String fromSootRValue(Value rightOp) {
+        if (RJavaCompiler.OPT_CONSTANT_PROPAGATION) {
+            // use constant value here
+            
+        }
+        
         // right op -> rvalue | imm
         // rvalue -> concreteRef | imm | expr
         // concreteRef -> field | local.field | local[imm]

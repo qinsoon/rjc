@@ -16,9 +16,10 @@
         <pathelement location="${build_tmp}"/>
     	<pathelement location="rjava"/>
     	<pathelement location="compiler"/>
-		<pathelement location="components/soot/soot-2.5.0.jar"/>
+	<pathelement location="components/soot/soot-2.5.0.jar"/>
         <pathelement location="components/commons-io-2.2.jar"/>
-		<pathelement location="components/jgrapht-jdk1.6.jar"/>
+	<pathelement location="components/commons-collections-3.2.jar"/>
+	<pathelement location="components/jgrapht-jdk1.6.jar"/>
     </path>
     <target depends="clean" name="init">
         <mkdir dir="${build_tmp}"/>

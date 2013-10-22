@@ -13,6 +13,7 @@ import org.apache.commons.io.FileUtils;
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.exception.RJavaError;
 import org.rjava.compiler.exception.RJavaWarning;
+import org.rjava.compiler.pass.ConstantPropagationPass;
 import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.semantics.representation.RField;

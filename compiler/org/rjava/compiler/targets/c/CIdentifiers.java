@@ -164,4 +164,12 @@ public class CIdentifiers {
         }
         else return value.toString();
     }
+    
+    public String fromJavaNumber(Number n) {
+        if (n instanceof Long) {
+            return n + "L" + (RJavaCompiler.m32 ? "L" : "");
+        } else if (n instanceof Float) {
+            return n + "F";
+        } else return n.toString();
+    }
 }

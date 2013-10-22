@@ -382,7 +382,7 @@ public class CLanguageRuntime {
         else if (RJavaCompiler.hostOS == RJavaCompiler.HOST_LINUX)
             C_FLAGS += "-pthread -lrt -lm ";
         C_FLAGS += "-std=gnu99 ";
-        C_FLAGS += "-msse ";
+        // C_FLAGS += "-msse "; - used to use this with @RegisterField
         
         
         /*
