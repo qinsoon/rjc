@@ -70,11 +70,13 @@ import soot.jimple.internal.JXorExpr;
 import soot.util.HashMultiMap;
 
 public class ConstantPropagationPass extends CompilationPass {
+    /**
+     * when turned on, for x := temp$1 (temp$1 is known to be CONSTANT), we dont use the constant value
+     * instead, generated code is x = temp$1; assert (x == CONSTANT)
+     * when turned off, we we use constant value
+     */
     public static final boolean ASSERT_CORRECTNESS = false;
-    public static final boolean USE_CONSTANT = true;
-    static {
-        RJavaCompiler.assertion(!ASSERT_CORRECTNESS || !USE_CONSTANT, "In ConstantPropagationPass, using ASSERT_CORRECTNESS when turning on USE_CONSTANT is meaningless. ");
-    }
+    public static final boolean USE_CONSTANT = !ASSERT_CORRECTNESS;
     
     public static final boolean DEBUG = false;
     
@@ -122,7 +124,16 @@ public class ConstantPropagationPass extends CompilationPass {
         }
         
         System.out.println("Start propagation---------------");
+        intraProceduralConstantPropagation();
         
+        pass = 2;
+        //super.start();
+        
+        if (DEBUG)
+            report();
+    }
+
+    private void intraProceduralConstantPropagation() {
         // constant propagation
         while (!worklist.isEmpty()) {
             // choose and remove statement x from worklist
@@ -212,15 +223,12 @@ public class ConstantPropagationPass extends CompilationPass {
                         if (DEBUG)
                             System.out.println("adding " + y.toSimpleString() + " to work list");
                     }
-                }
-            }
+                } // end of for (RStatement y : uses)
+            } // end of if (!evalEqual())
             
-            // end of one iteration
             if (DEBUG)
                 System.out.println("\n");
-        }
-        
-        report();
+        } // end of while(!worklist.isEmpty())
     }
     
     private boolean exprCanBeEvaluated(Value expr) {
@@ -382,7 +390,7 @@ public class ConstantPropagationPass extends CompilationPass {
                 worklistHistory.add(stmt);
             } else {
                 // if w is variable, valin(w,s) := unknown
-                setValueStatus(rightOp, Lattice.UNKNOWN);
+                // setValueStatus(rightOp, Lattice.UNKNOWN);
             }
             
             //System.out.println("Adding defuse for stmt " + stmt);

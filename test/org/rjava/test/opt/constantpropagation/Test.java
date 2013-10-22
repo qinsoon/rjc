@@ -13,9 +13,19 @@ public class Test {
         if (Foo.CONSTANT == 100)
             F = 10;
         else F = 5;
+        int H = foo2(D);
+        int I = foo3();
     }
 
     public static void foo() {
         int E = B + 2;
+    }
+    
+    public static int foo2(int x) {
+        return x + 5;
+    }
+    
+    public static int foo3() {
+        return 1000;
     }
 }
