@@ -45,6 +45,7 @@ import soot.jimple.FloatConstant;
 import soot.jimple.IntConstant;
 import soot.jimple.LongConstant;
 import soot.jimple.NumericConstant;
+import soot.jimple.ParameterRef;
 import soot.jimple.StaticFieldRef;
 import soot.jimple.internal.JAddExpr;
 import soot.jimple.internal.JAndExpr;
@@ -75,16 +76,16 @@ public class ConstantPropagationPass extends CompilationPass {
      * instead, generated code is x = temp$1; assert (x == CONSTANT)
      * when turned off, we we use constant value
      */
-    public static final boolean ASSERT_CORRECTNESS = false;
+    public static final boolean ASSERT_CORRECTNESS = true;
     public static final boolean USE_CONSTANT = !ASSERT_CORRECTNESS;
     
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
     
     public ConstantPropagationPass(ConstantDefinitionPass constantDefs) {
         //this.constantDefs = constantDefs;
     }
     
-    class Lattice {
+    static class Lattice {
         Status status;
         Number value;
         
@@ -95,11 +96,40 @@ public class ConstantPropagationPass extends CompilationPass {
         
         public Lattice(Status status) {
             this(status, null);
+        }        
+        
+        @Override
+        public String toString() {
+            String ret = status.toString();
+            if (status == Status.CONSTANT)
+                ret += "(" + value + ")";
+            return ret;
+        }
+        
+        public static Lattice meet(Lattice s1, Lattice s2) {
+            if (s1.status == Status.UNKNOWN)
+                return s2;
+            if (s2.status == Status.UNKNOWN)
+                return s1;
+            
+            if (s1.status == Status.NONCONSTANT)
+                return s1;
+            if (s2.status == Status.NONCONSTANT)
+                return s2;
+            
+            if (s1.value.doubleValue() == s2.value.doubleValue())
+                return s1; // or s2, they are same
+            
+            if (s1.value.doubleValue() != s2.value.doubleValue())
+                return new Lattice(Status.NONCONSTANT);
+            
+            RJavaCompiler.fail("Invalid meet operation");
+            return null;
         }
     }
     
     enum Status{
-        UNKNOWN, CONSTANT, NONCONSTANT
+        UNKNOWN, CONSTANT, NONCONSTANT;
     }
     
     public SootValueMap<Lattice> results = new SootValueMap<Lattice>();
@@ -107,7 +137,7 @@ public class ConstantPropagationPass extends CompilationPass {
     SootValueMultiMap<RStatement> defuse = new SootValueMultiMap<RStatement>();
     
     Queue<RStatement> worklist = new LinkedList<RStatement>();
-    Set<RStatement> worklistHistory = new HashSet<RStatement>();
+    //Set<RStatement> worklistHistory = new HashSet<RStatement>();
     
     int pass;
     
@@ -133,21 +163,30 @@ public class ConstantPropagationPass extends CompilationPass {
             
             System.out.println("value status:");
             for (Value k : results.keySet()) {
-                System.out.print(k + ":=" + getLattice(k).status);
-                if (getLattice(k).status == Status.CONSTANT)
-                    System.out.print("(" + getLattice(k).value + ")");
-                System.out.println();
+                System.out.println(k + ":=" + getLattice(k));
             }
         }
         
-        RJavaCompiler.println("Start propagation...");
+        RJavaCompiler.println("Start intra procedural propagation...");
         intraProceduralConstantPropagation();
         
-        pass = 2;
+        // inter-procedural constant propagation
+        // see 'Interprocedural Constant Propagation' paper from David Callahan
+        //pass = 2;
+        //RJavaCompiler.println("Preparing for interprocedural propagation..");
         //super.start();
+        
+        //pass = 3;
+        //super.start();
+        
+        //interProceduralConstantPropagation();
         
         if (DEBUG)
             report();
+    }
+    
+    private void interProceduralConstantPropagation() {
+        
     }
 
     private void intraProceduralConstantPropagation() {
@@ -232,12 +271,12 @@ public class ConstantPropagationPass extends CompilationPass {
                         if (!exprCanBeEvaluated(yRight))
                             canEvaluate = false;   
                     }
-                    if (worklistHistory.contains(y))
-                        canEvaluate = false;
+                    //if (worklistHistory.contains(y))
+                    //    canEvaluate = false;
                     
                     if (canEvaluate) {
                         worklist.add(y);
-                        worklistHistory.add(y);
+                     //   worklistHistory.add(y);
                         if (DEBUG)
                             System.out.println("adding " + y.toSimpleString() + " to work list");
                     }
@@ -379,10 +418,16 @@ public class ConstantPropagationPass extends CompilationPass {
         
     }
 
+    HashMap<RMethod, Value[]> formalParameters = new HashMap<RMethod, Value[]>();
+    
     @Override
     public void visit(RMethod method) {
-        // TODO Auto-generated method stub
-        
+        if (pass == 2) {
+            // construct formal parameters
+            // preparing for pass2
+            Value[] paraList = new Value[method.getParameters().size()];
+            formalParameters.put(method, paraList);
+        }
     }
 
     @Override
@@ -405,7 +450,7 @@ public class ConstantPropagationPass extends CompilationPass {
                 
                 // add all statement of constant form, e.g. X=5
                 worklist.add(stmt);
-                worklistHistory.add(stmt);
+                //worklistHistory.add(stmt);
             } else {
                 // if w is variable, valin(w,s) := unknown
                 // setValueStatus(rightOp, Lattice.UNKNOWN);
@@ -443,7 +488,7 @@ public class ConstantPropagationPass extends CompilationPass {
         
         Lattice old = results.get(v);
         //RJavaCompiler.assertion(old.ordinal() <= l.ordinal(), "Trying to set status for " + v + " from " + old + " to " + l);
-        if (old.status.ordinal() < l.status.ordinal())
+        if (old.status.ordinal() <= l.status.ordinal())
             results.put(v, l);
     }
     
@@ -495,8 +540,19 @@ public class ConstantPropagationPass extends CompilationPass {
 
     @Override
     public void visit(RIdentityStmt stmt) {
-        // TODO Auto-generated method stub
-        
+        if (pass == 2) {
+            // for each procedural p in the program do
+            //   for each parameter x to p do
+            //     Val(x) := UNKNOWN
+            Value right = stmt.internal().getRightOp(); 
+            if (right instanceof ParameterRef) {
+                setLattice(right, new Lattice(Status.UNKNOWN));
+                
+                // register as formal parameters for the method
+                Value[] paraArray = formalParameters.get(stmt.getMethod());
+                paraArray[((ParameterRef) right).getIndex()] = right;
+            }
+        }
     }
 
     @Override
@@ -555,8 +611,21 @@ public class ConstantPropagationPass extends CompilationPass {
 
     @Override
     public void visit(RInvokeExpr expr) {
-        // TODO Auto-generated method stub
-        
+        if (pass == 3) {
+            // for each call site s do
+            //    for each formal parameter y that receives a value at s do
+            //      Val(y) := Val(y) ^ J(y,s)
+            RMethod targetMethod = expr.getTargetMethod();
+            Value[] paras = formalParameters.get(targetMethod);
+            for (int i = 0; i < expr.getInternal().getArgCount(); i++) {
+                if (DEBUG)
+                    System.out.println("init para" + i + " on method " + targetMethod);
+                Value y = paras[i];
+                if (DEBUG)
+                    System.out.println("para" + i + " - formal:" + getLattice(y) + ",argument:" + getLattice(expr.getInternal().getArg(i)));
+                setLattice(y, Lattice.meet(getLattice(y), getLattice(expr.getInternal().getArg(i))));
+            }
+        }
     }
 
     @Override
