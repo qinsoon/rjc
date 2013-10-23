@@ -105,6 +105,7 @@ public class ConstantPropagationPass extends CompilationPass {
         
         // collect constants and get def-use
         pass = 1;
+        RJavaCompiler.println("Gathering def-use and constants..");
         super.start();
         
         if (DEBUG) {
@@ -123,7 +124,7 @@ public class ConstantPropagationPass extends CompilationPass {
             }
         }
         
-        System.out.println("Start propagation---------------");
+        RJavaCompiler.println("Start propagation...");
         intraProceduralConstantPropagation();
         
         pass = 2;
@@ -150,27 +151,28 @@ public class ConstantPropagationPass extends CompilationPass {
             Number newval = null;
             try{
                 newval = eval(right);
-                
-                // type cast
-                if (right instanceof IntConstant || right.getType().toString().equals("int"))
-                    newval = (Integer) newval;
-                else if (right instanceof LongConstant || right.getType().toString().equals("long"))
-                    newval = (Long) newval;
-                else if (right instanceof FloatConstant || right.getType().toString().equals("float"))
-                    newval = (Float) newval;
-                else if (right instanceof DoubleConstant || right.getType().toString().equals("double"))
-                    newval = (Double) newval;
-                else if (right.getType().toString().equals("short") 
-                        || right.getType().toString().equals("boolean") 
-                        || right.getType().toString().equals("byte") 
-                        || right.getType().toString().equals("char"))
-                    newval = (Integer) newval;
-                else {
-                    RJavaCompiler.fail("Unknown numeric type: " + right.getType());
-                }
             } catch (RuntimeException e) {
                 continue;
             }
+            
+            // type cast
+            if (right instanceof IntConstant || right.getType().toString().equals("int"))
+                newval = newval.intValue();
+            else if (right instanceof LongConstant || right.getType().toString().equals("long"))
+                newval = newval.longValue();
+            else if (right instanceof FloatConstant || right.getType().toString().equals("float"))
+                newval = newval.floatValue();
+            else if (right instanceof DoubleConstant || right.getType().toString().equals("double"))
+                newval = newval.doubleValue();
+            else if (right.getType().toString().equals("short") 
+                    || right.getType().toString().equals("boolean") 
+                    || right.getType().toString().equals("byte") 
+                    || right.getType().toString().equals("char"))
+                newval = newval.intValue();
+            else {
+                RJavaCompiler.fail("Unknown numeric type: " + right.getType());
+            }
+            
             if (getValueStatus(left) == Lattice.NONCONSTANT)
                 continue;
             
