@@ -13,6 +13,7 @@ import java.util.Set;
 import org.apache.commons.collections.MultiHashMap;
 import org.apache.commons.collections.map.MultiValueMap;
 import org.rjava.compiler.RJavaCompiler;
+import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.semantics.representation.RStatement;
@@ -44,6 +45,7 @@ import soot.jimple.BinopExpr;
 import soot.jimple.DoubleConstant;
 import soot.jimple.FloatConstant;
 import soot.jimple.IntConstant;
+import soot.jimple.InvokeExpr;
 import soot.jimple.LongConstant;
 import soot.jimple.NumericConstant;
 import soot.jimple.ParameterRef;
@@ -77,10 +79,10 @@ public class ConstantPropagationPass extends CompilationPass {
      * instead, generated code is x = temp$1; assert (x == CONSTANT)
      * when turned off, we we use constant value
      */
-    public static final boolean ASSERT_CORRECTNESS = false;
+    public static final boolean ASSERT_CORRECTNESS = true;
     public static final boolean USE_CONSTANT = !ASSERT_CORRECTNESS;
     
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
     
     public ConstantPropagationPass(ConstantDefinitionPass constantDefs) {
         //this.constantDefs = constantDefs;
@@ -154,9 +156,12 @@ public class ConstantPropagationPass extends CompilationPass {
     SootValueMultiMap<RStatement> defuse = new SootValueMultiMap<RStatement>();
     
     Queue<RStatement> worklist = new LinkedList<RStatement>();
-    //Set<RStatement> worklistHistory = new HashSet<RStatement>();
     
     int pass;
+    final int GET_DEFUSE_AND_CONSTANT_P1 = 1;
+    final int PREPARE_JUMPFUNCTIONS_P2   = 2;
+    final int MATCHING_ARGUMENT_P3       = 3;
+    final int DECIDING_CONSTANT_FORMAL_PARAMETERS_P4 = 4;
     
     @Override
     public void start() {
@@ -164,7 +169,7 @@ public class ConstantPropagationPass extends CompilationPass {
         // see <Optimizing Compiler for Modern Architecture> Book P147
         
         // collect constants and get def-use
-        pass = 1;
+        pass = GET_DEFUSE_AND_CONSTANT_P1;
         RJavaCompiler.println("Gathering def-use and constants..");
         super.start();
         
@@ -185,28 +190,27 @@ public class ConstantPropagationPass extends CompilationPass {
         }
         
         RJavaCompiler.println("Start intra procedural propagation...");
-        intraProceduralConstantPropagation();
+        constantPropagation();
         
         // inter-procedural constant propagation
         // see 'Interprocedural Constant Propagation' paper from David Callahan
-        //pass = 2;
-        //RJavaCompiler.println("Preparing for interprocedural propagation..");
-        //super.start();
+        pass = PREPARE_JUMPFUNCTIONS_P2;
+        RJavaCompiler.println("Preparing for interprocedural propagation..");
+        super.start();
         
-        //pass = 3;
-        //super.start();
+        pass = MATCHING_ARGUMENT_P3; 
+        super.start();
         
-        //interProceduralConstantPropagation();
+        pass = DECIDING_CONSTANT_FORMAL_PARAMETERS_P4;
+        super.start();
+        
+        constantPropagation();
         
         if (DEBUG)
             report();
     }
-    
-    private void interProceduralConstantPropagation() {
-        
-    }
 
-    private void intraProceduralConstantPropagation() {
+    private void constantPropagation() {
         // constant propagation
         while (!worklist.isEmpty()) {
             if (DEBUG)
@@ -217,7 +221,33 @@ public class ConstantPropagationPass extends CompilationPass {
             if (DEBUG)
                 System.out.println("examining " + x.toSimpleString());
             
-            // x should either be assign or identity statement
+            /*
+             * if x is return stmt, we find all its call sites
+             */
+            if (x instanceof RReturnStmt) {
+                if (DEBUG)
+                    System.out.println("return stmt of " + x.getMethod().getSignature() + ". Adding its callsites");
+                
+                RReturnStmt retStmt = (RReturnStmt) x;
+                Value retValue = retStmt.internal().getOp();
+                RJavaCompiler.assertion(isConstant(retValue), "ReturnStmt:" + x.toSimpleString() + " is in worklist, bu its OP:" + retValue + " is not constant (its " + getValueStatus(retValue) + ")");
+                
+                List<RStatement> callsites = SemanticMap.cg.getCallGraph().getCallSites(x.getMethod());
+                for (RStatement callsite : callsites) {
+                    // mark its invoke expr as constant
+                    Value callsiteExpr = callsite.internal().getInvokeExpr();
+                    setLattice(callsiteExpr, new Lattice(Status.CONSTANT, getConstant(retValue)));
+                    if (DEBUG)
+                        System.out.println("adding " + callsite.toSimpleString());
+                }
+                
+                continue;
+            }
+            
+            
+            /*
+             * x is an assignment stmt or identity stmt
+             */
             // let v denote the output variable for x
             Value left = x.getLeftOp(), right = x.getRightOp();
             Value v = left;
@@ -339,7 +369,8 @@ public class ConstantPropagationPass extends CompilationPass {
         if (getLattice(expr) != null && getLattice(expr).status == Status.CONSTANT)
             return true;
         
-        return expr instanceof Immediate 
+        return expr instanceof InvokeExpr
+                || expr instanceof Immediate 
                 || expr instanceof JNegExpr 
                 || expr instanceof JCastExpr
                 || expr instanceof BinopExpr;
@@ -487,59 +518,80 @@ public class ConstantPropagationPass extends CompilationPass {
     HashMap<RMethod, Value[]> formalParameters = new HashMap<RMethod, Value[]>();
     
     @Override
-    public void visit(RMethod method) {
-        if (pass == 2) {
-            // construct formal parameters
-            // preparing for pass2
-            Value[] paraList = new Value[method.getParameters().size()];
-            formalParameters.put(method, paraList);
+    public void visit(RMethod method) {    
+        if (pass == 1) {
+            Value[] paraArray = new Value[method.getParameters().size()];
+            formalParameters.put(method, paraArray);
+        }
+        
+        if (pass == 4) {
+            Value[] params = formalParameters.get(method);
+            for (Value v : params) {
+                if (isConstant(v)) {
+                    if (DEBUG) {
+                        System.out.println("formal parameter" + v + " of method " + method.getSignature() + " is constant. Propagating");
+                    }
+                    Set<RStatement> uses = defuse.get(v);
+                    for (RStatement stmt : uses) {
+                        if (DEBUG)
+                            System.out.println("adding " + stmt.toSimpleString() + " to worklist");
+                        worklist.add(stmt);
+                    }
+                }
+            }
         }
     }
 
     @Override
     public void visit(RAssignStmt stmt) {
-        if (pass == 1) {
-            Value valOut = stmt.internal().getLeftOp();
-                       
-            // for each output v of s do valout(v,s) := unknown
-            if (getLattice(valOut) == null)
-                setLattice(valOut, new Lattice(Status.UNKNOWN));
-            else setLattice(valOut, new Lattice(Status.NONCONSTANT));
-
-            // for each input w of s - valin(w,s) 
-            Value rightOp = stmt.internal().getRightOp();
-            
-            //System.out.println("Adding defuse for stmt " + stmt);
-            List<ValueBox> uses = stmt.internal().getRightOp().getUseBoxes();
-            if (!uses.isEmpty())
-                for (ValueBox box : uses) {
-                    Value val = box.getValue();
-                    if (val instanceof NumericConstant)
-                        newConstant(val, getNumberFromValue(val));
-                    //else setLattice(val, new Lattice(Status.UNKNOWN));
-                    
-                    // valIn is def, this statement is use
-                    // put into defuse
-                    //System.out.println("val:" + val + " used in statement " + stmt.toSimpleString());
-                    defuse.put(val, stmt);
-                }
-            else {
-                if (rightOp instanceof NumericConstant) {
-                    // if w is constant, valin(w,s) := constant value of w
-                    newConstant(rightOp, getNumberFromValue(rightOp));
-                    
-                    // add all statement of constant form, e.g. X=5
-                    worklist.add(stmt);
-                    //worklistHistory.add(stmt);
-                } else {
-                    // if w is variable, valin(w,s) := unknown
-                    //setLattice(rightOp, new Lattice(Status.UNKNOWN));
-                }
-                
-                //System.out.println("val:" + rightOp + " used in statement " + stmt.toSimpleString());
-                defuse.put(rightOp, stmt);
-            }
+        if (pass == GET_DEFUSE_AND_CONSTANT_P1) {
+            checkDefUseAndConstant(stmt);
         }        
+    }
+
+    public void checkDefUseAndConstant(RStatement stmt) {
+        RJavaCompiler.assertion(stmt instanceof RAssignStmt || stmt instanceof RIdentityStmt, "Unexpected type of stmt in precheckStmt():" + stmt.getClass());
+        
+        Value valOut = stmt.getLeftOp();
+                   
+        // for each output v of s do valout(v,s) := unknown
+        if (getLattice(valOut) == null)
+            setLattice(valOut, new Lattice(Status.UNKNOWN));
+        else setLattice(valOut, new Lattice(Status.NONCONSTANT));
+
+        // for each input w of s - valin(w,s) 
+        Value rightOp = stmt.getRightOp();
+        
+        //System.out.println("Adding defuse for stmt " + stmt);
+        List<ValueBox> uses = rightOp.getUseBoxes();
+        if (!uses.isEmpty())
+            for (ValueBox box : uses) {
+                Value val = box.getValue();
+                if (val instanceof NumericConstant)
+                    newConstant(val, getNumberFromValue(val));
+                //else setLattice(val, new Lattice(Status.UNKNOWN));
+                
+                // valIn is def, this statement is use
+                // put into defuse
+                //System.out.println("val:" + val + " used in statement " + stmt.toSimpleString());
+                defuse.put(val, stmt);
+            }
+        else {
+            if (rightOp instanceof NumericConstant) {
+                // if w is constant, valin(w,s) := constant value of w
+                newConstant(rightOp, getNumberFromValue(rightOp));
+                
+                // add all statement of constant form, e.g. X=5
+                worklist.add(stmt);
+                //worklistHistory.add(stmt);
+            } else {
+                // if w is variable, valin(w,s) := unknown
+                //setLattice(rightOp, new Lattice(Status.UNKNOWN));
+            }
+            
+            //System.out.println("val:" + rightOp + " used in statement " + stmt.toSimpleString());
+            defuse.put(rightOp, stmt);
+        }
     }
     
     private Lattice getLattice(Value v) {
@@ -612,7 +664,10 @@ public class ConstantPropagationPass extends CompilationPass {
 
     @Override
     public void visit(RIdentityStmt stmt) {
-        if (pass == 2) {
+        if (pass == GET_DEFUSE_AND_CONSTANT_P1) {
+            checkDefUseAndConstant(stmt);
+        }
+        if (pass == PREPARE_JUMPFUNCTIONS_P2) {
             // for each procedural p in the program do
             //   for each parameter x to p do
             //     Val(x) := UNKNOWN
@@ -622,6 +677,7 @@ public class ConstantPropagationPass extends CompilationPass {
                 
                 // register as formal parameters for the method
                 Value[] paraArray = formalParameters.get(stmt.getMethod());
+                
                 paraArray[((ParameterRef) right).getIndex()] = right;
             }
         }
@@ -653,14 +709,14 @@ public class ConstantPropagationPass extends CompilationPass {
 
     @Override
     public void visit(RRetStmt stmt) {
-        // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void visit(RReturnStmt stmt) {
-        // TODO Auto-generated method stub
-        
+        if (pass == GET_DEFUSE_AND_CONSTANT_P1) {
+            defuse.put(stmt.internal().getOp(), stmt);
+        }
     }
 
     @Override
@@ -683,7 +739,7 @@ public class ConstantPropagationPass extends CompilationPass {
 
     @Override
     public void visit(RInvokeExpr expr) {
-        if (pass == 3) {
+        if (pass == MATCHING_ARGUMENT_P3) {
             // for each call site s do
             //    for each formal parameter y that receives a value at s do
             //      Val(y) := Val(y) ^ J(y,s)

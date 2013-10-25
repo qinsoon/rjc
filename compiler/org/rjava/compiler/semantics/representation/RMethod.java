@@ -424,4 +424,8 @@ public class RMethod implements DependencyEdgeNode, CompilationUnit{
         }
         return true;
     }
+    
+    public String getSignature() {
+        return internal().getSignature();
+    }
 }
