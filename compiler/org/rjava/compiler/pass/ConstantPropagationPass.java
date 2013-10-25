@@ -77,7 +77,7 @@ public class ConstantPropagationPass extends CompilationPass {
      * instead, generated code is x = temp$1; assert (x == CONSTANT)
      * when turned off, we we use constant value
      */
-    public static final boolean ASSERT_CORRECTNESS = true;
+    public static final boolean ASSERT_CORRECTNESS = false;
     public static final boolean USE_CONSTANT = !ASSERT_CORRECTNESS;
     
     public static final boolean DEBUG = false;
@@ -316,7 +316,7 @@ public class ConstantPropagationPass extends CompilationPass {
         if (yRightUses == null || yRightUses.isEmpty()) {
             return getValueStatus(rightOp);
         } else {
-            // right op is an expression, we check if all use boxes are constant, and also check if the expr can be evaluated
+            // right op is an expression, we check if all use boxes are constant
             boolean atLeastOneNonConstant = false;
             boolean isAllConstants = true;
             
@@ -502,9 +502,9 @@ public class ConstantPropagationPass extends CompilationPass {
             Value valOut = stmt.internal().getLeftOp();
                        
             // for each output v of s do valout(v,s) := unknown
-            //if (getLattice(valOut) == null)
+            if (getLattice(valOut) == null)
                 setLattice(valOut, new Lattice(Status.UNKNOWN));
-            //else setLattice(valOut, new Lattice(Status.NONCONSTANT));
+            else setLattice(valOut, new Lattice(Status.NONCONSTANT));
 
             // for each input w of s - valin(w,s) 
             Value rightOp = stmt.internal().getRightOp();
