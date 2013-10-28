@@ -15,7 +15,6 @@ import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.pass.CallGraphPass;
 import org.rjava.compiler.pass.CircularTypePass;
 import org.rjava.compiler.pass.ClassHierarchyPass;
-import org.rjava.compiler.pass.ConstantDefinitionPass;
 import org.rjava.compiler.pass.ConstantPropagationPass;
 import org.rjava.compiler.pass.DependencyGraphPass;
 import org.rjava.compiler.pass.DetectInlinableFieldPass;
@@ -130,10 +129,7 @@ public abstract class SemanticMap {
         }
         
         if (RJavaCompiler.OPT_CONSTANT_PROPAGATION) {
-            ConstantDefinitionPass constantDefPass = new ConstantDefinitionPass();
-            constantDefPass.start();
-            
-            cp = new ConstantPropagationPass(constantDefPass);
+            cp = new ConstantPropagationPass();
             cp.start();
         }
     }

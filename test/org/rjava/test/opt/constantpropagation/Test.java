@@ -13,7 +13,8 @@ public class Test {
         if (Foo.CONSTANT == 100)
             F10 = 10;
         else F10 = 5;
-        int H110 = foo2(D105_C);
+        int H = foo2(D105_C);
+        int J = foo2(300);
         int I1000 = foo3();
         
         int trash;
