@@ -44,9 +44,11 @@ public class SootValueMap<K> {
     
     public void remove(Value key) {
         if (contains(key)) {
+            HashMap<Value, K> another = new HashMap<Value, K>();
             for (Value v : map.keySet())
-                if (SootCollectionUtils.isEqualValue(v, key))
-                    map.remove(v);
+                if (!SootCollectionUtils.isEqualValue(v, key))
+                   another.put(v, get(v));
+            map = another;
         }
     }
     

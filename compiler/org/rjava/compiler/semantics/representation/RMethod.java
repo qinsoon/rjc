@@ -428,4 +428,55 @@ public class RMethod implements DependencyEdgeNode, CompilationUnit{
     public String getSignature() {
         return internal().getSignature();
     }
+    
+    /**
+     * should only call this for an abstract method
+     * @return
+     */
+    public boolean hasUniqueImplementation() {
+        RJavaCompiler.assertion(isAbstract(), "Method " + getSignature() + " is not an abstract method. Shouldn't call hasUniqueImplOfAbstractMethod() on it");
+        return getOverridingMethod().size() == 1;
+    }
+    
+    public RMethod getUniqueImplementation() {
+        RJavaCompiler.assertion(hasUniqueImplementation(), "Method " + getSignature() + " have more than one implementation. Check with hasUniqueImplementation() first");
+        return getOverridingMethod().get(0);
+    }
+    
+    public boolean isUniqueImplementingOtherAbstractMethod() {
+        if (!klass.hasSuperClass())
+            return false;
+        
+        SootClass superClass = internal.getDeclaringClass().getSuperclass();
+        
+        int count = 0;
+        while(superClass != null) {
+            if (superClass.declaresMethod(internal.getName(), internal.getParameterTypes()))
+                count ++;
+            
+            if (superClass.hasSuperclass())
+                superClass = superClass.getSuperclass();
+            else break;
+        }
+        
+        return count == 1;
+    }
+    
+    public RMethod getAbstractMethodThisMethodIsUniqueImplementing() {
+        RJavaCompiler.assertion(isUniqueImplementingOtherAbstractMethod(), "This method " + getSignature() + " is not uniquely implementing other abstract method");
+        
+        SootClass superClass = internal.getDeclaringClass().getSuperclass();
+        
+        while(superClass != null) {
+            if (superClass.declaresMethod(internal.getName(), internal.getParameterTypes()))
+                return RClass.fromSootClass(superClass).getMethodByMatchingNameAndParameters(superClass.getMethod(internal.getName(), internal.getParameterTypes()));
+            
+            if (superClass.hasSuperclass())
+                superClass = superClass.getSuperclass();
+            else break;
+        }
+        
+        RJavaCompiler.fail("Didn't find the method that this method is uniquely implementing:" + getSignature());
+        return null;
+    }
 }

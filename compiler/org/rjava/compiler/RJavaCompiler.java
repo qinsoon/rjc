@@ -378,5 +378,5 @@ public class RJavaCompiler {
      */
     public static final boolean OPT_OBJECT_INLINING =  false;   
     
-    public static final boolean OPT_CONSTANT_PROPAGATION = true;
+    public static final boolean OPT_CONSTANT_PROPAGATION = false;
 }

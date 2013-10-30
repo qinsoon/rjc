@@ -28,6 +28,7 @@ import org.rjava.compiler.semantics.representation.stmt.RReturnVoidStmt;
 import org.rjava.compiler.semantics.representation.stmt.RTableSwitchStmt;
 import org.rjava.compiler.semantics.representation.stmt.RThrowStmt;
 import org.rjava.compiler.util.SootCollectionUtils;
+import org.rjava.compiler.util.SootValueMap;
 import org.rjava.compiler.util.Statistics;
 
 import soot.Type;
@@ -44,17 +45,15 @@ import soot.jimple.internal.JNewExpr;
 import soot.jimple.internal.JimpleLocal;
 
 public class PointsToAnalysisPass extends CompilationPass {
-    private Map<Value, Value> pointsToSet;
-    private List<Value> pointsToBlacklist;
-    private Map<Value, Type> typeRoots;
+    private SootValueMap<Value> pointsToSet = new SootValueMap<Value>();
+    private List<Value> pointsToBlacklist = new ArrayList<Value>();
+    private SootValueMap<Type> typeRoots = new SootValueMap<Type>();
+    
+    public static final boolean DEBUG = true;
     
     int pass;
     @Override
-    public void start() {
-        pointsToSet = new HashMap<Value, Value>();
-        pointsToBlacklist = new ArrayList<Value>();
-        typeRoots = new HashMap<Value, Type>();
-        
+    public void start() {        
         // find type roots (all the 'new's)
         pass = 1;
         super.start();
@@ -77,8 +76,8 @@ public class PointsToAnalysisPass extends CompilationPass {
         Value trace = v;
         ret.add(v);
         
-        while(SootCollectionUtils.contains(pointsToSet.keySet(), trace)) {
-            trace = pointsToSet.get(SootCollectionUtils.gets(pointsToSet.keySet(), trace));
+        while(pointsToSet.contains(trace)) {
+            trace = pointsToSet.get(trace);
             ret.add(trace);
         }
         
@@ -127,10 +126,9 @@ public class PointsToAnalysisPass extends CompilationPass {
         if (SootCollectionUtils.contains(pointsToBlacklist, from))
             return;
         
-        if (SootCollectionUtils.contains(pointsToSet.keySet(), from)) {
+        if (pointsToSet.contains(from)) {
             // reassign
-            Value delete = SootCollectionUtils.gets(pointsToSet.keySet(), from);
-            pointsToSet.remove(delete);
+            pointsToSet.remove(from);
             pointsToBlacklist.add(from);
         } else {
             pointsToSet.put(from, to);
@@ -201,69 +199,54 @@ public class PointsToAnalysisPass extends CompilationPass {
     }
 
     @Override
-    public void visit(RIfStmt stmt) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void visit(RIfStmt stmt) {}
 
     @Override
-    public void visit(RInvokeStmt stmt) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void visit(RInvokeStmt stmt) {}
 
     @Override
-    public void visit(RLookupSwitchStmt stmt) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void visit(RLookupSwitchStmt stmt) {}
 
     @Override
-    public void visit(RNopStmt stmt) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void visit(RNopStmt stmt) {}
 
     @Override
-    public void visit(RRetStmt stmt) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void visit(RRetStmt stmt) {}
 
     @Override
     public void visit(RReturnStmt stmt) {
-        // TODO Auto-generated method stub
-        
+        if (pass == 2) {
+            RMethod thisMethod = stmt.getMethod();
+            List<RStatement> callsites = SemanticMap.cg.getCallGraph().getCallSites(thisMethod);
+            if (callsites != null)
+                for (RStatement invokeStmt : callsites) {
+                    this.addToPointsToSet(invokeStmt.getInvokeExpr().getInternal(), stmt.internal().getOp());
+                }
+            
+            if (thisMethod.isUniqueImplementingOtherAbstractMethod()) {
+                RMethod abstractMethod = thisMethod.getAbstractMethodThisMethodIsUniqueImplementing();
+                callsites = SemanticMap.cg.getCallGraph().getCallSites(abstractMethod);
+                if (callsites != null)
+                    for (RStatement invokeStmt : callsites) {
+                        this.addToPointsToSet(invokeStmt.getInvokeExpr().getInternal(), stmt.internal().getOp());
+                    }
+            }
+        }
     }
 
     @Override
-    public void visit(RReturnVoidStmt stmt) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void visit(RReturnVoidStmt stmt) {}
 
     @Override
-    public void visit(RTableSwitchStmt stmt) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void visit(RTableSwitchStmt stmt) {}
 
     @Override
-    public void visit(RThrowStmt stmt) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void visit(RThrowStmt stmt) {}
 
     @Override
-    public void visit(RInvokeExpr expr) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void visit(RInvokeExpr expr) {}
 
     @Override
-    public void visit(RStatement stmt, StaticFieldRef staticRef) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void visit(RStatement stmt, StaticFieldRef staticRef) {}
 
 }

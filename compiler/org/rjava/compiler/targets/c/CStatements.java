@@ -196,6 +196,17 @@ public class CStatements {
             }
         }
         
+        if (PointsToAnalysisPass.DEBUG) {
+            Type inferred = SemanticMap.pta.inferType(leftOp);
+            String typeInferenceInfo = "";
+            for (Value v : SemanticMap.pta.tracePointsTo(leftOp)) {
+                typeInferenceInfo += v + "->";
+            }
+            typeInferenceInfo += inferred != null ? inferred.toString()
+                    : "???";
+            return leftOpStr + " = " + rightOpWithCast + Code.commentln(typeInferenceInfo);
+        }
+        
         return leftOpStr + " = " + rightOpWithCast;        
     }
 
