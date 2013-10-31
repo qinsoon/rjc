@@ -370,7 +370,21 @@ public class CLanguageGenerator extends CodeGenerator {
                 outMain.append(RuntimeHelpers.invoke(RuntimeHelpers.CLASS_INIT, null) + SEMICOLON + NEWLINE);
                 containsMain = true;
             } else {
-                outMain.append(Code.commentln(method.getKlass().getName() + "." + method.getName() + "()"));
+                String comment = method.getSimpleSignature() + "\n";
+                // some debug information
+                List<RStatement> callsites = SemanticMap.cg.getCallGraph().getCallSites(method);
+                comment += "called by:\n";
+                for (RStatement stmt : callsites)
+                    comment += "-" + stmt.toSimpleString() + " in method " + stmt.getMethod().getSignature() + "\n";
+                if (method.isUniqueImplementingOtherAbstractMethod()) {
+                    RMethod abstractMethod = method.getAbstractMethodThisMethodIsUniqueImplementing();
+                    comment += "its the unique implementation of " + abstractMethod.getSimpleSignature() + "\n";
+                    List<RStatement> callsites2 = SemanticMap.cg.getCallGraph().getCallSites(abstractMethod);
+                    for (RStatement stmt : callsites2)
+                        comment += "-" + stmt.toSimpleString() + " in method " + stmt.getMethod().getSimpleSignature() + "\n";
+                }
+                
+                outMain.append(Code.commentln(comment));
                 outMain.append(getMethodSignature(method, false) + " {" + NEWLINE);
                 outMain.increaseIndent();
             }

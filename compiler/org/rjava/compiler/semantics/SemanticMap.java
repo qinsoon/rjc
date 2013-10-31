@@ -132,6 +132,8 @@ public abstract class SemanticMap {
             cp = new ConstantPropagationPass();
             cp.start();
         }
+        
+        // nop
     }
 
     public static Map<String, RClass> getAllClasses() {

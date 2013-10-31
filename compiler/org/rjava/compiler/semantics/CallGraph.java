@@ -32,10 +32,11 @@ public class CallGraph {
      * @return null if the method is never called
      */
     public List<RStatement> getCallSites(RMethod callee) {
-        if (!callsites.values().contains(callee))
-            return null;
-        
         List<RStatement> ret = new ArrayList<RStatement>();
+        
+        if (!callsites.values().contains(callee))
+            return ret;        
+
         for (RStatement stmt : callsites.keySet()) {
             if (callsites.get(stmt).equals(callee))
                 ret.add(stmt);

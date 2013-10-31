@@ -6,6 +6,7 @@ import org.rjava.compiler.CompilationUnit;
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.exception.RJavaError;
 import org.rjava.compiler.pass.CompilationPass;
+import org.rjava.compiler.pass.PointsToAnalysisPass;
 import org.rjava.compiler.semantics.representation.stmt.*;
 
 import soot.Unit;
@@ -208,5 +209,11 @@ public abstract class RStatement implements CompilationUnit{
             RJavaCompiler.error("No right/left op from such statement type:" + getClass());
             return null;
         }
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        boolean result = o instanceof RStatement && internal.equals(((RStatement)o).internal);
+        return result;
     }
 }

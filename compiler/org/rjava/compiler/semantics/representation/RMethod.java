@@ -429,6 +429,10 @@ public class RMethod implements DependencyEdgeNode, CompilationUnit{
         return internal().getSignature();
     }
     
+    public String getSimpleSignature() {
+        return klass.getName() + "." + getName() + "()";
+    }
+    
     /**
      * should only call this for an abstract method
      * @return
@@ -453,6 +457,9 @@ public class RMethod implements DependencyEdgeNode, CompilationUnit{
         while(superClass != null) {
             if (superClass.declaresMethod(internal.getName(), internal.getParameterTypes()))
                 count ++;
+            
+            if (count > 1)
+                return false;
             
             if (superClass.hasSuperclass())
                 superClass = superClass.getSuperclass();

@@ -2,8 +2,10 @@ package org.rjava.compiler.pass;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.SemanticMap;
@@ -27,6 +29,7 @@ import org.rjava.compiler.semantics.representation.stmt.RReturnStmt;
 import org.rjava.compiler.semantics.representation.stmt.RReturnVoidStmt;
 import org.rjava.compiler.semantics.representation.stmt.RTableSwitchStmt;
 import org.rjava.compiler.semantics.representation.stmt.RThrowStmt;
+import org.rjava.compiler.util.EqualitySet;
 import org.rjava.compiler.util.SootCollectionUtils;
 import org.rjava.compiler.util.SootValueMap;
 import org.rjava.compiler.util.Statistics;
@@ -123,15 +126,24 @@ public class PointsToAnalysisPass extends CompilationPass {
     }
     
     private void addToPointsToSet(Value from, Value to) {
-        if (SootCollectionUtils.contains(pointsToBlacklist, from))
+        if (LOG)
+            System.out.println("Adding " + from + "->" + to + " to points-to set");
+        if (SootCollectionUtils.contains(pointsToBlacklist, from)) {
+            if (LOG)
+                System.out.println("from is already in black list, skip adding");
             return;
+        }
         
         if (pointsToSet.contains(from)) {
+            if (LOG)
+                System.out.println("points-to set contains from, remove it and add to black list");
             // reassign
             pointsToSet.remove(from);
             pointsToBlacklist.add(from);
         } else {
             pointsToSet.put(from, to);
+            if (LOG)
+                System.out.println("adding to points-to set");
         }
     }
 
@@ -213,24 +225,40 @@ public class PointsToAnalysisPass extends CompilationPass {
     @Override
     public void visit(RRetStmt stmt) {}
 
+    public static boolean LOG = false;
+    
     @Override
     public void visit(RReturnStmt stmt) {
         if (pass == 2) {
             RMethod thisMethod = stmt.getMethod();
+            
+            if (thisMethod.getSimpleSignature().equals("testbed.mminterface.select.ConstraintsSelect.getConstraints()"))
+                LOG = true;
+            
+            if (LOG)
+                System.out.println("Return stmt of " + thisMethod.getSimpleSignature());
+            
+            Set<RStatement> finalCallsites = new HashSet<RStatement>();
+            
             List<RStatement> callsites = SemanticMap.cg.getCallGraph().getCallSites(thisMethod);
-            if (callsites != null)
-                for (RStatement invokeStmt : callsites) {
-                    this.addToPointsToSet(invokeStmt.getInvokeExpr().getInternal(), stmt.internal().getOp());
-                }
+            finalCallsites.addAll(callsites);
             
             if (thisMethod.isUniqueImplementingOtherAbstractMethod()) {
                 RMethod abstractMethod = thisMethod.getAbstractMethodThisMethodIsUniqueImplementing();
                 callsites = SemanticMap.cg.getCallGraph().getCallSites(abstractMethod);
-                if (callsites != null)
-                    for (RStatement invokeStmt : callsites) {
-                        this.addToPointsToSet(invokeStmt.getInvokeExpr().getInternal(), stmt.internal().getOp());
-                    }
+                finalCallsites.addAll(callsites);
             }
+            
+            if (LOG)
+                System.out.println(finalCallsites.size() + " call sites");
+            
+            for (RStatement invokeStmt : finalCallsites) {
+                addToPointsToSet(invokeStmt.getInvokeExpr().getInternal(), stmt.internal().getOp());
+                if (LOG)
+                    System.out.println("[" + invokeStmt.getMethod().getKlass().getName() + "]" + invokeStmt.getInvokeExpr().getInternal() + " -> " + stmt.internal().getOp());
+            }
+            
+            LOG = false;
         }
     }
 
