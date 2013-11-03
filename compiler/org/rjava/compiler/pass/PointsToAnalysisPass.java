@@ -38,6 +38,7 @@ import soot.Type;
 import soot.Value;
 import soot.jimple.Constant;
 import soot.jimple.InstanceFieldRef;
+import soot.jimple.InvokeExpr;
 import soot.jimple.ParameterRef;
 import soot.jimple.StaticFieldRef;
 import soot.jimple.ThisRef;
@@ -95,16 +96,10 @@ public class PointsToAnalysisPass extends CompilationPass {
     }
 
     @Override
-    public void visit(RClass klass) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void visit(RClass klass) {}
 
     @Override
-    public void visit(RMethod method) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void visit(RMethod method) {}
 
     @Override
     public void visit(RAssignStmt stmt) {
@@ -126,50 +121,34 @@ public class PointsToAnalysisPass extends CompilationPass {
     }
     
     private void addToPointsToSet(Value from, Value to) {
-        if (LOG)
-            System.out.println("Adding " + from + "->" + to + " to points-to set");
         if (SootCollectionUtils.contains(pointsToBlacklist, from)) {
-            if (LOG)
-                System.out.println("from is already in black list, skip adding");
             return;
         }
         
         if (pointsToSet.contains(from)) {
-            if (LOG)
-                System.out.println("points-to set contains from, remove it and add to black list");
+            if (SootCollectionUtils.isEqualValue(pointsToSet.get(from), to)) {
+                return;
+            }
+            
             // reassign
             pointsToSet.remove(from);
             pointsToBlacklist.add(from);
         } else {
             pointsToSet.put(from, to);
-            if (LOG)
-                System.out.println("adding to points-to set");
         }
     }
 
     @Override
-    public void visit(RBreakpointStmt stmt) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void visit(RBreakpointStmt stmt) {}
 
     @Override
-    public void visit(REnterMonitorStmt stmt) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void visit(REnterMonitorStmt stmt) {}
 
     @Override
-    public void visit(RExitMonitorStmt stmt) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void visit(RExitMonitorStmt stmt) {}
 
     @Override
-    public void visit(RGotoStmt stmt) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void visit(RGotoStmt stmt) {}
 
     @Override
     public void visit(RIdentityStmt stmt) {
@@ -224,19 +203,11 @@ public class PointsToAnalysisPass extends CompilationPass {
 
     @Override
     public void visit(RRetStmt stmt) {}
-
-    public static boolean LOG = false;
     
     @Override
     public void visit(RReturnStmt stmt) {
         if (pass == 2) {
             RMethod thisMethod = stmt.getMethod();
-            
-            if (thisMethod.getSimpleSignature().equals("testbed.mminterface.select.ConstraintsSelect.getConstraints()"))
-                LOG = true;
-            
-            if (LOG)
-                System.out.println("Return stmt of " + thisMethod.getSimpleSignature());
             
             Set<RStatement> finalCallsites = new HashSet<RStatement>();
             
@@ -249,16 +220,9 @@ public class PointsToAnalysisPass extends CompilationPass {
                 finalCallsites.addAll(callsites);
             }
             
-            if (LOG)
-                System.out.println(finalCallsites.size() + " call sites");
-            
             for (RStatement invokeStmt : finalCallsites) {
                 addToPointsToSet(invokeStmt.getInvokeExpr().getInternal(), stmt.internal().getOp());
-                if (LOG)
-                    System.out.println("[" + invokeStmt.getMethod().getKlass().getName() + "]" + invokeStmt.getInvokeExpr().getInternal() + " -> " + stmt.internal().getOp());
             }
-            
-            LOG = false;
         }
     }
 

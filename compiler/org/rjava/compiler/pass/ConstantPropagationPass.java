@@ -17,6 +17,7 @@ import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.semantics.representation.RStatement;
+import org.rjava.compiler.semantics.representation.RType;
 import org.rjava.compiler.semantics.representation.stmt.RAssignStmt;
 import org.rjava.compiler.semantics.representation.stmt.RBreakpointStmt;
 import org.rjava.compiler.semantics.representation.stmt.REnterMonitorStmt;
@@ -50,6 +51,7 @@ import soot.jimple.LongConstant;
 import soot.jimple.NumericConstant;
 import soot.jimple.ParameterRef;
 import soot.jimple.StaticFieldRef;
+import soot.jimple.VirtualInvokeExpr;
 import soot.jimple.internal.JAddExpr;
 import soot.jimple.internal.JAndExpr;
 import soot.jimple.internal.JCastExpr;
@@ -79,10 +81,10 @@ public class ConstantPropagationPass extends CompilationPass {
      * instead, generated code is x = temp$1; assert (x == CONSTANT)
      * when turned off, we we use constant value
      */
-    public static final boolean ASSERT_CORRECTNESS = true;
+    public static final boolean ASSERT_CORRECTNESS = false;
     public static final boolean USE_CONSTANT = !ASSERT_CORRECTNESS;
     
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
     
     public ConstantPropagationPass() {
 
@@ -99,7 +101,7 @@ public class ConstantPropagationPass extends CompilationPass {
         
         public Lattice(Status status) {
             this(status, null);
-        }        
+        }
         
         @Override
         public String toString() {
@@ -231,10 +233,33 @@ public class ConstantPropagationPass extends CompilationPass {
                 //RJavaCompiler.assertion(isConstant(retValue), "ReturnStmt:" + x.toSimpleString() + " is in worklist, bu its OP:" + retValue + " is not constant (its " + getValueStatus(retValue) + ")");
                 
                 List<RStatement> callsites = SemanticMap.cg.getCallGraph().getCallSites(x.getMethod());
+                
+                if (x.getMethod().isUniqueImplementingOtherAbstractMethod()) {
+                    callsites.addAll(SemanticMap.cg.getCallGraph().getCallSites(x.getMethod().getAbstractMethodThisMethodIsUniqueImplementing()));
+                }
+                
                 if (callsites != null)
                     for (RStatement callsite : callsites) {
-                        // mark its invoke expr as constant
+                        // we will its invoke expr as constant
                         Value callsiteExpr = callsite.internal().getInvokeExpr();
+                        
+                        boolean validCallsite = true;
+                        // first check if the invoke expr actually points to this return stmt (use pta to devirtualize some invoke)
+                        if (callsiteExpr instanceof VirtualInvokeExpr) {
+                            Value base = ((VirtualInvokeExpr) callsiteExpr).getBase();
+                            if (RClass.fromClassName(RType.initWithSootType(base.getType()).getClassName()).isDefactoFinal())
+                                validCallsite = true;
+                            else {
+                                Type inferred = SemanticMap.pta.inferType(base);
+                                if (inferred != null && RType.initWithSootType(inferred).equals(RType.initWithClassName(x.getMethod().getKlass().getName())))
+                                        validCallsite = true;
+                                else validCallsite = false;
+                            }
+                        } 
+                        
+                        if (!validCallsite)
+                            continue;
+                        
                         if (isConstant(retValue))
                             newConstant(callsiteExpr, getConstant(retValue));
                         else setLattice(callsiteExpr, new Lattice(Status.NONCONSTANT));
