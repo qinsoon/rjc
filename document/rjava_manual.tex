@@ -1,0 +1,87 @@
+\documentclass[12pt]{article}
+\usepackage{xspace}
+\title{RJava User and Developer Manual}
+
+\author{Yi Lin\\yi.lin@anu.edu.au}
+
+\begin{document}
+\newcommand{\rjc}{RJC\xspace}
+\newcommand{\rjcfull}{RJava Compiler\xspace}
+\maketitle
+
+\begin{abstract}
+% rjava
+RJava is a restricted subset of the Java language 
+with low-level extensions
+that allow access to hardware and operating system. 
+% rjava benefits
+RJava utilizes the same syntax as Java, and consequently
+inherits benefits from Java such as type safety, 
+various software engineering tools and productivity. Futhermore, 
+by restrictions, RJava is a fully static language with closed world
+assumption. Thus it requires a much more succinct runtime, and
+is well suitable for aggressive static compilation and optimizations. 
+% rjava use
+RJava is designed to be an implementation language for virtual machine
+construction (and more broadly for system programming). 
+
+This manual describes the language and its 
+current implementation--the \rjcfull~(\rjc). It is intended for RJava users
+and developers who are willing to contribute. This manual will be
+maintained to keep pace with the \rjc code base. 
+\end{abstract}
+\clearpage
+
+\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{5}
+\tableofcontents 
+\clearpage
+
+%%%%%%%%%%%%%%%%%%
+% RJava user manual     %
+%%%%%%%%%%%%%%%%%%
+
+% 1. RJava Basics
+\section{RJava Basics}
+
+\subsection{Relation between RJava and MMTk/vmmagic}
+
+\subsection{RJava Core Restrictions}
+
+\subsection{RJava Extensions}
+
+% 2. RJava Compiler Tools
+\section{\rjcfull Tools}
+
+\subsection{Command Line Options}
+
+%%%%%%%%%%%%%%%%%%
+% RJava dev manual      %
+%%%%%%%%%%%%%%%%%%
+
+% 3. RJava Compiler Implementation
+\section{\rjcfull Implementation}
+
+\subsection{Codebase Overview}
+\subsection{Basic Workflow}
+\subsection{Unit Tests}
+
+% 4. RJava Compiler Details
+\section{\rjcfull Details}
+
+\subsection{Magic/Unboxed Types}
+\subsection{java.lang.* Package}
+\subsection{\rjcfull AST}
+\subsection{Analysis and Optimization passes}
+\subsection{\rjcfull Targets}
+
+%%%%%%%%%%%%%%%%%%
+% MMTk user manual    %
+%%%%%%%%%%%%%%%%%%
+% 5. MMTk
+\section{MMTk/RJava Manual}
+
+\subsection{Unofficial Changes}
+\subsection{MMTk-VM Interface}
+
+\end{document}
