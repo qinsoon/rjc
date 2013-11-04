@@ -1,12 +1,43 @@
 \documentclass[12pt]{article}
 \usepackage{xspace}
+\usepackage{listings}
+\usepackage{color}
+
 \title{RJava User and Developer Manual}
 
 \author{Yi Lin\\yi.lin@anu.edu.au}
 
 \begin{document}
+
+% macros
 \newcommand{\rjc}{RJC\xspace}
 \newcommand{\rjcfull}{RJava Compiler\xspace}
+
+% java code format
+% use \begin{lstlisting} your code \end{lstlisting}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true
+  tabsize=3
+}
+
+\newcommand{\javacode}[1]{{\lstinline@#1@}}
+
 \maketitle
 
 \begin{abstract}
@@ -44,11 +75,361 @@ maintained to keep pace with the \rjc code base.
 % 1. RJava Basics
 \section{RJava Basics}
 
-\subsection{Relation between RJava and MMTk/vmmagic}
+This section describes about RJava's restrictions and extensions, 
+which make RJava differentiate from the vanilla Java. 
 
-\subsection{RJava Core Restrictions}
+\paragraph*{What is RJava?}
+\begin{quotation}
+Generally speaking, unless what is \emph{restricted} and 
+what is \emph{extended},
+the other part of RJava remains the same as Java (
+syntactically and semantically) . Besides,
+the restrictions and the extensions are also
+compliant with Java \emph{syntax}. 
+\end{quotation}
+
+\noindent
+Thus, Java compilers and static analyzers can 
+parse RJava code (they are syntactically same).
+Java runtimes can
+execute RJava programs as well; However, Java runtimes
+will not be able to recognize RJava
+specific restrictions and extension, thus executing
+RJava with Java runtimes may result in wrong results, which
+is not encouraged. 
+
+RJava is also compliant with existing Java editors and IDEs. 
+When using Java IDE to edit RJava code, extensions and restrictions
+need to be imported and also try avoid using execution from IDE. 
+
+\subsection{RJava Restrictions}
+
+One important feature about RJava is that all its restrictions 
+are formalized and any RJava code need to declare the restrictions
+it complies with. The benefit is that both the developers
+and the RJava compilers will be able to see the declaration
+and ensure the restrictions are met. 
+
+\subsubsection{Restriction Rules and Rulesets}
+
+RJava restrictions are defined as Java annotations, and they are
+annotated by @\javacode{RestrictionRule (org.rjava.restriction.RestrictionRule)}. 
+The following is how @\javacode{NoException} restriction is defined:
+
+\begin{lstlisting}
+@RestrictionRule
+public @interface NoException{
+}
+\end{lstlisting}
+
+Restriction rules can be used to annotate classes or methods, in the same way as
+Java annotations are used. However, it is \emph{not} encouraged to directly use
+restriction rules. The preferred way is to form a @\javacode{RestrictionRuleset} by
+a set of chosen @\javacode{RestrictionRule}, and annotate a certain scope of code 
+with such @\javacode{RestrictionRuleset}. 
+
+One example is the MMTk scope and its restriction @\javacode{MMTk}. The following
+ruleset indicates that any code within @\javacode{MMTk} needs to obey 
+@\javacode{RJavaCore} ruleset (any RJava code need to include this ruleset, it will be
+described in next subsection) as well as two additional restrictions
+(@\javacode{NoRuntimeAllocation} and @\javacode{Uninterruptible}). The
+declaration is as below:
+
+\begin{lstlisting}
+@RestrictionRuleset
+
+@RJavaCore
+@NoRuntimeAllocation
+@Uninterruptible
+public @interface MMTk{
+}
+\end{lstlisting}
+
+\subsubsection{Restriction Model}
+Restrictions follow those rules:
+
+\begin{itemize}
+
+\item 
+Restriction rules and restriction rulesets apply to scopes of
+classes and methods to declare restrictions, \emph{not} to fields. 
+\item
+Restriction rules and rulesets may apply to another restriction ruleset,
+to indicate that the latter ruleset \emph{includes} those rules and rulesets.
+This may happen iteratively. 
+\item
+Any RJava class needs to be restricted by @\javacode{RJavaCore}, or restricted
+by a ruleset that (iteratively) includes @\javacode{RJavaCore}.
+\item
+A scope restricted by a restriction ruleset is restricted by every single
+restriction rule within that ruleset. 
+\item
+If a class is restricted by Rule A, all its methods are restricted by Rule A 
+unless the method is restricted otherwise 
+(particularly @\javacode{Uninterruptible} vs. @\javacode{Interruptible}). 
+\item
+Restrictions on a class do \emph{not} affect its child classes. Restrictions on a method
+do \emph{not} affect its overriding methods. 
+
+\end{itemize}
+
+\subsubsection{RJavaCore Ruleset}
+
+@\javacode{RJavaCore} declares the basic restrictions that any RJava-compliant code
+need to follow. It declares as:
+
+\begin{lstlisting}
+@RestrictionRuleset
+
+@NoDynamicLoading
+@NoReflection
+@NoException
+@NoCastOnMagicType
+@NoExplicitLibrary
+@NoEnum
+public @interface RJavaCore {
+}
+\end{lstlisting}
+
+\noindent
+Specifically, 
+\begin{itemize}
+
+\item
+@\javacode{NoDynamicLoading}: 
+the code is not allowed to dynamically load classes. To forbid this, 
+\javacode{java.lang.Class.forName()} and 
+\javacode{java.lang.Classloader.loadClass()}
+are not allowed. Also inheriting from {java.lang.Classloader} is also not allowed. 
+
+\item
+@\javacode{NoReflection}: 
+the code is not allowed to use any reflection-based feature. To forbid this,
+any method that may return \javacode{java.lang.Class} is not allowed. 
+@\javacode{NoExplicitLibrary} already forbids the use of 
+\javacode{java.lang.reflect} package. Futhermore, 
+\javacode{java.lang.Object.getClass()} 
+is not allowed (\javacode{.class} syntax is also not allowed, since 
+on bytecode level, it gets translated into \javacode{Object.getClass()}. )
+
+\item
+@\javacode{NoException}:
+the code is not allowed to throw exceptions. To forbit this, 
+\javacode{throws} in method declarations and also
+\javacode{throw} statement are not allowed. Catching blocks
+are allowed in order to maintain correct syntax when using
+library methods, however, there will be \emph{no} exception thrown and 
+catching blocks will \emph{not}
+get executed in any case. It is preferred to write such code
+as below:
+\begin{lstlisting}
+Object lock = new Object();
+try {
+  lock.wait();
+} catch (InterruptedException ignore) {}
+\end{lstlisting}
+
+\item
+@\javacode{NoCastOnMagicType}:
+the code is not allowed to do any type casting when 
+\emph{at least one} side is RJava magic types. 
+RJava magic types reside in \javacode{org.vmmagic.unboxed}
+package, including 5 unboxed magic types (\javacode{Address}, 
+\javacode{Extent}, \javacode{ObjectReference}, 
+\javacode{Offset}, \javacode{Word}) and their array counterparts. 
+Allowed type casting for magic types can be done via
+provided methods in those classes 
+(more will be discussed in the section about extensions). 
+
+\item
+@\javacode{NoExplicitLibrary}:
+the code is not allowed to import any java library. However,
+classes in the \javacode{java.lang.*} package are implicitly 
+imported to any Java code, and they are entangled
+with Java syntax. RJava \emph{allows} the use of 
+\javacode{java.lang.*}. Current \rjcfull has only implemented
+a subset of the \javacode{java.lang.*} package, 
+more complete implementation will be done in the future. 
+
+\item
+@\javacode{NoEnum}:
+the code is not allowed to use enumerate type. Enumerate
+type is forbidden since enabling full features of 
+Java \javacode{enum} would highly involve with dynamic behaviors
+and extensive use of library methods from 
+\javacode{java.lang.Enum}. We designed RJava to be 
+a \emph{fully static} language, thus we forbid the 
+use of enumerate type. 
+
+\end{itemize}
+
+These core restrictions define the RJava language. Any valid
+RJava code needs to declare their compliance with @\javacode{RJavaCore}. 
+
+By these restrictions, RJava $1)$ allows closed world assumption, 
+which helps aggressive static compilation, $2)$ supports little dynamic behaviors
+and bares very succinct execution runtime, which makes RJava possible to 
+run with limited hardware resources, and $3)$ is a simple yet still expressive
+language. 
+
+\subsubsection{Other Predefined Restrictions}
+RJava defines the above \emph{restriction model}. 
+RJava encourages its users to utilize this model and, if favorable, add 
+their own restriction rules and rulesets to more precisely describe
+restrictions on their own scope. However, RJava predefined a set
+of restrictions. Some are already mentioned in the sections above. 
+These predefined restrictions are subject to change, check 
+\javacode{org.rjava.restriction.rules} package in the code base for
+the latest information. 
 
 \subsection{RJava Extensions}
+
+In order to undertake system programming task, RJava introduces
+extensions to allow efficient access to hardware and operating 
+systems. RJava extensions include $1)$ the \javacode{org.vmmagic}
+package (by Daniel et al.) that allows memory/address representation and operations,
+and $2)$ the \javacode{org.rjava.osext} package that provides 
+access to operating systems (including some system calls). 
+
+\subsubsection{org.vmmagic}
+
+The \javacode{org.vmmagic} package provides 5 unboxed magic types
+to describe pointer-alike types and their operations. Though implementation
+may vary, `unboxed' means those types are not normal RJava objects,
+and they are more like primitive types though there are methods declared 
+for each type. 
+These magic types share the same length as the pointer length on the target machine:
+
+\begin{itemize}
+\item
+\javacode{ObjectReference}: can be cast from and to an RJava object. 
+\emph{No} arithmetic, load/store or comparison operations are supported. 
+\javacode{ObjectReference} can be cast to \javacode{Address} for 
+further operations (unsafe). 
+
+\item
+\javacode{Address}: used as a pointer-alike type. 
+Arithmetic, load/store and comparison operations are supported. 
+
+\item
+\javacode{Extent}: used to describe size in bytes (unsigned positive value)
+Arithmetic and comparison operations are supported. 
+
+\item
+\javacode{Offset}: used to describe offset in bytes (signed). 
+Arithmetic and comparison oeprations are supported. 
+
+\item
+\javacode{Word}: used as a pointer-sized integer. 
+Arithmetic, comparison and bit-wised operations are supported. 
+Can be cast from and to the other 4 magic types. 
+\end{itemize}
+
+\noindent
+The above unboxed magic types each have an array counterpart, namely
+\javacode{ObjectReferenceArray}, \javacode{AddressArray}, 
+\javacode{ExtentArray}, \javacode{OffsetArray},
+\javacode{WordArray}. 
+They provide \javacode{create()}, 
+\javacode{get()/set()} and \javacode{length()} operations. 
+Arrays of those magic types should \emph{only} be created by using these types.
+
+Besides magic types, \javacode{org.vmmagic} provides `pragma'
+for supplying information to the compiler. Useful 
+`pragmas' include @\javacode{Inline}, @\javacode{NoInline}, 
+@\javacode{NoBoundsCheck}, @\javacode{NoNullCheck}, etc. Some `pragmas' 
+from \javacode{org.vmmagic} are now considered as an 
+RJava @\javacode{RestrictionRule} such as @\javacode{Uninterruptible}, 
+and some are very specific to Java 
+and not appliable for RJava thus will be deleted. This part is still a draft, and
+subject to change. 
+
+\subsubsection{org.rjava.osext}
+
+The \javacode{osext} extension allows access to operating systems. Currently
+\javacode{osext} only includes a minimum set of methods for implementing
+a memory manager (MMTk), and it \emph{will} expand during further development. 
+
+\begin{itemize}
+\item
+\javacode{OSConcurrency}: concurrency/threading related methods. 
+  \begin{itemize}
+  \item \javacode{void mutexLock/Unlock(Object lock)}: 
+  provides an alternative to using synchronization on an RJava object. 
+  \item \javacode{void threadSuspend/Resume(Thread t)}:
+  suspending an RJava thread (unsafe)
+  \end{itemize}
+
+\item
+\javacode{OSMemory}: memory related methods. 
+  \begin{itemize}
+  \item \javacode{Address malloc(int size)}:
+  allocates raw memory
+  \item \javacode{Address mmap(Address start, Extent length, int protection, int flags, int fd, Offset offset)}:
+  calls mmap system call
+  \item \javacode{int mprotect(Address start, Extent length, int prot)}:
+  calls mprotect system call
+  \item \javacode{Address memset(Address start, int c, Extent length)}:
+  calls memset system call
+  \end{itemize}
+
+\item
+\javacode{OSNative}: other methods that calls to native C
+  \begin{itemize}
+  \item \javacode{int errno()}: a wrap of errno() in errno.h
+  \item \javacode{String strErrno()}: a warp of strerror()
+  \item \javacode{double random()}: generates a random double between 0 and 1
+  \end{itemize}
+
+\end{itemize}
+
+\subsection{Relation between RJava and MMTk/JikesRVM}
+
+The RJava project was motivated by trying improve the portability of Memory Management
+ToolKit (MMTk). MMTk started with JikesRVM project, and serves as its memory manager. 
+The same as the rest part of JikesRVM, MMTk is also written in a variant of Java 
+(ad-hoc restrictions with \javacode{org.vmmagic} extensions). 
+Though MMTk was designed to be a portable language-agnostic memory manager, 
+its portability was never a success. 
+
+One of the main reasons that constrain its portability is the portability of the language it
+is written in. On one hand, such Java variant is specially tailored, and requires support from 
+its hosting runtime. It is no longer a `write once run everywhere' Java program, and
+it cannot execute on a stock Java VM. Whoever wants to host MMTk needs to find a way
+to execute the Java variant that MMTk is written in. 
+On the other hand, MMTk is written in such an Java variant, and 
+there is an inneglectable performance cost to integrate MMTk(Java) with a hosting runtime 
+written in C/C++ which is the most common case. Past experiences (VMKit, Rotor, GHC)
+of porting MMTk took an approach of ahead-of-time (AOT) compiling MMTk to native codes, which overcame
+these two obstacles. However, \emph{none} of their approaches is general or reusable, and each
+of them took a great effort. Furthermore, in term of performance, 
+\emph{none} of the experiences was reported as a success (meanwhile MMTk hosted by JikesRVM
+achieves excellent performance). 
+
+Thus the idea of formalizing the Java variant that MMTk is written in 
+and providing an AOT compiler to lower such language for effective
+integration with low-level C/C++ code becomes a promising solution
+to MMTk portability issues. This is one part of the motivations. 
+
+Another important motivation that evolves the RJava project is the clear benefits
+from using a higher-level language for virtual machine implementation. 
+Compared with traditional approach of using C/C++, higher-level languages
+provide benefits in safety and productivity both of which are valuable in 
+VM construction. However, existing experiences of using high-level languages
+for VM construction (including JikesRVM and MMTk) all formed their own
+variant of such high-level languages, which not only results in inability of code
+reusing but also practically introduces metacircularity issues. As we 
+already found out, metacircularity should be orthogonal to using high-level languages;
+however, in practice so far, whenever high-level languages are used in virtual machine 
+construction, the chosen implementation language is always the target language of 
+the VM. Thus this project not only wants to settle the reusability/portability issues
+but also wants to create a general implementation language
+that can deliver high-level language benefits without falling into metacircular traps. 
+
+In short, RJava originates from the ad-hoc coding pattern used in MMTk, and absorbs
+the \javacode{org.vmmagic} package which is also used in MMTk. However, it evolves
+to be a more general implementation languages to deliver higher-level language benefits
+as well as good performance. 
 
 % 2. RJava Compiler Tools
 \section{\rjcfull Tools}
