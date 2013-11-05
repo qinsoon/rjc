@@ -20,12 +20,12 @@ public class MagicTypesForC {
             List<String> unboxedTypesFiles = new ArrayList<String>();
             for (String klassName : Constants.MAGIC_TYPES) {
                 String file = klassName.replace('.', '/');
-                file = RJavaCompiler.rjava_lib + file + Constants.RJAVA_EXT;
+                file = RJavaCompiler.rjava_ext + file + Constants.RJAVA_EXT;
                 unboxedTypesFiles.add(file);
             }
             for (String klassName : Constants.MAGIC_ARRAY_TYPES) {
                 String file = klassName.replace('.', '/');
-                file = RJavaCompiler.rjava_lib + file + Constants.RJAVA_EXT;
+                file = RJavaCompiler.rjava_ext + file + Constants.RJAVA_EXT;
                 unboxedTypesFiles.add(file);
             }
             
@@ -33,7 +33,7 @@ public class MagicTypesForC {
             CompilationTask compileUnboxedTypes = null;
             for (int i = 0; i < unboxedTypesFiles.size(); i++) {                
                 if (i == 0) {
-                    compileUnboxedTypes = CompilationTask.newTaskFromFile(RJavaCompiler.rjava_lib, unboxedTypesFiles.get(i));
+                    compileUnboxedTypes = CompilationTask.newTaskFromFile(RJavaCompiler.rjava_ext, unboxedTypesFiles.get(i));
                 } else compileUnboxedTypes.addClassBySource(unboxedTypesFiles.get(i));
             }
             

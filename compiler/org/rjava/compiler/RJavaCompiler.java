@@ -53,8 +53,8 @@ public class RJavaCompiler {
     
     // rjava restr./ext. annotations' path
     public static String soot_jdk_path = "components/soot/";    // should contain jce.jar and rt.jar
-    public static String rjava_lib = "rjava/";
-    public static String rjava_clib = "rjava_clib/";
+    public static String rjava_ext = "rjava_ext/";
+    public static String rjava_rt = "rjava_rt/";
     
     public static final int HOST_MACOSX = 0;
     public static final int HOST_LINUX  = 1;
@@ -187,11 +187,11 @@ public class RJavaCompiler {
                     i++;
                 } else if (args[i].equals("-m32")){
                     m32 = true;
-                } else if (args[i].equals("-rjava_lib")) {
-                    rjava_lib = args[i+1];
+                } else if (args[i].equals("-rjava_ext")) {
+                    rjava_ext = args[i+1];
                     i++;
-                } else if (args[i].equals("-rjava_clib")) {
-                    rjava_clib = args[i+1];
+                } else if (args[i].equals("-rjava_rt")) {
+                    rjava_rt = args[i+1];
                     i++;
                 } else if (args[i].equals("-host_os")) {
                     String os = args[i+1];

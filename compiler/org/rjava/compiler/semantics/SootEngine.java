@@ -131,7 +131,7 @@ public class SootEngine {
             for (String jar : jdkJars)
                 classpath += RJavaCompiler.soot_jdk_path + jar + ":";
         }
-        classpath += RJavaCompiler.rjava_lib + ":"; 
+        classpath += RJavaCompiler.rjava_ext + ":"; 
         classpath += ".";
         Options.v().set_soot_classpath(classpath);
         

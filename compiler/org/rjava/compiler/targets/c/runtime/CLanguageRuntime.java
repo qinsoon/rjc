@@ -367,7 +367,7 @@ public class CLanguageRuntime {
     public void copyJavaLibrary() throws RJavaError {
         // copy lib files
         try {
-            FileUtils.copyDirectory(new File(RJavaCompiler.rjava_clib), new File(RJavaCompiler.outputDir), false);
+            FileUtils.copyDirectory(new File(RJavaCompiler.rjava_rt), new File(RJavaCompiler.outputDir), false);
             Runtime.getRuntime().exec("chmod -R 777 " + RJavaCompiler.outputDir);
         } catch (IOException e) {
             e.printStackTrace();

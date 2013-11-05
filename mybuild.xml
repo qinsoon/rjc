@@ -14,16 +14,16 @@
 	
     <path id="RJava_Prototype.classpath">
         <pathelement location="${build_tmp}"/>
-    	<pathelement location="rjava"/>
+    	<pathelement location="rjava_ext"/>
     	<pathelement location="compiler"/>
-	<pathelement location="components/soot/soot-2.5.0.jar"/>
-        <pathelement location="components/commons-io-2.2.jar"/>
-	<pathelement location="components/commons-collections-3.2.jar"/>
-	<pathelement location="components/jgrapht-jdk1.6.jar"/>
+		<pathelement location="components/soot/soot-2.5.0.jar"/>
+	    <pathelement location="components/commons-io-2.2.jar"/>
+		<pathelement location="components/commons-collections-3.2.jar"/>
+		<pathelement location="components/jgrapht-jdk1.6.jar"/>
     </path>
     <target depends="clean" name="init">
         <mkdir dir="${build_tmp}"/>
-    	<mkdir dir="${build_tmp}/rjava"/>
+    	<mkdir dir="${build_tmp}/rjava_ext"/>
     </target>
     <target name="clean">
         <delete dir="${build_tmp}"/>
@@ -40,8 +40,8 @@
             <src path="compiler"/>
             <classpath refid="RJava_Prototype.classpath"/>
         </javac>
-        <javac debug="true" destdir="${build_tmp}/rjava" debuglevel="${debuglevel}" includeantruntime="false" source="${source}" target="${target}">
-            <src path="rjava"/>
+        <javac debug="true" destdir="${build_tmp}/rjava_ext" debuglevel="${debuglevel}" includeantruntime="false" source="${source}" target="${target}">
+            <src path="rjava_ext"/>
         	<classpath refid="RJava_Prototype.classpath"/>
         </javac>
     </target>
@@ -52,18 +52,18 @@
     		<fileset dir="${build_tmp}" includes="**/*.class"/>
     		<zipgroupfileset dir="components" includes="soot/soot-2.5.0.jar"/>
     		<zipgroupfileset dir="components" includes="commons-io-2.2.jar"/>
-		<zipgroupfileset dir="components" includes="jgrapht-jdk1.6.jar"/>
+			<zipgroupfileset dir="components" includes="jgrapht-jdk1.6.jar"/>
     	</jar>
-    	<mkdir dir="${build_dir}/rjava"/>
-    	<copy todir="${build_dir}/rjava">
-    		<fileset dir="${build_tmp}/rjava" includes="**/*.class"/>
+    	<mkdir dir="${build_dir}/rjava_ext"/>
+    	<copy todir="${build_dir}/rjava_ext">
+    		<fileset dir="${build_tmp}/rjava_ext" includes="**/*.class"/>
     	</copy>
     	<mkdir dir="${build_dir}/components/soot/"/>
     	<copy file="components/soot/rt.jar" tofile="${build_dir}/components/soot/rt.jar"/>
     	<copy file="components/soot/jce.jar" tofile="${build_dir}/components/soot/jce.jar"/>
-    	<mkdir dir="${build_dir}/rjava_clib"/>
-    	<copy todir="${build_dir}/rjava_clib">
-    		<fileset dir="rjava_clib/"/>
+    	<mkdir dir="${build_dir}/rjava_rt"/>
+    	<copy todir="${build_dir}/rjava_rt">
+    		<fileset dir="rjava_rt/"/>
     	</copy>
     	<delete dir="${build_tmp}"/>
 	</target>

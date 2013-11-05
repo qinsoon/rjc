@@ -38,6 +38,20 @@
 
 \newcommand{\javacode}[1]{{\lstinline@#1@}}
 
+% cmd
+\definecolor{MyGray}{rgb}{0.78,0.78,0.78}
+\makeatletter\newenvironment{cmd}{%
+   \newline
+   \sffamily
+   \noindent
+%   \begin{quotation}
+   \begin{lrbox}{\@tempboxa}
+   \begin{minipage}{0.8\columnwidth}}{\end{minipage}\end{lrbox}%
+   \colorbox{MyGray}{\usebox{\@tempboxa}}
+   \newline
+%   \end{quotation}
+}\makeatother
+
 \maketitle
 
 \begin{abstract}
@@ -374,7 +388,7 @@ a memory manager (MMTk), and it \emph{will} expand during further development.
   \end{itemize}
 
 \item
-\javacode{OSNative}: other methods that calls to native C
+\javacode{OSNative}: other methods that calls to native code
   \begin{itemize}
   \item \javacode{int errno()}: a wrap of errno() in errno.h
   \item \javacode{String strErrno()}: a warp of strerror()
@@ -414,7 +428,7 @@ to MMTk portability issues. This is one part of the motivations.
 Another important motivation that evolves the RJava project is the clear benefits
 from using a higher-level language for virtual machine implementation. 
 Compared with traditional approach of using C/C++, higher-level languages
-provide benefits in safety and productivity both of which are valuable in 
+provide benefits in safety and productivity, both of which are valuable in 
 VM construction. However, existing experiences of using high-level languages
 for VM construction (including JikesRVM and MMTk) all formed their own
 variant of such high-level languages, which not only results in inability of code
@@ -431,10 +445,240 @@ the \javacode{org.vmmagic} package which is also used in MMTk. However, it evolv
 to be a more general implementation languages to deliver higher-level language benefits
 as well as good performance. 
 
+In next section, we wil describe the usage of the \rjcfull, current implementation of RJava. 
+
+\clearpage
+
 % 2. RJava Compiler Tools
 \section{\rjcfull Tools}
 
-\subsection{Command Line Options}
+The \rjcfull (\rjc) is an ahead-of-time compiler for RJava. It parses RJava programs, checks
+restriction compliance and translates into the target C code. Then the C backends could further
+compile the generated code into binary or other form of instructions (e.g. LLVM IR). 
+
+\subsection{Building \rjc}
+
+The \rjcfull is written in Java. An ant build file is provided for automatic building. 
+\begin{enumerate}
+\item Go to \rjc root directory (\$root). 
+\item Use
+\begin{cmd}
+ant -f mybuild.xml
+\end{cmd}
+After the building succeeds, 
+in \$root/build, the following files
+can be found:
+  \begin{itemize}
+  \item components/: a copy of external Java archives that \rjc uses;
+  \item rjava\textunderscore ext/ : a copy of RJava extensions source file;
+  \item rjava\textunderscore rt/ : a copy of RJava runtime source file;
+  \item rjc.jar: the executable \rjcfull archive. 
+  \end{itemize}
+\end{enumerate}
+
+\subsection{RJava Helloworld}
+
+In this subsection, we show an example of how to compiling
+the simplest RJava hello world into executable. 
+
+\begin{enumerate}
+\item Type in the source code as below, save it as `HelloWorld.java'. 
+For simplicity, we put the source code in the same directory as rjc.jar
+(under \$root/build). 
+Note that RJava uses the same file name extension as Java (.java). 
+
+\begin{lstlisting}
+// HelloWorld.java
+import org.rjava.restriction.ruleset.RJavaCore;
+
+@RJavaCore
+public class HelloWorld {
+  public static void main(String[] args) {
+    System.out.println("Hello RJava");
+  }
+}
+\end{lstlisting}
+
+\item Compiling RJava into C. 
+\begin{cmd}
+java -cp rjc.jar:rjava\textunderscore rt/:. org.rjava.compiler.RJavaCompiler \\
+-rjava\textunderscore ext rjava\textunderscore ext/ \\
+-rjava\textunderscore rt rjava\textunderscore rt/ \\
+-soot\textunderscore jdk components/soot/ \\
+-dir . \\
+HelloWorld.java
+\end{cmd}
+This will invoke \rjcfull (the arguments passed to \rjc will be discussed later, 
+a script is also provided to simplify arguments needed). 
+By default, the generated code locates in output directory of current directory. 
+The RJava runtime sources will also be copied to the output directory, so they
+can be compiled along with the generated sources. And
+a GNU Makefile will be generated for compiling C into binary. 
+
+\item Compiling C into binary.
+\begin{cmd}
+cd output; make
+\end{cmd}
+By default, the Makefile will use `gcc' as the C backend to compile the generated
+C files. The output binary in this case will be `HelloWorld' (named after the class
+where main method is found). 
+
+\end{enumerate}
+
+\subsection{Full Command Line Options}
+
+The basic use of the \rjcfull is
+\begin{cmd}
+java -cp rjc.jar:rjava\textunderscore rt/:. org.rjava.compiler.RJavaCompiler\newline
+[-option value] [source file(s)]...
+\end{cmd}
+
+\noindent
+Here lists all the command line options of the \rjcfull. 
+
+\subsubsection*{Environment setting options}
+\emph{(Note: the`rjc' script will free you from setting these options manually. )}
+\begin{itemize}
+\item
+\textbf{-rjava\textunderscore ext PATH [REQUIRED] \\}
+set PATH as the directory for RJava extension source files. PATH should contain
+org/rjava/osext, org/rjava/restriction and org/vmmagic. \rjc requires this option 
+to locate those extensions during parsing RJava sources.
+\item
+\textbf{-rjava\textunderscore rt PATH [REQUIRED] \\}
+set PATH as the directory for RJava runtime source files. PATH should contain
+the implementation of \javacode{java.lang.*} and other runtime source files. 
+\rjc will copy the contents in this directory to the output directory, allowing
+the runtime to be compiled and linked with RJava programs. 
+\item
+\textbf{-soot\textunderscore jdk PATH [REQUIRED] \\}
+set PATH as the directory for the JDK jars that Soot needs. PATH should contain
+two JDK jars, jce.jar and rt.jar. \rjc uses Soot to parse RJava source files, 
+and Soot requires those two jars to locate Java's library. 
+\end{itemize}
+
+\subsubsection*{Source file options}
+\begin{itemize}
+\item
+\textbf{-dir PATH1:PATH2:... [REQUIRED] \\}
+set PATH as the classpath of RJava classes; several paths are separated by colon. 
+\rjc needs this option to correctly locate RJava files and recognize their packages. 
+For example, org.yourcomp.HelloWorld should be located at 
+PATH/org/yourcomp/HelloWorld.java. 
+\item
+\textbf{SOURCE\textunderscore FILE(S) [OPTIONAL] \\}
+name one SOURCE\textunderscore FILE or several SOURCE\textunderscore FILES
+to be compiled. \rjc will also compile any classes referenced and used. 
+When left blank, \rjc will compile all the RJava files under the defined `dir'. 
+\item
+\textbf{-l SOURCE\textunderscore LIST\textunderscore FILE [OPTIONAL] \\}
+name a SOURCE\textunderscore LIST\textunderscore FILE. 
+A SOURCE\textunderscore LIST\textunderscore FILE should be a pure ascii file, 
+and have one source file name per line. \rjc will compile all the denoted source
+files in the SOURCE\textunderscore LIST\textunderscore FILE. 
+
+\end{itemize}
+
+\subsubsection*{Output options}
+\begin{itemize}
+\item
+\textbf{-o OUTPUT [OPTIONAL] \\}
+the final binary will be named as OUTPUT. This option will affect the GNU
+Makefile that \rjc generates. \emph{By default}, OUTPUT is named after
+the class name which the main method is located in. When \rjc meets
+several main methods during compilation, OUTPUT will be set to
+the first class that contains a main method, and \rjc will report warnings
+for the following encounters of main methods. When there is no main 
+methods in the source files (usually when compiling a library), OUTPUT
+will be set as `lib'. 
+\item
+\textbf{-outdir OUTDIR [OPTIONAL] \\}
+the target files will be generated to OUTDIR. \emph{By default}, OUTDIR
+is the `output' directory under current working directory. This option is
+currently \emph{ignored}. 
+\item
+\textbf{-m [OPTIONAL] \\}
+setting this flag will mute console output of \rjc. It is usually set when
+chaining a large number of compilations (e.g. unit testing). 
+\emph{By default}, this flag is unset. 
+\item
+\textbf{-dt [OPTIONAL] \\}
+setting this flag will facilitate debugging on target code. 
+When C is the target, this flag will additionally set `-g' as gcc flags when 
+generating GNU Makefile. \emph{By default}, this flag is unset. 
+\end{itemize}
+
+\subsubsection*{Target options}
+\begin{itemize}
+\item
+\textbf{-m32 [OPTIONAL]\\}
+setting this flag will instruct the target code to be compiled for
+32 bits address. When C is the target, this flag will set `-m32'
+as gcc flags when generating GNU Makefile. 
+\emph{By default}, this flag is unset. 
+\item
+\textbf{-host\textunderscore os OS [OPTIONAL]\\}
+the target code will be compiled for and execute on the
+named OS. 
+Part of RJava runtime contains OS-dependent code. 
+Currently only MAC OS X (`mac') and Linux (`linux') are
+supported. \emph{By default}, host OS is `mac'. 
+\end{itemize}
+
+\subsubsection*{Target-specific options}
+The \rjc allows different targets for RJava to compile into. 
+Options that start with
+`-target' is considered as target-specific options, and will be
+processed by different target code generators. 
+Note that current implementation only targets C. 
+
+\paragraph*{Target-specific options for targeting C}
+
+\begin{itemize}
+\item
+\textbf{-target:mm=VAL [OPTIONAL]\\}
+name VAL as the memory management scheme for 
+the target code. Currently, available options are 
+using hans-boehm conservative GC (`boehm'),
+and using default malloc (`malloc'). The latter makes
+the generated code leak memory since RJava does 
+not provide mechanisms to explicitly free memory;
+however, it can be useful when allocated memory tends
+to be permanent. A third option is provided as 
+`boehm-prebuilt', which uses the static library built beforehand
+from hans-boehm GC (currently 4 versions of the static libraries
+exist, 32/64bits version for Linux/Mac). 
+This option is intended to save
+the time of building hans-boehm GC from sources during testing. 
+\emph{By default}, `boehm-prebuilt' is used. 
+
+\end{itemize}
+
+\subsection{The `rjc' script}
+
+Since setting environment path options for the \rjcfull is 
+tedious and error-prone, and using \rjc jar when current
+working directory is not the \rjc root directory makes the situation 
+even more frustrated, 
+a `rjc' perl script is provided under the root directory for
+improved usability. 
+
+The `rjc' script will automatically set
+those environment paths, and invoke the \rjcfull under 
+\$root/build directory. If the build directory does not exist, 
+it will build the compiler first. 
+All options other than environment setting options can be passed
+to the script, which will relay to the \rjcfull. 
+The script also works when current working directory is not the
+\rjc root directory. 
+Be sure to keep the `rjc' script \emph{unmoved} in the \rjc root
+directory. 
+
+It is always preferred to use the `rjc' script rather than directly using
+the \rjc jar. 
+
+In next section, we will describe the implementation of the \rjcfull,
+which is intended for RJava developers. 
 
 %%%%%%%%%%%%%%%%%%
 % RJava dev manual      %
@@ -443,8 +687,32 @@ as well as good performance.
 % 3. RJava Compiler Implementation
 \section{\rjcfull Implementation}
 
+The \rjcfull is an RJava ahead-of-time (AOT) compiler written in Java. 
+Currently it targets only C, translating RJava into C. 
+However, its design bares multiple targets, 
+and more targets can be added in the future while reusing most of the
+compiler features. 
+
+The \rjcfull achieves the following major tasks:
+\begin{itemize}
+\item utilizing Soot (McGill Sable Group) to parse RJava source files and 
+generating Jimple AST
+\item performing RJava-level analysis and optimizations (leaving target-level
+optimizations to backends)
+\item generating target code and runtime
+\end{itemize}
+
+\subsection{Detailed Workflow}
+
+This subsection describes the detailed procedure of translating 
+RJava into target code. 
+
+\begin{enumerate}
+\item
+\textbf{Processing arguments and forming compilation task\\}
+\end{enumerate}
+
 \subsection{Codebase Overview}
-\subsection{Basic Workflow}
 \subsection{Unit Tests}
 
 % 4. RJava Compiler Details
