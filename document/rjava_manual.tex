@@ -184,6 +184,9 @@ unless the method is restricted otherwise
 \item
 Restrictions on a class do \emph{not} affect its child classes. Restrictions on a method
 do \emph{not} affect its overriding methods. 
+\item
+Restrictions on a class \emph{affect} its nested classes. As a result, 
+those restrictions also \emph{affect} the methods of the nested class. 
 
 \end{itemize}
 
@@ -705,11 +708,111 @@ optimizations to backends)
 \subsection{Detailed Workflow}
 
 This subsection describes the detailed procedure of translating 
-RJava into target code. 
+RJava into target code. For easy matching the description here 
+with the actual code, we also reference the key classes and
+methods. 
 
 \begin{enumerate}
 \item
 \textbf{Processing arguments and forming compilation task\\}
+The main method of \rjcfull
+(\javacode{org.rjava.compiler.RJavaCompiler.main()})
+starts by processing the arguments and 
+setting options/flags one by one. The source files to compile
+will be extracted and encapsulated as a CompilationTask
+(\javacode{org.rjava.compiler.CompilationTask})
+no matter they are denoted as a file of source list, 
+a set of source file names, or all sources under a certain directory. 
+CompilationTask store source class names and the
+classpath of the classes (fed as the `-dir' argument). 
+
+\item
+\textbf{Instantiating compiler instance\\}
+A RJava Compiler instance will be instantiated, whose
+constructor will take the CompilationTask as its
+argument. After the instantiation of a 
+\javacode{org.rjava.compiler.RJavaCompiler} instance
+(singleton pattern), 
+\javacode{init()}, \javacode{compile()}, and 
+\javacode{finish()} will be executed sequentially. 
+Each of them will be discussed later. 
+
+\item
+\textbf{Initializing the compiler\\}
+The source code parsing (done by Soot) 
+and all the static analyses happen at this step. 
+  \begin{enumerate}
+  \item
+  \textbf{Initializing code generator\\}
+  CodeGenerator (\javacode{org.rjava.compiler.target.CodeGenerator}, 
+  abstract class) is the part to generate the target code. It needs to
+  be initialized according to some arguments processed earlier
+  (\javacode{CodeGenerator.init()}).
+  \item
+  \textbf{Initializing SemanticMap\\}
+  SemanticMap (\javacode{org.rjava.compiler.semantics.SemanticMap})
+  stores semantic information about current compiling program
+  and different analyses. This step accomplishes the following tasks:
+    \begin{itemize}
+
+    \item
+    \textbf{Parsing sources and generating AST\\}
+    Soot is wrapped as \javacode{org.rjava.compiler.semantics.SootEngine}.
+    In this step, Soot parse all the related classes 
+    (including the imported classes). 
+    Note that we do not
+    actually `run' Soot and its optimizations, we simply use
+    Soot to parse sources and use its Jimple AST. \emph{All} the analyses and
+    compilation in \rjcfull are based on Jimple AST. 
+    
+    \item
+    \textbf{Instantiating \rjc class representation\\}
+    After last step, we have Soot representation of 
+    classes (\javacode{soot.SootClass})
+    /methods (\javacode{soot.SootMethod})/etc. 
+    To make analyses convenient, we wrap those into \rjc 
+    representations (see package 
+    \javacode{org.rjava.compiler.semantics.representation.*}). 
+	We only make our own representations for classes, 
+	methods, 	statements and invoke expressions; for the rest,
+	we use Soot representations. 
+    Classes that are not denoted as source files but are 
+    referenced will also have their \rjc representations
+    and \rjc will generate code for them (as long as they are
+    application classes, see \javacode{SemanticMap.isApplicationClass()}).
+
+    \item
+    \textbf{Removing generic bridging methods\\}
+    Soot may generate bridge methods for generics, which are
+    two methods that have same signature but different
+    return types. One has the actual method body, and the
+    other simply calls that method. 
+    In \rjc code base, these methods are referred as 
+    `twin methods' 
+    (see \javacode{org.rjava.compiler.semantics.representation.RMethod} for more details)
+    . We do not need bridging methods, and 
+    methods with the same signature complicates demangling. 
+    Thus we remove the bridging methods. 
+    
+    \item
+    \textbf{Running multiple analyses\\}
+    All static analyses that \rjc needs are done here. 
+    The implementation of analyses inherits from
+    CompilationPass (\javacode{org.rjava.compiler.pass.CompilationPass}).
+    Note that one analysis may do several passes internally. 
+    The analyses include 
+    class hierarchy analysis (\javacode{ClassHierarchyPass}),
+    call graph (\javacode{CallGraphPass}), 
+    class initialization dependency (\javacode{DependencyGraphPass}),
+    points-to analysis (\javacode{PointsToAnalysisPass}),
+    constant propagation (\javacode{ConstantPropagationPass}). 
+    In addition, a restriction pass is executed here to apply
+    RJava's restriction model (e.g. propagating restrictions
+    to nested classes). 
+    
+    \end{itemize}
+  \end{enumerate}
+
 \end{enumerate}
 
 \subsection{Codebase Overview}

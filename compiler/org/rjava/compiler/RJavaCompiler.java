@@ -82,6 +82,9 @@ public class RJavaCompiler {
     
     public void init() {
         codeGenerator.init();
+        
+        // collect semantic information (now with soot)
+        SemanticMap.initSemanticMap(task);
     }
     
     /**
@@ -92,9 +95,6 @@ public class RJavaCompiler {
     public void compile() throws RJavaWarning, RJavaError{
         try {
             currentTask = task;
-            
-        	// collect semantic information (now with soot)
-        	SemanticMap.initSemanticMap(task);
         	
         	codeGenerator.preTranslationWork();
         	
