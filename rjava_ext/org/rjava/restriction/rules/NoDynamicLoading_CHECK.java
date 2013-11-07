@@ -1,11 +1,11 @@
 package org.rjava.restriction.rules;
 
 import org.rjava.compiler.exception.RJavaRestrictionViolation;
+import org.rjava.compiler.restriction.StaticRestrictionChecker;
 import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.semantics.representation.RStatement;
-import org.rjava.restriction.StaticRestrictionChecker;
 
 import soot.Value;
 import soot.jimple.InvokeExpr;

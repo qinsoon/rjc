@@ -1,4 +1,4 @@
-package org.rjava.restriction;
+package org.rjava.compiler.restriction;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -11,6 +11,7 @@ import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RAnnotation;
 import org.rjava.compiler.semantics.representation.RClass;
+import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.semantics.representation.RRestriction;
 import org.rjava.compiler.exception.*;
 
@@ -56,6 +57,8 @@ public class StaticRestrictionChecker {
     	        throw new RJavaError("Fail to invoke restriction checking: " + restriction.getName());
     	    }
     	}
+    	
+    	// should also check methods here
     	
     	if (currentViolations.size() > 0) {
     	    RJavaCompiler.warning("Restriction violations:");

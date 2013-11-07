@@ -12,6 +12,7 @@ import soot.jimple.InvokeExpr;
 import soot.jimple.internal.JAssignStmt;
 import soot.jimple.internal.JStaticInvokeExpr;
 
+@Deprecated
 public class RJavaLangForCIntrinsicGenerator extends
         Intrinsics {
 

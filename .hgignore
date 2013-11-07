@@ -13,3 +13,4 @@ uvm\\*
 ?\.log
 ?\.synctex.gz
 ?\.toc
+?\.out

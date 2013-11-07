@@ -2,6 +2,7 @@
 \usepackage{xspace}
 \usepackage{listings}
 \usepackage{color}
+\usepackage{hyperref}
 
 \title{RJava User and Developer Manual}
 
@@ -759,10 +760,12 @@ and all the static analyses happen at this step.
     \textbf{Parsing sources and generating AST\\}
     Soot is wrapped as \javacode{org.rjava.compiler.semantics.SootEngine}.
     In this step, Soot parse all the related classes 
-    (including the imported classes). 
+    (including the imported classes) and add them to
+    current \javacode{CompilationTask}. 
     Note that we do not
     actually `run' Soot and its optimizations, we simply use
-    Soot to parse sources and use its Jimple AST. \emph{All} the analyses and
+    Soot to parse sources and use its Jimple AST. 
+    \emph{All} the analyses and
     compilation in \rjcfull are based on Jimple AST. 
     
     \item
@@ -792,13 +795,15 @@ and all the static analyses happen at this step.
     (see \javacode{org.rjava.compiler.semantics.representation.RMethod} for more details)
     . We do not need bridging methods, and 
     methods with the same signature complicates demangling. 
-    Thus we remove the bridging methods. 
+    Twin methods are merged into one whose
+    signature is the same as defined in source code, and
+    the bridging method is removed. 
     
     \item
     \textbf{Running multiple analyses\\}
     All static analyses that \rjc needs are done here. 
     The implementation of analyses inherits from
-    CompilationPass (\javacode{org.rjava.compiler.pass.CompilationPass}).
+    CompilationPass\\ (\javacode{org.rjava.compiler.pass.CompilationPass}).
     Note that one analysis may do several passes internally. 
     The analyses include 
     class hierarchy analysis (\javacode{ClassHierarchyPass}),
@@ -806,17 +811,231 @@ and all the static analyses happen at this step.
     class initialization dependency (\javacode{DependencyGraphPass}),
     points-to analysis (\javacode{PointsToAnalysisPass}),
     constant propagation (\javacode{ConstantPropagationPass}). 
-    In addition, a restriction pass is executed here to apply
+    In addition, a restriction pass (\javacode{RestrictionPass})
+    is executed here to apply
     RJava's restriction model (e.g. propagating restrictions
-    to nested classes). 
+    to nested classes). The results of those analyses 
+    can be retrieved through \javacode{SemanticMap}. 
     
     \end{itemize}
+  \end{enumerate}
+
+\item
+\textbf{Compiling\\}
+After going through the steps above, \rjc has parsed source code
+into AST, and also collected sufficient analysis results. The actual
+compilation starts from \javacode{RJavaCompiler.compile()}. 
+\rjc iterates through
+all the classes in current compilation task, checks their restriction compliance
+and starts translation. There are also some global target-specific works that
+need to be done before and after the translation such as clearing output directory
+and copy runtime sources, and respectively they are done in 
+\javacode{CodeGenerator.preTranslationWork()} and
+\javacode{CodeGenerator.postTranslationWork()}.
+
+  \begin{enumerate}
+  \item
+  \textbf{Performing pre-translation work\\}
+  In this step, \rjc creates the output directory if it does not exist
+  and clear the directory. This step is `global' and execute
+  only once while following steps are performed for every RJava
+  class. 
+  
+  \item
+  \textbf{Checking restrictions\\}
+  \rjc checks the restriction compliance of a class before starting
+  to translate it. 
+  \javacode{org.rjava.compiler.restriction.StaticRestrictionChecker}
+  takes charge of the compliance checking. \javacode{comply()} is
+  invoked with an \javacode{RClass} argument. For every restriction
+  \javacode{org.rjava.restriction.rules.A} declared on such the class,
+  a checking rule (\javacode{org.rjava.restriction.rules.A_CHECK}) is expected with a
+  \javacode{checkClass()} and \javacode{checkMethod()} declared. 
+  The restriction checker will invoke those checking methods. 
+  Code violating restrictions, failing to find checking rules or 
+  a class not declaring a restriction ruleset will cause an RJava warning
+  (it will not stop the translating process), 
+  and will be reported. Details about restriction checking will be
+  covered in next section. Note that current implementation 
+  \emph{ignores} restrictions on methods, and does not check them (this will be
+  fixed soon). 
+  
+  \item
+  \textbf{Translating\\}
+  This step is target-specific. \javacode{CodeGenerator.translate()} is called for
+  the actual code tranlation. 
+  \javacode{org.rjava.compiler.target.CodeGenerator} is expected to be inherited
+  for a certain target. Currently only C target is implemented. 
+  Details about C target translation will be discussed in next section. 
+  
+  \item
+  \textbf{Performing post-translation work}
+  Similar to pre-translation work, post-translation work 
+  (\javacode{CodeGenerator.postTranslationWork()}) is a target-specific global step. 
+  Works such as generating and copying runtime sources, generating build files for
+  auto tools should be done here. 
   \end{enumerate}
 
 \end{enumerate}
 
 \subsection{Codebase Overview}
+
+This part describes the overview of \rjcfull code base, 
+including its main compiler project, unofficial MMTk project clone
+and other miscellaneous stuff. Importing the root directory of \rjc 
+code base into Eclipse IDE 
+will imports the main compiler project. 
+
+Current code base is accessible from ANU squirrel mercurial repository
+\url{http://squirrel.anu.edu.au/hg/all/yilin/rjava-prototype/} 
+(authorization required). 
+
+\begin{itemize}
+\item
+\textbf{compiler/\\}
+The main source directory of \rjc. 
+  \begin{itemize}
+  
+  \item \javacode{org.rjava.compiler}\\
+  \javacode{RJavaCompiler} main class, 
+  \javacode{CompilationTask} and constants definitions
+  
+  \item \javacode{org.rjava.compiler.exception}\\
+  \rjc warnings and errors
+  
+  \item \javacode{org.rjava.compiler.pass}\\
+  different analysis passes
+  
+  \item \javacode{org.rjava.compiler.restriction}\\
+  the restriction checker
+  
+  \item \javacode{org.rjava.compiler.semantics}\\
+  \javacode{SemanticMap}, \javacode{SootEngine} 
+  and other data structures
+  such as \javacode{CallGraph}, \javacode{DependencyGraph}, etc.
+
+  \item \javacode{org.rjava.compiler.semantics.representation}\\
+  \rjc 's representation of class, type, method, field, local variable, 
+  and annotation to wrap its Soot counterparts. Additionally, 
+  \javacode{RRestriction} is defined here. 
+  
+  \item \javacode{org.rjava.compiler.semantics.representation.stmt}\\
+  \rjc's representation of 16 different types of statements, which
+  maps to different types of Jimple statements.
+  
+  \item \javacode{org.rjava.compiler.target}\\
+  abstract \javacode{CodeGenerator} and 
+  \javacode{GeneratorOptions} that fits 
+  into \rjc workflow. Each target that RJava wants to translate into
+  need to inherit these two classes. 
+  \javacode{CodeStringBuilder} is provided here for better indentation
+  of code output. 
+  
+  \item \javacode{org.rjava.compiler.target.c}\\
+  C-specific code. \javacode{CLanguageGenerator} and
+  \javacode{CLangaugeGeneratorOptions} inherits the two abstract classes
+  mentioned above. \javacode{CStatements} and \javacode{CExpressions}
+  generate code for finer-grained scope. \javacode{CIdentifiers} demangles
+  Java names into C name. \javacode{Intrinsics} takes care of some
+  C-specific intrinsics, e.g. setting RJava integer types
+  to different lengths of integer types in C. 
+  
+  \item \javacode{org.rjava.compiler.target.c.runtime}\\
+  Part of the RJava's C runtime and the GNU Makefile for the target code
+  are generated during the compilation,
+  which is done here. Also the magic type implementation is
+  generated by reusing \rjc to compile magic type stubs; its
+  implementation can be found in \javacode{MagicTypesForC}. 
+  There is also an attempt to reuse \rjc to compile 
+  \javacode{java.lang.*} package, but it has been put halt. 
+  
+  \item \javacode{org.rjava.compiler.util}\\
+  data structures such as \javacode{Tree}, utility methods for easier use
+  of third-party components (Soot and JGraphT). We also provide 
+  special set, map and multi-value map for storing \javacode{soot.Value},
+  for its special rule of equality comparison. \javacode{Statistics} utilities
+  are also included here for instrumenting compiler code.
+  \end{itemize}
+
+\item
+\textbf{components/\\}
+Third party components used by \rjc, including common collection and IO
+libraries from Apache, JGraph and JGraphT for visualizing some results of 
+static analyses, and Soot for parsing RJava source code. 
+
+\item
+\textbf{document/\\}
+This user and developer manual, both PDF version and tex source. 
+
+\item
+\textbf{mmtk\textunderscore standalone/\\}
+An unofficial clone of Memory Management ToolKit repository. 
+Minor changes from the JikesRVM MMTk are needed 
+to make it compatible with RJava restrictions. Details will be discussed
+in next section. This can be imported as a separate Eclipse project. 
+
+\item
+\textbf{mmtk/\\}
+The symbolic link of the standalone MMTk (the above directory) along
+with a minimal client required to run MMTk allocation and GC (named
+as `testbed'). This can be imported as another separate Eclipse project. 
+
+\item
+\textbf{rjava\textunderscore clib\textunderscore impl/\\}
+An attempt to write \javacode{java.lang.*} in RJava, and reuse \rjc
+to compile it into C target. It has been stopped. 
+
+\item
+\textbf{rjava\textunderscore ext/\\}
+The source files of RJava extensions, including
+\javacode{org.vmmagic} and \javacode{org.rjava.osext}. 
+Those source files are mostly empty stubs, and they exist
+for source code completeness. 
+\rjc ensures they will have actual implementation in 
+the target code.
+
+\item
+\textbf{test/\\}
+RJava implementation of some benchmarks, and also some
+small test cases for different language features and 
+optimizations. 
+
+\item
+\textbf{unittest/\\}
+Unit tests for RJava implementation, including a unit test script (`unittest.pl') 
+and a set of RJava unit test sources. Current unit test is
+\emph{not} a thorough set covering all the features of RJava, it will 
+be expanded in the future. 
+
+\end{itemize}
+
 \subsection{Unit Tests}
+
+\rjcfull includes a simple framework for unit testing. 
+
+\subsubsection{Running Unit Tests}
+Run the unit tests by executing 
+\begin{cmd}
+unittest/unittest.pl
+\end{cmd}
+This script will first compile a lastest version of \rjcfull, then
+detects all the source files under unittest/src (but not the abstract
+base class \javacode{org.rjava.unittest.UnitTest}). It iterates through
+every single unit test, invoke \rjc to compile RJava into C, then
+from C into binary, and execute it. It observes the execution of every
+compilation step, and also tracks the output of the binary. Execution
+successes and fails are reported at the end of each unit test, and also
+at the end of the script. The unit testing script is specific to C target. 
+
+\subsubsection{Adding New Unit Tests}
+
+Adding new unit tests is simple. Create a new RJava source file by
+extending \javacode{org.rjava.unittest.UnitTest}, and save it to
+unittest/unittest/src in order to be discovered by the unit testing script. 
+Within the new unit test source, write your own test code, and use 
+the \javacode{start()} and \javacode{check()} methods provided
+by the base class for result outputs so that the testing
+script can parse and recognize successes and fails. 
 
 % 4. RJava Compiler Details
 \section{\rjcfull Details}
@@ -825,7 +1044,16 @@ and all the static analyses happen at this step.
 \subsection{java.lang.* Package}
 \subsection{\rjcfull AST}
 \subsection{Analysis and Optimization passes}
-\subsection{\rjcfull Targets}
+\subsection{Restriction Checking}
+\subsection{C Target Translation}
+
+The \javacode{org.rjava.compiler.target.c} package deals with 
+the C target translation. Ideally this should be a package 
+dedicated to C target, which means code inside should be C specific 
+and not general while code outside should be general and 
+target independent. 
+Current implementation roughly follows this rule 
+(however, not \emph{strictly}); further refactoring will fix this. 
 
 %%%%%%%%%%%%%%%%%%
 % MMTk user manual    %

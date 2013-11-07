@@ -14,6 +14,7 @@ import java.util.Set;
 import org.rjava.compiler.exception.RJavaError;
 import org.rjava.compiler.exception.RJavaRestrictionViolation;
 import org.rjava.compiler.exception.RJavaWarning;
+import org.rjava.compiler.restriction.StaticRestrictionChecker;
 import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.semantics.representation.RType;
@@ -22,7 +23,6 @@ import org.rjava.compiler.targets.GeneratorOptions;
 import org.rjava.compiler.targets.c.CLanguageGenerator;
 import org.rjava.compiler.targets.c.CLanguageGeneratorOptions;
 import org.rjava.compiler.util.Statistics;
-import org.rjava.restriction.StaticRestrictionChecker;
 
 public class RJavaCompiler {
     public static final boolean DEBUG = true;

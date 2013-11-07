@@ -1,8 +1,8 @@
 package org.rjava.restriction.rules;
 
 import org.rjava.compiler.exception.RJavaRestrictionViolation;
+import org.rjava.compiler.restriction.StaticRestrictionChecker;
 import org.rjava.compiler.semantics.representation.RClass;
-import org.rjava.restriction.StaticRestrictionChecker;
 
 import soot.Modifier;
 import soot.SootClass;

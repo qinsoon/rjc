@@ -10,6 +10,7 @@ import org.rjava.compiler.exception.RJavaError;
 import org.rjava.compiler.exception.RJavaWarning;
 import org.rjava.compiler.semantics.SootEngine;
 
+@Deprecated
 public class RJavaLangForC {
 
     /**
