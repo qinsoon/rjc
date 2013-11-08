@@ -21,7 +21,7 @@
 \definecolor{mauve}{rgb}{0.58,0,0.82}
 
 \lstset{frame=tb,
-  language=Java,
+  language=java,
   aboveskip=3mm,
   belowskip=3mm,
   showstringspaces=false,
@@ -37,7 +37,24 @@
   tabsize=3
 }
 
+\lstset{
+  language=c,                % choose the language of the code
+  numbers=left,                   % where to put the line-numbers
+  stepnumber=1,                   % the step between two line-numbers.        
+  numbersep=5pt,                  % how far the line-numbers are from the code
+  backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+  showspaces=false,               % show spaces adding particular underscores
+  showstringspaces=false,         % underline spaces within strings
+  showtabs=false,                 % show tabs within strings adding particular underscores
+  tabsize=2,                      % sets default tabsize to 2 spaces
+  captionpos=b,                   % sets the caption-position to bottom
+  breaklines=true,                % sets automatic line breaking
+  breakatwhitespace=true,         % sets if automatic breaks should only happen at whitespace
+  title=\lstname,                 % show the filename of files included with \lstinputlisting;
+}
+
 \newcommand{\javacode}[1]{{\lstinline@#1@}}
+\newcommand{\ccode}[1]{{\lstinline@#1@}}
 
 % cmd
 \definecolor{MyGray}{rgb}{0.78,0.78,0.78}
@@ -45,12 +62,10 @@
    \newline
    \sffamily
    \noindent
-%   \begin{quotation}
    \begin{lrbox}{\@tempboxa}
    \begin{minipage}{0.8\columnwidth}}{\end{minipage}\end{lrbox}%
    \colorbox{MyGray}{\usebox{\@tempboxa}}
    \newline
-%   \end{quotation}
 }\makeatother
 
 \maketitle
@@ -196,7 +211,7 @@ those restrictions also \emph{affect} the methods of the nested class.
 @\javacode{RJavaCore} declares the basic restrictions that any RJava-compliant code
 need to follow. It declares as:
 
-\begin{lstlisting}
+\begin{lstlisting}[language=java]
 @RestrictionRuleset
 
 @NoDynamicLoading
@@ -240,7 +255,7 @@ library methods, however, there will be \emph{no} exception thrown and
 catching blocks will \emph{not}
 get executed in any case. It is preferred to write such code
 as below:
-\begin{lstlisting}
+\begin{lstlisting}[language=java]
 Object lock = new Object();
 try {
   lock.wait();
@@ -491,7 +506,7 @@ For simplicity, we put the source code in the same directory as rjc.jar
 (under \$root/build). 
 Note that RJava uses the same file name extension as Java (.java). 
 
-\begin{lstlisting}
+\begin{lstlisting}[language=java]
 // HelloWorld.java
 import org.rjava.restriction.ruleset.RJavaCore;
 
@@ -634,7 +649,6 @@ The \rjc allows different targets for RJava to compile into.
 Options that start with
 `-target' is considered as target-specific options, and will be
 processed by different target code generators. 
-Note that current implementation only targets C. 
 
 \paragraph*{Target-specific options for targeting C}
 
@@ -1037,11 +1051,278 @@ the \javacode{start()} and \javacode{check()} methods provided
 by the base class for result outputs so that the testing
 script can parse and recognize successes and fails. 
 
+\clearpage
+
 % 4. RJava Compiler Details
 \section{\rjcfull Details}
 
+This section discusses the details about the implementation of \rjcfull. 
+Part of this section is \emph{specific} to current \rjc implementation 
+that targets C. It aims to help developers understand
+\rjc implementation. We will not emphasize this point again in 
+this section. 
+
+\subsection{\rjc Object Model}
+
+RJava does not restrict on the use of object-oriented features of
+Java, and it supports full features of class inheritance and 
+interfaces. To translate the object oriented features into
+non-OO target namely C, \rjc uses an object model 
+similar to GtkObject of GNOME project. 
+
+\subsubsection{Type Implementation: \ccode{RJava_Common_Class}}
+\rjc defines a common type struct, i.e. \ccode{RJava_Common_Class}. Every
+RJava class is matched to a type struct that embeds the common type struct. 
+
+The common type struct (defined in \ccode{rjava_crt.h}, generated at compile-time):
+\begin{lstlisting}[language=c]
+struct RJava_Common_Class {
+  RJava_Common_Class* super_class;
+  RJava_Interface_Node* interfaces;
+  pthread_mutex_t class_mutex;
+};
+\end{lstlisting}
+
+For Java's common \javacode{java.lang.Object}, its type struct is:
+\begin{lstlisting}[language=c]
+struct java_lang_Object_class {
+  RJava_Common_Class class_header;
+    
+  // method members
+  struct java_lang_String* (*toString)();
+  ...
+};
+
+struct java_lang_Object_class java_lang_Object_class_instance;
+\end{lstlisting}
+
+For a random RJava class \javacode{org.yourcomp.A}, 
+
+\begin{lstlisting}[language=java]
+package org.yourcomp;
+
+@RJavaCore
+public class A {
+  int a;
+  void foo(int i) {}
+}
+\end{lstlisting}
+
+its type struct definition (\ccode{org_yourcomp_A.h}) is:
+
+\begin{lstlisting}[language=c]
+struct org_yourcomp_A_class {
+  struct java_lang_Object_class header;
+  void (*foo_int32_t)(int32_t);
+}
+
+struct org_yourcomp_A_class org_yourcomp_A_class_instance;
+\end{lstlisting}
+
+All the class instances will be initialized eagerly
+in a certain order at the beginning
+of main method execution 
+(\ccode{rjava_class_init()} in \ccode{rjava_crt.c}, which is
+generated at compile-time). Function pointer binding
+is also done in \ccode{rjava_class_init()}. 
+
+This design allows a class to access its super class, 
+to declare interfaces and its own method members, 
+and also to selectively override or inherit
+methods and interface method from its super class. 
+
+\subsubsection{Object Implementation: \ccode{RJava_Common_Instance}}
+
+\rjc also defines a common instance struct, i.e. \ccode{RJava_Common_Instance}. 
+Every RJava object is matched to an instance struct that embeds the common instance
+struct. 
+
+The common instance struct (defined in \ccode{rjava_crt.h}, generated at compile-time):
+\begin{lstlisting}[language=c]
+struct RJava_Common_Instance {
+  void* class_struct;
+  pthread_mutex_t instance_mutex;
+  pthread_cond_t instance_cond;
+};
+\end{lstlisting}
+
+For Java's common \javacode{java.lang.Object}, its instance struct is:
+\begin{lstlisting}[language=c]
+struct java_lang_Object {
+  RJava_Common_Instance instance_header;
+    
+  // instance fields
+  ...
+};
+\end{lstlisting}
+
+For a random RJava class \javacode{org.yourcomp.A} (see the above
+subsection), its instance struct definition (\ccode{org_yourcomp_A.h}) is:
+\begin{lstlisting}[language=c]
+struct org_yourcomp_A {
+  java_lang_Object instance_header;
+  
+  int32_t a;
+}
+\end{lstlisting}
+
+This design allows every instance to access its type information, and
+to inherit fields declared by its super class. 
+
+\subsubsection{Interface Implementation: \ccode{RJava_Interface_Node}}
+
+An interface class in RJava is translated into a type struct and an instance
+struct in the same way as normal classes. Interfaces are instantiated
+for each class that implements them. For accessing interface instances
+from a type, \ccode{RJava_Interface_Node} is used as a linked list to store
+all the interface instances declared on this type:
+
+\begin{lstlisting}[language=c]
+struct RJava_Interface_Node {
+  char* name;
+  void* address;  // points to interface instance
+  int interface_size;
+  RJava_Interface_Node* next;
+};
+\end{lstlisting}
+
+The instantiation and initialization of interface instances and 
+\ccode{RJava_Interface_Node} for each type is done in 
+\ccode{rjava_class_init()}. \rjc's C runtime provides methods
+to help with the initialization and also with interface invocation:
+
+\begin{itemize}
+\item
+\ccode{void rjava_add_interface_to_class(void* interface, int interface_size, char* name, RJava_Common_Class* klass);}
+\item
+\ccode{void rjava_alter_interface(void* interface, char* name, RJava_Common_Class* klass);}
+\item
+\ccode{void* rjava_get_interface(RJava_Interface_Node* list, char* name);}
+\end{itemize}
+
+Note that current implementation of interface makes \javacode{invokeinterface}
+\emph{extremely inefficient}, and we have not implemented any optimizations
+for interface. Use of interfaces should be discouraged in 
+performance-centric scenarios until the
+implementation gets an improvement. 
+
+\subsubsection{Array Implementation}
+
+RJava arrays is implemented different than Java arrays. 
+RJava arrays is \emph{not} an \javacode{Object}, and it is more like
+C arrays with a header. The header is required to perform
+bounds checking. For the address that an array points to, 
+first thing accessed is a C integer as the array length, followed
+by a C long as element size. The rest is the actual array. 
+
+This implementation is flawed, since an array does not 
+carry its type information and prevents run-time type 
+checking. Besides, not being an RJava \javacode{Object} is
+conceptually different than Java, which is not desired. 
+The array implementation will be revised. 
+
 \subsection{Magic/Unboxed Types}
-\subsection{java.lang.* Package}
+
+Magic types are pointer-sized integers that are used to describe
+memory related operands. In RJava source code, they are expressed
+as normal RJava classes; however, they are intended to 
+behave more like `primitives' rather than `objects'. 
+
+In \rjc implementation, uses of magic types in RJava code are 
+translated in the same way as other types (though \rjc understands
+those are magic types). And invocations for methods in magic types
+are translated into a static function call (normal 
+RJava application method invocation is translated a function call via
+function pointer unless de-virtualized). 
+
+\rjc provides an implementation of magic types and their methods
+as a large list of C macros. So during C compilation, magic types
+and their method callsites will be replaced. Magic types are each defined as:
+
+\begin{lstlisting}[language=c]
+#define org_vmmagic_unboxed_Address						uintptr_t
+#define org_vmmagic_unboxed_Extent						uintptr_t
+#define org_vmmagic_unboxed_ObjectReference		uintptr_t
+#define org_vmmagic_unboxed_Offset						intptr_t
+#define org_vmmagic_unboxed_Word							uintptr_t
+
+#define org_vmmagic_unboxed_AddressArray			uintptr_t*
+#define org_vmmagic_unboxed_ExtentArray				uintptr_t*
+#define org_vmmagic_unboxed_ObjectReferenceArray		uintptr_t*
+#define org_vmmagic_unboxed_OffsetArray						intptr_t*
+#define org_vmmagic_unboxed_WordArray							uintptr_t*
+\end{lstlisting}
+
+Their methods are defined as (only showing a few as examples):
+\begin{lstlisting}[language=c]
+#define org_vmmagic_unboxed_Address_plus_int32_t(this_parameter,parameter0) \
+this_parameter + parameter0
+#define org_vmmagic_unboxed_Address_plus_org_vmmagic_unboxed_Offset(this_parameter,parameter0) \
+this_parameter + parameter0
+\end{lstlisting}
+
+This implementation requires minimal special treatment
+on magic types during translation, and brings in
+low run-time overhead. 
+The implementation of magic types can be generated by reusing \rjc \\
+(see \javacode{org.rjava.compiler.target.c.runtime.MagicTypesForC}). 
+
+\subsection{\javacode{java.lang.*} Package}
+
+RJava disallows the use of Java library by 
+@\javacode{NoExplicitLibrary} restriction for
+its own simplicity. However, 
+\javacode{java.lang.*} is entangled with 
+the Java syntax and it is hardly possible to
+forbid its use without crippling the language. 
+Thus RJava preserves \javacode{java.lang.*}. 
+
+\rjc implements the package in C by following
+its object model. There is only one difference
+between \rjc \javacode{java.lang.*} and an RJava
+program that method invocations to 
+\javacode{java.lang.*} are statically bounded. 
+This implies that it is \emph{not} allowed to
+inherit from the library classes. 
+
+\rjc selectively picks a subset of \javacode{java.lang.*}
+to implement, following these principles:
+\begin{itemize}
+\item enabling primitive type boxing
+\item providing string type
+\item providing support for threading and concurrency
+\item providing empty stubs just for source completeness
+\item providing basic standard output
+\end{itemize}
+
+Thus current \rjc includes
+\emph{incomplete} implementation of the following
+classes:
+
+\begin{itemize}
+\item \javacode{java.io.PrintStream} (only for standard output)
+\item \javacode{java.lang.Boolean}
+\item \javacode{java.lang.Class} (empty stub)
+\item \javacode{java.lang.ClassNotFoundException} (empty stub)
+\item \javacode{java.lang.Double}
+\item \javacode{java.lang.Exception} (empty stub)
+\item \javacode{java.lang.Float}
+\item \javacode{java.lang.Integer}
+\item \javacode{java.lang.InterruptedExeption} (empty stub)
+\item \javacode{java.lang.Math}
+\item \javacode{java.lang.NoClassDefFoundError} (empty stub)
+\item \javacode{java.lang.Object}
+\item \javacode{java.lang.Runnable}
+\item \javacode{java.lang.String}
+\item \javacode{java.lang.StringBuffer}
+\item \javacode{java.lang.System}
+\item \javacode{java.lang.Thread}
+\item \javacode{java.lang.Throwable} (empty stub)
+\end{itemize}
+
+Current design and implementation about \javacode{java.lang} 
+remains as a draft, and it might need revision in the future. 
+
 \subsection{\rjcfull AST}
 \subsection{Analysis and Optimization passes}
 \subsection{Restriction Checking}
