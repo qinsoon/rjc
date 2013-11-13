@@ -57,8 +57,8 @@
   title=\lstname,                 % show the filename of files included with \lstinputlisting;
 }
 
-\newcommand{\javacode}[1]{{\lstinline@#1@}}
-\newcommand{\ccode}[1]{{\lstinline@#1@}}
+\newcommand{\javacode}[1]{{\lstinline[language=java]@#1@}}
+\newcommand{\ccode}[1]{{\lstinline[language=c]@#1@}}
 
 % cmd
 \definecolor{MyGray}{rgb}{0.78,0.78,0.78}
@@ -814,7 +814,7 @@ and all the static analyses happen at this step.
     `twin methods' 
     (see \javacode{org.rjava.compiler.semantics.representation.RMethod} for more details)
     . We do not need bridging methods, and 
-    methods with the same signature complicates demangling. 
+    methods with the same signature complicates name mangling. 
     Twin methods are merged into one whose
     signature is the same as defined in source code, and
     the bridging method is removed. 
@@ -955,7 +955,7 @@ The main source directory of \rjc.
   C-specific code. \javacode{CLanguageGenerator} and
   \javacode{CLangaugeGeneratorOptions} inherits the two abstract classes
   mentioned above. \javacode{CStatements} and \javacode{CExpressions}
-  generate code for finer-grained scope. \javacode{CIdentifiers} demangles
+  generate code for finer-grained scope. \javacode{CIdentifiers} mangles
   Java names into C name. \javacode{Intrinsics} takes care of some
   C-specific intrinsics, e.g. setting RJava integer types
   to different lengths of integer types in C. 
@@ -1441,19 +1441,72 @@ RJava to C, some high-level information is lost which makes C compiler easily
 miss opportunities. 
 
 \rjc uses the algorithm from the paper `Interprocedural Constant Propagation'
-by David Callaham et al. \rjc only considers numeric constants (including integer,
+by David Callaham et al. \rjc only considers \emph{numeric} constants (including integer,
 floating point number, byte and character. Address-alike constants are currently
-ignored. 
+ignored. )
 
-This optimization pass does two passes over the code to collect informatin, 
+This optimization pass does two passes over the code to collect information, 
 and performs the propagation in the end. 
-It uses results from \emph{Class Hierarchy Analysis}, 
-\emph{Points-to Analysis} and \emph{Call Graph} to resolve cases such
-that the implementation of abstract methods may return constants. Note
+It uses results from \emph{Class Hierarchy Analysis (CHA)}, 
+\emph{Points-to Analysis (PTA)} and \emph{Call Graph (CG)}. Note
 this optimization does not directly change AST, but store constant information
-internally and provide a query method for code generation. 
+internally and provide query methods for use at code generation time. 
+
+This optimization is optimistic, and specially takes care of situations such as:
+\begin{itemize}
+\item numeric \javacode{static final} fields used across different RJava files 
+should be deduced as constant if possible. 
+\item methods that returns constant should be propagated.
+\item methods that take same constant arguments from all their callsites can be
+propagated. 
+\item methods that might be called by polymorphism and also match the two points
+above can be propagated.  
+\end{itemize}
+
+\subsubsection{Devirtualization}
+
+Devirtualization is the most crucial optimization in \rjc in term of performance. 
+A virtualized method invocation of \javacode{obj.methodFoo()} 
+(\javacode{obj} is an instance of \javacode{ClassFoo}) under \rjc object model is \\
+\ccode{ ((ClassFoo_class*)(((RJava_Common_Instance*) obj) -> class_struct)) -> methodFoo()},
+and a devirtualized version can be \ccode{ClassFoo_methodFoo()}. 
+This not only eliminates the pointer dereferencing, but also allows inlining
+from the C backend. This optimization boosts the performance by a factor of 3
+when running MMTk. 
+
+Devirtualization is not a \javacode{CompilationPass} in \rjc. It uses the results
+from points-to analysis for type inference when generating code for virtual invocations. 
 
 \subsection{Restriction Checking}
+
+Checking the compliance of restrictions is important for RJava code robustness. 
+\rjc checks the restriction at compile-time. 
+
+\rjc assume every restriction rule (\javacode{org.rjava.restriction.rules.A})
+comes with a checking rule (\javacode{org.rjava.restriction.rules.A_CHECK}),
+and the checking class should contain methods with signature:
+\begin{itemize}
+\item \javacode{public static Boolean checkClass(RClass klass);}
+\item \javacode{public static Boolean checkMethod(RMethod method);} 
+(this one is not currently implemented nor invoked, \rjc only checks classes at the moment)
+\end{itemize}
+
+The implementation of checking methods is supposed to:
+\begin{itemize}
+\item return true if the checking passes, or false if the checking fails. 
+\item create an \javacode{RJavaRestrictionViolation} object by \\
+\javacode{RJavaRestrictionViolation.newRestrictionViolation()}
+if checking fails, which stores information about this violation. 
+\item inform the \javacode{StaticRestrictionChecker} of the violation by\\
+\javacode{StaticRestrictionChecker.addRestrictionViolation()}. 
+\end{itemize}
+
+\rjc 's restriction checker will invoke such methods from these classes 
+for every declared restriction rules.
+If a class fails the restriction checking (either violating the restriction or 
+failing to find checking classes/methods), a warning will be recorded
+and reported at the end of compilation (it will not interrupt compilation). 
+
 \subsection{C Target Translation}
 
 The \javacode{org.rjava.compiler.target.c} package deals with 
@@ -1464,13 +1517,236 @@ target independent.
 Current implementation roughly follows this rule 
 (however, not \emph{strictly}); further refactoring will fix this. 
 
+The generated code currently complies with GNU99 standard.  
+We may move to standard C99 in the future. 
+
+\subsubsection{Code Generation}
+
+\javacode{CLanguageGenerator} is responsible for code generation
+with the help from \javacode{CStatements}, \javacode{CExpressions}
+and \javacode{CIdentifiers}. 
+
+\begin{itemize}
+\item A non-interface RJava class \javacode{org.yourcomp.A}
+will be translated into 3 different 
+C files:
+  \begin{enumerate}
+  \item a header file \ccode{org_yourcomp_A.h},
+  which contains the definition of the type `\ccode{struct org_yourcomp_A_class}'
+  and the instance `\ccode{struct org_yourcomp_A}' from this class,
+  \item a header file \ccode{org_yourcomp_A_methods.h},
+  which contains the declaration of methods from \javacode{org.yourcomp.A}
+  and the definition of inlining methods,
+  \item a source file \ccode{org_yourcomp_A_methods.c},
+  which contins the definition of non-inlining methods. 
+  \end{enumerate}
+Every C file will include the type or methods it used. 
+The separation of method definition and type/instance definition 
+can to the maximum eliminate possible circular referencing between
+two different header files. 
+
+\item An RJava interface class \javacode{org.yourcomp.InterfaceA}
+will be translated into 2 different C files:
+  \begin{enumerate}
+  \item a header file \ccode{org_yourcomp_InterfaceA.h},
+  which contains the definition of the type `\ccode{struct org_yourcomp_InterfaceA_class}',
+  and the instance `\ccode{struct org_yourcomp_InterfaceA}' from this class,
+  \item a source file \ccode{org_yourcomp_InterfaceA.c},
+  which \emph{only} contains a \javacode{<clinit>} method if exist. 
+  \end{enumerate}
+
+\item During the code generation for an RJava class, 
+the following information will be collected:
+  \begin{enumerate}
+  \item types and methods that are referenced. This will instruct the generation of 
+  an \ccode{include} list.
+  \item type header and implemented interface initialization code. 
+  This consists the \ccode{rjava_class_init()} in
+  addition to Java's \javacode{<clinit>}.
+  \end{enumerate}
+
+\item Name mangling in \rjc follows the following rules (see \javacode{CIdentifiers}):
+  \begin{itemize}
+  \item \textbf{package name and class name}: dot is replaced by underscore. 
+  \\E.g. \javacode{org.yourcomp.A} $\rightarrow$ \ccode{org_yourcomp_A}.
+  
+  \item \textbf{method name}: \javacode{<init>} $\rightarrow$ \ccode{rjinit}, 
+  \javacode{<clinit>} $\rightarrow$ \ccode{rjclinit}, others remain the same. 
+
+  \item \textbf{method signature in definition}: package name, class name, method name, 
+  parameter types, concatenated with underscore. 
+  \\E.g. \javacode{void org.yourcomp.A.foo(int)} $\rightarrow$ 
+  \ccode{void org_yourcomp_A_foo_int32_t(int)}.
+
+  \item \textbf{function pointer in type header}: method name and parameter types,
+  concatenated with underscore. 
+  \\E.g. \javacode{void org.yourcomp.A.foo(int)} $\rightarrow$ 
+  \ccode{void (*foo_int32_t)(int)}.
+  
+  \item \textbf{static field}: `var', class name, field name, concatenated with underscore. 
+  (adding `var' to avoid clash with function names)
+  \\E.g. \javacode{int a} in \javacode{org.yourcomp.A} $\rightarrow$ 
+  \ccode{int var_org_yourcomp_A_a}.
+  
+  \item \textbf{nested class}: the same as Java name mangling. 
+  However, dollar symbol is replaced by `\textunderscore NESTED \textunderscore ' when it appears in file name. 
+  \\E.g. \javacode{org.yourcomp.A.NestedClass} $\rightarrow$ \ccode{org_yourcomp_A\$NestedClass}
+  with file name \ccode{org_yourcomp_A_NESTED_NestedClass}.
+  
+  \end{itemize}
+  
+\item Method parameters are named as \ccode{parameterN} where N is the index of this parameter. 
+An instance method has its first parameter as a pointer (\ccode{void*}) to its receiver, named as \ccode{this_parameter}. 
+
+\item Main method uses C signature of `\ccode{int main(int argc, char** parameter0)}', 
+where \ccode{parameter0} is a C array and is transformed into an RJava C array at the beginning
+of main method by using a runtime helper \ccode{rjava_c_array_to_rjava_array()}. Before main method
+returns, all threads will be joined (\ccode{rjava_join_all_threads()}). 
+
+\end{itemize}
+
+\subsubsection{Runtime}
+
+Part of \rjc 's C runtime is hand coded library implementation written in C,
+and the other part is generated during code generation, i.e. \ccode{rjava_crt.h}. 
+\ccode{rjava_crt.h} is included by every C file generated by \rjc. 
+
+\ccode{rjava_crt.h} includes:
+
+\begin{itemize}
+\item includes of C libraries, such as standard libraries (\ccode{stdio.h}, \ccode{stdlib.h}, \ccode{stdbool.h},
+\ccode{inttypes.h}, \ccode{pthread.h} and \ccode{limits.h}) and external C libraries (hans-boehm GC). 
+
+\item defines, such as OS define (\ccode{#define __OS_MACOSX_} or \ccode{#define __OS_LINUX_},
+type define (\ccode{#define byte char}). 
+
+\item \rjc object model, such as \ccode{RJava_Common_Class}, \ccode{RJava_Common_Instance},
+and \ccode{RJava_Interface_Node}. 
+
+\item type declarations of all application types. 
+
+\item runtime global variables. 
+
+\item runtime helper functions:
+  \begin{itemize}
+  \item \ccode{void rjava_class_init();}
+  \item \ccode{void rjava_assert(bool cond, char* str);}
+  \item \ccode{void rjava_add_interface_to_class(void* interface, int interface_size, char* name, RJava_Common_Class* klass);}
+  \item \ccode{void rjava_alter_interface(void* interface, char* name, RJava_Common_Class* klass);}
+  \item \ccode{void* rjava_get_interface(RJava_Interface_Node* list, char* name);}
+  \item \ccode{void rjava_init_header(void* this_class, void* super_class, int super_class_size);}
+  \item \ccode{void rjava_debug_print_header(void* this_class, char* name);}
+  \item \ccode{void* rjava_new_array(int length, long ele_size);}
+  \item \ccode{inline int rjava_length_of_array(void* array);}
+  \item \ccode{inline void* rjava_access_array(void* array, int index);}
+  \item \ccode{inline void* rjava_access_array_nobounds_check(void* array, int index);}
+  \item \ccode{void* rjava_init_args(int argc, char** args);}
+  \item \ccode{void* rjava_new_multiarray(int* dimensions, int dimension_size, long ele_size);}
+  \item \ccode{void* rjava_c_array_to_rjava_array(int length, long ele_size, void* c_array);}
+  \item \ccode{bool rjava_instanceof(void* instance, void* class_struct);}
+  \item \ccode{void rjava_init_thread_suspending();}
+  \item \ccode{void rjava_unimplemented_method();}
+  \item \ccode{void rjava_runtime_global_init();}
+  \end{itemize}
+
+\item definitions of inlining helper funtions. 
+
+\end{itemize}
+
+\ccode{rjava_crt.c} contains the definitions of the other helper functions. 
+
+\clearpage
+
 %%%%%%%%%%%%%%%%%%
 % MMTk user manual    %
 %%%%%%%%%%%%%%%%%%
 % 5. MMTk
 \section{MMTk/RJava Manual}
 
+MMTk updates with JikesRVM. However, current \rjc code base contains an unofficial 
+branch of MMTk. Though MMTk has nothing to do with \rjc implementation,
+MMTk is the most important project that is easily compatible with \rjc. 
+
 \subsection{Unofficial Changes}
-\subsection{MMTk-VM Interface}
+
+As described earlier, RJava originates from MMTk but is generalized and formalized. 
+This makes current design of RJava is slightly different that in MMTk. 
+We apply current design to MMTk code, and make a few changes to make it
+fully compatible with \rjc, which is the unofficial branch of MMTk in \rjc code base. 
+
+Having an unoffical branch is a temporary solution, and we seek to push those
+changes back to JikesRVM's MMTk. However, this may happen after \rjc becomes 
+more robust. 
+
+The changes include:
+
+\begin{itemize}
+\item 
+\textbf{@\javacode{MMTK} restriction ruleset\\}
+Every classes in MMTk is annotated with this ruleset. 
+\begin{lstlisting}[language=java]
+@RestrictionRuleset
+
+@RJavaCore
+@NoRuntimeAllocation
+@Uninterruptible
+public @interface MMTk {
+}
+\end{lstlisting}
+
+\item 
+\textbf{Removing uses of \javacode{enum}\\}
+RJava disallows the use of enumerate type. 
+Thus \javacode{org.mmtk.utility.statistics.Stats.Phase} and
+\javacode{org.mmtk.vm.ReferenceProcessor.Semantics} are removed,
+and their use are replaced with an \javacode{int}. 
+
+\item
+\textbf{Removing use of \javacode{java.lang.Class}\\}
+To eliminate any potential dynamic loading and reflection, 
+RJava disallows any use of \javacode{java.lang.Class}. 
+Though it is known that MMTk does not dynamically load
+classes nor use reflection, MMTk has a few occurrences
+of \javacode{java.lang.Class}. Changs are lised below:
+  \begin{itemize}
+  \item \javacode{CollectorContext} of each \javacode{Plan}. 
+  For a \javacode{Plan}, its \javacode{CollectorContext} used to be
+  calculated from class name, then retrieved by \javacode{Class.forName()}
+  and new instances are created from from it. Since
+  those uses are forbidden in RJava, the code is refactorred. 
+  The changes involve \javacode{org.mmtk.plan.Plan.<clinit>},\\
+  \javacode{org.mmtk.plan.ParallelCollectorGroup.initGroup()},
+  \\and \javacode{org.mmtk.plan.Plan.newCollectorContext()} (newly
+  added abstract method). 
+  
+  \item specialized scan class. 
+  \javacode{org.mmtk.plan.TransitiveClosure} stores specialized scan
+  class for current plan, however, MMTk does not directly use those
+  classes but pass them to the hosting VM. Now MMTk simply stores
+  class names of the specialized scan class, and let the hosting VM
+  do the \javacode{Class.forName()} work. Changes involve
+  \javacode{org.mmtk.plan.TransitiveClosure} and \\
+  \javacode{org.mmtk.plan.Plan.getSpeicalizedScanClass()}. 
+  
+  \item MMTk-VM interface factory. 
+  MMTk provides a set of abstract classes as MMTk-VM interface that 
+  the hosting VM has to implement. \javacode{org.mmtk.vm.Factory}
+  is responsible to create instances of the actual implementation (this
+  happens in \javacode{org.mmtk.vm.VM}). 
+  However, the factory class is instantiated from its class name, thus
+  is forbidden. This is resolved by making 
+  \javacode{org.mmtk.vm.VM} as a host-specific class so 
+  that the factory is hard coded by the host VM. 
+  \end{itemize}
+
+\item
+\textbf{Removing GCSpy and GCTrace\\}
+The use of GCSpy and GCTrace in MMTk is obsolete, and is planned to
+be removed from its code base. For simpliciy, 
+they are removed from \rjc 's branch. 
+
+\end{itemize}
+
+\subsection{VM-MMTk Interface}
 
 \end{document}
