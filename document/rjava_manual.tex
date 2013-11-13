@@ -1742,11 +1742,136 @@ of \javacode{java.lang.Class}. Changs are lised below:
 \item
 \textbf{Removing GCSpy and GCTrace\\}
 The use of GCSpy and GCTrace in MMTk is obsolete, and is planned to
-be removed from its code base. For simpliciy, 
+remove from its code base. For simpliciy, 
 they are removed from \rjc 's branch. 
 
 \end{itemize}
 
 \subsection{VM-MMTk Interface}
+
+MMTk and its hosting VM needs to interface with each other. 
+The MMTk-VM interface is well specified, as the hosting VM
+simply needs to implement the abstract classes in
+\javacode{org.mmtk.vm} package. However, the VM-MMTk
+interface seems subtle. 
+
+This part describes how the hosting VM should
+use MMTk as its memory manager. The description here
+may be one of the many possible ways to use MMTk. 
+
+\begin{itemize}
+\item
+\textbf{Plan selection\\}
+MMTk provides different GC and allocation algorithms, which
+are called `Plans'. The hosting VM needs to choose
+a plan to use. To use \javacode{org.mmtk.plan.x.X}, 
+the hosting VM should make \javacode{final} classes 
+inherited from the plan \javacode{org.mmtk.plan.x.X}, the mutator \javacode{org.mmtk.plan.x.XMutator},
+the collector \javacode{org.mmtk.plan.x.XCollector}, and the plan
+constraints \javacode{org.mmtk.plan.x.XConstraints}. And the
+hosting VM should use the selection classes instead of directly using
+MMTk classes to keep hosting VM code independent of MMTk. 
+
+\item
+\textbf{Per-thread mutator context\\}
+MMTk assume every thread in the hosting VM that wants to
+allocate by using MMTk should contain an instance of 
+mutator context, e.g. 
+\javacode{MutatorSelect} (this is the \javacode{final} class
+inherited from \javacode{org.mmtk.plan.x.XMutator}). To
+achieve this, hosting VM can inherit its own thread class
+from \javacode{MutatorSelect}, or store a reference to
+\javacode{MutatorSelect} in each thread. Each thread
+should initialize its mutator context by 
+calling \javacode{mutator.initMutator(id)} with a unique 
+mutator ID. 
+
+\item
+\textbf{Collector thread\\}
+MMTk requires the hosting VM to spawn collector thread
+on its behalf. Collector thread should contain not only
+a mutator context(as stated above, mutator is supposed
+to be `per-thread'), but also an instance of 
+collector context, e.g. \javacode{CollectorSelect}. \javacode{collector.initCollector(id)}
+can be used to initialize the collector instance. 
+
+\item
+\textbf{Booting sequence\\}
+MMTk should be initialized before any allocation is required. 
+A classical MMTk booting code is showed below:
+\begin{lstlisting}[language=java]
+// creating a global plan instance
+plan = new PlanSelect();
+
+// setting heap size
+HeapGrowthManager.boot(INITIAL_HEAP_SIZE, MAX_HEAP_SIZE); 
+
+// setting options
+Options.x.setValue(x); 
+...
+
+// process options
+PlanSelect.getPlan().processOptions();
+
+// enabling allocation and collection
+PlanSelect.getPlan().enableAllocation();
+PlanSelect.getPlan().enableCollection();
+\end{lstlisting}
+
+\item
+\textbf{Required GC header\\}
+The hosting VM can freely choose its own object model,
+and inform MMTk of the object model by implementing 
+MMTk-VM interface. MMTk also requires a minimal GC
+header for different chosen plans. The hosting
+VM can get the required header size by 
+\javacode{ConstraintsSelect.getConstraints().gcHeaderWords()},
+which returns how many words MMTk requires as its
+GC header. 
+
+\item
+\textbf{Allocation sequence\\}
+Here shows a classical MMTk allocation sequence:
+\begin{lstlisting}[language=java]
+public static Address alloc(HostVMObject object) {
+  // prepare arguments
+  int allocator = PlanSelect.getPlan().ALLOC_DEFAULT; 
+  int site = PlanSelect.getPlan().getAllocationSite(false); 
+  int align = 0;
+  int offset = 0;
+  int size = HostVMObjectModel.getSize(object);
+
+  // allocation
+  MutatorSelect mutator = Scheduler.getCurrentThread().mutator(); 
+  Address ret = mutator.alloc(size, align, offset, allocator, site);
+  HostVMObjectModel.initialize(ret, object);
+  mutator.postAlloc(ret.toObjectReference(), HostVMObjectModel.getType(object), size, allocator);
+  
+  return ret;
+}
+\end{lstlisting}
+
+\item
+\textbf{Object scanning\\}
+During object reclamation, MMTk may require
+the hosting VM to help with object scanning 
+(the hosting VM needs to implement 
+\javacode{org.mmtk.vm.Scanning}). 
+In the implementation, the hosting VM can call the following
+MMTk methods to proceed object scanning:
+$1)$ \javacode{TransitiveClosure.processEdge()}, and 
+$2)$ \javacode{TraceLocal.processRootEdge()}. 
+
+\end{itemize}
+
+The above discussed the basic VM-MMTk interface, which
+should be suffice to implement a simple runtime with MMTk. 
+The MMTk `testbed' is implemented by merely using the above
+interface. More details and can be found in the code base. 
+
+\vspace{2em}
+\noindent
+(End of the manual)
+\clearpage
 
 \end{document}
