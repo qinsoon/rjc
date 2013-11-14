@@ -2,6 +2,7 @@ package org.rjava.compiler.util;
 
 import java.util.Collection;
 
+import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.pass.PointsToAnalysisPass;
 
 
@@ -30,10 +31,6 @@ public abstract class SootCollectionUtils {
 
     // instance field is slightly different
     public static boolean isEqualValue(Value a, Value b) {
-        if (a instanceof Local && b instanceof Local) {
-            return a.equals(b);
-        }
-        
         if (a instanceof InstanceFieldRef && b instanceof InstanceFieldRef) {
             InstanceFieldRef refA = (InstanceFieldRef)a;
             InstanceFieldRef refB = (InstanceFieldRef)b;
@@ -47,28 +44,30 @@ public abstract class SootCollectionUtils {
             InvokeExpr invokeB = (InvokeExpr) b;
             
             boolean sameTypeInvoke = a.getClass().equals(b.getClass());
-            if (!sameTypeInvoke)
+            if (!sameTypeInvoke) {
                 return false;
+            }
             
             boolean sameMethod = invokeA.getMethod().equals(invokeB.getMethod());
-            if (!sameMethod)
+            if (!sameMethod) {
                 return false;
+            }
             
-            boolean sameArguments = true;
             for (int i = 0; i < invokeA.getArgCount(); i++)
-                if (!isEqualValue(invokeA.getArg(i), invokeB.getArg(i)))
+                if (!invokeA.getArg(i).equivTo(invokeB.getArg(i))) {
                     return false;
+                }
             
             if (a instanceof SpecialInvokeExpr && b instanceof SpecialInvokeExpr) {
                 SpecialInvokeExpr specialInvokeA = (SpecialInvokeExpr) a;
                 SpecialInvokeExpr specialInvokeB = (SpecialInvokeExpr) b;
-                return isEqualValue(specialInvokeA.getBase(), specialInvokeB.getBase());
+                return specialInvokeA.getBase().equivTo(specialInvokeB.getBase());
             }
             
             if (a instanceof VirtualInvokeExpr && b instanceof VirtualInvokeExpr) {
                 VirtualInvokeExpr virtualInvokeA = (VirtualInvokeExpr) a;
                 VirtualInvokeExpr virtualInvokeB = (VirtualInvokeExpr) b;
-                return isEqualValue(virtualInvokeA.getBase(), virtualInvokeB.getBase());
+                return virtualInvokeA.getBase().equivTo(virtualInvokeB.getBase());
             }
             
             return true;

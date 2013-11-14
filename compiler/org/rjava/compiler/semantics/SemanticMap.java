@@ -84,9 +84,9 @@ public abstract class SemanticMap {
     	
     	// init hierarchy - we need this for the next step below
     	cha = new ClassHierarchyPass();
-    	cha.start();
-    	if (DEBUG)
-    	    cha.getClassHierarchy().printHierarchy();
+    	cha.start("Class Hierarchy Analysis");
+//    	if (DEBUG)
+//    	    cha.getClassHierarchy().printHierarchy();
     	
     	// if one class is named to be compiled, we have to compile all its ancestor    	
     	for (int i = 0; i < task.getClasses().toArray().length; i++) {
@@ -106,31 +106,31 @@ public abstract class SemanticMap {
     	
         // init call graph
         cg = new CallGraphPass();
-        cg.start();
+        cg.start("Call Graph Building");
         
         // init class initialization dependency
         dg = new DependencyGraphPass();
-        dg.start();
+        dg.start("Class Initialization Dependency");
         
         // init restrictions
         RestrictionPass rPass = new RestrictionPass();
-        rPass.start();
+        rPass.start("Restriction Propagating");
         
         // points to analysis
         pta = new PointsToAnalysisPass();
-        pta.start();
+        pta.start("Points-To Analysis");
         
         if (RJavaCompiler.OPT_OBJECT_INLINING) {
             CircularTypePass circularTypePass = new CircularTypePass();
-            circularTypePass.start();
+            circularTypePass.start("Object Inlining - find circular type");
             
             oi = new DetectInlinableFieldPass(circularTypePass);
-            oi.start();
+            oi.start("Object Inlining - find inlinable field");
         }
         
         if (RJavaCompiler.OPT_CONSTANT_PROPAGATION) {
             cp = new ConstantPropagationPass();
-            cp.start();
+            cp.start("Constant Propagation");
         }
         
         // nop

@@ -447,9 +447,16 @@ public class RMethod implements DependencyEdgeNode, CompilationUnit{
         return getOverridingMethod().get(0);
     }
     
+    Boolean isUniqueImplementingOtherAbstractMethod = null;
+    
     public boolean isUniqueImplementingOtherAbstractMethod() {
-        if (!klass.hasSuperClass())
+        if (isUniqueImplementingOtherAbstractMethod != null)
+            return isUniqueImplementingOtherAbstractMethod;
+        
+        if (!klass.hasSuperClass()) {
+            isUniqueImplementingOtherAbstractMethod = false;
             return false;
+        }
         
         SootClass superClass = internal.getDeclaringClass().getSuperclass();
         
@@ -458,25 +465,36 @@ public class RMethod implements DependencyEdgeNode, CompilationUnit{
             if (superClass.declaresMethod(internal.getName(), internal.getParameterTypes()))
                 count ++;
             
-            if (count > 1)
+            if (count > 1) {
+                isUniqueImplementingOtherAbstractMethod = false;
                 return false;
+            }
             
             if (superClass.hasSuperclass())
                 superClass = superClass.getSuperclass();
             else break;
         }
         
-        return count == 1;
+        isUniqueImplementingOtherAbstractMethod = (count == 1);
+        return isUniqueImplementingOtherAbstractMethod;
     }
+    
+    RMethod abstractMethodThisMethodIsUniqueImplementing = null;
     
     public RMethod getAbstractMethodThisMethodIsUniqueImplementing() {
         RJavaCompiler.assertion(isUniqueImplementingOtherAbstractMethod(), "This method " + getSignature() + " is not uniquely implementing other abstract method");
         
+        if (abstractMethodThisMethodIsUniqueImplementing != null)
+            return abstractMethodThisMethodIsUniqueImplementing;
+        
         SootClass superClass = internal.getDeclaringClass().getSuperclass();
         
         while(superClass != null) {
-            if (superClass.declaresMethod(internal.getName(), internal.getParameterTypes()))
-                return RClass.fromSootClass(superClass).getMethodByMatchingNameAndParameters(superClass.getMethod(internal.getName(), internal.getParameterTypes()));
+            if (superClass.declaresMethod(internal.getName(), internal.getParameterTypes())) {
+                abstractMethodThisMethodIsUniqueImplementing =
+                        RClass.fromSootClass(superClass).getMethodByMatchingNameAndParameters(superClass.getMethod(internal.getName(), internal.getParameterTypes()));
+                return abstractMethodThisMethodIsUniqueImplementing;
+            }
             
             if (superClass.hasSuperclass())
                 superClass = superClass.getSuperclass();

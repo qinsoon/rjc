@@ -29,9 +29,9 @@ public class CallGraphPass extends CompilationPass {
     private CallGraph callGraph;
     
     @Override
-    public void start() {
+    public void start(String name) {
         callGraph = new CallGraph();
-        super.start();
+        super.start(name);
     }
     
     public CallGraph getCallGraph() {

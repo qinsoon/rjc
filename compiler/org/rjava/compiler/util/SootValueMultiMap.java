@@ -18,11 +18,11 @@ public class SootValueMultiMap<K> {
     HashMap<Value, Set<K>> map = new HashMap<Value, Set<K>>();
     
     public void put(Value key, K value) {
-        if (contains(key)) {
-            Set<K> list = get(key);
+        Set<K> list = get(key);
+        if (list != null) {
             list.add(value);
         } else {
-            Set<K> list = new HashSet<K>();
+            list = new HashSet<K>();
             list.add(value);
             map.put(key, list);
         }

@@ -44,8 +44,8 @@ public class DetectInlinableFieldPass extends CompilationPass {
     }
     
     @Override
-    public void start() {        
-        super.start();
+    public void start(String name) {        
+        super.start(name);
         
         // check if any two classes have 'inlinable' fields that references each other
         // i.e. A.b has type of B while B.a has type of A. Then they cannot be inlinable

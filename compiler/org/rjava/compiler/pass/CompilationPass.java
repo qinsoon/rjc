@@ -1,18 +1,25 @@
 package org.rjava.compiler.pass;
 
+import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.representation.RClass;
 import org.rjava.compiler.semantics.representation.RMethod;
 import org.rjava.compiler.semantics.representation.RStatement;
 import org.rjava.compiler.semantics.representation.stmt.*;
+import org.rjava.compiler.util.ElapseTimer;
 
 import soot.jimple.StaticFieldRef;
 
 public abstract class CompilationPass {
-    public void start() {
+    public void start(String passName) {
+        ElapseTimer timer = new ElapseTimer(passName, true);
+        timer.start();
+        
         for (RClass klass : SemanticMap.getAllClasses().values())
             if (klass.isAppClass())
                 klass.accept(this);
+        
+        timer.end();
     }
     
     /*

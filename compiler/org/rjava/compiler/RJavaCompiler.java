@@ -22,6 +22,7 @@ import org.rjava.compiler.targets.CodeGenerator;
 import org.rjava.compiler.targets.GeneratorOptions;
 import org.rjava.compiler.targets.c.CLanguageGenerator;
 import org.rjava.compiler.targets.c.CLanguageGeneratorOptions;
+import org.rjava.compiler.util.ElapseTimer;
 import org.rjava.compiler.util.Statistics;
 
 public class RJavaCompiler {
@@ -93,13 +94,15 @@ public class RJavaCompiler {
      * @throws Error
      */
     public void compile() throws RJavaWarning, RJavaError{
+        RJavaCompiler.println("\nStart Code Generation\n");
+        
         try {
             currentTask = task;
         	
         	codeGenerator.preTranslationWork();
         	
         	for (int i = 0; i < task.getClasses().size(); i ++) {
-        	    RJavaCompiler.println("Compiling [" + task.getClasses().toArray()[i] + "]: ");
+        	    RJavaCompiler.println("Compiling [" + task.getClasses().toArray()[i] + "]...");
         	    String className = (String) task.getClasses().get(i);
         	    RClass klass = SemanticMap.getAllClasses().get(className);
         	    
@@ -226,7 +229,6 @@ public class RJavaCompiler {
                     // set canonical name
                     String canonical = new File(base).getCanonicalPath();
                     baseDir.set(index, canonical);
-                    println("changed base dir from " + base + " to " + canonical);
                 }
             }
             
@@ -262,6 +264,9 @@ public class RJavaCompiler {
         // compile all tasks
 	    if (DEBUG) debug(task);
 	    
+	    ElapseTimer total = new ElapseTimer("Total time used", false);
+	    total.start();
+	    
 	    RJavaCompiler compiler = newRJavaCompiler(task);
 	    try {
 	        compiler.init();
@@ -276,7 +281,9 @@ public class RJavaCompiler {
 	        error(e);
 	    }
 	    
+	    total.end();
         Statistics.report();
+        RJavaCompiler.println(total.report());
     }
     
     private static RJavaCompiler singleton;
@@ -336,9 +343,18 @@ public class RJavaCompiler {
         if (!mute)
             out.print(o);
     }
+    public static void printImm(Object o) {
+        print(o);
+        out.flush();
+    }
+    
     public static void println(Object o) {
         if (!mute)
             out.println(o);
+    }
+    public static void printlnImm(Object o) {
+        println(o);
+        out.flush();
     }
     
     public static final boolean ENABLE_ASSERTION = true;

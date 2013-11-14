@@ -26,6 +26,7 @@ import org.rjava.compiler.semantics.representation.stmt.RReturnStmt;
 import org.rjava.compiler.semantics.representation.stmt.RReturnVoidStmt;
 import org.rjava.compiler.semantics.representation.stmt.RTableSwitchStmt;
 import org.rjava.compiler.semantics.representation.stmt.RThrowStmt;
+import org.rjava.compiler.util.ElapseTimer;
 
 import soot.jimple.StaticFieldRef;
 import soot.jimple.internal.JVirtualInvokeExpr;
@@ -42,7 +43,10 @@ public class DependencyGraphPass extends CompilationPass {
     }
     
     @Override
-    public void start() {
+    public void start(String name) {
+        ElapseTimer timer = new ElapseTimer(name, true);
+        timer.start();
+        
         dependencyGraph = new DependencyGraph();
         
         for (RClass klass : SemanticMap.getAllClasses().values()) {
@@ -64,6 +68,8 @@ public class DependencyGraphPass extends CompilationPass {
         }
         
         dependencyGraph.generateClassDependencyGraph();
+        
+        timer.end();
     }
 
     /**

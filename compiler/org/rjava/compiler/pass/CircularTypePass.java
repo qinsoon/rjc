@@ -36,8 +36,8 @@ public class CircularTypePass extends CompilationPass {
     DefaultDirectedGraph<RClass, DefaultEdge> graph = new DefaultDirectedGraph<RClass, DefaultEdge>(DefaultEdge.class);
     
     @Override
-    public void start() {
-        super.start();
+    public void start(String name) {
+        super.start(name);
     }
     
     @Override

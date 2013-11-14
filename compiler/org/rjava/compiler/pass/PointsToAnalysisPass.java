@@ -57,18 +57,18 @@ public class PointsToAnalysisPass extends CompilationPass {
     
     int pass;
     @Override
-    public void start() {        
-        // find type roots (all the 'new's)
+    public void start(String name) {        
+        // find allocation sites (all the 'new's)
         pass = 1;
-        super.start();
+        super.start("Points-To Analysis - find allocation sites");
         
         // find points-to
         pass = 2;
-        super.start();
+        super.start("Points-To Analysis - find aliasing");
         
         // more analysis - especially inter-procedural parameter type inference
         pass = 3;
-        super.start();
+        super.start("Points-To Analysis - inter-procedural aliasing");
     }
     
     public void report() {

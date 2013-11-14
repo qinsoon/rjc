@@ -74,13 +74,13 @@ public class DependencyGraph {
         try {
             SimpleDirectedGraph<DependencyEdgeNode, DefaultEdge> edgeRelationCopy = copyEdgeRelationGraph();
             if (DEBUG) {
-                visualizeEdgeRelationGraph("edge-relation.gv");
-                RJavaCompiler.debug("computing transitive closure on edge relation...");
+                //visualizeEdgeRelationGraph("edge-relation.gv");
+                //RJavaCompiler.debug("computing transitive closure on edge relation...");
             }
             TransitiveClosure.INSTANCE.closeSimpleDirectedGraph(edgeRelationCopy);
             
-            if (DEBUG)
-                RJavaCompiler.debug("generating class initialization graph...");
+            //if (DEBUG)
+            //    RJavaCompiler.debug("generating class initialization graph...");
             for (DefaultEdge edge : edgeRelationCopy.edgeSet()) {
                 DependencyEdgeNode from = edgeRelationCopy.getEdgeSource(edge);
                 DependencyEdgeNode to = edgeRelationCopy.getEdgeTarget(edge);
@@ -106,8 +106,8 @@ public class DependencyGraph {
             e.printStackTrace();
             RJavaCompiler.fail(e.getMessage());
         }
-        if (DEBUG)
-            visualizeClassGraph("class-graph.gv");
+        //if (DEBUG)
+        //    visualizeClassGraph("class-graph.gv");
         JGraphTUtils.checkCycle(classGraph, "class initialization graph");
     }
     

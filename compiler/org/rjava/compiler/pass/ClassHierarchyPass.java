@@ -29,9 +29,9 @@ public class ClassHierarchyPass extends CompilationPass {
     private ClassHierarchy typeHierarchy;
     
     @Override
-    public void start() {
+    public void start(String name) {
         typeHierarchy = new ClassHierarchy();
-        super.start();   
+        super.start(name);   
     }
     
     public ClassHierarchy getClassHierarchy() {

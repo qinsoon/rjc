@@ -12,22 +12,14 @@ public class SootValueMap<K> {
     HashMap<Value, K> map = new HashMap<Value, K>();
     
     public void put(Value key, K value) {
-        if (contains(key)) {
-            Set<Entry<Value, K>> set = map.entrySet();
-            for (Entry<Value, K> entry : set) {
-                if (SootCollectionUtils.isEqualValue(entry.getKey(), key)) {
-                    entry.setValue(value);
-                    return;
-                }
+        Set<Entry<Value, K>> set = map.entrySet();
+        for (Entry<Value, K> entry : set) 
+            if (SootCollectionUtils.isEqualValue(entry.getKey(), key)) {
+                entry.setValue(value);
+                return;
             }
-            String msg = "put (" + key + "," + value + ") failed. \nCurrent map is:";
-            for (Value v : map.keySet()) {
-                msg += "(" + v + "," + get(v) + ")\n";
-            }
-            RJavaCompiler.fail(msg);
-        } else {
-            map.put(key, value);
-        }
+        
+        map.put(key, value);
     }
     
     public boolean contains(Value key) {

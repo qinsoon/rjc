@@ -10,6 +10,7 @@ import java.util.Set;
 import org.rjava.compiler.CompilationTask;
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.representation.RClass;
+import org.rjava.compiler.util.ElapseTimer;
 
 import static org.rjava.compiler.Constants.*;
 
@@ -58,11 +59,16 @@ public class SootEngine {
     }
     
     private void init() {
+        ElapseTimer parsingTimer = new ElapseTimer("Parsing Source", true);
+        parsingTimer.start();
+        
         List<String> sootArgs = initSoot();
     	resolveClasses();
     	//Scene.v().loadNecessaryClasses();
     	if (RUN_SOOT)
     	    runSoot(sootArgs);
+    	
+    	parsingTimer.end();
     }
 
     private void resolveClasses() {
@@ -71,8 +77,6 @@ public class SootEngine {
     	allMethods = new HashMap<String, SootMethod>();
     	for (String className : classNames) {
     	    // resolve klass and add to map
-    	    if (DEBUG)
-    	        RJavaCompiler.debug("Resolving " + className + "...");
     	    SootClass klass = resolveAndGetClass(className);
     	    allClasses.put(className, klass);
     	    
@@ -83,14 +87,6 @@ public class SootEngine {
         		if (!m.isAbstract())
         		    allMethods.put(m.getSignature(), m);
     	    }
-    	}
-    	
-    	if (DEBUG) {
-    	    RJavaCompiler.debug("---Classes---");
-    	    for (Map.Entry<String, SootClass> entry : allClasses.entrySet()) {
-    	        RJavaCompiler.debug("(" + entry.getKey() + ", " + entry.getValue() + ")");
-    	    }
-    	    System.out.println();
     	}
     }
 

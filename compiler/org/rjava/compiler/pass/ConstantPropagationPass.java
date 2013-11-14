@@ -34,6 +34,7 @@ import org.rjava.compiler.semantics.representation.stmt.RReturnStmt;
 import org.rjava.compiler.semantics.representation.stmt.RReturnVoidStmt;
 import org.rjava.compiler.semantics.representation.stmt.RTableSwitchStmt;
 import org.rjava.compiler.semantics.representation.stmt.RThrowStmt;
+import org.rjava.compiler.util.ElapseTimer;
 import org.rjava.compiler.util.SootCollectionUtils;
 import org.rjava.compiler.util.SootValueMap;
 import org.rjava.compiler.util.SootValueMultiMap;
@@ -81,7 +82,7 @@ public class ConstantPropagationPass extends CompilationPass {
      * instead, generated code is x = temp$1; assert (x == CONSTANT)
      * when turned off, we we use constant value
      */
-    public static final boolean ASSERT_CORRECTNESS = false;
+    public static final boolean ASSERT_CORRECTNESS = true;
     public static final boolean USE_CONSTANT = !ASSERT_CORRECTNESS;
     
     public static final boolean DEBUG = false;
@@ -166,14 +167,13 @@ public class ConstantPropagationPass extends CompilationPass {
     //final int DECIDING_CONSTANT_FORMAL_PARAMETERS_P4 = 4;
     
     @Override
-    public void start() {
+    public void start(String name) {
         // intra-procedural constant propagation
         // see <Optimizing Compiler for Modern Architecture> Book P147
         
         // collect constants and get def-use
         pass = GET_DEFUSE_AND_CONSTANT_P1;
-        RJavaCompiler.println("Gathering def-use and constants..");
-        super.start();
+        super.start("Constant Propagation - collect info");
         
         if (DEBUG) {
             for (Object o : defuse.keySet()) {
@@ -194,11 +194,12 @@ public class ConstantPropagationPass extends CompilationPass {
         // inter-procedural constant propagation
         // see 'Interprocedural Constant Propagation' paper from David Callahan
         pass = PREPARE_JUMPFUNCTIONS_P2;
-        RJavaCompiler.println("Preparing jump functions..");
-        super.start();        
+        super.start("Constant Propagation - prepare jump functions");        
         
-        RJavaCompiler.println("Start propagation...");
+        ElapseTimer timer = new ElapseTimer("Constant Propagation - propagate", true);
+        timer.start();
         constantPropagation();
+        timer.end();
         
         if (DEBUG)
             report();
