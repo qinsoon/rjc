@@ -25,7 +25,7 @@ public class RJavaRestrictionViolation extends Exception {
     
     public static final RJavaRestrictionViolation newRestrictionViolation(String restriction, RStatement stmt) {
         String s = restriction + " failed in method " + stmt.getMethod().getKlass().getName() + "." + stmt.getMethod().getName() + "()"
-                + "(line:" +stmt.getLineNumber() + ",stmt: " + stmt.toString() +  ")";
+                + "(line:" +stmt.getLineStart() + ",stmt: " + stmt.toString() +  ")";
         return new RJavaRestrictionViolation(s, stmt);
     }
     

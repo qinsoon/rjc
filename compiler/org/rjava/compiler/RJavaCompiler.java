@@ -97,8 +97,6 @@ public class RJavaCompiler {
         RJavaCompiler.println("\nStart Code Generation\n");
         
         try {
-            currentTask = task;
-        	
         	codeGenerator.preTranslationWork();
         	
         	for (int i = 0; i < task.getClasses().size(); i ++) {
@@ -289,6 +287,7 @@ public class RJavaCompiler {
     private static RJavaCompiler singleton;
     public static RJavaCompiler newRJavaCompiler(CompilationTask t) {
         singleton = new RJavaCompiler(t);
+        currentTask = t;
         return singleton;
     }
     public static int isInternalCompiling() {

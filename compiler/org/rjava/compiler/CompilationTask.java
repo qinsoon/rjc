@@ -5,8 +5,10 @@ import static org.rjava.compiler.Constants.RJAVA_EXT;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.rjava.compiler.exception.RJavaError;
@@ -15,8 +17,15 @@ import org.rjava.compiler.semantics.SemanticMap;
 
 public class CompilationTask {
     List<String> baseDir;
-    //List<String> sources;
+    /**
+     * Class names
+     */
     List<String> classes = new ArrayList<String>();
+    /**
+     * A hashmap from class names to source file paths
+     */
+    Map<String, String> sources = new HashMap<String, String>();
+    
     String main;
     
     public static CompilationTask newTaskFromFile(String dir, String file) throws RJavaError {
@@ -70,7 +79,10 @@ public class CompilationTask {
             
             className = className.substring(0, className.length() - RJAVA_EXT.length());
             className = className.replaceAll("/", ".");
+            
+            // actually adding
             classes.add(className);
+            sources.put(className, absPath);
         } catch (Exception e) {
             e.printStackTrace();
             throw new RJavaError("Error when adding " + file + " to compilation task");
@@ -89,8 +101,41 @@ public class CompilationTask {
             if (!SemanticMap.isApplicationClass(className))
                 return;
 
-        if (!classes.contains(className))
+        if (!classes.contains(className)) {
             classes.add(className);
+            
+            // need to locate this source file
+            String filePath = className.replaceAll("\\.", "/");
+            
+            // for nested class, find the outer class source
+            if (filePath.contains("$")) {
+                filePath = filePath.substring(0, filePath.indexOf('$'));
+            }
+            
+            filePath += RJAVA_EXT;
+            
+            String fullSourcePath = null;
+            List<String> tries = new ArrayList<String>();
+            for (String dir : baseDir) {
+                String temp = dir + filePath;
+                File attempt = new File(temp);
+                tries.add(temp);
+                if (attempt.exists()) {
+                    if (fullSourcePath == null)
+                        fullSourcePath = temp;
+                    else RJavaCompiler.fail("Class " + className + " is found under multiple class paths");
+                }
+            }
+            
+            if (fullSourcePath == null) {
+                RJavaCompiler.println("Failed to find a source file for " + className);
+                RJavaCompiler.println("tried those paths:");
+                for (String triedPath : tries)
+                    RJavaCompiler.println("-" + triedPath);
+                RJavaCompiler.fail("Failed to find a source file for " + className);
+            }
+            sources.put(className, fullSourcePath);
+        }
     }
     
     public static void addFileToListRecursively(File dir, List<String> sources2) {
@@ -125,12 +170,14 @@ public class CompilationTask {
     public List<String> getPath() {
         return baseDir;
     }
+    
+    public String getSource(String className) {
+        String ret = sources.get(className);
+        RJavaCompiler.assertion(ret != null, "The source for " + className + " is not stored");
+        return ret;
+    }
 
     public List<String> getClasses() {
         return classes;
-    }
-
-    public void setClasses(List<String> classes) {
-        this.classes = classes;
     }
 }

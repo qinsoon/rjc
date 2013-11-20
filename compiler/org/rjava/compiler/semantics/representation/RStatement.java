@@ -1,6 +1,7 @@
 package org.rjava.compiler.semantics.representation;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.rjava.compiler.CompilationUnit;
 import org.rjava.compiler.RJavaCompiler;
@@ -18,6 +19,7 @@ import soot.jimple.internal.AbstractStmt;
 import soot.jimple.internal.JAssignStmt;
 import soot.jimple.internal.JNewExpr;
 import soot.tagkit.LineNumberTag;
+import soot.tagkit.SourceLnNamePosTag;
 import soot.tagkit.Tag;
 
 public abstract class RStatement implements CompilationUnit{
@@ -62,7 +64,14 @@ public abstract class RStatement implements CompilationUnit{
     
     private int type;
     protected AbstractStmt internal;
-    private int lineNumber;
+    
+    /*
+     * debugging info
+     */
+    private int lineStart = 0;
+    private int lineEnd = 0;
+    private int posStart = 0;
+    private int posEnd = 0;
     
     /**
      * some statements are intrinsic, which means the compiler will generate its code based on predefined rules. 
@@ -77,9 +86,16 @@ public abstract class RStatement implements CompilationUnit{
     	
     	// get line number
     	for (Tag tag : this.internal.getTags()) {
-    	    if (tag instanceof LineNumberTag) {
-    	        this.lineNumber = ((LineNumberTag) tag).getLineNumber();
-    	    }
+            if (tag instanceof SourceLnNamePosTag) {
+                SourceLnNamePosTag t = (SourceLnNamePosTag) tag;
+                lineStart = t.startLn();
+                lineEnd = t.endLn();
+                posStart = t.startPos();
+                posEnd = t.endPos();
+            } else if (tag instanceof LineNumberTag) {
+                // such a statement exists in Jimple, but not in source code
+                // do nothing
+            }
     	}
     	
     	try{
@@ -90,6 +106,31 @@ public abstract class RStatement implements CompilationUnit{
     	
     	if (internal.containsInvokeExpr())
     	    invokeExpr = new RInvokeExpr(internal.getInvokeExpr(), this);
+    }
+    
+    public final String toDebugInfo() {
+        StringBuilder ret = new StringBuilder();
+        
+        ret.append(getSource());
+        ret.append(":");
+        
+        //System.out.println("Tags for " + ret);
+        if (lineStart != 0) {
+            if (lineStart == lineEnd) {
+                ret.append(lineStart);
+                ret.append("L");
+            }
+            else {
+                ret.append(lineStart);
+                ret.append("L-");
+                ret.append(lineEnd);
+                ret.append("L");
+            }
+        } else {
+            ret.append("(Not in source code)");
+        }
+        
+        return ret.toString();
     }
     
     public static RStatement from(RMethod method, AbstractStmt jimpleUnit) {
@@ -156,13 +197,9 @@ public abstract class RStatement implements CompilationUnit{
     public RMethod getMethod() {
         return method;
     }
-
-    public int getLineNumber() {
-        return lineNumber;
-    }
     
     public RJavaError newIncompleteImplementationError(String msg) {
-        return new RJavaError(this.getMethod().getKlass().getName() + "." + getMethod().getName() + "()," + getLineNumber() + ":" + msg); 
+        return new RJavaError(this.getMethod().getKlass().getName() + "." + getMethod().getName() + "()," + toDebugInfo() + ":" + msg); 
     }
     
     public boolean containsInvokeExpr() {
@@ -215,5 +252,25 @@ public abstract class RStatement implements CompilationUnit{
     public boolean equals(Object o) {
         boolean result = o instanceof RStatement && internal.equals(((RStatement)o).internal);
         return result;
+    }
+
+    public int getLineStart() {
+        return lineStart;
+    }
+
+    public int getLineEnd() {
+        return lineEnd;
+    }
+
+    public int getPosStart() {
+        return posStart;
+    }
+
+    public int getPosEnd() {
+        return posEnd;
+    }
+    
+    public String getSource() {
+        return RJavaCompiler.currentTask.getSource(method.getKlass().getName());
     }
 }

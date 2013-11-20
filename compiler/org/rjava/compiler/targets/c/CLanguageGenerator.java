@@ -47,7 +47,8 @@ public class CLanguageGenerator extends CodeGenerator {
     }
     
     public static final boolean OUTPUT_C_TO_CONSOLE = false;
-    public static final boolean OUTPUT_JIMPLE_WITH_C = true; // as comments
+    public static boolean       OUTPUT_DEBUG_INFO;
+    public static final boolean OUTPUT_JIMPLE_TO_SOURCE = true; // as comment
     public static final boolean OUTPUT_JIMPLE_SOURCE = false; // as *.jimple
     
     /*
@@ -371,8 +372,9 @@ public class CLanguageGenerator extends CodeGenerator {
                 containsMain = true;
             } else {
                 String comment = method.getSimpleSignature() + "\n";
+                
                 // some debug information
-                List<RStatement> callsites = SemanticMap.cg.getCallGraph().getCallSites(method);
+                /*List<RStatement> callsites = SemanticMap.cg.getCallGraph().getCallSites(method);
                 comment += "called by:\n";
                 for (RStatement stmt : callsites)
                     comment += "-" + stmt.toSimpleString() + " in method " + stmt.getMethod().getSignature() + "\n";
@@ -382,7 +384,7 @@ public class CLanguageGenerator extends CodeGenerator {
                     List<RStatement> callsites2 = SemanticMap.cg.getCallGraph().getCallSites(abstractMethod);
                     for (RStatement stmt : callsites2)
                         comment += "-" + stmt.toSimpleString() + " in method " + stmt.getMethod().getSimpleSignature() + "\n";
-                }
+                }*/
                 
                 outMain.append(Code.commentln(comment));
                 outMain.append(getMethodSignature(method, false) + " {" + NEWLINE);
@@ -852,10 +854,14 @@ public class CLanguageGenerator extends CodeGenerator {
             
             boolean firstStmt = true;
             for (RStatement rStmt : method.getBody()) {
-                if (OUTPUT_JIMPLE_WITH_C)
-                    out.append(Code.commentln("[" + rStmt.internal().getClass().toString() + "]" + rStmt.toString()));
-    
+                if (OUTPUT_JIMPLE_TO_SOURCE)
+                    out.append(Code.commentln(rStmt.toSimpleString()));
+                if (OUTPUT_DEBUG_INFO)
+                    out.append(Code.commentln(rStmt.toDebugInfo()));
                 
+                // use line directive to add source-level debug info
+                out.append("#line " + rStmt.getLineStart() + " \"" + rStmt.getSource() + "\"\n");   
+
                 if (rStmt.isIntrinsic())
                     out.append(rStmt.getCode() + SEMICOLON + NEWLINE);
                 else {
@@ -1006,7 +1012,13 @@ public class CLanguageGenerator extends CodeGenerator {
     @Override
     public void init() {
         CLanguageRuntime.lateCLInit();
+        CLanguageGenerator.lateCLInit();
         this.mainObj = RJavaCompiler.namedOutput;
+        
+    }
+    
+    public static void lateCLInit() {
+        OUTPUT_DEBUG_INFO = RJavaCompiler.debugTarget;
     }
     
     public RClass getClassContext() {
