@@ -53,6 +53,8 @@ public class RJavaCompiler {
     public static boolean m32 = false;
     // not perform any optimizations (and related analyses)
     public static boolean noOpt = false;
+    // keep source-level file name and line number
+    public static boolean keepSourceLineNumber = false;
     
     // rjava restr./ext. annotations' path
     public static String soot_jdk_path = "components/soot/";    // should contain jce.jar and rt.jar
@@ -213,6 +215,8 @@ public class RJavaCompiler {
                     i++;
                 } else if (args[i].equals("-no_opt")) {
                     noOpt = true;
+                } else if (args[i].equals("-keep_source_line_number")) {
+                    keepSourceLineNumber = true;
                 }
                 else {
                     sources.add(args[i]);

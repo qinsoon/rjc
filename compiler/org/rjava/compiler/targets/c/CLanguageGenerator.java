@@ -860,7 +860,8 @@ public class CLanguageGenerator extends CodeGenerator {
                     out.append(Code.commentln(rStmt.toDebugInfo()));
                 
                 // use line directive to add source-level debug info
-                out.append("#line " + rStmt.getLineStart() + " \"" + rStmt.getSource() + "\"\n");   
+                if (RJavaCompiler.keepSourceLineNumber)
+                    out.append("#line " + rStmt.getLineStart() + " \"" + rStmt.getSource() + "\"\n");   
 
                 if (rStmt.isIntrinsic())
                     out.append(rStmt.getCode() + SEMICOLON + NEWLINE);
