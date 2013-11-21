@@ -51,6 +51,8 @@ public class RJavaCompiler {
     public static boolean debugTarget = false;
     // compile as 32bits executable
     public static boolean m32 = false;
+    // not perform any optimizations (and related analyses)
+    public static boolean noOpt = false;
     
     // rjava restr./ext. annotations' path
     public static String soot_jdk_path = "components/soot/";    // should contain jce.jar and rt.jar
@@ -82,6 +84,8 @@ public class RJavaCompiler {
     }
     
     public void init() {
+        lateCLInit();
+        
         codeGenerator.init();
         
         // collect semantic information (now with soot)
@@ -207,6 +211,8 @@ public class RJavaCompiler {
                 } else if (args[i].equals("-soot_jdk")) {
                     soot_jdk_path = args[i+1];
                     i++;
+                } else if (args[i].equals("-no_opt")) {
+                    noOpt = true;
                 }
                 else {
                     sources.add(args[i]);
@@ -373,7 +379,7 @@ public class RJavaCompiler {
         error("Incomplete implementation, please check source code");
     }
     
-    public static final boolean OPT_DEVIRTUALIZATION = true;
+    public static boolean OPT_DEVIRTUALIZATION = true;
     
     /**
      * only works in the simplest testcase (see org.rjava.test.opt.objectinline)
@@ -391,7 +397,15 @@ public class RJavaCompiler {
      *   
      * turned it off. and probably not going to work on it any more
      */
-    public static final boolean OPT_OBJECT_INLINING =  false;   
+    public static boolean OPT_OBJECT_INLINING =  false;   
     
-    public static final boolean OPT_CONSTANT_PROPAGATION = true;
+    public static boolean OPT_CONSTANT_PROPAGATION = true;
+    
+    private void lateCLInit() {
+        if (noOpt) {
+            OPT_DEVIRTUALIZATION        = false;
+            OPT_OBJECT_INLINING         = false;
+            OPT_CONSTANT_PROPAGATION    = false;
+        }
+    }
 }

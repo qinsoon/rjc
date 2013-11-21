@@ -53,7 +53,7 @@ public class PointsToAnalysisPass extends CompilationPass {
     private List<Value> pointsToBlacklist = new ArrayList<Value>();
     private SootValueMap<Type> typeRoots = new SootValueMap<Type>();
     
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
     
     int pass;
     @Override

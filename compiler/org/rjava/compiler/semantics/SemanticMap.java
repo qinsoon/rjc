@@ -117,8 +117,10 @@ public abstract class SemanticMap {
         rPass.start("Restriction Propagating");
         
         // points to analysis
-        pta = new PointsToAnalysisPass();
-        pta.start("Points-To Analysis");
+        if (!RJavaCompiler.noOpt) {
+            pta = new PointsToAnalysisPass();
+            pta.start("Points-To Analysis");
+        }
         
         if (RJavaCompiler.OPT_OBJECT_INLINING) {
             CircularTypePass circularTypePass = new CircularTypePass();
