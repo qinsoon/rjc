@@ -71,7 +71,17 @@ public abstract class Phase implements Constants {
       VM.assertions._assert(id < nextPhaseId, "Phase ID unknown");
       VM.assertions._assert(phases[id] != null, "Uninitialised phase");
     }
+    System.out.println("***getPhase() id=" + id);
+    printAllPhases();
     return phases[id];
+  }
+  
+  public static void printAllPhases() {
+      System.out.println("All phases:");
+      for (Phase a : phases) {
+          if (a != null)
+              System.out.println("id=" + a.id + ", name=" + a.name);
+      }
   }
 
   /** Get the phase id component of an encoded phase */
@@ -137,7 +147,10 @@ public abstract class Phase implements Constants {
    */
   @Interruptible
   public static short createComplex(String name,int... scheduledPhases) {
-    return new ComplexPhase(name, scheduledPhases).getId();
+    System.out.println("*** create complex " + name);
+    ComplexPhase ret = new ComplexPhase(name, scheduledPhases);
+    printAllPhases();
+    return ret.getId();
   }
 
   /**
@@ -207,7 +220,8 @@ public abstract class Phase implements Constants {
    * @return The encoded phase value.
    */
   public static int scheduleGlobal(short phaseId) {
-    if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(Phase.getPhase(phaseId) instanceof SimplePhase);
+    Phase p = Phase.getPhase(phaseId);
+    if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(p instanceof SimplePhase);
     return (SCHEDULE_GLOBAL << 16) + phaseId;
   }
 
@@ -588,7 +602,10 @@ public abstract class Phase implements Constants {
       int scheduledPhase = peekScheduledPhase();
       short schedule = getSchedule(scheduledPhase);
       short phaseId = getPhaseId(scheduledPhase);
-
+      System.out.println("scheduledPahse=" + scheduledPhase);
+      System.out.println("schedule=" + schedule);
+      System.out.println("phaseId=" + phaseId);
+      
       switch(schedule) {
         case SCHEDULE_PLACEHOLDER: {
           /* Placeholders are ignored and we continue looking */
@@ -700,6 +717,7 @@ public abstract class Phase implements Constants {
    */
   @Inline
   public static void pushScheduledPhase(int scheduledPhase) {
+    System.out.println("Pushing scheduledPhase=" + scheduledPhase);
     phaseStack[++phaseStackPointer] = scheduledPhase;
     complexPhaseCursor[phaseStackPointer] = 0;
   }

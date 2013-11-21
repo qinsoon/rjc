@@ -3,6 +3,7 @@ package testbed.mminterface;
 import org.mmtk.plan.MutatorContext;
 import org.mmtk.plan.Plan;
 import org.mmtk.utility.heap.HeapGrowthManager;
+import org.mmtk.utility.heap.Mmapper;
 import org.mmtk.utility.options.Options;
 import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.unboxed.Address;
@@ -19,6 +20,7 @@ import testbed.runtime.TestbedObject;
 public class MemoryManager {
     public static void boot() {
         Main.print("-Set heap\n");
+        Mmapper.boot();
         HeapGrowthManager.boot(TestbedRuntime.heap.getHeapSize(), TestbedRuntime.heap.getHeapSize());
         
         Main.print("-Set options\n");
