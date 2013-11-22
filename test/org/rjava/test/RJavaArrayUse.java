@@ -6,19 +6,22 @@ import org.rjava.restriction.rulesets.RJavaCore;
 public class RJavaArrayUse {
    
     public static void main(String[] args) {
-        int[] intArray = new int[5];
+        char[] intArray = new char[5];
         //Object[] objectArray = new Object[10];
         
-        for (int i = 0; i < intArray.length; i++)
-            intArray[i] = i;
+        intArray[0] = 'h';
+        intArray[1] = 'e';
+        intArray[2] = 'l';
+        intArray[3] = 'l';
+        intArray[4] = 'o';
         printArray(intArray);
         
         intArray[0] = intArray[4];
         printArray(intArray);
     }
     
-    public static void printArray(int[] array) {
-        for (int i : array) {
+    public static void printArray(char[] array) {
+        for (char i : array) {
             System.out.print(i + ",");
         }
         System.out.println();

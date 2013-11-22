@@ -49,6 +49,7 @@ public class Intrinsics {
         JAVA_PRIMITIVE_TO_C_TYPE.put("short", "int16_t");
         JAVA_PRIMITIVE_TO_C_TYPE.put("int", "int32_t");
         JAVA_PRIMITIVE_TO_C_TYPE.put("long", "int64_t");
+        JAVA_PRIMITIVE_TO_C_TYPE.put("char", "int16_t");
     }
     
     public Intrinsics(CLanguageGenerator generator) {
