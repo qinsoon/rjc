@@ -71,17 +71,7 @@ public abstract class Phase implements Constants {
       VM.assertions._assert(id < nextPhaseId, "Phase ID unknown");
       VM.assertions._assert(phases[id] != null, "Uninitialised phase");
     }
-    System.out.println("***getPhase() id=" + id);
-    printAllPhases();
     return phases[id];
-  }
-  
-  public static void printAllPhases() {
-      System.out.println("All phases:");
-      for (Phase a : phases) {
-          if (a != null)
-              System.out.println("id=" + a.id + ", name=" + a.name);
-      }
   }
 
   /** Get the phase id component of an encoded phase */
@@ -147,10 +137,7 @@ public abstract class Phase implements Constants {
    */
   @Interruptible
   public static short createComplex(String name,int... scheduledPhases) {
-    System.out.println("*** create complex " + name);
-    ComplexPhase ret = new ComplexPhase(name, scheduledPhases);
-    printAllPhases();
-    return ret.getId();
+    return new ComplexPhase(name, scheduledPhases).getId();
   }
 
   /**
@@ -602,9 +589,6 @@ public abstract class Phase implements Constants {
       int scheduledPhase = peekScheduledPhase();
       short schedule = getSchedule(scheduledPhase);
       short phaseId = getPhaseId(scheduledPhase);
-      System.out.println("scheduledPahse=" + scheduledPhase);
-      System.out.println("schedule=" + schedule);
-      System.out.println("phaseId=" + phaseId);
       
       switch(schedule) {
         case SCHEDULE_PLACEHOLDER: {
@@ -717,7 +701,6 @@ public abstract class Phase implements Constants {
    */
   @Inline
   public static void pushScheduledPhase(int scheduledPhase) {
-    System.out.println("Pushing scheduledPhase=" + scheduledPhase);
     phaseStack[++phaseStackPointer] = scheduledPhase;
     complexPhaseCursor[phaseStackPointer] = 0;
   }

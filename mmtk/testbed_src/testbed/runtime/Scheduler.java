@@ -35,33 +35,31 @@ public class Scheduler {
     
     private static Object newThreadLock = new Object();
     public static void newMutatorThread(MMTkContext mutator) {
-        Thread t = newThread(mutator);
-        
-        synchronized(newThreadLock) {
-            mutator.setThread(t);
-            mutatorContexts[mutatorCount] = mutator;
-            mutatorCount++;
-        }
-        
+        Thread t = newThread(mutator);        
         t.start();
     }
     
     public static void newCollectorThread(MMTkContext collector) {
         Thread t = newThread(collector);
-        
-        synchronized(newThreadLock) {
-            collector.setThread(t);
-            collectorContexts[collectorCount] = collector;
-            collectorCount++;
-        }
-        
         t.start();
     }
     
     private static Thread newThread(MMTkContext context) {
         Thread t = new Thread(context);
         Main._assert(collectorCount + mutatorCount < MAX_THREADS, "creating collector when max thread is reached");
-        threadCount++;
+        
+        synchronized(newThreadLock) {
+            threadCount++;
+            context.setThread(t);
+            if (context.isCollector()) {
+                collectorContexts[collectorCount] = context;
+                collectorCount++;
+            } else {
+                mutatorContexts[mutatorCount] = context;
+                mutatorCount++;
+            }
+        }
+        
         return t;
     }
     
@@ -90,10 +88,9 @@ public class Scheduler {
     public static int gcState;
     
     public static final int MUTATOR = 0;
-    public static final int WAITING_FOR_MUTATORS = 1;
-    public static final int STOPPING_MUTATORS = 2;
-    public static final int STOPPING_WORLD = 3;
-    public static final int GC = 4;
+    public static final int STOPPING_MUTATORS = 1;
+    public static final int STOPPING_WORLD = 2;
+    public static final int GC = 3;
     
     public static final Object gcStateChangeLock = new Object();
     
@@ -108,7 +105,7 @@ public class Scheduler {
         if (gcState == MUTATOR)
             return;
 
-        Main._assert(gcState == WAITING_FOR_MUTATORS, "at gcpoint, state should be WAITING_FOR_MUTATORS. State is " + gcState);
+        Main._assert(gcState == STOPPING_MUTATORS, "at gcpoint, state should be WAITING_FOR_MUTATORS. State is " + gcState);
         getCurrentContext().informGoingToBlock();
         getCurrentContext().blockForGC();
     }
@@ -116,7 +113,7 @@ public class Scheduler {
     public static void stopAllMutators() {
         // 1. gc is about to start, waiting for mutators to synchronize at gc point
         synchronized (gcStateChangeLock) {
-            gcState = WAITING_FOR_MUTATORS;
+            gcState = STOPPING_MUTATORS;
         }
         
         // 2. wait until they are all blocked
@@ -168,7 +165,7 @@ public class Scheduler {
     public static void currentThreadBlockForGC() {
         synchronized (gcStateChangeLock) {
             if (gcState == MUTATOR) {
-                gcState = WAITING_FOR_MUTATORS;
+                gcState = STOPPING_MUTATORS;
             }
         }
         

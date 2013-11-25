@@ -70,7 +70,7 @@ import org.vmmagic.pragma.*;
 
   public static int addressToMmapChunksDown(Address addr) {
     // TODO: base address
-    addr = addr.plus(Mmapper.offsetToBase);
+    //addr = addr.plus(Mmapper.offsetToBase);
     Word chunk = addr.toWord().rshl(Mmapper.LOG_MMAP_CHUNK_BYTES);
     return chunk.toInt();
   }
@@ -92,7 +92,7 @@ import org.vmmagic.pragma.*;
 
   public static int addressToMmapChunksUp(Address addr) {
     // TODO: base address
-    addr = addr.plus(Mmapper.offsetToBase);
+    //addr = addr.plus(Mmapper.offsetToBase);
     Word chunk = addr.plus(Mmapper.MMAP_CHUNK_BYTES - 1).toWord().rshl(Mmapper.LOG_MMAP_CHUNK_BYTES);
     return chunk.toInt();
   }
@@ -148,7 +148,8 @@ import org.vmmagic.pragma.*;
 
   public static Address mmapChunksToAddress(int chunk) {
     // TODO: base address
-    return Word.fromIntZeroExtend(chunk).lsh(Mmapper.LOG_MMAP_CHUNK_BYTES).toAddress().minus(Mmapper.offsetToBase);
+    //return Word.fromIntZeroExtend(chunk).lsh(Mmapper.LOG_MMAP_CHUNK_BYTES).toAddress().minus(Mmapper.offsetToBase);
+    return Word.fromIntZeroExtend(chunk).lsh(Mmapper.LOG_MMAP_CHUNK_BYTES).toAddress();
   }
 
   public static Address pageAlign(Address address) {
