@@ -22,12 +22,12 @@ import org.mmtk.utility.heap.VMRequest;
 import org.mmtk.utility.options.Options;
 import org.mmtk.utility.Log;
 import org.mmtk.utility.Constants;
-
 import org.mmtk.vm.VM;
-
 import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
+
+import testbed.runtime.Scheduler;
 
 /**
  * This class defines and manages spaces.  Each policy is an instance
@@ -416,6 +416,11 @@ public abstract class Space implements Constants {
    */
   @LogicallyUninterruptible
   public final Address acquire(int pages) {
+    if (Scheduler.gcCount > 0) {
+        System.out.print("Space.aquire():");
+        System.out.print(pages);
+        System.out.println("pages");
+    }
     boolean allowPoll = VM.activePlan.isMutator() && Plan.isInitialized();
 
     /* Check page budget */
@@ -452,6 +457,10 @@ public abstract class Space implements Constants {
    * @return The address of the new discontiguous space.
    */
   public Address growDiscontiguousSpace(int chunks) {
+    if (Scheduler.gcCount > 0) {
+        System.out.print("Space.growDiscontiguousSpace(), chunk=");
+        System.out.println(chunks);
+    }
     Address newHead = Map.allocateContiguousChunks(descriptor, this, chunks, headDiscontiguousRegion);
     if (newHead.isZero()) {
       return Address.zero();

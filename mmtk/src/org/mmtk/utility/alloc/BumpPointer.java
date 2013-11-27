@@ -27,6 +27,8 @@ import org.vmmagic.unboxed.ObjectReference;
 import org.vmmagic.unboxed.Offset;
 import org.vmmagic.unboxed.Word;
 
+import testbed.runtime.Scheduler;
+
 /**
  * This class implements a bump pointer allocator that allows linearly
  * scanning through the allocated objects. In order to achieve this in the
@@ -170,6 +172,8 @@ import org.vmmagic.unboxed.Word;
    */
   @Inline
   public final Address alloc(int bytes, int align, int offset) {
+    if (Scheduler.gcCount > 0)
+        System.out.println("alloc() fastpath");
     Address start = alignAllocationNoFill(cursor, align, offset);
     Address end = start.plus(bytes);
     if (end.GT(internalLimit))
@@ -276,6 +280,8 @@ import org.vmmagic.unboxed.Word;
    */
   @Override
   protected final Address allocSlowOnce(int bytes, int align, int offset) {
+    if (Scheduler.gcCount > 0)
+        System.out.println("allocSlowOnce()");
     /* Check we have been bound to a space */
     if (space == null) {
       VM.assertions.fail("Allocation on unbound bump pointer.");

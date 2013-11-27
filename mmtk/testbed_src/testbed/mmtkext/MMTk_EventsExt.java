@@ -13,23 +13,23 @@ public class MMTk_EventsExt extends MMTk_Events {
     @Override
     public void tracePageAcquired(Space space, Address startAddress,
             int numPages) {
-        Main.print("[event] page acquire in Space\"");
-        Main.print(space.getName());
-        Main.print("\" at ");
-        Main.print(startAddress);
-        Main.print(" of size ");
-        Main.println(numPages);
+//        Main.print("[event] page acquire in Space\"");
+//        Main.print(space.getName());
+//        Main.print("\" at ");
+//        Main.print(startAddress);
+//        Main.print(" of size ");
+//        Main.println(numPages);
     }
 
     @Override
     public void tracePageReleased(Space space, Address startAddress,
             int numPages) {
-        Main.print("[event] page release in Space\"");
-        Main.print(space.getName());
-        Main.print("\" at ");
-        Main.print(startAddress);
-        Main.print(" of size ");
-        Main.println(numPages);
+//        Main.print("[event] page release in Space\"");
+//        Main.print(space.getName());
+//        Main.print("\" at ");
+//        Main.print(startAddress);
+//        Main.print(" of size ");
+//        Main.println(numPages);
     }
 
     @Override

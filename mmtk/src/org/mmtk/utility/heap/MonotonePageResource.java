@@ -16,9 +16,7 @@ import org.mmtk.policy.Space;
 import org.mmtk.utility.Conversions;
 import org.mmtk.utility.alloc.EmbeddedMetaData;
 import org.mmtk.utility.options.Options;
-
 import org.mmtk.vm.VM;
-
 import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.Inline;
 import org.vmmagic.pragma.Uninterruptible;
@@ -26,6 +24,9 @@ import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.Extent;
 import org.vmmagic.unboxed.Offset;
 import org.vmmagic.unboxed.Word;
+
+import testbed.Main;
+import testbed.runtime.Scheduler;
 
 /**
  * This class manages the allocation of pages for a space.  When a
@@ -115,10 +116,26 @@ public final class MonotonePageResource extends PageResource {
   @Override
   @Inline
   protected Address allocPages(int reservedPages, int requiredPages, boolean zeroed) {
+    if (Scheduler.gcCount > 0)
+        System.out.println("MonotonePR.allocPages()");
+    
     boolean newChunk = false;
     lock();
     Address rtn = cursor;
+    
+    if (Scheduler.gcCount > 0) {
+        System.out.print("Current cursor=");
+        Main.println(rtn);
+        
+        System.out.print("Space.chunkAlign(cursor, true)=");
+        Main.println(Space.chunkAlign(rtn, true));
+        System.out.println("currentChunk=");
+        Main.println(currentChunk);
+    }
+    
     if (Space.chunkAlign(rtn, true).NE(currentChunk)) {
+      if (Scheduler.gcCount > 0)
+          System.out.println("not equal");
       newChunk = true;
       currentChunk = Space.chunkAlign(rtn, true);
     }
@@ -126,6 +143,10 @@ public final class MonotonePageResource extends PageResource {
     if (metaDataPagesPerRegion != 0) {
       /* adjust allocation for metadata */
       Address regionStart = getRegionStart(cursor.plus(Conversions.pagesToBytes(requiredPages)));
+      if (Scheduler.gcCount > 0) {
+          System.out.print("regionStart=");
+          Main.println(regionStart);
+      }
       Offset regionDelta = regionStart.diff(cursor);
       if (regionDelta.sGE(Offset.zero())) {
         /* start new region, so adjust pages and return address accordingly */
@@ -135,8 +156,18 @@ public final class MonotonePageResource extends PageResource {
     }
     Extent bytes = Conversions.pagesToBytes(requiredPages);
     Address tmp = cursor.plus(bytes);
+    
+    if (Scheduler.gcCount > 0) {
+        System.out.println("tmp=");
+        Main.println(tmp);
+        System.out.println("sentinel=");
+        Main.println(sentinel);
+    }
 
     if (!contiguous && tmp.GT(sentinel)) {
+      if (Scheduler.gcCount > 0) {
+          System.out.println("checkpoint1");
+      }
       /* we're out of virtual memory within our discontiguous region, so ask for more */
       int requiredChunks = Space.requiredChunks(requiredPages);
       Address chunk = space.growDiscontiguousSpace(requiredChunks); // Returns zero on failure
@@ -149,11 +180,22 @@ public final class MonotonePageResource extends PageResource {
     if (VM.VERIFY_ASSERTIONS)
       VM.assertions._assert(rtn.GE(cursor) && rtn.LT(cursor.plus(bytes)));
     if (tmp.GT(sentinel)) {
+        if (Scheduler.gcCount > 0)
+            System.out.println("checkpoint2");
       unlock();
       return Address.zero();
     } else {
+      if (Scheduler.gcCount > 0)
+          System.out.println("checkpoint3");
+      
       Address old = cursor;
       cursor = tmp;
+      if (Scheduler.gcCount > 0) {
+          System.out.print("cursor set from ");
+          Main.print(old);
+          System.out.print(" to ");
+          Main.println(tmp);
+      }
       commitPages(reservedPages, requiredPages);
       space.growSpace(old, bytes, newChunk);
       unlock();
@@ -251,6 +293,7 @@ public final class MonotonePageResource extends PageResource {
   @Inline
   private void releasePages() {
     if (contiguous) {
+      System.out.println("releasingPages() contiguous");
       // TODO: We will perform unnecessary zeroing if the nursery size has decreased.
       if (zeroConcurrent) {
         // Wait for current zeroing to finish.
@@ -263,6 +306,7 @@ public final class MonotonePageResource extends PageResource {
       zeroingCursor = start;
       cursor = start;
     } else {/* Not contiguous */
+      System.out.println("releasingPages() not contiguous");
       if (!cursor.isZero()) {
         do {
           Extent bytes = cursor.diff(currentChunk).toWord().toExtent();
@@ -300,6 +344,11 @@ public final class MonotonePageResource extends PageResource {
    */
   @Inline
   private void releasePages(Address first, Extent bytes) {
+    System.out.print("releasePages(), Address=");
+    Main.print(first);
+    System.out.print(",Extent=");
+    Main.println(bytes);
+    
     int pages = Conversions.bytesToPages(bytes);
     if (VM.VERIFY_ASSERTIONS)
       VM.assertions._assert(bytes.EQ(Conversions.pagesToBytes(pages)));

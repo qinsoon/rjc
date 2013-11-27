@@ -71,10 +71,10 @@ public class Main {
     }
     
     public static void print(Address addr) {
-        System.out.print(Integer.toHexString(addr.toInt()));
+        System.out.print(Long.toHexString(addr.toLong()));
     }    
     public static void println(Address addr) {
-        System.out.println(Integer.toHexString(addr.toInt()));
+        System.out.println(Long.toHexString(addr.toLong()));
     }    
     public static void print(Extent ext) {
         System.out.print(ext.toWord().rshl(10).toInt());
@@ -85,22 +85,22 @@ public class Main {
         println();
     }
     public static void print(Offset offset) {
-        System.out.print(offset.toInt());
+        System.out.print(offset.toLong());
     }
     public static void println(Offset offset) {
-        System.out.println(offset.toInt());
+        System.out.println(offset.toLong());
     }
     public static void print(ObjectReference objRef) {
-        System.out.print(Integer.toHexString(objRef.toAddress().toInt()));
+        System.out.print(Long.toHexString(objRef.toAddress().toLong()));
     }
     public static void println(ObjectReference objRef) {
-        System.out.println(Integer.toHexString(objRef.toAddress().toInt()));
+        System.out.println(Long.toHexString(objRef.toAddress().toLong()));
     }
     public static void print(Word word) {
-        System.out.print(Integer.toHexString(word.toInt()));
+        System.out.print(Long.toHexString(word.toLong()));
     }
     public static void println(Word word) {
-        System.out.println(Integer.toHexString(word.toInt()));    
+        System.out.println(Long.toHexString(word.toLong()));    
     }
     
     public static void println(Object message) {

@@ -13,9 +13,10 @@
 package org.mmtk.utility;
 
 import org.mmtk.vm.VM;
-
 import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
+
+import testbed.runtime.Scheduler;
 
 /**
  * This is a very simple, generic malloc-free allocator.  It works
@@ -105,6 +106,12 @@ import org.vmmagic.pragma.*;
    * contiguous units, or -1 if the request can't be satisfied
    */
   public final int alloc(int size) {
+    if (Scheduler.gcCount > 0) {
+        System.out.print("alloc size=");
+        System.out.println(size);
+        myDebugPrintFL();
+    }
+      
     // Note: -1 is both the default return value *and* the start sentinel index
     int unit = head; // HEAD = -1
     int s = 0;
@@ -112,6 +119,26 @@ import org.vmmagic.pragma.*;
 
     return (unit == head) ? FAILURE : alloc(size, unit, s);
   }
+  
+  void myDebugPrintFL() {
+        Log.write("FL[");
+        int i = head;
+        while ((i = getNext(i)) != head) {
+          boolean f = getFree(i);
+          int s = getSize(i);
+          if (!f)
+            Log.write("->");
+          Log.write(i);
+          if (!f)
+            Log.write("<-");
+          Log.write("(");
+          Log.write(s);
+          Log.write(")");
+          Log.write(" ");
+          Log.flush();
+        }
+        Log.writeln("]FL");
+    }
 
   /**
    * Would an allocation of <code>size</code> units succeed?

@@ -20,7 +20,7 @@ import testbed.runtime.TestbedObject;
 public class MemoryManager {
     public static void boot() {
         Main.print("-Set heap\n");
-        //Mmapper.boot();
+        Mmapper.boot();
         HeapGrowthManager.boot(TestbedRuntime.heap.getHeapSize(), TestbedRuntime.heap.getHeapSize());
         
         Main.print("-Set options\n");

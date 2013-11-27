@@ -26,6 +26,8 @@ import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.Extent;
 import org.vmmagic.unboxed.Word;
 
+import testbed.Main;
+
 /**
  * This class manages the mapping of spaces to virtual memory ranges.<p>
  *
@@ -193,15 +195,21 @@ public class Map {
    * @param anyChunk Any chunk in the linked list of chunks to be freed
    */
   public static void freeAllChunks(Address anyChunk) {
+    System.out.print("freeAllChunks(), address=");
+    Main.println(anyChunk);
     lock.acquire();
     if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(anyChunk.EQ(Space.chunkAlign(anyChunk, true)));
     if (!anyChunk.isZero()) {
       int chunk = getChunkIndex(anyChunk);
+      System.out.print("Current chunk=");
+      System.out.println(chunk);
       while (nextLink[chunk] != 0) {
         freeContiguousChunks(nextLink[chunk]);
+        System.out.println("freeing " + nextLink[chunk]);
       }
       while (prevLink[chunk] != 0) {
         freeContiguousChunks(prevLink[chunk]);
+        System.out.println("freeing " + prevLink[chunk]);
       }
       freeContiguousChunks(chunk);
     }
