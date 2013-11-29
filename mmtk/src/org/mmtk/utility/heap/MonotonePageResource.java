@@ -48,7 +48,7 @@ public final class MonotonePageResource extends PageResource {
   private Address cursor;
   private Address sentinel;
   private final int metaDataPagesPerRegion;
-  private Address currentChunk = Address.zero();
+  private Address currentChunk = VM.ADDRESS_EMPTY_VALUE;
   private volatile Address zeroingCursor;
   private Address zeroingSentinel;
 
@@ -86,8 +86,8 @@ public final class MonotonePageResource extends PageResource {
    */
   public MonotonePageResource(Space space, int metaDataPagesPerRegion) {
     super(space);
-    this.cursor = Address.zero();
-    this.sentinel = Address.zero();
+    this.cursor = VM.ADDRESS_EMPTY_VALUE;
+    this.sentinel = VM.ADDRESS_EMPTY_VALUE;
     this.metaDataPagesPerRegion = metaDataPagesPerRegion;
   }
 
@@ -183,7 +183,7 @@ public final class MonotonePageResource extends PageResource {
         if (Scheduler.gcCount > 0)
             System.out.println("checkpoint2");
       unlock();
-      return Address.zero();
+      return VM.ADDRESS_FAIL;
     } else {
       if (Scheduler.gcCount > 0)
           System.out.println("checkpoint3");
@@ -313,9 +313,9 @@ public final class MonotonePageResource extends PageResource {
           releasePages(currentChunk, bytes);
         } while (moveToNextChunk());
 
-        currentChunk = Address.zero();
-        sentinel = Address.zero();
-        cursor = Address.zero();
+        currentChunk = VM.ADDRESS_EMPTY_VALUE;
+        sentinel = VM.ADDRESS_EMPTY_VALUE;
+        cursor = VM.ADDRESS_EMPTY_VALUE;
         space.releaseAllChunks();
       }
     }

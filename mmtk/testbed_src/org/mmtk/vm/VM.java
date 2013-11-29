@@ -47,6 +47,10 @@ public final class VM {
   /*
    * VM-specific constant values
    */
+  
+  /** Address.zero() for code clarity **/
+  public static final Address ADDRESS_EMPTY_VALUE = Address.zero();
+  public static final Address ADDRESS_FAIL = Address.zero();
 
   /** <code>true</code> if assertions should be verified */
   public static final boolean VERIFY_ASSERTIONS;

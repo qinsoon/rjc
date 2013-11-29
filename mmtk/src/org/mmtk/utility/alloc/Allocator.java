@@ -288,7 +288,7 @@ public abstract class Allocator implements Constants {
           // Nobody has successfully allocated since an emergency collection: OutOfMemory
           VM.collection.outOfMemory();
           VM.assertions.fail("Not Reached");
-          return Address.zero();
+          return VM.ADDRESS_FAIL;
         }
       }
 

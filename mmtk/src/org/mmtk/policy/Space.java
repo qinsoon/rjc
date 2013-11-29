@@ -27,6 +27,7 @@ import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
 
+import testbed.Main;
 import testbed.runtime.Scheduler;
 
 /**
@@ -57,21 +58,42 @@ public abstract class Space implements Constants {
    */
   private static boolean DEBUG = false;
 
-  // the following is somewhat arbitrary for the 64 bit system at this stage
-  public static final int LOG_ADDRESS_SPACE = (BYTES_IN_ADDRESS == 4) ? 32 : 40;
-  public static final int LOG_BYTES_IN_CHUNK = 22;
-  public static final int BYTES_IN_CHUNK = 1 << LOG_BYTES_IN_CHUNK;
-  public static final int PAGES_IN_CHUNK = 1 << (LOG_BYTES_IN_CHUNK - LOG_BYTES_IN_PAGE);
-  private static final int LOG_MAX_CHUNKS = LOG_ADDRESS_SPACE - LOG_BYTES_IN_CHUNK;
-  public static final int MAX_CHUNKS = 1 << LOG_MAX_CHUNKS;
-  public static final int MAX_SPACES = 20; // quite arbitrary
-
   public static final Address HEAP_START = chunkAlign(VM.HEAP_START, true);
   public static final Address AVAILABLE_START = chunkAlign(VM.AVAILABLE_START, false);
   public static final Address AVAILABLE_END = chunkAlign(VM.AVAILABLE_END, true);
   public static final Extent AVAILABLE_BYTES = AVAILABLE_END.toWord().minus(AVAILABLE_START.toWord()).toExtent();
   public static final int AVAILABLE_PAGES = AVAILABLE_BYTES.toWord().rshl(LOG_BYTES_IN_PAGE).toInt();
   public static final Address HEAP_END = chunkAlign(VM.HEAP_END, false);
+  
+  // the following is somewhat arbitrary for the 64 bit system at this stage
+  public static final int LOG_ADDRESS_SPACE;
+  public static final int LOG_BYTES_IN_CHUNK = 22;
+  public static final int BYTES_IN_CHUNK = 1 << LOG_BYTES_IN_CHUNK;
+  public static final int PAGES_IN_CHUNK = 1 << (LOG_BYTES_IN_CHUNK - LOG_BYTES_IN_PAGE);
+  private static final int LOG_MAX_CHUNKS;
+  public static final int MAX_CHUNKS;
+  public static final int MAX_SPACES = 20; // quite arbitrary
+  
+  static {
+      if (BYTES_IN_ADDRESS == 4) {
+          LOG_ADDRESS_SPACE = 32;
+      }
+      else {
+          Word mappable = HEAP_END.diff(HEAP_START).toWord();
+          int log = 0;
+          while(Word.fromLong(1L << log).LE(mappable)){
+              log++;
+          }
+          Main.print("LOG_ADDRESS_SPACE=");
+          Main.println(log);
+          LOG_ADDRESS_SPACE = log;
+      }
+      
+      LOG_MAX_CHUNKS = LOG_ADDRESS_SPACE - LOG_BYTES_IN_CHUNK;
+      MAX_CHUNKS = 1 << LOG_MAX_CHUNKS;
+      Main.print("MAX_CHUNKS=");
+      Main.println(MAX_CHUNKS);
+  }
 
   private static final boolean FORCE_SLOW_MAP_LOOKUP = false;
 
@@ -140,9 +162,9 @@ public abstract class Space implements Constants {
     if (vmRequest.type == VMRequest.REQUEST_DISCONTIGUOUS) {
       this.contiguous = false;
       this.descriptor = SpaceDescriptor.createDescriptor();
-      this.start = Address.zero();
+      this.start = VM.ADDRESS_EMPTY_VALUE;
       this.extent = Extent.zero();
-      this.headDiscontiguousRegion = Address.zero();
+      this.headDiscontiguousRegion = VM.ADDRESS_EMPTY_VALUE;
       VM.memory.setHeapRange(index, HEAP_START, HEAP_END); // this should really be refined!  Once we have a code space, we can be a lot more specific about what is a valid code heap area
       return;
     }
@@ -430,7 +452,7 @@ public abstract class Space implements Constants {
     if (allowPoll && VM.activePlan.global().poll(false, this)) {
       pr.clearRequest(pagesReserved);
       VM.collection.blockForGC();
-      return Address.zero(); // GC required, return failure
+      return VM.ADDRESS_FAIL; // GC required, return failure
     }
 
     /* Page budget is ok, try to acquire virtual memory */
@@ -442,7 +464,7 @@ public abstract class Space implements Constants {
       if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(gcPerformed, "GC not performed when forced.");
       pr.clearRequest(pagesReserved);
       VM.collection.blockForGC();
-      return Address.zero();
+      return VM.ADDRESS_FAIL;
     }
 
     return rtn;
@@ -463,7 +485,7 @@ public abstract class Space implements Constants {
     }
     Address newHead = Map.allocateContiguousChunks(descriptor, this, chunks, headDiscontiguousRegion);
     if (newHead.isZero()) {
-      return Address.zero();
+      return VM.ADDRESS_FAIL;
     }
     return headDiscontiguousRegion = newHead;
   }
@@ -514,7 +536,7 @@ public abstract class Space implements Constants {
 
   public void releaseAllChunks() {
     Map.freeAllChunks(headDiscontiguousRegion);
-    headDiscontiguousRegion = Address.zero();
+    headDiscontiguousRegion = VM.ADDRESS_EMPTY_VALUE;
   }
 
   /**
@@ -583,7 +605,7 @@ public abstract class Space implements Constants {
         for(Address a = space.headDiscontiguousRegion; !a.isZero(); a = Map.getNextContiguousRegion(a)) {
           Log.write(a); Log.write("->");
           Log.write(a.plus(Map.getContiguousRegionSize(a).minus(1)));
-          if (Map.getNextContiguousRegion(a) != Address.zero())
+          if (Map.getNextContiguousRegion(a) != VM.ADDRESS_FAIL)
             Log.write(", ");
         }
         Log.writeln("]");

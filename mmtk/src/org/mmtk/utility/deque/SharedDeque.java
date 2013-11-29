@@ -74,7 +74,7 @@ public class SharedDeque extends Deque implements Constants {
     lock();
     if (toTail) {
       // Add to the tail of the queue
-      setNext(buf, Address.zero());
+      setNext(buf, VM.ADDRESS_EMPTY_VALUE);
       if (tail.EQ(TAIL_INITIAL_VALUE))
         head = buf;
       else
@@ -83,7 +83,7 @@ public class SharedDeque extends Deque implements Constants {
       tail = buf;
     } else {
       // Add to the head of the queue
-      setPrev(buf, Address.zero());
+      setPrev(buf, VM.ADDRESS_EMPTY_VALUE);
       if (head.EQ(HEAD_INITIAL_VALUE))
         tail = buf;
       else
@@ -280,7 +280,7 @@ public class SharedDeque extends Deque implements Constants {
             lock();
             setNumConsumersWaiting(numConsumersWaiting - 1);
             unlock();
-            return Address.zero();
+            return VM.ADDRESS_EMPTY_VALUE;
           }
           lock();
           // Re-get the list head/tail while holding the lock
@@ -293,26 +293,26 @@ public class SharedDeque extends Deque implements Constants {
         }
       } else {
         unlock();
-        return Address.zero();
+        return VM.ADDRESS_EMPTY_VALUE;
       }
     }
     if (fromTail) {
       // dequeue the tail buffer
       setTail(getPrev(tail));
       if (head.EQ(rtn)) {
-        setHead(Address.zero());
+        setHead(VM.ADDRESS_EMPTY_VALUE);
         if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(tail.isZero());
       } else {
-        setNext(tail, Address.zero());
+        setNext(tail, VM.ADDRESS_EMPTY_VALUE);
       }
     } else {
       // dequeue the head buffer
       setHead(getNext(head));
       if (tail.EQ(rtn)) {
-        setTail(Address.zero());
+        setTail(VM.ADDRESS_EMPTY_VALUE);
         if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(head.isZero());
       } else {
-        setPrev(head, Address.zero());
+        setPrev(head, VM.ADDRESS_EMPTY_VALUE);
       }
     }
     bufsenqueued--;

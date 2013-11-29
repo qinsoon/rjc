@@ -13,7 +13,7 @@
 package org.mmtk.utility.deque;
 
 import org.mmtk.utility.Constants;
-
+import org.mmtk.vm.VM;
 import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
@@ -82,6 +82,6 @@ import org.vmmagic.pragma.*;
   protected static final int NEXT_FIELD_OFFSET = BYTES_IN_ADDRESS;
   protected static final int META_DATA_SIZE = 2 * BYTES_IN_ADDRESS;
   protected static final int USABLE_BUFFER_BYTES = BUFFER_SIZE - META_DATA_SIZE;
-  protected static final Address TAIL_INITIAL_VALUE = Address.zero();
-  protected static final Address HEAD_INITIAL_VALUE = Address.zero();
+  protected static final Address TAIL_INITIAL_VALUE = VM.ADDRESS_EMPTY_VALUE;
+  protected static final Address HEAD_INITIAL_VALUE = VM.ADDRESS_EMPTY_VALUE;
 }

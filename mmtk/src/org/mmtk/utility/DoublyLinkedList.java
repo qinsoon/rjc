@@ -64,7 +64,7 @@ import org.vmmagic.unboxed.*;
    * Constructor
    */
   public DoublyLinkedList(int logGranularity, boolean shared) {
-    head = Address.zero();
+    head = VM.ADDRESS_EMPTY_VALUE;
     lock = shared ? VM.newLock("DoublyLinkedList") : null;
     this.logGranularity = logGranularity;
 
@@ -110,7 +110,7 @@ import org.vmmagic.unboxed.*;
   public void add(Address node) {
     if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(isNode(node));
     if (lock != null) lock.acquire();
-    node.store(Address.zero(), PREV_OFFSET);
+    node.store(VM.ADDRESS_EMPTY_VALUE, PREV_OFFSET);
     node.store(head, NEXT_OFFSET);
     if (!head.isZero())
       head.store(node, PREV_OFFSET);
@@ -132,8 +132,8 @@ import org.vmmagic.unboxed.*;
     else
       prev.store(next, NEXT_OFFSET);
     // Null out node's reference to the list
-    node.store(Address.zero(), PREV_OFFSET);
-    node.store(Address.zero(), NEXT_OFFSET);
+    node.store(VM.ADDRESS_EMPTY_VALUE, PREV_OFFSET);
+    node.store(VM.ADDRESS_EMPTY_VALUE, NEXT_OFFSET);
     if (lock != null) lock.release();
   }
 

@@ -51,7 +51,7 @@ import org.vmmagic.pragma.*;
   private static final Lock lock = VM.newLock("mcSpace");
 
   /** The list of occupied regions */
-  private Address regionList = Address.zero();
+  private Address regionList = VM.ADDRESS_EMPTY_VALUE;
 
   // TODO - maintain a separate list of partially allocated regions
   // for threads to allocate into immediately after a collection.
@@ -328,7 +328,7 @@ import org.vmmagic.pragma.*;
    */
   @Inline
   public static void clearForwardingPointer(ObjectReference object) {
-    object.toAddress().store(Address.zero(), FORWARDING_POINTER_OFFSET);
+    object.toAddress().store(VM.ADDRESS_EMPTY_VALUE, FORWARDING_POINTER_OFFSET);
   }
 
   /**
@@ -339,7 +339,7 @@ import org.vmmagic.pragma.*;
     lock.acquire();
     if (regionList.isZero()) {
       lock.release();
-      return Address.zero();
+      return VM.ADDRESS_FAIL;
     }
     Address result = regionList;
     regionList = BumpPointer.getNextRegion(regionList);

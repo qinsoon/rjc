@@ -128,7 +128,7 @@ import org.vmmagic.pragma.*;
    */
   public void release() {
     ((MonotonePageResource) pr).reset();
-    headDiscontiguousRegion = Address.zero();
+    headDiscontiguousRegion = VM.ADDRESS_EMPTY_VALUE;
     fromSpace = false;
   }
 

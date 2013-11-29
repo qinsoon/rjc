@@ -55,7 +55,7 @@ public final class MarkCompactCollector {
   /**
    * This collector's work list
    */
-  private Address regions = Address.zero();
+  private Address regions = VM.ADDRESS_EMPTY_VALUE;
 
   private final FromCursor fromCursor = new FromCursor();
   private final ToCursor toCursor = new ToCursor();
@@ -192,7 +192,7 @@ public final class MarkCompactCollector {
     void advanceToNextRegion() {
       Address nextRegion = MarkCompactLocal.getNextRegion(region);
       if (nextRegion.isZero()) {
-        region = Address.zero();
+        region = VM.ADDRESS_EMPTY_VALUE;
       } else {
         init(nextRegion);
         if (VM.VERIFY_ASSERTIONS) assertCursorInBounds();
@@ -284,7 +284,7 @@ public final class MarkCompactCollector {
       if (nextRegion.isZero()) {
         nextRegion = space.getNextRegion();
         if (nextRegion.isZero()) {
-          region = Address.zero();
+          region = VM.ADDRESS_EMPTY_VALUE;
           return;
         }
         MarkCompactLocal.setNextRegion(region,nextRegion);
@@ -370,7 +370,7 @@ public final class MarkCompactCollector {
         VM.assertions._assert(MarkCompactSpace.getForwardingPointer(from).toAddress().EQ(to.toAddress()));
         VM.assertions._assert(cursor.GT(region) && cursor.LE(limit));
       }
-      Address savedCursor = Address.zero();
+      Address savedCursor = VM.ADDRESS_EMPTY_VALUE;
       if (VM.VERIFY_ASSERTIONS) savedCursor = cursor;
       cursor = VM.objectModel.copyTo(from, to, cursor);
       if (VM.VERIFY_ASSERTIONS) {

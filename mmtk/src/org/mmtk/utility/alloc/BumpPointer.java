@@ -141,11 +141,11 @@ import testbed.runtime.Scheduler;
    * This is must be done by the caller.
    */
   public final void reset() {
-    cursor = Address.zero();
-    limit = Address.zero();
-    internalLimit = Address.zero();
-    initialRegion = Address.zero();
-    region = Address.zero();
+    cursor = VM.ADDRESS_EMPTY_VALUE;
+    limit = VM.ADDRESS_EMPTY_VALUE;
+    internalLimit = VM.ADDRESS_EMPTY_VALUE;
+    initialRegion = VM.ADDRESS_EMPTY_VALUE;
+    region = VM.ADDRESS_EMPTY_VALUE;
   }
 
   /**
@@ -351,7 +351,7 @@ import testbed.runtime.Scheduler;
     region = nextRegion;
     cursor = getDataStart(nextRegion);
     updateLimit(getRegionLimit(nextRegion), nextRegion, bytes);
-    setDataEnd(nextRegion,Address.zero());
+    setDataEnd(nextRegion,VM.ADDRESS_EMPTY_VALUE);
     VM.memory.zero(false, cursor, limit.diff(cursor).toWord().toExtent());
     reusePages(Conversions.bytesToPages(limit.diff(region)));
 
@@ -406,7 +406,7 @@ import testbed.runtime.Scheduler;
   @Inline
   public static void clearNextRegion(Address region) {
     if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(!region.isZero());
-    region.store(Address.zero(),NEXT_REGION_OFFSET);
+    region.store(VM.ADDRESS_EMPTY_VALUE,NEXT_REGION_OFFSET);
   }
 
   /**

@@ -16,15 +16,17 @@ import org.mmtk.plan.Plan;
 import org.mmtk.policy.Space;
 
 import static org.mmtk.policy.Space.PAGES_IN_CHUNK;
+
 import org.mmtk.utility.alloc.EmbeddedMetaData;
 import org.mmtk.utility.Conversions;
 import org.mmtk.utility.GenericFreeList;
 import org.mmtk.vm.VM;
 import org.mmtk.utility.Constants;
-
 import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
+
+import testbed.Main;
 
 /**
  * This class manages the allocation of pages for a space.  When a
@@ -145,6 +147,7 @@ public final class FreeListPageResource extends PageResource implements Constant
     if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(metaDataPagesPerRegion == 0 || requiredPages <= PAGES_IN_CHUNK - metaDataPagesPerRegion);
     lock();
     boolean newChunk = false;
+    Main.println("FLPageResource.freelist.alloc()");
     int pageOffset = freeList.alloc(requiredPages);
     if (pageOffset == GenericFreeList.FAILURE && !contiguous) {
       pageOffset = allocateContiguousChunks(requiredPages);
@@ -152,7 +155,7 @@ public final class FreeListPageResource extends PageResource implements Constant
     }
     if (pageOffset == GenericFreeList.FAILURE) {
       unlock();
-      return Address.zero();
+      return VM.ADDRESS_FAIL;
     } else {
       pagesCurrentlyOnFreeList -= requiredPages;
       if (pageOffset > highWaterMark) {
@@ -272,14 +275,17 @@ public final class FreeListPageResource extends PageResource implements Constant
       freeList.setUncoalescable(regionEnd + 1);
       for (int p = regionStart; p < regionEnd; p += Space.PAGES_IN_CHUNK) {
         int liberated;
-        if (p != regionStart)
+        if (p != regionStart) 
           freeList.clearUncoalescable(p);
         liberated = freeList.free(p, true); // add chunk to our free list
         if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(liberated == Space.PAGES_IN_CHUNK + (p - regionStart));
-        if (metaDataPagesPerRegion > 1)
+        if (metaDataPagesPerRegion > 1) {
+          Main.println("FLPageResource.freelist.alloc()");
           freeList.alloc(metaDataPagesPerRegion, p); // carve out space for metadata
+        }
         pagesCurrentlyOnFreeList += Space.PAGES_IN_CHUNK - metaDataPagesPerRegion;
       }
+      Main.println("FLPageResource.freelist.alloc()");
       rtn = freeList.alloc(pages); // re-do the request which triggered this call
     }
     return rtn;
@@ -303,6 +309,7 @@ public final class FreeListPageResource extends PageResource implements Constant
       freeList.setUncoalescable(chunkStart);
       if (metaDataPagesPerRegion > 0)
         freeList.free(chunkStart);  // first free any metadata pages
+      Main.println("FLPageResource.freelist.alloc()");
       int tmp = freeList.alloc(Space.PAGES_IN_CHUNK, chunkStart); // then alloc the entire chunk
       if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(tmp == chunkStart);
       chunkStart += Space.PAGES_IN_CHUNK;
@@ -326,6 +333,7 @@ public final class FreeListPageResource extends PageResource implements Constant
       while (cursor.GT(start)) {
         cursor = cursor.minus(EmbeddedMetaData.BYTES_IN_REGION);
         int unit = cursor.diff(start).toWord().rshl(LOG_BYTES_IN_PAGE).toInt();
+        Main.println("FLPageResource.freelist.alloc()");
         int tmp = freeList.alloc(metaDataPagesPerRegion, unit);
         pagesCurrentlyOnFreeList -= metaDataPagesPerRegion;
         if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(tmp == unit);

@@ -36,14 +36,14 @@ public final class ChunkList implements Constants {
 
   public Address getHeadChunk() {
     if (chunkMapLimit < 0)
-      return Address.zero();
+      return VM.ADDRESS_FAIL;
     else
       return getMapAddress(0).loadAddress();
   }
 
   public Address getTailChunk() {
     if (chunkMapLimit < 0)
-      return Address.zero();
+      return VM.ADDRESS_FAIL;
     else
       return getMapAddress(chunkMapLimit).loadAddress();
   }
@@ -76,7 +76,7 @@ public final class ChunkList implements Constants {
   void removeChunkFromMap(Address chunk) {
     if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(Chunk.isAligned(chunk));
     int entry = Chunk.getMap(chunk);
-    getMapAddress(entry).store(Address.zero());  // zero it it
+    getMapAddress(entry).store(VM.ADDRESS_EMPTY_VALUE);  // zero it it
     Chunk.setMap(chunk, -entry);
     if (VM.VERIFY_ASSERTIONS) checkMap();
   }
@@ -146,11 +146,11 @@ public final class ChunkList implements Constants {
       if (entry > chunkMapLimit) { entry = entry % stride; }
       chunk = getMapAddress(entry).loadAddress();
     } while (chunk.isZero() && entry != start);
-    return entry == start ? Address.zero() : chunk;
+    return entry == start ? VM.ADDRESS_FAIL : chunk;
   }
 
   public Address firstChunk(int ordinal, int stride) {
-    if (ordinal > chunkMapCursor) return Address.zero();
+    if (ordinal > chunkMapCursor) return VM.ADDRESS_EMPTY_VALUE;
     if (VM.VERIFY_ASSERTIONS) checkMap();
     Address chunk = getMapAddress(ordinal).loadAddress();
     return chunk.isZero() ? nextChunk(ordinal, ordinal, stride) : chunk;

@@ -201,7 +201,7 @@ public abstract class MutatorContext implements Constants {
     case      Plan.ALLOC_NON_MOVING: return nonmove.alloc(bytes, align, offset);
     default:
       VM.assertions.fail("No such allocator");
-      return Address.zero();
+      return VM.ADDRESS_FAIL;
     }
   }
 
@@ -928,7 +928,7 @@ public abstract class MutatorContext implements Constants {
     // Either: read barriers are used and this is overridden, or
     // read barriers are not used and this is never called
     if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(false);
-    return Address.zero();
+    return VM.ADDRESS_FAIL;
   }
 
   /**

@@ -28,12 +28,12 @@ import org.mmtk.utility.options.*;
 import org.mmtk.utility.sanitychecker.SanityChecker;
 import org.mmtk.utility.statistics.Timer;
 import org.mmtk.utility.statistics.Stats;
-
 import org.mmtk.vm.VM;
-
 import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
+
+import testbed.Main;
 
 /**
  * This abstract class implements the global core functionality for all
@@ -890,9 +890,10 @@ public abstract class Plan implements Constants {
    * @param space TODO
    * @return <code>true</code> if a collection is requested by the plan.
    */
-  protected boolean collectionRequired(boolean spaceFull, Space space) {
+  protected boolean collectionRequired(boolean spaceFull, Space space) {      
     boolean stressForceGC = stressTestGCRequired();
     boolean heapFull = getPagesReserved() > getTotalPages();
+    Main.println("pages reserved = " + getPagesReserved());
 
     return spaceFull || stressForceGC || heapFull;
   }

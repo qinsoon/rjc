@@ -14,7 +14,7 @@ package org.mmtk.utility.alloc;
 
 import org.mmtk.policy.SegregatedFreeListSpace;
 import org.mmtk.utility.*;
-
+import org.mmtk.vm.VM;
 import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
@@ -79,7 +79,7 @@ public abstract class SegregatedFreeList<S extends SegregatedFreeListSpace> exte
     if (!cell.isZero()) {
       freeList.set(sizeClass, cell.loadAddress());
       /* Clear the free list link */
-      cell.store(Address.zero());
+      cell.store(VM.ADDRESS_EMPTY_VALUE);
       if (alignedBytes != bytes) {
         /* Ensure aligned as requested. */
         cell = alignAllocation(cell, align, offset);

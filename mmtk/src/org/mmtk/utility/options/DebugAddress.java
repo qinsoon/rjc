@@ -12,6 +12,7 @@
  */
 package org.mmtk.utility.options;
 
+import org.mmtk.vm.VM;
 import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.Address;
 
@@ -26,6 +27,6 @@ public final class DebugAddress extends org.vmutil.options.AddressOption {
   public DebugAddress() {
     super(Options.set, "Debug Address",
           "Specify an address at runtime for use in debugging",
-        Address.zero());
+        VM.ADDRESS_EMPTY_VALUE);
   }
 }

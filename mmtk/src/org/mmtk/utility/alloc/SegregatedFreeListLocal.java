@@ -117,7 +117,7 @@ public abstract class SegregatedFreeListLocal<S extends SegregatedFreeListSpace>
       if (!block.isZero()) {
         // Return the block if we currently own one
         space.returnConsumedBlock(block, sizeClass);
-        currentBlock.set(sizeClass, Address.zero());
+        currentBlock.set(sizeClass, VM.ADDRESS_EMPTY_VALUE);
       }
 
       // Get a new block for allocation, if returned, it is guaranteed to have a free cell
@@ -130,13 +130,13 @@ public abstract class SegregatedFreeListLocal<S extends SegregatedFreeListSpace>
         if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(!cell.isZero());
       } else {
         // Allocation Failure
-        return Address.zero();
+        return VM.ADDRESS_FAIL;
       }
     }
 
     freeList.set(sizeClass, cell.loadAddress());
     /* Clear the free list link */
-    cell.store(Address.zero());
+    cell.store(VM.ADDRESS_EMPTY_VALUE);
     return alignAllocation(cell, align, offset);
   }
 
@@ -160,8 +160,8 @@ public abstract class SegregatedFreeListLocal<S extends SegregatedFreeListSpace>
       if (!block.isZero()) {
         Address cell = freeList.get(sizeClass);
         space.returnBlock(block, sizeClass, cell);
-        currentBlock.set(sizeClass, Address.zero());
-        freeList.set(sizeClass, Address.zero());
+        currentBlock.set(sizeClass, VM.ADDRESS_EMPTY_VALUE);
+        freeList.set(sizeClass, VM.ADDRESS_EMPTY_VALUE);
       }
     }
   }

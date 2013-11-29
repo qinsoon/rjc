@@ -88,7 +88,7 @@ public class RCBaseMutator extends StopTheWorldMutator {
         return super.alloc(bytes, align, offset, allocator, site);
       default:
         VM.assertions.fail("Allocator not understood by RC");
-        return Address.zero();
+        return VM.ADDRESS_FAIL;
     }
   }
 

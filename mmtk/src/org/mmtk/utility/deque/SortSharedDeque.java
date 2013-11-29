@@ -345,7 +345,7 @@ import org.vmmagic.unboxed.*;
    */
   private Address popStack() {
     if (stackLoc == 0)
-      return Address.zero();
+      return VM.ADDRESS_FAIL;
     stackLoc--;
     return stackBase.get(stackLoc);
   }

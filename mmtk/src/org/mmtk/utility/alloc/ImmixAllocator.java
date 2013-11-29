@@ -82,12 +82,12 @@ public class ImmixAllocator extends Allocator implements Constants {
    * Reset the allocator. Note that this does not reset the space.
    */
   public void reset() {
-    cursor = Address.zero();
-    limit = Address.zero();
-    largeCursor = Address.zero();
-    largeLimit = Address.zero();
-    markTable = Address.zero();
-    recyclableBlock = Address.zero();
+    cursor = VM.ADDRESS_EMPTY_VALUE;
+    limit = VM.ADDRESS_EMPTY_VALUE;
+    largeCursor = VM.ADDRESS_EMPTY_VALUE;
+    largeLimit = VM.ADDRESS_EMPTY_VALUE;
+    markTable = VM.ADDRESS_EMPTY_VALUE;
+    recyclableBlock = VM.ADDRESS_EMPTY_VALUE;
     requestForLarge = false;
     recyclableExhausted = false;
     line = LINES_IN_BLOCK;

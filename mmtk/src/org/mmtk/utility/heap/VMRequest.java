@@ -13,7 +13,7 @@
 package org.mmtk.utility.heap;
 
 import org.mmtk.utility.Constants;
-
+import org.mmtk.vm.VM;
 import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 
@@ -59,7 +59,7 @@ public final class VMRequest implements Constants {
    * @return The request object
    */
   public static VMRequest create() {
-    return new VMRequest(REQUEST_DISCONTIGUOUS, Address.zero(), Extent.zero(), 0f, false);
+    return new VMRequest(REQUEST_DISCONTIGUOUS, VM.ADDRESS_EMPTY_VALUE, Extent.zero(), 0f, false);
   }
 
   /**
@@ -101,7 +101,7 @@ public final class VMRequest implements Constants {
    * @return The request object
    */
   public static VMRequest create(int mb, boolean top) {
-    return new VMRequest(REQUEST_EXTENT, Address.zero(), Word.fromIntSignExtend(mb).lsh(LOG_BYTES_IN_MBYTE).toExtent(), 0f, top);
+    return new VMRequest(REQUEST_EXTENT, VM.ADDRESS_EMPTY_VALUE, Word.fromIntSignExtend(mb).lsh(LOG_BYTES_IN_MBYTE).toExtent(), 0f, top);
   }
 
   /**
@@ -112,7 +112,7 @@ public final class VMRequest implements Constants {
    * @return The request object
    */
   public static VMRequest create(float frac, boolean top) {
-    return new VMRequest(REQUEST_FRACTION, Address.zero(), Extent.zero(), frac, top);
+    return new VMRequest(REQUEST_FRACTION, VM.ADDRESS_EMPTY_VALUE, Extent.zero(), frac, top);
   }
 
   /**
@@ -123,6 +123,6 @@ public final class VMRequest implements Constants {
    * @return The request object
    */
   public static VMRequest create(Extent extent, boolean top) {
-    return new VMRequest(REQUEST_EXTENT, Address.zero(), extent, 0f, top);
+    return new VMRequest(REQUEST_EXTENT, VM.ADDRESS_EMPTY_VALUE, extent, 0f, top);
   }
 }

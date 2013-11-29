@@ -16,6 +16,7 @@ import org.mmtk.vm.VM;
 import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 
+import testbed.Main;
 import testbed.runtime.Scheduler;
 
 /**
@@ -106,16 +107,30 @@ import testbed.runtime.Scheduler;
    * contiguous units, or -1 if the request can't be satisfied
    */
   public final int alloc(int size) {
-    if (Scheduler.gcCount > 0) {
-        System.out.print("alloc size=");
-        System.out.println(size);
-        myDebugPrintFL();
-    }
+    System.out.print("GenericFL.alloc() size=");
+    System.out.println(size);
+    myDebugPrintFL();
       
     // Note: -1 is both the default return value *and* the start sentinel index
     int unit = head; // HEAD = -1
     int s = 0;
-    while (((unit = getNext(unit)) != head) && ((s = getSize(unit)) < size));
+//    while (((unit = getNext(unit)) != head) && ((s = getSize(unit)) < size));
+    while(true) {
+        Main.print("unit=");
+        Main.print(unit);
+        unit = getNext(unit);
+        Main.print(",new unit=");
+        Main.println(unit);
+        
+        if (unit == head)
+            break;
+        
+        Main.print("getSize(new unit)=");
+        s = getSize(unit);
+        Main.println(s);
+        if (s >= size)
+            break;
+    }
 
     return (unit == head) ? FAILURE : alloc(size, unit, s);
   }

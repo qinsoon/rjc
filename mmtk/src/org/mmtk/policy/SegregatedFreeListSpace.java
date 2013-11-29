@@ -139,7 +139,7 @@ public abstract class SegregatedFreeListSpace extends Space implements Constants
    * @param sizeClass The size class
    */
   public void returnConsumedBlock(Address block, int sizeClass) {
-    returnBlock(block, sizeClass, Address.zero());
+    returnBlock(block, sizeClass, VM.ADDRESS_EMPTY_VALUE);
   }
 
   /**
@@ -182,7 +182,7 @@ public abstract class SegregatedFreeListSpace extends Space implements Constants
       lock.release();
 
       /* This block is no longer on any list */
-      BlockAllocator.setNext(block, Address.zero());
+      BlockAllocator.setNext(block, VM.ADDRESS_EMPTY_VALUE);
 
       /* Can we allocate into this block? */
       Address cell = advanceToBlock(block, sizeClass);
@@ -217,10 +217,10 @@ public abstract class SegregatedFreeListSpace extends Space implements Constants
     Address block = BlockAllocator.alloc(this, blockSizeClass[sizeClass]);
 
     if (block.isZero()) {
-      return Address.zero();
+      return VM.ADDRESS_FAIL;
     }
 
-    BlockAllocator.setNext(block, Address.zero());
+    BlockAllocator.setNext(block, VM.ADDRESS_EMPTY_VALUE);
     BlockAllocator.setAllClientSizeClass(block, blockSizeClass[sizeClass], (byte) sizeClass);
 
     notifyNewBlock(block, sizeClass);
@@ -498,10 +498,10 @@ public abstract class SegregatedFreeListSpace extends Space implements Constants
   protected final void sweepConsumedBlocks(boolean clearMarks) {
     for (int sizeClass = 0; sizeClass < sizeClassCount(); sizeClass++) {
       Extent blockSize = Extent.fromIntSignExtend(BlockAllocator.blockSize(blockSizeClass[sizeClass]));
-      Address availableHead = Address.zero();
+      Address availableHead = VM.ADDRESS_EMPTY_VALUE;
       /* Flushed blocks */
       Address block = flushedBlockHead.get(sizeClass);
-      flushedBlockHead.set(sizeClass, Address.zero());
+      flushedBlockHead.set(sizeClass, VM.ADDRESS_EMPTY_VALUE);
       while (!block.isZero()) {
         Address next = BlockAllocator.getNext(block);
         availableHead = sweepBlock(block, sizeClass, blockSize, availableHead, clearMarks);
@@ -509,7 +509,7 @@ public abstract class SegregatedFreeListSpace extends Space implements Constants
       }
       /* Consumed blocks */
       block = consumedBlockHead.get(sizeClass);
-      consumedBlockHead.set(sizeClass, Address.zero());
+      consumedBlockHead.set(sizeClass, VM.ADDRESS_EMPTY_VALUE);
       while (!block.isZero()) {
         Address next = BlockAllocator.getNext(block);
         availableHead = sweepBlock(block, sizeClass, blockSize, availableHead, clearMarks);
@@ -529,7 +529,7 @@ public abstract class SegregatedFreeListSpace extends Space implements Constants
   protected final Address sweepBlock(Address block, int sizeClass, Extent blockSize, Address availableHead, boolean clearMarks) {
     boolean liveBlock = containsLiveCell(block, blockSize, clearMarks);
     if (!liveBlock) {
-      BlockAllocator.setNext(block, Address.zero());
+      BlockAllocator.setNext(block, VM.ADDRESS_EMPTY_VALUE);
       BlockAllocator.free(this, block);
     } else {
       BlockAllocator.setNext(block, availableHead);
@@ -562,7 +562,7 @@ public abstract class SegregatedFreeListSpace extends Space implements Constants
   protected final void flushAvailableBlocks() {
     for (int sizeClass = 0; sizeClass < sizeClassCount(); sizeClass++) {
       flushedBlockHead.set(sizeClass, availableBlockHead.get(sizeClass));
-      availableBlockHead.set(sizeClass, Address.zero());
+      availableBlockHead.set(sizeClass, VM.ADDRESS_EMPTY_VALUE);
     }
   }
 
@@ -643,8 +643,8 @@ public abstract class SegregatedFreeListSpace extends Space implements Constants
   protected final Address makeFreeList(Address block, int sizeClass) {
     Extent blockSize = Extent.fromIntSignExtend(BlockAllocator.blockSize(blockSizeClass[sizeClass]));
     Address cursor = block.plus(blockHeaderSize[sizeClass]);
-    Address lastFree = Address.zero();
-    Address firstFree = Address.zero();
+    Address lastFree = VM.ADDRESS_EMPTY_VALUE;
+    Address firstFree = VM.ADDRESS_EMPTY_VALUE;
     Address end = block.plus(blockSize);
     Extent cellExtent = Extent.fromIntSignExtend(cellSize[sizeClass]);
     while (cursor.LT(end)) {
@@ -672,10 +672,10 @@ public abstract class SegregatedFreeListSpace extends Space implements Constants
    */
   public void sweepCells(Sweeper sweeper) {
     for (int sizeClass = 0; sizeClass < sizeClassCount(); sizeClass++) {
-      Address availableHead = Address.zero();
+      Address availableHead = VM.ADDRESS_EMPTY_VALUE;
       /* Flushed blocks */
       Address block = flushedBlockHead.get(sizeClass);
-      flushedBlockHead.set(sizeClass, Address.zero());
+      flushedBlockHead.set(sizeClass, VM.ADDRESS_EMPTY_VALUE);
       while (!block.isZero()) {
         Address next = BlockAllocator.getNext(block);
         availableHead = sweepCells(sweeper, block, sizeClass, availableHead);
@@ -683,7 +683,7 @@ public abstract class SegregatedFreeListSpace extends Space implements Constants
       }
       /* Consumed blocks */
       block = consumedBlockHead.get(sizeClass);
-      consumedBlockHead.set(sizeClass, Address.zero());
+      consumedBlockHead.set(sizeClass, VM.ADDRESS_EMPTY_VALUE);
       while (!block.isZero()) {
         Address next = BlockAllocator.getNext(block);
         availableHead = sweepCells(sweeper, block, sizeClass, availableHead);
@@ -701,7 +701,7 @@ public abstract class SegregatedFreeListSpace extends Space implements Constants
   private Address sweepCells(Sweeper sweeper, Address block, int sizeClass, Address availableHead) {
     boolean liveBlock = sweepCells(sweeper, block, sizeClass);
     if (!liveBlock) {
-      BlockAllocator.setNext(block, Address.zero());
+      BlockAllocator.setNext(block, VM.ADDRESS_EMPTY_VALUE);
       BlockAllocator.free(this, block);
     } else {
       BlockAllocator.setNext(block, availableHead);
@@ -722,7 +722,7 @@ public abstract class SegregatedFreeListSpace extends Space implements Constants
       while(!(block = getSweepBlock(sizeClass)).isZero()) {
         boolean liveBlock = sweepCells(sweeper, block, sizeClass);
         if (!liveBlock) {
-          BlockAllocator.setNext(block, Address.zero());
+          BlockAllocator.setNext(block, VM.ADDRESS_EMPTY_VALUE);
           BlockAllocator.free(this, block);
         } else {
           lock.acquire();
@@ -749,7 +749,7 @@ public abstract class SegregatedFreeListSpace extends Space implements Constants
     if (!block.isZero()) {
       flushedBlockHead.set(sizeClass, BlockAllocator.getNext(block));
       lock.release();
-      BlockAllocator.setNext(block, Address.zero());
+      BlockAllocator.setNext(block, VM.ADDRESS_EMPTY_VALUE);
       return block;
     }
 
@@ -758,13 +758,13 @@ public abstract class SegregatedFreeListSpace extends Space implements Constants
     if (!block.isZero()) {
       consumedBlockHead.set(sizeClass, BlockAllocator.getNext(block));
       lock.release();
-      BlockAllocator.setNext(block, Address.zero());
+      BlockAllocator.setNext(block, VM.ADDRESS_EMPTY_VALUE);
       return block;
     }
 
     /* All swept! */
     lock.release();
-    return Address.zero();
+    return VM.ADDRESS_FAIL;
   }
 
   /**

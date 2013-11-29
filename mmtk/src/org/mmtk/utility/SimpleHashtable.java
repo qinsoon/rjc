@@ -64,7 +64,7 @@ import org.vmmagic.unboxed.*;
     mask = Word.fromIntZeroExtend((1 << logSize) - 1);
     entrySize = es.plus(BYTES_IN_WORD);
     size = Extent.fromIntZeroExtend((1 << logSize) * entrySize.toInt());
-    base = Address.zero();
+    base = VM.ADDRESS_EMPTY_VALUE;
     space = rps;
     valid = false;
   }
@@ -122,7 +122,7 @@ import org.vmmagic.unboxed.*;
     }
 
     if (curAddress.isZero()) {
-      if (!create) return Address.zero();
+      if (!create) return VM.ADDRESS_FAIL;
       entry.store(key, KEY_OFFSET);
     }
 
@@ -182,7 +182,7 @@ import org.vmmagic.unboxed.*;
       if (!entry.loadWord().isZero()) return entry;
       entry = entry.plus(entrySize);
     }
-    return Address.zero();
+    return VM.ADDRESS_FAIL;
   }
 
   /**
@@ -203,7 +203,7 @@ import org.vmmagic.unboxed.*;
    */
   public final Address getPayloadAddress(Word key) {
     Address entry = getEntry(key, false);
-    if (entry.isZero()) return Address.zero();
+    if (entry.isZero()) return VM.ADDRESS_EMPTY_VALUE;
 
     return entry.plus(DATA_OFFSET);
   }

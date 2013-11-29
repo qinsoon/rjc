@@ -75,7 +75,7 @@ import org.vmmagic.pragma.*;
     if (checkDequeue(1)) {
       return uncheckedDequeue();
     } else {
-      return Address.zero();
+      return VM.ADDRESS_FAIL;
     }
   }
 

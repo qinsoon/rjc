@@ -12,14 +12,15 @@
  */
 package org.mmtk.utility.heap;
 
+import org.mmtk.policy.Space;
 import org.mmtk.utility.*;
-
 import org.mmtk.vm.Lock;
 import org.mmtk.vm.VM;
-
 import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.unboxed.*;
 import org.vmmagic.pragma.*;
+
+import testbed.Main;
 
 /**
  * This class implements mmapping and protection of virtual memory.
@@ -40,20 +41,16 @@ import org.vmmagic.pragma.*;
   public static final int MMAP_CHUNK_BYTES = 1 << LOG_MMAP_CHUNK_BYTES;   // the granularity VMResource operates at
   //TODO: 64-bit: this is not OK: value does not fit in int, but should, we do not want to create such big array
   private static final int MMAP_CHUNK_MASK = MMAP_CHUNK_BYTES - 1;
-//  private static final int MMAP_NUM_CHUNKS = 1 << (Constants.LOG_BYTES_IN_ADDRESS_SPACE - LOG_MMAP_CHUNK_BYTES);
+  public static final Address MMTK_ADDRESS_BASE = chunkAlignDown(VM.HEAP_START);
+  //  private static final int MMAP_NUM_CHUNKS = 1 << (Constants.LOG_BYTES_IN_ADDRESS_SPACE - LOG_MMAP_CHUNK_BYTES);
   public static final boolean verbose = false;
   
-  private static int maxNumChunks;
-  private static Address baseAddress;
-  public static Offset offsetToBase;
+  private static int maxNumChunks = chunkAlignUp(VM.HEAP_END).diff(chunkAlignDown(VM.HEAP_START)).toWord().rshl(LOG_MMAP_CHUNK_BYTES).toInt();
+//  private static Address baseAddress;
+  public static Offset offsetToBase = Address.zero().diff(MMTK_ADDRESS_BASE);
   
   public static void boot() {
-      baseAddress = VM.HEAP_START;
-      offsetToBase = Address.zero().diff(baseAddress);
-      maxNumChunks = VM.HEAP_END.diff(VM.HEAP_START).toWord().rshl(LOG_MMAP_CHUNK_BYTES).toInt();
-      mapped = new byte[maxNumChunks];
-      for (int c = 0; c < maxNumChunks; c++)
-          mapped[c] = UNMAPPED;
+
   }
 
   /****************************************************************************
@@ -76,10 +73,9 @@ import org.vmmagic.pragma.*;
    * (i.e. at "build" time).
    */
   static {
-//    mapped = new byte[MMAP_NUM_CHUNKS];
-//    for (int c = 0; c < MMAP_NUM_CHUNKS; c++) {
-//      mapped[c] = UNMAPPED;
-//    }
+      mapped = new byte[maxNumChunks];
+      for (int c = 0; c < maxNumChunks; c++)
+          mapped[c] = UNMAPPED;
   }
 
   /****************************************************************************

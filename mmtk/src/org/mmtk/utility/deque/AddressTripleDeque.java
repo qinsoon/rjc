@@ -88,7 +88,7 @@ import org.vmmagic.pragma.Uninterruptible;
     if (checkDequeue(3))
       return uncheckedDequeue();
     else
-      return Address.zero();
+      return VM.ADDRESS_FAIL;
   }
 
   /**

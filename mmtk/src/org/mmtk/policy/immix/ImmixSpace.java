@@ -71,8 +71,8 @@ public final class ImmixSpace extends Space implements Constants {
   private Lock mutatorLock = VM.newLock(getName()+"mutator");
   private Lock gcLock = VM.newLock(getName()+"gc");
 
-  private Address allocBlockCursor = Address.zero();
-  private Address allocBlockSentinel = Address.zero();
+  private Address allocBlockCursor = VM.ADDRESS_EMPTY_VALUE;
+  private Address allocBlockSentinel = VM.ADDRESS_EMPTY_VALUE;
   private boolean exhaustedReusableSpace = true;
 
   private final ChunkList chunkMap = new ChunkList();
@@ -298,7 +298,7 @@ public final class ImmixSpace extends Space implements Constants {
 
     lock();
     if (exhaustedReusableSpace)
-      rtn = Address.zero();
+      rtn = VM.ADDRESS_FAIL;
     else {
       rtn = allocBlockCursor;
       Address lastAllocChunk = chunkAlign(allocBlockCursor, true);
