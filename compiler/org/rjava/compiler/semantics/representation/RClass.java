@@ -2,21 +2,25 @@ package org.rjava.compiler.semantics.representation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
+import org.rjava.compiler.CompilationUnit;
+import org.rjava.compiler.RJavaCompiler;
+import org.rjava.compiler.pass.CompilationPass;
+import org.rjava.compiler.semantics.DependencyEdgeNode;
 import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.SootEngine;
-import org.rjava.compiler.semantics.symtab.RBlock;
-import org.rjava.compiler.semantics.symtab.RIdentifier;
-import org.rjava.compiler.semantics.symtab.RImport;
 
+import soot.Modifier;
 import soot.SootClass;
+import soot.SootField;
 import soot.SootMethod;
 import soot.tagkit.AnnotationTag;
 import soot.tagkit.Tag;
 import soot.tagkit.VisibilityAnnotationTag;
 
-public class RClass {
+public class RClass implements DependencyEdgeNode, CompilationUnit{
     SootClass internal;
     private String name;
     
@@ -25,32 +29,80 @@ public class RClass {
     // 'restrictions' are RJava restriction rules, including those unfolded from rulesets
     private List<RAnnotation> annotations;
     
-    // blocks in such class
-    private RBlock topBlock;
-    private RBlock currentBlock = null;
-    
-    // imports
-    private List<RImport> imports = new ArrayList<RImport>();
-    
     // methods
     private List<RMethod> methods = new ArrayList<RMethod>();
     
-    public RClass(SootClass sootClass) {
-	this.internal = sootClass;
-	this.name = internal.getName();
-	
-	this.annotations = fetchAnnotations(internal);
-	
-	topBlock = new RBlock(RBlock.CLASS_WIDE);
-	
-	fetchMethods();
+    // fields
+    private List<RField> fields = new ArrayList<RField>();
+    
+    private RClass superClass;
+    
+    /**
+     * check if the corresponding RClass is resolved. if so, simply fetch it, otherwise resolve it
+     * @param sootClass
+     * @return
+     */
+    public static RClass fromSootClass(SootClass sootClass) {
+        String className = sootClass.getName();
+        RClass rClass = SemanticMap.getAllClasses().get(className);
+        if (rClass == null) {
+            rClass = new RClass(sootClass);
+            SemanticMap.getAllClasses().put(className, rClass);
+        }
+        return rClass;
+    }
+    
+    public static RClass fromClassName(String className) {
+        RClass rClass = SemanticMap.getAllClasses().get(className);
+        if (rClass == null) {
+            rClass = new RClass(SootEngine.resolveAndGetClass(className));
+            SemanticMap.getAllClasses().put(className, rClass);
+        }
+        return rClass;
+    }
+    
+    protected RClass(SootClass sootClass) {
+    	this.internal = sootClass;
+    	this.name = internal.getName();
+    	
+    	this.annotations = fetchAnnotations(internal);
+    	
+        fetchMethods();
+        fetchFields();
+    	
+    	//if (internal.hasSuperclass() && !internal.getSuperclass().getName().equals("java.lang.Object"))
+        if (internal.hasSuperclass())
+    	    superClass = fromSootClass(internal.getSuperclass());
     }
 
+    private void fetchFields() {
+        Iterator<SootField> iter = internal.getFields().iterator();
+        while (iter.hasNext()) {
+            fields.add(new RField(this, iter.next()));
+        }
+    }
 
     private void fetchMethods() {
-	for (SootMethod m : internal.getMethods()) {
-	    methods.add(new RMethod(this, m));
-	}
+    	for (SootMethod m : internal.getMethods()) {
+    	    RMethod tmp = new RMethod(this, m);
+    	    
+    	    // a method maybe a twin for another method. See twin in RMethod
+    	    if (isAppClass()) {
+        	    boolean validMethod = true;
+        	    for (RMethod method : methods) {
+        	        if (method.isTwin(tmp)) {
+        	            method.setTwin(tmp);
+        	            validMethod = false;
+        	        }
+        	    }
+        	    
+        	    if (validMethod) {
+        	        methods.add(tmp);
+        	    }
+    	    } else {
+    	        methods.add(tmp);
+    	    }
+    	}
     }
 
     /**
@@ -59,18 +111,18 @@ public class RClass {
      * @return list of RAnnotation
      */
     private List<RAnnotation> fetchAnnotations(SootClass klass) {
-	List<RAnnotation> result = new ArrayList<RAnnotation>();
-	for (Tag tag : klass.getTags()) {
-	    // only deal with VisibilityAnnotationTag
-	    if (tag instanceof VisibilityAnnotationTag) {
-		VisibilityAnnotationTag annoTag = (VisibilityAnnotationTag) tag;
-		for (AnnotationTag t : annoTag.getAnnotations()) {
-		    result.add(new RAnnotation(t, this));  
-		}
-	    }
-	}
-	
-	return result;
+    	List<RAnnotation> result = new ArrayList<RAnnotation>();
+    	for (Tag tag : klass.getTags()) {
+    	    // only deal with VisibilityAnnotationTag
+    	    if (tag instanceof VisibilityAnnotationTag) {
+    		VisibilityAnnotationTag annoTag = (VisibilityAnnotationTag) tag;
+    		for (AnnotationTag t : annoTag.getAnnotations()) {
+    		    result.add(new RAnnotation(t));  
+    		}
+    	    }
+    	}
+    	
+    	return result;
     }
 
     /**
@@ -78,21 +130,30 @@ public class RClass {
      * @return list of {@link RRestriction}
      */
     public List<RRestriction> getRestrictions() {
-	if (restrictions == null)
-	    restrictions = fetchRestrictions();		// build from annotations
-
-	return restrictions;
-    }    
+    	if (restrictions == null)
+    	    restrictions = fetchRestrictions();		// build from annotations
+    
+    	return restrictions;
+    }
 
     // fetch restrictions
     private List<RRestriction> fetchRestrictions() {
-	List<RRestriction> result = new ArrayList<RRestriction>();
-	for (RAnnotation anno : annotations) {
-	    List<RRestriction> restrictions = RRestriction.unfold(anno);
-	    if (restrictions != null)
-		result.addAll(restrictions);
-	}
-	return result;
+    	List<RRestriction> result = new ArrayList<RRestriction>();
+    	for (RAnnotation anno : annotations) {
+    	    List<RRestriction> restrictions = RRestriction.unfold(anno);
+    	    if (restrictions != null)
+    	        result.addAll(restrictions);
+    	}
+    	return result;
+    }
+    
+    public void addRestriction(RRestriction r) {
+        List<RRestriction> list = getRestrictions();
+        for (RRestriction every : list) 
+            if (every.equals(r))
+                return;
+        
+        list.add(r);
     }
 
     /**
@@ -100,6 +161,10 @@ public class RClass {
      * @return class name
      */
     public String getName() {
+        return name;
+    }
+    
+    public String toString() {
         return name;
     }
 
@@ -111,50 +176,255 @@ public class RClass {
         return annotations;
     }
 
-    public RBlock getTopBlock() {
-        return topBlock;
+    public List<RMethod> getMethods() {
+        return methods;
     }
 
-    public void setTopBlock(RBlock topBlock) {
-        this.topBlock = topBlock;
+
+    public List<RField> getFields() {
+        return fields;
     }
 
-    public RBlock getCurrentBlock() {
-        return currentBlock;
+    public RClass getSuperClass() {
+        return superClass;
+    }
+    
+    public RClass getSuperMostClass() {
+        if (superClass != null)
+            return superClass.getSuperMostClass();
+        else return this;
+    }
+    
+    public boolean hasSuperClass() {
+        return superClass != null;
+    }
+    
+    public boolean isInterface() {
+        return internal.isInterface();
+    }
+    
+    public boolean hasInterfaces() {
+        return internal.getInterfaceCount() != 0;
+    }
+    
+    public boolean hasInheritedInterfaces() {
+        if (!hasSuperClass())
+            return false;
+        
+        RClass superClass = getSuperClass();
+        do {
+            if (superClass.hasInterfaces())
+                return true;
+            else if (superClass.hasSuperClass())
+                superClass = superClass.getSuperClass();
+            else return false;
+        } while(true);
+    }
+    
+    public List<RClass> getInheritedInterfaces() {
+        if (!hasInheritedInterfaces())
+            return null;
+        
+        List<RClass> ret = new ArrayList<RClass>();
+        RClass superClass = getSuperClass();
+        do {
+            if (superClass.hasInterfaces()) {
+                ret.addAll(superClass.getInterfaces());
+            }
+            if (superClass.hasSuperClass())
+                superClass = superClass.getSuperClass();
+            else return ret;
+        } while (true);
+    }
+    
+    public List<RClass> getInterfaces() {
+        if (!hasInterfaces())
+            return null;
+        
+        List<RClass> ret = new ArrayList<RClass>();
+        Iterator<SootClass> iter = internal.getInterfaces().iterator();
+        while(iter.hasNext()) {
+            ret.add(RClass.fromSootClass(iter.next()));
+        }
+        return ret;
+    }
+    
+    public RMethod getCLInitMethod() {
+        for (RMethod method : methods)
+            if (method.getName().equals("<clinit>"))
+                return method;
+        return null;
+    }
+    
+    public SootClass internal() {
+        return internal;
+    }
+    
+    public RMethod getImplementingMethodOfAnInterfaceMethod(RMethod interfaceMethod) {
+        RClass base = this;
+        do {
+            for (RMethod method : base.methods) {
+                if (method.internal.getName().equals(interfaceMethod.internal.getName()) && 
+                        method.internal.getParameterTypes().equals(interfaceMethod.internal.getParameterTypes()))
+                    return method;
+            }
+            if (base.hasSuperClass())
+                base = base.getSuperClass();
+            else return null;
+        } while(true);
+    }
+    /**
+     * 
+     * @param sootMethod
+     * @return null if cannot find such method
+     */
+    public RMethod getMethodByMatchingNameAndParameters(SootMethod sootMethod) {
+        for (RMethod method : methods) {
+            if (method.internal.getName().equals(sootMethod.getName()) && 
+                    method.internal.getParameterTypes().equals(sootMethod.getParameterTypes()))
+                return method;
+        }
+        
+        return null;
+    }
+    
+    public static RClass whoImplementsMethodLastInTypeHierarchy(RClass base, RMethod method) {
+        RClass cursor = base;
+        while(cursor != null) {
+            if (cursor.internal.declaresMethod(method.internal.getName(), method.internal.getParameterTypes())) {
+                return cursor;
+            }
+            
+            if (cursor.hasSuperClass())
+                cursor = cursor.getSuperClass();
+            else cursor = null;
+        }
+        
+        RJavaCompiler.fail("Can't find an implementation of method " + method.getName() + " in class " + base.getName());
+        return null;
+    }
+    
+    
+    /**
+     * returns the class who declares the method but whose parent(s) doesnt declare such method
+     * @param base
+     * @param method
+     * @return
+     */
+    public static RClass whoOwnsMethodInTypeHierarchy(RClass base, RMethod method) {
+        String methodName = method.internal().getName();
+        List params = method.internal().getParameterTypes();
+        
+        return whoOwnsMethodInTypeHierarchyInternal(base, methodName, params);
+    }
+    
+    public static RClass whoOwnsMethodInTypeHierarchy(RClass base, SootMethod method) {
+        return whoOwnsMethodInTypeHierarchyInternal(base, method.getName(), method.getParameterTypes());
+    }
+    
+    private static RClass whoOwnsMethodInTypeHierarchyInternal(RClass base, String methodName, List params) {       
+        RClass ret = null;
+        
+        RClass cursor = base;
+        while(cursor != null) {
+            if (cursor.internal.declaresMethod(methodName, params))
+                ret = cursor;
+            
+            if (cursor.hasSuperClass())
+                cursor = cursor.getSuperClass();
+            else cursor = null;
+        }
+        
+        return ret;
+    }
+    
+    public static RClass whoOwnsFieldInTypeHierarchy(RClass base, RType type, String name) {
+        RClass ret = base;
+        while(true) {
+            for (RField f : ret.getFields()) {
+                if (f.getType().equals(type) && f.getName().equals(name))
+                    return ret;
+            }
+            if (ret.hasSuperClass())
+                ret = ret.getSuperClass();
+            else return null;
+        }
     }
 
-    public void setCurrentBlock(RBlock currentBlock) {
-        this.currentBlock = currentBlock;
+    /**
+     * this class overrides some methods from previous interface
+     * @param myInterface
+     * @return
+     */
+    public boolean hasOverridingMethodsFromInterface(RClass myInterface) {
+        for (RMethod method : methods) {
+            if (method.isClassInitializer())
+                continue;
+            for (RMethod interfaceMethod : myInterface.getMethods()) {
+                if (method.internal.getName().equals(interfaceMethod.internal.getName()) &&
+                        method.internal.getParameterTypes().equals(interfaceMethod.internal.getParameterTypes()))
+                    return true;
+            }
+        }
+        return false;
     }
     
-    public void newBlock(String type) {
-	RBlock newCurrent = this.currentBlock.addInnerBlock(type);
-	this.currentBlock = newCurrent;
+    public boolean isAppClass() {
+        return SemanticMap.isApplicationClass(name);
     }
     
-    public void backToUpperBlock() {
-	this.currentBlock = this.currentBlock.getUpper();
+    public boolean equals(Object o) {
+        if (o.getClass().equals(RClass.class))
+            return this.internal.equals(((RClass) o).internal);
+        else return false;
     }
     
-    public void newIdToCurrentBlock(RIdentifier id) {
-	this.currentBlock.add(id);
-    }
-    
-    public void printSymbolTalbe() {
-	System.out.println("---Symbol Table for " + name + "---");
-	topBlock.verbose();
-    }
-    
-    public void printImports() {
-	for (RImport i : imports)
-	    System.out.println(i);
-    }
-    
-    public void addNewImport(String statement) {
-	this.imports.add(new RImport(statement));
+    public boolean isDescendanceof(RClass another) {
+        if (getSuperClass() == null)
+            return false;
+        
+        if (getSuperClass().equals(another))
+            return true;
+        else return getSuperClass().isDescendanceof(another);
     }
 
-    public List<RImport> getImports() {
-        return imports;
+    @Override
+    public void accept(CompilationPass pass) {
+        pass.visit(this);
+        for (RMethod method : methods)
+            method.accept(pass);
+    }
+
+    @Override
+    public boolean isCLInitNode() {
+        return false;
+    }
+
+    @Override
+    public boolean isClassNode() {
+        return true;
+    }
+    
+    public boolean isInnerClass() {
+        return getName().contains("$");
+    }
+    
+    public void dump() {
+        RJavaCompiler.debug("RClass: " + getName());
+        RJavaCompiler.debug("Methods:");
+        for (RMethod m : methods)
+            RJavaCompiler.debug(m);
+    }
+    
+    public boolean isFinal() {
+        return Modifier.isFinal(internal.getModifiers());
+    }
+    
+    public boolean isDefactoFinal() {
+        if (isFinal())
+            return true;
+        
+        // check class hierarchy
+        return SemanticMap.cha.getClassHierarchy().getTree(this).getLeafs().size() == 0;
     }
 }

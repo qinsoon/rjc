@@ -1,0 +1,34 @@
+#!/usr/bin/perl
+
+use Cwd;
+use Cwd 'abs_path';
+use File::Find;
+use File::Basename;
+use File::stat;
+use Time::localtime;
+
+my $line = "*******\n";
+
+my $rjava_base = dirname(abs_path($0));
+my $rjava_build = "$rjava_base/build";
+my $cmd = "java -cp $rjava_build/rjc.jar:$rjava_build:$rjava_build/rjava_ext:. org.rjava.compiler.RJavaCompiler -rjava_ext $rjava_build/rjava_ext -rjava_rt $rjava_build/rjava_rt -soot_jdk $rjava_build/components/soot/ ".join(" ", @ARGV);
+
+if (-e "$rjava_build/rjc.jar") {
+  my $fh;
+  open $fh, "<$rjava_build/rjc.jar";
+  my $last_modified = ctime(stat($fh)->mtime);
+  print $line;
+  print "Using $rjava_build/rjc.jar (last modified: $last_modified)\n";
+  print "To build new jar, use 'ant -f $rjava_base/mybuild.xml'\n";
+  print $line;
+} else {
+  print $line;
+  print "Building compiler..\n";
+  print $line;
+  
+  system("ant -f $rjava_base/mybuild.xml");  
+}
+
+print "\n";
+print "$cmd\n";
+system($cmd);

@@ -1,0 +1,1877 @@
+\documentclass[12pt]{article}
+\usepackage{xspace}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{ulem}
+
+\title{RJava User and Developer Manual}
+
+\author{Yi Lin\\yi.lin@anu.edu.au}
+
+\begin{document}
+
+\normalem
+
+% macros
+\newcommand{\rjc}{RJC\xspace}
+\newcommand{\rjcfull}{RJava Compiler\xspace}
+
+% java code format
+% use \begin{lstlisting} your code \end{lstlisting}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true
+  tabsize=3
+}
+
+\lstset{
+  language=c,                % choose the language of the code
+  numbers=left,                   % where to put the line-numbers
+  stepnumber=1,                   % the step between two line-numbers.        
+  numbersep=5pt,                  % how far the line-numbers are from the code
+  backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+  showspaces=false,               % show spaces adding particular underscores
+  showstringspaces=false,         % underline spaces within strings
+  showtabs=false,                 % show tabs within strings adding particular underscores
+  tabsize=2,                      % sets default tabsize to 2 spaces
+  captionpos=b,                   % sets the caption-position to bottom
+  breaklines=true,                % sets automatic line breaking
+  breakatwhitespace=true,         % sets if automatic breaks should only happen at whitespace
+  title=\lstname,                 % show the filename of files included with \lstinputlisting;
+}
+
+\newcommand{\javacode}[1]{{\lstinline[language=java]@#1@}}
+\newcommand{\ccode}[1]{{\lstinline[language=c]@#1@}}
+
+% cmd
+\definecolor{MyGray}{rgb}{0.78,0.78,0.78}
+\makeatletter\newenvironment{cmd}{%
+   \newline
+   \sffamily
+   \noindent
+   \begin{lrbox}{\@tempboxa}
+   \begin{minipage}{0.8\columnwidth}}{\end{minipage}\end{lrbox}%
+   \colorbox{MyGray}{\usebox{\@tempboxa}}
+   \newline
+}\makeatother
+
+\newcommand{\msout}[1]{\text{\sout{\ensuremath{#1}}}}
+
+\maketitle
+
+\begin{abstract}
+% rjava
+RJava is a restricted subset of the Java language 
+with low-level extensions
+that allow access to hardware and operating system. 
+% rjava benefits
+RJava utilizes the same syntax as Java, and consequently
+inherits benefits from Java such as type safety, 
+various software engineering tools and productivity. Futhermore, 
+by restrictions, RJava is a fully static language with closed world
+assumption. Thus it requires a much more succinct runtime, and
+is well suitable for aggressive static compilation and optimizations. 
+% rjava use
+RJava is designed to be an implementation language for virtual machine
+construction (and more broadly for system programming). 
+
+This manual describes the language and its 
+current implementation--the \rjcfull~(\rjc). It is intended for RJava users
+and developers who are willing to contribute. This manual will be
+maintained to keep pace with the \rjc code base. 
+\end{abstract}
+\clearpage
+
+\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{5}
+\tableofcontents 
+\clearpage
+
+%%%%%%%%%%%%%%%%%%
+% RJava user manual     %
+%%%%%%%%%%%%%%%%%%
+
+% 1. RJava Basics
+\section{RJava Basics}
+
+This section describes about RJava's restrictions and extensions, 
+which make RJava differentiate from the vanilla Java. 
+
+\paragraph*{What is RJava?}
+\begin{quotation}
+Generally speaking, unless what is \emph{restricted} and 
+what is \emph{extended},
+the other part of RJava remains the same as Java (
+syntactically and semantically) . Besides,
+the restrictions and the extensions are also
+compliant with Java \emph{syntax}. 
+\end{quotation}
+
+\noindent
+Thus, Java compilers and static analyzers can 
+parse RJava code (they are syntactically same).
+Java runtimes can
+execute RJava programs as well; However, Java runtimes
+will not be able to recognize RJava
+specific restrictions and extension, thus executing
+RJava with Java runtimes may result in wrong results, which
+is not encouraged. 
+
+RJava is also compliant with existing Java editors and IDEs. 
+When using Java IDE to edit RJava code, extensions and restrictions
+need to be imported and also try avoid using execution from IDE. 
+
+\subsection{RJava Restrictions}
+
+One important feature about RJava is that all its restrictions 
+are formalized and any RJava code need to declare the restrictions
+it complies with. The benefit is that both the developers
+and the RJava compilers will be able to see the declaration
+and ensure the restrictions are met. 
+
+\subsubsection{Restriction Rules and Rulesets}
+
+RJava restrictions are defined as Java annotations, and they are
+annotated by @\javacode{RestrictionRule (org.rjava.restriction.RestrictionRule)}. 
+The following is how @\javacode{NoException} restriction is defined:
+
+\begin{lstlisting}
+@RestrictionRule
+public @interface NoException{
+}
+\end{lstlisting}
+
+Restriction rules can be used to annotate classes or methods, in the same way as
+Java annotations are used. However, it is \emph{not} encouraged to directly use
+restriction rules. The preferred way is to form a @\javacode{RestrictionRuleset} by
+a set of chosen @\javacode{RestrictionRule}, and annotate a certain scope of code 
+with such @\javacode{RestrictionRuleset}. 
+
+One example is the MMTk scope and its restriction @\javacode{MMTk}. The following
+ruleset indicates that any code within @\javacode{MMTk} needs to obey 
+@\javacode{RJavaCore} ruleset (any RJava code need to include this ruleset, it will be
+described in next subsection) as well as two additional restrictions
+(@\javacode{NoRuntimeAllocation} and @\javacode{Uninterruptible}). The
+declaration is as below:
+
+\begin{lstlisting}
+@RestrictionRuleset
+
+@RJavaCore
+@NoRuntimeAllocation
+@Uninterruptible
+public @interface MMTk{
+}
+\end{lstlisting}
+
+\subsubsection{Restriction Model}
+Restrictions follow those rules:
+
+\begin{itemize}
+
+\item 
+Restriction rules and restriction rulesets apply to scopes of
+classes and methods to declare restrictions, \emph{not} to fields. 
+\item
+Restriction rules and rulesets may apply to another restriction ruleset,
+to indicate that the latter ruleset \emph{includes} those rules and rulesets.
+This may happen iteratively. 
+\item
+Any RJava class needs to be restricted by @\javacode{RJavaCore}, or restricted
+by a ruleset that (iteratively) includes @\javacode{RJavaCore}.
+\item
+A scope restricted by a restriction ruleset is restricted by every single
+restriction rule within that ruleset. 
+\item
+If a class is restricted by Rule A, all its methods are restricted by Rule A 
+unless the method is restricted otherwise 
+(particularly @\javacode{Uninterruptible} vs. @\javacode{Interruptible}). 
+\item
+Restrictions on a class do \emph{not} affect its child classes. Restrictions on a method
+do \emph{not} affect its overriding methods. 
+\item
+Restrictions on a class \emph{affect} its nested classes. As a result, 
+those restrictions also \emph{affect} the methods of the nested class. 
+
+\end{itemize}
+
+\subsubsection{RJavaCore Ruleset}
+
+@\javacode{RJavaCore} declares the basic restrictions that any RJava-compliant code
+need to follow. It declares as:
+
+\begin{lstlisting}[language=java]
+@RestrictionRuleset
+
+@NoDynamicLoading
+@NoReflection
+@NoException
+@NoCastOnMagicType
+@NoExplicitLibrary
+@NoEnum
+public @interface RJavaCore {
+}
+\end{lstlisting}
+
+\noindent
+Specifically, 
+\begin{itemize}
+
+\item
+@\javacode{NoDynamicLoading}: 
+the code is not allowed to dynamically load classes. To forbid this, 
+\javacode{java.lang.Class.forName()} and 
+\javacode{java.lang.Classloader.loadClass()}
+are not allowed. Also inheriting from {java.lang.Classloader} is also not allowed. 
+
+\item
+@\javacode{NoReflection}: 
+the code is not allowed to use any reflection-based feature. To forbid this,
+any method that may return \javacode{java.lang.Class} is not allowed. 
+@\javacode{NoExplicitLibrary} already forbids the use of 
+\javacode{java.lang.reflect} package. Futhermore, 
+\javacode{java.lang.Object.getClass()} 
+is not allowed (\javacode{.class} syntax is also not allowed, since 
+on bytecode level, it gets translated into \javacode{Object.getClass()}. )
+
+\item
+@\javacode{NoException}:
+the code is not allowed to throw exceptions. To forbit this, 
+\javacode{throws} in method declarations and also
+\javacode{throw} statement are not allowed. Catching blocks
+are allowed in order to maintain correct syntax when using
+library methods, however, there will be \emph{no} exception thrown and 
+catching blocks will \emph{not}
+get executed in any case. It is preferred to write such code
+as below:
+\begin{lstlisting}[language=java]
+Object lock = new Object();
+try {
+  lock.wait();
+} catch (InterruptedException ignore) {}
+\end{lstlisting}
+
+\item
+@\javacode{NoCastOnMagicType}:
+the code is not allowed to do any type casting when 
+\emph{at least one} side is RJava magic types. 
+RJava magic types reside in \javacode{org.vmmagic.unboxed}
+package, including 5 unboxed magic types (\javacode{Address}, 
+\javacode{Extent}, \javacode{ObjectReference}, 
+\javacode{Offset}, \javacode{Word}) and their array counterparts. 
+Allowed type casting for magic types can be done via
+provided methods in those classes 
+(more will be discussed in the section about extensions). 
+
+\item
+@\javacode{NoExplicitLibrary}:
+the code is not allowed to import any java library. However,
+classes in the \javacode{java.lang.*} package are implicitly 
+imported to any Java code, and they are entangled
+with Java syntax. RJava \emph{allows} the use of 
+\javacode{java.lang.*}. Current \rjcfull has only implemented
+a subset of the \javacode{java.lang.*} package, 
+more complete implementation will be done in the future. 
+
+\item
+@\javacode{NoEnum}:
+the code is not allowed to use enumerate type. Enumerate
+type is forbidden since enabling full features of 
+Java \javacode{enum} would highly involve with dynamic behaviors
+and extensive use of library methods from 
+\javacode{java.lang.Enum}. We designed RJava to be 
+a \emph{fully static} language, thus we forbid the 
+use of enumerate type. 
+
+\end{itemize}
+
+These core restrictions define the RJava language. Any valid
+RJava code needs to declare their compliance with @\javacode{RJavaCore}. 
+
+By these restrictions, RJava $1)$ allows closed world assumption, 
+which helps aggressive static compilation, $2)$ supports little dynamic behaviors
+and bares very succinct execution runtime, which makes RJava possible to 
+run with limited hardware resources, and $3)$ is a simple yet still expressive
+language. 
+
+\subsubsection{Other Predefined Restrictions}
+RJava defines the above \emph{restriction model}. 
+RJava encourages its users to utilize this model and, if favorable, add 
+their own restriction rules and rulesets to more precisely describe
+restrictions on their own scope. However, RJava predefined a set
+of restrictions. Some are already mentioned in the sections above. 
+These predefined restrictions are subject to change, check 
+\javacode{org.rjava.restriction.rules} package in the code base for
+the latest information. 
+
+\subsection{RJava Extensions}
+
+In order to undertake system programming task, RJava introduces
+extensions to allow efficient access to hardware and operating 
+systems. RJava extensions include $1)$ the \javacode{org.vmmagic}
+package (by Daniel et al.) that allows memory/address representation and operations,
+and $2)$ the \javacode{org.rjava.osext} package that provides 
+access to operating systems (including some system calls). 
+
+\subsubsection{org.vmmagic}
+
+The \javacode{org.vmmagic} package provides 5 unboxed magic types
+to describe pointer-alike types and their operations. Though implementation
+may vary, `unboxed' means those types are not normal RJava objects,
+and they are more like primitive types though there are methods declared 
+for each type. 
+These magic types share the same length as the pointer length on the target machine:
+
+\begin{itemize}
+\item
+\javacode{ObjectReference}: can be cast from and to an RJava object. 
+\emph{No} arithmetic, load/store or comparison operations are supported. 
+\javacode{ObjectReference} can be cast to \javacode{Address} for 
+further operations (unsafe). 
+
+\item
+\javacode{Address}: used as a pointer-alike type. 
+Arithmetic, load/store and comparison operations are supported. 
+
+\item
+\javacode{Extent}: used to describe size in bytes (unsigned positive value)
+Arithmetic and comparison operations are supported. 
+
+\item
+\javacode{Offset}: used to describe offset in bytes (signed). 
+Arithmetic and comparison oeprations are supported. 
+
+\item
+\javacode{Word}: used as a pointer-sized integer. 
+Arithmetic, comparison and bit-wised operations are supported. 
+Can be cast from and to the other 4 magic types. 
+\end{itemize}
+
+\noindent
+The above unboxed magic types each have an array counterpart, namely
+\javacode{ObjectReferenceArray}, \javacode{AddressArray}, 
+\javacode{ExtentArray}, \javacode{OffsetArray},
+\javacode{WordArray}. 
+They provide \javacode{create()}, 
+\javacode{get()/set()} and \javacode{length()} operations. 
+Arrays of those magic types should \emph{only} be created by using these types.
+
+Besides magic types, \javacode{org.vmmagic} provides `pragma'
+for supplying information to the compiler. Useful 
+`pragmas' include @\javacode{Inline}, @\javacode{NoInline}, 
+@\javacode{NoBoundsCheck}, @\javacode{NoNullCheck}, etc. Some `pragmas' 
+from \javacode{org.vmmagic} are now considered as an 
+RJava @\javacode{RestrictionRule} such as @\javacode{Uninterruptible}, 
+and some are very specific to Java 
+and not appliable for RJava thus will be deleted. This part is still a draft, and
+subject to change. 
+
+\subsubsection{org.rjava.osext}
+
+The \javacode{osext} extension allows access to operating systems. Currently
+\javacode{osext} only includes a minimum set of methods for implementing
+a memory manager (MMTk), and it \emph{will} expand during further development. 
+
+\begin{itemize}
+\item
+\javacode{OSConcurrency}: concurrency/threading related methods. 
+  \begin{itemize}
+  \item \javacode{void mutexLock/Unlock(Object lock)}: 
+  provides an alternative to using synchronization on an RJava object. 
+  \item \javacode{void threadSuspend/Resume(Thread t)}:
+  suspending an RJava thread (unsafe)
+  \end{itemize}
+
+\item
+\javacode{OSMemory}: memory related methods. 
+  \begin{itemize}
+  \item \javacode{Address malloc(int size)}:
+  allocates raw memory
+  \item \javacode{Address mmap(Address start, Extent length, int protection, int flags, int fd, Offset offset)}:
+  calls mmap system call
+  \item \javacode{int mprotect(Address start, Extent length, int prot)}:
+  calls mprotect system call
+  \item \javacode{Address memset(Address start, int c, Extent length)}:
+  calls memset system call
+  \end{itemize}
+
+\item
+\javacode{OSNative}: other methods that calls to native code
+  \begin{itemize}
+  \item \javacode{int errno()}: a wrap of errno() in errno.h
+  \item \javacode{String strErrno()}: a warp of strerror()
+  \item \javacode{double random()}: generates a random double between 0 and 1
+  \end{itemize}
+
+\end{itemize}
+
+\subsection{Relation between RJava and MMTk/JikesRVM}
+
+The RJava project was motivated by trying improve the portability of Memory Management
+ToolKit (MMTk). MMTk started with JikesRVM project, and serves as its memory manager. 
+The same as the rest part of JikesRVM, MMTk is also written in a variant of Java 
+(ad-hoc restrictions with \javacode{org.vmmagic} extensions). 
+Though MMTk was designed to be a portable language-agnostic memory manager, 
+its portability was never a success. 
+
+One of the main reasons that constrain its portability is the portability of the language it
+is written in. On one hand, such Java variant is specially tailored, and requires support from 
+its hosting runtime. It is no longer a `write once run everywhere' Java program, and
+it cannot execute on a stock Java VM. Whoever wants to host MMTk needs to find a way
+to execute the Java variant that MMTk is written in. 
+On the other hand, MMTk is written in such an Java variant, and 
+there is an inneglectable performance cost to integrate MMTk(Java) with a hosting runtime 
+written in C/C++ which is the most common case. Past experiences (VMKit, Rotor, GHC)
+of porting MMTk took an approach of ahead-of-time (AOT) compiling MMTk to native codes, which overcame
+these two obstacles. However, \emph{none} of their approaches is general or reusable, and each
+of them took a great effort. Furthermore, in term of performance, 
+\emph{none} of the experiences was reported as a success (meanwhile MMTk hosted by JikesRVM
+achieves excellent performance). 
+
+Thus the idea of formalizing the Java variant that MMTk is written in 
+and providing an AOT compiler to lower such language for effective
+integration with low-level C/C++ code becomes a promising solution
+to MMTk portability issues. This is one part of the motivations. 
+
+Another important motivation that evolves the RJava project is the clear benefits
+from using a higher-level language for virtual machine implementation. 
+Compared with traditional approach of using C/C++, higher-level languages
+provide benefits in safety and productivity, both of which are valuable in 
+VM construction. However, existing experiences of using high-level languages
+for VM construction (including JikesRVM and MMTk) all formed their own
+variant of such high-level languages, which not only results in inability of code
+reusing but also practically introduces metacircularity issues. As we 
+already found out, metacircularity should be orthogonal to using high-level languages;
+however, in practice so far, whenever high-level languages are used in virtual machine 
+construction, the chosen implementation language is always the target language of 
+the VM. Thus this project not only wants to settle the reusability/portability issues
+but also wants to create a general implementation language
+that can deliver high-level language benefits without falling into metacircular traps. 
+
+In short, RJava originates from the ad-hoc coding pattern used in MMTk, and absorbs
+the \javacode{org.vmmagic} package which is also used in MMTk. However, it evolves
+to be a more general implementation languages to deliver higher-level language benefits
+as well as good performance. 
+
+In next section, we wil describe the usage of the \rjcfull, current implementation of RJava. 
+
+\clearpage
+
+% 2. RJava Compiler Tools
+\section{\rjcfull Tools}
+
+The \rjcfull (\rjc) is an ahead-of-time compiler for RJava. It parses RJava programs, checks
+restriction compliance and translates into the target C code. Then the C backends could further
+compile the generated code into binary or other form of instructions (e.g. LLVM IR). 
+
+\subsection{Building \rjc}
+
+The \rjcfull is written in Java. An ant build file is provided for automatic building. 
+\begin{enumerate}
+\item Go to \rjc root directory (\$root). 
+\item Use
+\begin{cmd}
+ant -f mybuild.xml
+\end{cmd}
+After the building succeeds, 
+in \$root/build, the following files
+can be found:
+  \begin{itemize}
+  \item components/: a copy of external Java archives that \rjc uses;
+  \item rjava\textunderscore ext/ : a copy of RJava extensions source file;
+  \item rjava\textunderscore rt/ : a copy of RJava runtime source file;
+  \item rjc.jar: the executable \rjcfull archive. 
+  \end{itemize}
+\end{enumerate}
+
+\subsection{RJava Helloworld}
+
+In this subsection, we show an example of how to compiling
+the simplest RJava hello world into executable. 
+
+\begin{enumerate}
+\item Type in the source code as below, save it as `HelloWorld.java'. 
+For simplicity, we put the source code in the same directory as rjc.jar
+(under \$root/build). 
+Note that RJava uses the same file name extension as Java (.java). 
+
+\begin{lstlisting}[language=java]
+// HelloWorld.java
+import org.rjava.restriction.ruleset.RJavaCore;
+
+@RJavaCore
+public class HelloWorld {
+  public static void main(String[] args) {
+    System.out.println("Hello RJava");
+  }
+}
+\end{lstlisting}
+
+\item Compiling RJava into C. 
+\begin{cmd}
+java -cp rjc.jar:rjava\textunderscore rt/:. org.rjava.compiler.RJavaCompiler \\
+-rjava\textunderscore ext rjava\textunderscore ext/ \\
+-rjava\textunderscore rt rjava\textunderscore rt/ \\
+-soot\textunderscore jdk components/soot/ \\
+-dir . \\
+HelloWorld.java
+\end{cmd}
+This will invoke \rjcfull (the arguments passed to \rjc will be discussed later, 
+a script is also provided to simplify arguments needed). 
+By default, the generated code locates in output directory of current directory. 
+The RJava runtime sources will also be copied to the output directory, so they
+can be compiled along with the generated sources. And
+a GNU Makefile will be generated for compiling C into binary. 
+
+\item Compiling C into binary.
+\begin{cmd}
+cd output; make
+\end{cmd}
+By default, the Makefile will use `gcc' as the C backend to compile the generated
+C files. The output binary in this case will be `HelloWorld' (named after the class
+where main method is found). 
+
+\end{enumerate}
+
+\subsection{Full Command Line Options}
+
+The basic use of the \rjcfull is
+\begin{cmd}
+java -cp rjc.jar:rjava\textunderscore rt/:. org.rjava.compiler.RJavaCompiler\newline
+[-option value] [source file(s)]...
+\end{cmd}
+
+\noindent
+Here lists all the command line options of the \rjcfull. 
+
+\subsubsection*{Environment setting options}
+\emph{(Note: the`rjc' script will free you from setting these options manually. )}
+\begin{itemize}
+\item
+\textbf{-rjava\textunderscore ext PATH [REQUIRED] \\}
+set PATH as the directory for RJava extension source files. PATH should contain
+org/rjava/osext, org/rjava/restriction and org/vmmagic. \rjc requires this option 
+to locate those extensions during parsing RJava sources.
+\item
+\textbf{-rjava\textunderscore rt PATH [REQUIRED] \\}
+set PATH as the directory for RJava runtime source files. PATH should contain
+the implementation of \javacode{java.lang.*} and other runtime source files. 
+\rjc will copy the contents in this directory to the output directory, allowing
+the runtime to be compiled and linked with RJava programs. 
+\item
+\textbf{-soot\textunderscore jdk PATH [REQUIRED] \\}
+set PATH as the directory for the JDK jars that Soot needs. PATH should contain
+two JDK jars, jce.jar and rt.jar. \rjc uses Soot to parse RJava source files, 
+and Soot requires those two jars to locate Java's library. 
+\end{itemize}
+
+\subsubsection*{Source file options}
+\begin{itemize}
+\item
+\textbf{-dir PATH1:PATH2:... [REQUIRED] \\}
+set PATH as the classpath of RJava classes; several paths are separated by colon. 
+\rjc needs this option to correctly locate RJava files and recognize their packages. 
+For example, org.yourcomp.HelloWorld should be located at 
+PATH/org/yourcomp/HelloWorld.java. 
+\item
+\textbf{SOURCE\textunderscore FILE(S) [OPTIONAL] \\}
+name one SOURCE\textunderscore FILE or several SOURCE\textunderscore FILES
+to be compiled. \rjc will also compile any classes referenced and used. 
+When left blank, \rjc will compile all the RJava files under the defined `dir'. 
+\item
+\textbf{-l SOURCE\textunderscore LIST\textunderscore FILE [OPTIONAL] \\}
+name a SOURCE\textunderscore LIST\textunderscore FILE. 
+A SOURCE\textunderscore LIST\textunderscore FILE should be a pure ascii file, 
+and have one source file name per line. \rjc will compile all the denoted source
+files in the SOURCE\textunderscore LIST\textunderscore FILE. 
+
+\end{itemize}
+
+\subsubsection*{Output options}
+\begin{itemize}
+\item
+\textbf{-o OUTPUT [OPTIONAL] \\}
+the final binary will be named as OUTPUT. This option will affect the GNU
+Makefile that \rjc generates. \emph{By default}, OUTPUT is named after
+the class name which the main method is located in. When \rjc meets
+several main methods during compilation, OUTPUT will be set to
+the first class that contains a main method, and \rjc will report warnings
+for the following encounters of main methods. When there is no main 
+methods in the source files (usually when compiling a library), OUTPUT
+will be set as `lib'. 
+\item
+\textbf{-outdir OUTDIR [OPTIONAL] \\}
+the target files will be generated to OUTDIR. \emph{By default}, OUTDIR
+is the `output' directory under current working directory. This option is
+currently \emph{ignored}. 
+\item
+\textbf{-m [OPTIONAL] \\}
+setting this flag will mute console output of \rjc. It is usually set when
+chaining a large number of compilations (e.g. unit testing). 
+\emph{By default}, this flag is unset. 
+\item
+\textbf{-dt [OPTIONAL] \\}
+setting this flag will facilitate debugging on target code. 
+When C is the target, this flag will additionally set `-g' as gcc flags when 
+generating GNU Makefile. \emph{By default}, this flag is unset. 
+\end{itemize}
+
+\subsubsection*{Target options}
+\begin{itemize}
+\item
+\textbf{-m32 [OPTIONAL]\\}
+setting this flag will instruct the target code to be compiled for
+32 bits address. When C is the target, this flag will set `-m32'
+as gcc flags when generating GNU Makefile. 
+\emph{By default}, this flag is unset. 
+\item
+\textbf{-host\textunderscore os OS [OPTIONAL]\\}
+the target code will be compiled for and execute on the
+named OS. 
+Part of RJava runtime contains OS-dependent code. 
+Currently only MAC OS X (`mac') and Linux (`linux') are
+supported. \emph{By default}, host OS is `mac'. 
+\end{itemize}
+
+\subsubsection*{Target-specific options}
+The \rjc allows different targets for RJava to compile into. 
+Options that start with
+`-target' is considered as target-specific options, and will be
+processed by different target code generators. 
+
+\paragraph*{Target-specific options for targeting C}
+
+\begin{itemize}
+\item
+\textbf{-target:mm=VAL [OPTIONAL]\\}
+name VAL as the memory management scheme for 
+the target code. Currently, available options are 
+using hans-boehm conservative GC (`boehm'),
+and using default malloc (`malloc'). The latter makes
+the generated code leak memory since RJava does 
+not provide mechanisms to explicitly free memory;
+however, it can be useful when allocated memory tends
+to be permanent. A third option is provided as 
+`boehm-prebuilt', which uses the static library built beforehand
+from hans-boehm GC (currently 4 versions of the static libraries
+exist, 32/64bits version for Linux/Mac). 
+This option is intended to save
+the time of building hans-boehm GC from sources during testing. 
+\emph{By default}, `boehm-prebuilt' is used. 
+
+\end{itemize}
+
+\subsection{The `rjc' script}
+
+Since setting environment path options for the \rjcfull is 
+tedious and error-prone, and using \rjc jar when current
+working directory is not the \rjc root directory makes the situation 
+even more frustrated, 
+a `rjc' perl script is provided under the root directory for
+improved usability. 
+
+The `rjc' script will automatically set
+those environment paths, and invoke the \rjcfull under 
+\$root/build directory. If the build directory does not exist, 
+it will build the compiler first. 
+All options other than environment setting options can be passed
+to the script, which will relay to the \rjcfull. 
+The script also works when current working directory is not the
+\rjc root directory. 
+Be sure to keep the `rjc' script \emph{unmoved} in the \rjc root
+directory. 
+
+It is always preferred to use the `rjc' script rather than directly using
+the \rjc jar. 
+
+In next section, we will describe the implementation of the \rjcfull,
+which is intended for RJava developers. 
+
+%%%%%%%%%%%%%%%%%%
+% RJava dev manual      %
+%%%%%%%%%%%%%%%%%%
+
+% 3. RJava Compiler Implementation
+\section{\rjcfull Implementation}
+
+The \rjcfull is an RJava ahead-of-time (AOT) compiler written in Java. 
+Currently it targets only C, translating RJava into C. 
+However, its design bares multiple targets, 
+and more targets can be added in the future while reusing most of the
+compiler features. 
+
+The \rjcfull achieves the following major tasks:
+\begin{itemize}
+\item utilizing Soot (McGill Sable Group) to parse RJava source files and 
+generating Jimple AST
+\item performing RJava-level analysis and optimizations (leaving target-level
+optimizations to backends)
+\item generating target code and runtime
+\end{itemize}
+
+\subsection{Detailed Workflow}
+
+This subsection describes the detailed procedure of translating 
+RJava into target code. For easy matching the description here 
+with the actual code, we also reference the key classes and
+methods. 
+
+\begin{enumerate}
+\item
+\textbf{Processing arguments and forming compilation task\\}
+The main method of \rjcfull
+(\javacode{org.rjava.compiler.RJavaCompiler.main()})
+starts by processing the arguments and 
+setting options/flags one by one. The source files to compile
+will be extracted and encapsulated as a CompilationTask
+(\javacode{org.rjava.compiler.CompilationTask})
+no matter they are denoted as a file of source list, 
+a set of source file names, or all sources under a certain directory. 
+CompilationTask store source class names and the
+classpath of the classes (fed as the `-dir' argument). 
+
+\item
+\textbf{Instantiating compiler instance\\}
+A RJava Compiler instance will be instantiated, whose
+constructor will take the CompilationTask as its
+argument. After the instantiation of a 
+\javacode{org.rjava.compiler.RJavaCompiler} instance
+(singleton pattern), 
+\javacode{init()}, \javacode{compile()}, and 
+\javacode{finish()} will be executed sequentially. 
+Each of them will be discussed later. 
+
+\item
+\textbf{Initializing the compiler\\}
+The source code parsing (done by Soot) 
+and all the static analyses happen at this step. 
+  \begin{enumerate}
+  \item
+  \textbf{Initializing code generator\\}
+  CodeGenerator (\javacode{org.rjava.compiler.target.CodeGenerator}, 
+  abstract class) is the part to generate the target code. It needs to
+  be initialized according to some arguments processed earlier
+  (\javacode{CodeGenerator.init()}).
+  \item
+  \textbf{Initializing SemanticMap\\}
+  SemanticMap (\javacode{org.rjava.compiler.semantics.SemanticMap})
+  stores semantic information about current compiling program
+  and different analyses. This step accomplishes the following tasks:
+    \begin{itemize}
+
+    \item
+    \textbf{Parsing sources and generating AST\\}
+    Soot is wrapped as \javacode{org.rjava.compiler.semantics.SootEngine}.
+    In this step, Soot parse all the related classes 
+    (including the imported classes) and add them to
+    current \javacode{CompilationTask}. 
+    Note that we do not
+    actually `run' Soot and its optimizations, we simply use
+    Soot to parse sources and use its Jimple AST. 
+    \emph{All} the analyses and
+    compilation in \rjcfull are based on Jimple AST. 
+    
+    \item
+    \textbf{Instantiating \rjc class representation\\}
+    After last step, we have Soot representation of 
+    classes (\javacode{soot.SootClass})
+    /methods (\javacode{soot.SootMethod})/etc. 
+    To make analyses convenient, we wrap those into \rjc 
+    representations (see package 
+    \javacode{org.rjava.compiler.semantics.representation.*}). 
+	We only make our own representations for classes, 
+	methods, 	statements and invoke expressions; for the rest,
+	we use Soot representations. 
+    Classes that are not denoted as source files but are 
+    referenced will also have their \rjc representations
+    and \rjc will generate code for them (as long as they are
+    application classes, see \javacode{SemanticMap.isApplicationClass()}).
+
+    \item
+    \textbf{Removing generic bridging methods\\}
+    Soot may generate bridge methods for generics, which are
+    two methods that have same signature but different
+    return types. One has the actual method body, and the
+    other simply calls that method. 
+    In \rjc code base, these methods are referred as 
+    `twin methods' 
+    (see \javacode{org.rjava.compiler.semantics.representation.RMethod} for more details)
+    . We do not need bridging methods, and 
+    methods with the same signature complicates name mangling. 
+    Twin methods are merged into one whose
+    signature is the same as defined in source code, and
+    the bridging method is removed. 
+    
+    \item
+    \textbf{Running multiple analyses\\}
+    All static analyses that \rjc needs are done here. 
+    The implementation of analyses inherits from
+    CompilationPass\\ (\javacode{org.rjava.compiler.pass.CompilationPass}).
+    Note that one analysis may do several passes internally. 
+    The analyses include 
+    class hierarchy analysis (\javacode{ClassHierarchyPass}),
+    call graph (\javacode{CallGraphPass}), 
+    class initialization dependency (\javacode{DependencyGraphPass}),
+    points-to analysis (\javacode{PointsToAnalysisPass}),
+    constant propagation (\javacode{ConstantPropagationPass}). 
+    In addition, a restriction pass (\javacode{RestrictionPass})
+    is executed here to apply
+    RJava's restriction model (e.g. propagating restrictions
+    to nested classes). The results of those analyses 
+    can be retrieved through \javacode{SemanticMap}. 
+    
+    \end{itemize}
+  \end{enumerate}
+
+\item
+\textbf{Compiling\\}
+After going through the steps above, \rjc has parsed source code
+into AST, and also collected sufficient analysis results. The actual
+compilation starts from \javacode{RJavaCompiler.compile()}. 
+\rjc iterates through
+all the classes in current compilation task, checks their restriction compliance
+and starts translation. There are also some global target-specific works that
+need to be done before and after the translation such as clearing output directory
+and copy runtime sources, and respectively they are done in 
+\javacode{CodeGenerator.preTranslationWork()} and
+\javacode{CodeGenerator.postTranslationWork()}.
+
+  \begin{enumerate}
+  \item
+  \textbf{Performing pre-translation work\\}
+  In this step, \rjc creates the output directory if it does not exist
+  and clear the directory. This step is `global' and execute
+  only once while following steps are performed for every RJava
+  class. 
+  
+  \item
+  \textbf{Checking restrictions\\}
+  \rjc checks the restriction compliance of a class before starting
+  to translate it. 
+  \javacode{org.rjava.compiler.restriction.StaticRestrictionChecker}
+  takes charge of the compliance checking. \javacode{comply()} is
+  invoked with an \javacode{RClass} argument. For every restriction
+  \javacode{org.rjava.restriction.rules.A} declared on such the class,
+  a checking rule (\javacode{org.rjava.restriction.rules.A_CHECK}) is expected with a
+  \javacode{checkClass()} and \javacode{checkMethod()} declared. 
+  The restriction checker will invoke those checking methods. 
+  Code violating restrictions, failing to find checking rules or 
+  a class not declaring a restriction ruleset will cause an RJava warning
+  (it will not stop the translating process), 
+  and will be reported. Details about restriction checking will be
+  covered in next section. Note that current implementation 
+  \emph{ignores} restrictions on methods, and does not check them (this will be
+  fixed soon). 
+  
+  \item
+  \textbf{Translating\\}
+  This step is target-specific. \javacode{CodeGenerator.translate()} is called for
+  the actual code tranlation. 
+  \javacode{org.rjava.compiler.target.CodeGenerator} is expected to be inherited
+  for a certain target. Currently only C target is implemented. 
+  Details about C target translation will be discussed in next section. 
+  
+  \item
+  \textbf{Performing post-translation work}
+  Similar to pre-translation work, post-translation work 
+  (\javacode{CodeGenerator.postTranslationWork()}) is a target-specific global step. 
+  Works such as generating and copying runtime sources, generating build files for
+  auto tools should be done here. 
+  \end{enumerate}
+
+\end{enumerate}
+
+\subsection{Codebase Overview}
+
+This part describes the overview of \rjcfull code base, 
+including its main compiler project, unofficial MMTk project clone
+and other miscellaneous stuff. Importing the root directory of \rjc 
+code base into Eclipse IDE 
+will imports the main compiler project. 
+
+Current code base is accessible from ANU squirrel mercurial repository
+\url{http://squirrel.anu.edu.au/hg/all/yilin/rjava-prototype/} 
+(authorization required). 
+
+\begin{itemize}
+\item
+\textbf{compiler/\\}
+The main source directory of \rjc. 
+  \begin{itemize}
+  
+  \item \javacode{org.rjava.compiler}\\
+  \javacode{RJavaCompiler} main class, 
+  \javacode{CompilationTask} and constants definitions
+  
+  \item \javacode{org.rjava.compiler.exception}\\
+  \rjc warnings and errors
+  
+  \item \javacode{org.rjava.compiler.pass}\\
+  different analysis passes
+  
+  \item \javacode{org.rjava.compiler.restriction}\\
+  the restriction checker
+  
+  \item \javacode{org.rjava.compiler.semantics}\\
+  \javacode{SemanticMap}, \javacode{SootEngine} 
+  and other data structures
+  such as \javacode{CallGraph}, \javacode{DependencyGraph}, etc.
+
+  \item \javacode{org.rjava.compiler.semantics.representation}\\
+  \rjc 's representation of class, type, method, field, local variable, 
+  and annotation to wrap its Soot counterparts. Additionally, 
+  \javacode{RRestriction} is defined here. 
+  
+  \item \javacode{org.rjava.compiler.semantics.representation.stmt}\\
+  \rjc's representation of 16 different types of statements, which
+  maps to different types of Jimple statements.
+  
+  \item \javacode{org.rjava.compiler.target}\\
+  abstract \javacode{CodeGenerator} and 
+  \javacode{GeneratorOptions} that fits 
+  into \rjc workflow. Each target that RJava wants to translate into
+  need to inherit these two classes. 
+  \javacode{CodeStringBuilder} is provided here for better indentation
+  of code output. 
+  
+  \item \javacode{org.rjava.compiler.target.c}\\
+  C-specific code. \javacode{CLanguageGenerator} and
+  \javacode{CLangaugeGeneratorOptions} inherits the two abstract classes
+  mentioned above. \javacode{CStatements} and \javacode{CExpressions}
+  generate code for finer-grained scope. \javacode{CIdentifiers} mangles
+  Java names into C name. \javacode{Intrinsics} takes care of some
+  C-specific intrinsics, e.g. setting RJava integer types
+  to different lengths of integer types in C. 
+  
+  \item \javacode{org.rjava.compiler.target.c.runtime}\\
+  Part of the RJava's C runtime and the GNU Makefile for the target code
+  are generated during the compilation,
+  which is done here. Also the magic type implementation is
+  generated by reusing \rjc to compile magic type stubs; its
+  implementation can be found in \javacode{MagicTypesForC}. 
+  There is also an attempt to reuse \rjc to compile 
+  \javacode{java.lang.*} package, but it has been put halt. 
+  
+  \item \javacode{org.rjava.compiler.util}\\
+  data structures such as \javacode{Tree}, utility methods for easier use
+  of third-party components (Soot and JGraphT). We also provide 
+  special set, map and multi-value map for storing \javacode{soot.Value},
+  for its special rule of equality comparison. \javacode{Statistics} utilities
+  are also included here for instrumenting compiler code.
+  \end{itemize}
+
+\item
+\textbf{components/\\}
+Third party components used by \rjc, including common collection and IO
+libraries from Apache, JGraph and JGraphT for visualizing some results of 
+static analyses, and Soot for parsing RJava source code. 
+
+\item
+\textbf{document/\\}
+This user and developer manual, both PDF version and tex source. 
+
+\item
+\textbf{mmtk\textunderscore standalone/\\}
+An unofficial clone of Memory Management ToolKit repository. 
+Minor changes from the JikesRVM MMTk are needed 
+to make it compatible with RJava restrictions. Details will be discussed
+in next section. This can be imported as a separate Eclipse project. 
+
+\item
+\textbf{mmtk/\\}
+The symbolic link of the standalone MMTk (the above directory) along
+with a minimal client required to run MMTk allocation and GC (named
+as `testbed'). This can be imported as another separate Eclipse project. 
+
+\item
+\textbf{rjava\textunderscore clib\textunderscore impl/\\}
+An attempt to write \javacode{java.lang.*} in RJava, and reuse \rjc
+to compile it into C target. It has been stopped. 
+
+\item
+\textbf{rjava\textunderscore ext/\\}
+The source files of RJava extensions, including
+\javacode{org.vmmagic} and \javacode{org.rjava.osext}. 
+Those source files are mostly empty stubs, and they exist
+for source code completeness. 
+\rjc ensures they will have actual implementation in 
+the target code.
+
+\item
+\textbf{test/\\}
+RJava implementation of some benchmarks, and also some
+small test cases for different language features and 
+optimizations. 
+
+\item
+\textbf{unittest/\\}
+Unit tests for RJava implementation, including a unit test script (`unittest.pl') 
+and a set of RJava unit test sources. Current unit test is
+\emph{not} a thorough set covering all the features of RJava, it will 
+be expanded in the future. 
+
+\end{itemize}
+
+\subsection{Unit Tests}
+
+\rjcfull includes a simple framework for unit testing. 
+
+\subsubsection{Running Unit Tests}
+Run the unit tests by executing 
+\begin{cmd}
+unittest/unittest.pl
+\end{cmd}
+This script will first compile a lastest version of \rjcfull, then
+detects all the source files under unittest/src (but not the abstract
+base class \javacode{org.rjava.unittest.UnitTest}). It iterates through
+every single unit test, invoke \rjc to compile RJava into C, then
+from C into binary, and execute it. It observes the execution of every
+compilation step, and also tracks the output of the binary. Execution
+successes and fails are reported at the end of each unit test, and also
+at the end of the script. The unit testing script is specific to C target. 
+
+\subsubsection{Adding New Unit Tests}
+
+Adding new unit tests is simple. Create a new RJava source file by
+extending \javacode{org.rjava.unittest.UnitTest}, and save it to
+unittest/unittest/src in order to be discovered by the unit testing script. 
+Within the new unit test source, write your own test code, and use 
+the \javacode{start()} and \javacode{check()} methods provided
+by the base class for result outputs so that the testing
+script can parse and recognize successes and fails. 
+
+\clearpage
+
+% 4. RJava Compiler Details
+\section{\rjcfull Details}
+
+This section discusses the details about the implementation of \rjcfull. 
+Part of this section is \emph{specific} to current \rjc implementation 
+that targets C. It aims to help developers understand
+\rjc implementation. We will not emphasize this point again in 
+this section. 
+
+\subsection{\rjc Object Model}
+
+RJava does not restrict on the use of object-oriented features of
+Java, and it supports full features of class inheritance and 
+interfaces. To translate the object oriented features into
+non-OO target namely C, \rjc uses an object model 
+similar to GtkObject of GNOME project. 
+
+\subsubsection{Type Implementation: \ccode{RJava_Common_Class}}
+\rjc defines a common type struct, i.e. \ccode{RJava_Common_Class}. Every
+RJava class is matched to a type struct that embeds the common type struct. 
+
+The common type struct (defined in \ccode{rjava_crt.h}, generated at compile-time):
+\begin{lstlisting}[language=c]
+struct RJava_Common_Class {
+  RJava_Common_Class* super_class;
+  RJava_Interface_Node* interfaces;
+  pthread_mutex_t class_mutex;
+};
+\end{lstlisting}
+
+For Java's common \javacode{java.lang.Object}, its type struct is:
+\begin{lstlisting}[language=c]
+struct java_lang_Object_class {
+  RJava_Common_Class class_header;
+    
+  // method members
+  struct java_lang_String* (*toString)();
+  ...
+};
+
+struct java_lang_Object_class java_lang_Object_class_instance;
+\end{lstlisting}
+
+For a random RJava class \javacode{org.yourcomp.A}, 
+
+\begin{lstlisting}[language=java]
+package org.yourcomp;
+
+@RJavaCore
+public class A {
+  int a;
+  void foo(int i) {}
+}
+\end{lstlisting}
+
+its type struct definition (\ccode{org_yourcomp_A.h}) is:
+
+\begin{lstlisting}[language=c]
+struct org_yourcomp_A_class {
+  struct java_lang_Object_class header;
+  void (*foo_int32_t)(int32_t);
+}
+
+struct org_yourcomp_A_class org_yourcomp_A_class_instance;
+\end{lstlisting}
+
+All the class instances will be initialized eagerly
+in a certain order at the beginning
+of main method execution 
+(\ccode{rjava_class_init()} in \ccode{rjava_crt.c}, which is
+generated at compile-time). Function pointer binding
+is also done in \ccode{rjava_class_init()}. 
+
+This design allows a class to access its super class, 
+to declare interfaces and its own method members, 
+and also to selectively override or inherit
+methods and interface method from its super class. 
+
+\subsubsection{Object Implementation: \ccode{RJava_Common_Instance}}
+
+\rjc also defines a common instance struct, i.e. \ccode{RJava_Common_Instance}. 
+Every RJava object is matched to an instance struct that embeds the common instance
+struct. 
+
+The common instance struct (defined in \ccode{rjava_crt.h}, generated at compile-time):
+\begin{lstlisting}[language=c]
+struct RJava_Common_Instance {
+  void* class_struct;
+  pthread_mutex_t instance_mutex;
+  pthread_cond_t instance_cond;
+};
+\end{lstlisting}
+
+For Java's common \javacode{java.lang.Object}, its instance struct is:
+\begin{lstlisting}[language=c]
+struct java_lang_Object {
+  RJava_Common_Instance instance_header;
+    
+  // instance fields
+  ...
+};
+\end{lstlisting}
+
+For a random RJava class \javacode{org.yourcomp.A} (see the above
+subsection), its instance struct definition (\ccode{org_yourcomp_A.h}) is:
+\begin{lstlisting}[language=c]
+struct org_yourcomp_A {
+  java_lang_Object instance_header;
+  
+  int32_t a;
+}
+\end{lstlisting}
+
+This design allows every instance to access its type information, and
+to inherit fields declared by its super class. 
+
+\subsubsection{Interface Implementation: \ccode{RJava_Interface_Node}}
+
+An interface class in RJava is translated into a type struct and an instance
+struct in the same way as normal classes. Interfaces are instantiated
+for each class that implements them. For accessing interface instances
+from a type, \ccode{RJava_Interface_Node} is used as a linked list to store
+all the interface instances declared on this type:
+
+\begin{lstlisting}[language=c]
+struct RJava_Interface_Node {
+  char* name;
+  void* address;  // points to interface instance
+  int interface_size;
+  RJava_Interface_Node* next;
+};
+\end{lstlisting}
+
+The instantiation and initialization of interface instances and 
+\ccode{RJava_Interface_Node} for each type is done in 
+\ccode{rjava_class_init()}. \rjc's C runtime provides methods
+to help with the initialization and also with interface invocation:
+
+\begin{itemize}
+\item
+\ccode{void rjava_add_interface_to_class(void* interface, int interface_size, char* name, RJava_Common_Class* klass);}
+\item
+\ccode{void rjava_alter_interface(void* interface, char* name, RJava_Common_Class* klass);}
+\item
+\ccode{void* rjava_get_interface(RJava_Interface_Node* list, char* name);}
+\end{itemize}
+
+Note that current implementation of interface makes \javacode{invokeinterface}
+\emph{extremely inefficient}, and we have not implemented any optimizations
+for interface. Use of interfaces should be discouraged in 
+performance-centric scenarios until the
+implementation gets an improvement. 
+
+\subsubsection{Array Implementation}
+
+RJava arrays is implemented different than Java arrays. 
+RJava arrays is \emph{not} an \javacode{Object}, and it is more like
+C arrays with a header. The header is required to perform
+bounds checking. For the address that an array points to, 
+first thing accessed is a C integer as the array length, followed
+by a C long as element size. The rest is the actual array. 
+
+This implementation is flawed, since an array does not 
+carry its type information and prevents run-time type 
+checking. Besides, not being an RJava \javacode{Object} is
+conceptually different than Java, which is not desired. 
+The array implementation will be revised. 
+
+\subsection{Magic/Unboxed Types}
+
+Magic types are pointer-sized integers that are used to describe
+memory related operands. In RJava source code, they are expressed
+as normal RJava classes; however, they are intended to 
+behave more like `primitives' rather than `objects'. 
+
+In \rjc implementation, uses of magic types in RJava code are 
+translated in the same way as other types (though \rjc understands
+those are magic types). And invocations for methods in magic types
+are translated into a static function call (normal 
+RJava application method invocation is translated a function call via
+function pointer unless de-virtualized). 
+
+\rjc provides an implementation of magic types and their methods
+as a large list of C macros. So during C compilation, magic types
+and their method callsites will be replaced. Magic types are each defined as:
+
+\begin{lstlisting}[language=c]
+#define org_vmmagic_unboxed_Address						uintptr_t
+#define org_vmmagic_unboxed_Extent						uintptr_t
+#define org_vmmagic_unboxed_ObjectReference		uintptr_t
+#define org_vmmagic_unboxed_Offset						intptr_t
+#define org_vmmagic_unboxed_Word							uintptr_t
+
+#define org_vmmagic_unboxed_AddressArray			uintptr_t*
+#define org_vmmagic_unboxed_ExtentArray				uintptr_t*
+#define org_vmmagic_unboxed_ObjectReferenceArray		uintptr_t*
+#define org_vmmagic_unboxed_OffsetArray						intptr_t*
+#define org_vmmagic_unboxed_WordArray							uintptr_t*
+\end{lstlisting}
+
+Their methods are defined as (only showing a few as examples):
+\begin{lstlisting}[language=c]
+#define org_vmmagic_unboxed_Address_plus_int32_t(this_parameter,parameter0) \
+this_parameter + parameter0
+#define org_vmmagic_unboxed_Address_plus_org_vmmagic_unboxed_Offset(this_parameter,parameter0) \
+this_parameter + parameter0
+\end{lstlisting}
+
+This implementation requires minimal special treatment
+on magic types during translation, and brings in
+low run-time overhead. 
+The implementation of magic types can be generated by reusing \rjc \\
+(see \javacode{org.rjava.compiler.target.c.runtime.MagicTypesForC}). 
+
+\subsection{\javacode{java.lang.*} Package}
+
+RJava disallows the use of Java library by 
+@\javacode{NoExplicitLibrary} restriction for
+its own simplicity. However, 
+\javacode{java.lang.*} is entangled with 
+the Java syntax and it is hardly possible to
+forbid its use without crippling the language. 
+Thus RJava preserves \javacode{java.lang.*}. 
+
+\rjc implements the package in C by following
+its object model. There is only one difference
+between \rjc \javacode{java.lang.*} and an RJava
+program that method invocations to 
+\javacode{java.lang.*} are statically bounded. 
+This implies that it is \emph{not} allowed to
+inherit from the library classes. 
+
+\rjc selectively picks a subset of \javacode{java.lang.*}
+to implement, following these principles:
+\begin{itemize}
+\item enabling primitive type boxing
+\item providing string type
+\item providing support for threading and concurrency
+\item providing empty stubs just for source completeness
+\item providing basic standard output
+\end{itemize}
+
+Thus current \rjc includes
+\emph{incomplete} implementation of the following
+classes:
+
+\begin{itemize}
+\item \javacode{java.io.PrintStream} (only for standard output)
+\item \javacode{java.lang.Boolean}
+\item \javacode{java.lang.Class} (empty stub)
+\item \javacode{java.lang.ClassNotFoundException} (empty stub)
+\item \javacode{java.lang.Double}
+\item \javacode{java.lang.Exception} (empty stub)
+\item \javacode{java.lang.Float}
+\item \javacode{java.lang.Integer}
+\item \javacode{java.lang.InterruptedExeption} (empty stub)
+\item \javacode{java.lang.Math}
+\item \javacode{java.lang.NoClassDefFoundError} (empty stub)
+\item \javacode{java.lang.Object}
+\item \javacode{java.lang.Runnable}
+\item \javacode{java.lang.String}
+\item \javacode{java.lang.StringBuffer}
+\item \javacode{java.lang.System}
+\item \javacode{java.lang.Thread}
+\item \javacode{java.lang.Throwable} (empty stub)
+\end{itemize}
+
+Current design and implementation about \javacode{java.lang} 
+remains as a draft, and it might need revision in the future. 
+
+\subsection{\rjcfull AST}
+
+\rjc uses Soot to parse source code, and consequently also reuses
+Soot's Jimple AST. Jimple's grammar is showed below (quoting
+Raja Vallee-Rai's thesis):
+
+\begin{itemize}
+\item
+$\begin{aligned}[t]
+stmt \longrightarrow &assignStmt~|~identityStmt~|~gotoStmt~|\\
+&ifStmt~|~invokeStmt~|~switchStmt~|\\
+&monitorStmt~|~returnStmt~|~throwStmt~|\\
+&breakpointStmt~|~nopStmt
+\end{aligned}$
+
+
+\item
+$\begin{aligned}[t]
+assignStmt \longrightarrow &\mathbf{local} = \mathbf{rvalue};~|\\
+&\mathbf{field} = \mathbf{imm};~|\\
+&\mathbf{local.field} = \mathbf{imm}; ~|\\
+&\mathbf{local[imm]} = \mathbf{imm}; 
+\end{aligned}$
+
+\item
+$\begin{aligned}[t]
+identityStmt \longrightarrow &\mathbf{local} = \mathbf{this}; ~|\\
+&\mathbf{local} = \mathbf{parameter_n};~|\\
+&\msout{\mathbf{local} = \mathbf{exception};}\\
+\end{aligned}$
+
+\item
+$gotoStmt \longrightarrow goto~label;$
+
+\item
+$ifStmt \longrightarrow if~\mathbf{conditionExpr}~goto~label;$
+
+\item
+$invokeStmt \longrightarrow invoke~\mathbf{invokeExpr};$
+
+\item
+$\begin{aligned}[t]
+switchStmt \longrightarrow &lookupswitch~\mathbf{imm}\\
+&\{case~\mathbf{value_1}: goto~label_1;\\
+&...\\
+&case~\mathbf{value_n}: goto~label_n;\\
+&default: goto~defaultLabel;\};~|\\
+&tableswitch~\mathbf{imm}\\
+&\{case~\mathbf{low}: goto~lowLabel;\\
+&...\\
+&case~\mathbf{high}: goto~highLabel;\\
+&default: goto~defaultLabel;\};
+\end{aligned}$
+
+\item
+$\begin{aligned}[t]
+monitorStmt \longrightarrow &entermonitor~\mathbf{imm};~|\\
+&exitmonitor~\mathbf{imm};
+\end{aligned}$
+
+\item
+$\begin{aligned}[t]
+returnStmt \longrightarrow &return \mathbf{imm}~|\\
+&return;
+\end{aligned}$
+
+\item
+$\msout{throwStmt \longrightarrow throw~\mathbf{imm}}$
+
+\item
+$\msout{breakpointStmt \longrightarrow breakpoint;}$
+
+\item
+$nopStmt \longrightarrow nop;$
+\end{itemize}
+
+\noindent
+Note: 
+\begin{enumerate}
+\item \textbf{bold font} means a \emph{Value} type (\javacode{soot.Value})
+\item \sout{strikeout font} means rules that are not appliable to RJava. 
+\item \rjc implements wrapper classes to represent different Jimple statements
+(see \javacode{org.rjava.compiler.semantics.representation.stmt}), 
+however, for \emph{Value} and subclasses of \emph{Value}, \rjc
+directly use Soot representations. 
+\end{enumerate}
+
+\subsection{Analysis and Optimization passes}
+
+This subsection gives detailed information about some analysis and optimization passes
+in \rjc by describing them or referencing the origin of the algorithm. 
+All analyses so far (inherited from \javacode{org.rjava.compiler.pass.CompilationPass})
+are \emph{flow-insensitive}. 
+
+\subsubsection{Class Initialization Order}
+
+\rjc ahead-of-time compiles RJava code, and forbids any run-time class loading. 
+Thus all the classes can be seen at compile-time, and early class initialization is desired. 
+
+\rjc uses the algorithm from the paper `Eager Class Initialization for Java' by Dexter Kozen
+and Matt Stillerman. The algorithm generates a class dependency graph; each edge A$\rightarrow$B
+means the initialization of class A depends on the initialization of 
+class B, and as a result, B should be initialized
+before A. 
+
+\subsubsection{Constant Propagation}
+
+Though the C backend will do constant propagation, during translation from
+RJava to C, some high-level information is lost which makes C compiler easily
+miss opportunities. 
+
+\rjc uses the algorithm from the paper `Interprocedural Constant Propagation'
+by David Callaham et al. \rjc only considers \emph{numeric} constants (including integer,
+floating point number, byte and character. Address-alike constants are currently
+ignored. )
+
+This optimization pass does two passes over the code to collect information, 
+and performs the propagation in the end. 
+It uses results from \emph{Class Hierarchy Analysis (CHA)}, 
+\emph{Points-to Analysis (PTA)} and \emph{Call Graph (CG)}. Note
+this optimization does not directly change AST, but store constant information
+internally and provide query methods for use at code generation time. 
+
+This optimization is optimistic, and specially takes care of situations such as:
+\begin{itemize}
+\item numeric \javacode{static final} fields used across different RJava files 
+should be deduced as constant if possible. 
+\item methods that returns constant should be propagated.
+\item methods that take same constant arguments from all their callsites can be
+propagated. 
+\item methods that might be called by polymorphism and also match the two points
+above can be propagated.  
+\end{itemize}
+
+\subsubsection{Devirtualization}
+
+Devirtualization is the most crucial optimization in \rjc in term of performance. 
+A virtualized method invocation of \javacode{obj.methodFoo()} 
+(\javacode{obj} is an instance of \javacode{ClassFoo}) under \rjc object model is \\
+\ccode{ ((ClassFoo_class*)(((RJava_Common_Instance*) obj) -> class_struct)) -> methodFoo()},
+and a devirtualized version can be \ccode{ClassFoo_methodFoo()}. 
+This not only eliminates the pointer dereferencing, but also allows inlining
+from the C backend. This optimization boosts the performance by a factor of 3
+when running MMTk. 
+
+Devirtualization is not a \javacode{CompilationPass} in \rjc. It uses the results
+from points-to analysis for type inference when generating code for virtual invocations. 
+
+\subsection{Restriction Checking}
+
+Checking the compliance of restrictions is important for RJava code robustness. 
+\rjc checks the restriction at compile-time. 
+
+\rjc assume every restriction rule (\javacode{org.rjava.restriction.rules.A})
+comes with a checking rule (\javacode{org.rjava.restriction.rules.A_CHECK}),
+and the checking class should contain methods with signature:
+\begin{itemize}
+\item \javacode{public static Boolean checkClass(RClass klass);}
+\item \javacode{public static Boolean checkMethod(RMethod method);} 
+(this one is not currently implemented nor invoked, \rjc only checks classes at the moment)
+\end{itemize}
+
+The implementation of checking methods is supposed to:
+\begin{itemize}
+\item return true if the checking passes, or false if the checking fails. 
+\item create an \javacode{RJavaRestrictionViolation} object by \\
+\javacode{RJavaRestrictionViolation.newRestrictionViolation()}
+if checking fails, which stores information about this violation. 
+\item inform the \javacode{StaticRestrictionChecker} of the violation by\\
+\javacode{StaticRestrictionChecker.addRestrictionViolation()}. 
+\end{itemize}
+
+\rjc 's restriction checker will invoke such methods from these classes 
+for every declared restriction rules.
+If a class fails the restriction checking (either violating the restriction or 
+failing to find checking classes/methods), a warning will be recorded
+and reported at the end of compilation (it will not interrupt compilation). 
+
+\subsection{C Target Translation}
+
+The \javacode{org.rjava.compiler.target.c} package deals with 
+the C target translation. Ideally this should be a package 
+dedicated to C target, which means code inside should be C specific 
+and not general while code outside should be general and 
+target independent. 
+Current implementation roughly follows this rule 
+(however, not \emph{strictly}); further refactoring will fix this. 
+
+The generated code currently complies with GNU99 standard.  
+We may move to standard C99 in the future. 
+
+\subsubsection{Code Generation}
+
+\javacode{CLanguageGenerator} is responsible for code generation
+with the help from \javacode{CStatements}, \javacode{CExpressions}
+and \javacode{CIdentifiers}. 
+
+\begin{itemize}
+\item A non-interface RJava class \javacode{org.yourcomp.A}
+will be translated into 3 different 
+C files:
+  \begin{enumerate}
+  \item a header file \ccode{org_yourcomp_A.h},
+  which contains the definition of the type `\ccode{struct org_yourcomp_A_class}'
+  and the instance `\ccode{struct org_yourcomp_A}' from this class,
+  \item a header file \ccode{org_yourcomp_A_methods.h},
+  which contains the declaration of methods from \javacode{org.yourcomp.A}
+  and the definition of inlining methods,
+  \item a source file \ccode{org_yourcomp_A_methods.c},
+  which contins the definition of non-inlining methods. 
+  \end{enumerate}
+Every C file will include the type or methods it used. 
+The separation of method definition and type/instance definition 
+can to the maximum eliminate possible circular referencing between
+two different header files. 
+
+\item An RJava interface class \javacode{org.yourcomp.InterfaceA}
+will be translated into 2 different C files:
+  \begin{enumerate}
+  \item a header file \ccode{org_yourcomp_InterfaceA.h},
+  which contains the definition of the type `\ccode{struct org_yourcomp_InterfaceA_class}',
+  and the instance `\ccode{struct org_yourcomp_InterfaceA}' from this class,
+  \item a source file \ccode{org_yourcomp_InterfaceA.c},
+  which \emph{only} contains a \javacode{<clinit>} method if exist. 
+  \end{enumerate}
+
+\item During the code generation for an RJava class, 
+the following information will be collected:
+  \begin{enumerate}
+  \item types and methods that are referenced. This will instruct the generation of 
+  an \ccode{include} list.
+  \item type header and implemented interface initialization code. 
+  This consists the \ccode{rjava_class_init()} in
+  addition to Java's \javacode{<clinit>}.
+  \end{enumerate}
+
+\item Name mangling in \rjc follows the following rules (see \javacode{CIdentifiers}):
+  \begin{itemize}
+  \item \textbf{package name and class name}: dot is replaced by underscore. 
+  \\E.g. \javacode{org.yourcomp.A} $\rightarrow$ \ccode{org_yourcomp_A}.
+  
+  \item \textbf{method name}: \javacode{<init>} $\rightarrow$ \ccode{rjinit}, 
+  \javacode{<clinit>} $\rightarrow$ \ccode{rjclinit}, others remain the same. 
+
+  \item \textbf{method signature in definition}: package name, class name, method name, 
+  parameter types, concatenated with underscore. 
+  \\E.g. \javacode{void org.yourcomp.A.foo(int)} $\rightarrow$ 
+  \ccode{void org_yourcomp_A_foo_int32_t(int)}.
+
+  \item \textbf{function pointer in type header}: method name and parameter types,
+  concatenated with underscore. 
+  \\E.g. \javacode{void org.yourcomp.A.foo(int)} $\rightarrow$ 
+  \ccode{void (*foo_int32_t)(int)}.
+  
+  \item \textbf{static field}: `var', class name, field name, concatenated with underscore. 
+  (adding `var' to avoid clash with function names)
+  \\E.g. \javacode{int a} in \javacode{org.yourcomp.A} $\rightarrow$ 
+  \ccode{int var_org_yourcomp_A_a}.
+  
+  \item \textbf{nested class}: the same as Java name mangling. 
+  However, dollar symbol is replaced by `\textunderscore NESTED \textunderscore ' when it appears in file name. 
+  \\E.g. \javacode{org.yourcomp.A.NestedClass} $\rightarrow$ \ccode{org_yourcomp_A\$NestedClass}
+  with file name \ccode{org_yourcomp_A_NESTED_NestedClass}.
+  
+  \end{itemize}
+  
+\item Method parameters are named as \ccode{parameterN} where N is the index of this parameter. 
+An instance method has its first parameter as a pointer (\ccode{void*}) to its receiver, named as \ccode{this_parameter}. 
+
+\item Main method uses C signature of `\ccode{int main(int argc, char** parameter0)}', 
+where \ccode{parameter0} is a C array and is transformed into an RJava C array at the beginning
+of main method by using a runtime helper \ccode{rjava_c_array_to_rjava_array()}. Before main method
+returns, all threads will be joined (\ccode{rjava_join_all_threads()}). 
+
+\end{itemize}
+
+\subsubsection{Runtime}
+
+Part of \rjc 's C runtime is hand coded library implementation written in C,
+and the other part is generated during code generation, i.e. \ccode{rjava_crt.h}. 
+\ccode{rjava_crt.h} is included by every C file generated by \rjc. 
+
+\ccode{rjava_crt.h} includes:
+
+\begin{itemize}
+\item includes of C libraries, such as standard libraries (\ccode{stdio.h}, \ccode{stdlib.h}, \ccode{stdbool.h},
+\ccode{inttypes.h}, \ccode{pthread.h} and \ccode{limits.h}) and external C libraries (hans-boehm GC). 
+
+\item defines, such as OS define (\ccode{#define __OS_MACOSX_} or \ccode{#define __OS_LINUX_},
+type define (\ccode{#define byte char}). 
+
+\item \rjc object model, such as \ccode{RJava_Common_Class}, \ccode{RJava_Common_Instance},
+and \ccode{RJava_Interface_Node}. 
+
+\item type declarations of all application types. 
+
+\item runtime global variables. 
+
+\item runtime helper functions:
+  \begin{itemize}
+  \item \ccode{void rjava_class_init();}
+  \item \ccode{void rjava_assert(bool cond, char* str);}
+  \item \ccode{void rjava_add_interface_to_class(void* interface, int interface_size, char* name, RJava_Common_Class* klass);}
+  \item \ccode{void rjava_alter_interface(void* interface, char* name, RJava_Common_Class* klass);}
+  \item \ccode{void* rjava_get_interface(RJava_Interface_Node* list, char* name);}
+  \item \ccode{void rjava_init_header(void* this_class, void* super_class, int super_class_size);}
+  \item \ccode{void rjava_debug_print_header(void* this_class, char* name);}
+  \item \ccode{void* rjava_new_array(int length, long ele_size);}
+  \item \ccode{inline int rjava_length_of_array(void* array);}
+  \item \ccode{inline void* rjava_access_array(void* array, int index);}
+  \item \ccode{inline void* rjava_access_array_nobounds_check(void* array, int index);}
+  \item \ccode{void* rjava_init_args(int argc, char** args);}
+  \item \ccode{void* rjava_new_multiarray(int* dimensions, int dimension_size, long ele_size);}
+  \item \ccode{void* rjava_c_array_to_rjava_array(int length, long ele_size, void* c_array);}
+  \item \ccode{bool rjava_instanceof(void* instance, void* class_struct);}
+  \item \ccode{void rjava_init_thread_suspending();}
+  \item \ccode{void rjava_unimplemented_method();}
+  \item \ccode{void rjava_runtime_global_init();}
+  \end{itemize}
+
+\item definitions of inlining helper funtions. 
+
+\end{itemize}
+
+\ccode{rjava_crt.c} contains the definitions of the other helper functions. 
+
+\clearpage
+
+%%%%%%%%%%%%%%%%%%
+% MMTk user manual    %
+%%%%%%%%%%%%%%%%%%
+% 5. MMTk
+\section{MMTk/RJava Manual}
+
+MMTk updates with JikesRVM. However, current \rjc code base contains an unofficial 
+branch of MMTk. Though MMTk has nothing to do with \rjc implementation,
+MMTk is the most important project that is easily compatible with \rjc. 
+
+\subsection{Unofficial Changes}
+
+As described earlier, RJava originates from MMTk but is generalized and formalized. 
+This makes current design of RJava is slightly different that in MMTk. 
+We apply current design to MMTk code, and make a few changes to make it
+fully compatible with \rjc, which is the unofficial branch of MMTk in \rjc code base. 
+
+Having an unoffical branch is a temporary solution, and we seek to push those
+changes back to JikesRVM's MMTk. However, this may happen after \rjc becomes 
+more robust. 
+
+The changes include:
+
+\begin{itemize}
+\item 
+\textbf{@\javacode{MMTK} restriction ruleset\\}
+Every classes in MMTk is annotated with this ruleset. 
+\begin{lstlisting}[language=java]
+@RestrictionRuleset
+
+@RJavaCore
+@NoRuntimeAllocation
+@Uninterruptible
+public @interface MMTk {
+}
+\end{lstlisting}
+
+\item 
+\textbf{Removing uses of \javacode{enum}\\}
+RJava disallows the use of enumerate type. 
+Thus \javacode{org.mmtk.utility.statistics.Stats.Phase} and
+\javacode{org.mmtk.vm.ReferenceProcessor.Semantics} are removed,
+and their use are replaced with an \javacode{int}. 
+
+\item
+\textbf{Removing use of \javacode{java.lang.Class}\\}
+To eliminate any potential dynamic loading and reflection, 
+RJava disallows any use of \javacode{java.lang.Class}. 
+Though it is known that MMTk does not dynamically load
+classes nor use reflection, MMTk has a few occurrences
+of \javacode{java.lang.Class}. Changs are lised below:
+  \begin{itemize}
+  \item \javacode{CollectorContext} of each \javacode{Plan}. 
+  For a \javacode{Plan}, its \javacode{CollectorContext} used to be
+  calculated from class name, then retrieved by \javacode{Class.forName()}
+  and new instances are created from from it. Since
+  those uses are forbidden in RJava, the code is refactorred. 
+  The changes involve \javacode{org.mmtk.plan.Plan.<clinit>},\\
+  \javacode{org.mmtk.plan.ParallelCollectorGroup.initGroup()},
+  \\and \javacode{org.mmtk.plan.Plan.newCollectorContext()} (newly
+  added abstract method). 
+  
+  \item specialized scan class. 
+  \javacode{org.mmtk.plan.TransitiveClosure} stores specialized scan
+  class for current plan, however, MMTk does not directly use those
+  classes but pass them to the hosting VM. Now MMTk simply stores
+  class names of the specialized scan class, and let the hosting VM
+  do the \javacode{Class.forName()} work. Changes involve
+  \javacode{org.mmtk.plan.TransitiveClosure} and \\
+  \javacode{org.mmtk.plan.Plan.getSpeicalizedScanClass()}. 
+  
+  \item MMTk-VM interface factory. 
+  MMTk provides a set of abstract classes as MMTk-VM interface that 
+  the hosting VM has to implement. \javacode{org.mmtk.vm.Factory}
+  is responsible to create instances of the actual implementation (this
+  happens in \javacode{org.mmtk.vm.VM}). 
+  However, the factory class is instantiated from its class name, thus
+  is forbidden. This is resolved by making 
+  \javacode{org.mmtk.vm.VM} as a host-specific class so 
+  that the factory is hard coded by the host VM. 
+  \end{itemize}
+
+\item
+\textbf{Removing GCSpy and GCTrace\\}
+The use of GCSpy and GCTrace in MMTk is obsolete, and is planned to
+remove from its code base. For simpliciy, 
+they are removed from \rjc 's branch. 
+
+\end{itemize}
+
+\subsection{VM-MMTk Interface}
+
+MMTk and its hosting VM needs to interface with each other. 
+The MMTk-VM interface is well specified, as the hosting VM
+simply needs to implement the abstract classes in
+\javacode{org.mmtk.vm} package. However, the VM-MMTk
+interface seems subtle. 
+
+This part describes how the hosting VM should
+use MMTk as its memory manager. The description here
+may be one of the many possible ways to use MMTk. 
+
+\begin{itemize}
+\item
+\textbf{Plan selection\\}
+MMTk provides different GC and allocation algorithms, which
+are called `Plans'. The hosting VM needs to choose
+a plan to use. To use \javacode{org.mmtk.plan.x.X}, 
+the hosting VM should make \javacode{final} classes 
+inherited from the plan \javacode{org.mmtk.plan.x.X}, the mutator \javacode{org.mmtk.plan.x.XMutator},
+the collector \javacode{org.mmtk.plan.x.XCollector}, and the plan
+constraints \javacode{org.mmtk.plan.x.XConstraints}. And the
+hosting VM should use the selection classes instead of directly using
+MMTk classes to keep hosting VM code independent of MMTk. 
+
+\item
+\textbf{Per-thread mutator context\\}
+MMTk assume every thread in the hosting VM that wants to
+allocate by using MMTk should contain an instance of 
+mutator context, e.g. 
+\javacode{MutatorSelect} (this is the \javacode{final} class
+inherited from \javacode{org.mmtk.plan.x.XMutator}). To
+achieve this, hosting VM can inherit its own thread class
+from \javacode{MutatorSelect}, or store a reference to
+\javacode{MutatorSelect} in each thread. Each thread
+should initialize its mutator context by 
+calling \javacode{mutator.initMutator(id)} with a unique 
+mutator ID. 
+
+\item
+\textbf{Collector thread\\}
+MMTk requires the hosting VM to spawn collector thread
+on its behalf. Collector thread should contain not only
+a mutator context(as stated above, mutator is supposed
+to be `per-thread'), but also an instance of 
+collector context, e.g. \javacode{CollectorSelect}. \javacode{collector.initCollector(id)}
+can be used to initialize the collector instance. 
+
+\item
+\textbf{Booting sequence\\}
+MMTk should be initialized before any allocation is required. 
+A classical MMTk booting code is showed below:
+\begin{lstlisting}[language=java]
+// creating a global plan instance
+plan = new PlanSelect();
+
+// setting heap size
+HeapGrowthManager.boot(INITIAL_HEAP_SIZE, MAX_HEAP_SIZE); 
+
+// setting options
+Options.x.setValue(x); 
+...
+
+// process options
+PlanSelect.getPlan().processOptions();
+
+// enabling allocation and collection
+PlanSelect.getPlan().enableAllocation();
+PlanSelect.getPlan().enableCollection();
+\end{lstlisting}
+
+\item
+\textbf{Required GC header\\}
+The hosting VM can freely choose its own object model,
+and inform MMTk of the object model by implementing 
+MMTk-VM interface. MMTk also requires a minimal GC
+header for different chosen plans. The hosting
+VM can get the required header size by 
+\javacode{ConstraintsSelect.getConstraints().gcHeaderWords()},
+which returns how many words MMTk requires as its
+GC header. 
+
+\item
+\textbf{Allocation sequence\\}
+Here shows a classical MMTk allocation sequence:
+\begin{lstlisting}[language=java]
+public static Address alloc(HostVMObject object) {
+  // prepare arguments
+  int allocator = PlanSelect.getPlan().ALLOC_DEFAULT; 
+  int site = PlanSelect.getPlan().getAllocationSite(false); 
+  int align = 0;
+  int offset = 0;
+  int size = HostVMObjectModel.getSize(object);
+
+  // allocation
+  MutatorSelect mutator = Scheduler.getCurrentThread().mutator(); 
+  Address ret = mutator.alloc(size, align, offset, allocator, site);
+  HostVMObjectModel.initialize(ret, object);
+  mutator.postAlloc(ret.toObjectReference(), HostVMObjectModel.getType(object), size, allocator);
+  
+  return ret;
+}
+\end{lstlisting}
+
+\item
+\textbf{Object scanning\\}
+During object reclamation, MMTk may require
+the hosting VM to help with object scanning 
+(the hosting VM needs to implement 
+\javacode{org.mmtk.vm.Scanning}). 
+In the implementation, the hosting VM can call the following
+MMTk methods to proceed object scanning:
+$1)$ \javacode{TransitiveClosure.processEdge()}, and 
+$2)$ \javacode{TraceLocal.processRootEdge()}. 
+
+\end{itemize}
+
+The above discussed the basic VM-MMTk interface, which
+should be suffice to implement a simple runtime with MMTk. 
+The MMTk `testbed' is implemented by merely using the above
+interface. More details and can be found in the code base. 
+
+\vspace{2em}
+\noindent
+(End of the manual)
+\clearpage
+
+\end{document}

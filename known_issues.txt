@@ -1,1 +1,13 @@
-1. [NEED FIX] Do not support anonymous class at the moment. 
+1. [SOLVED]Do not support anonymous(nested) class at the moment. 
+2. [SOLVED]Class needs to be compiled by a top-down order in type hierarchy
+3. An interface cannot have subinterface - this is for implementation ease at the moment. 
+   If we want subinterface, we need to class_init interfaces, and maintain its hierarchy
+4. [SOLVED]Current implementation is very x86\mac os\gcc specific
+   4.1 gcc: buildin_prefetch/CAS in magic types
+   4.2 mac os: prebuilt boehm_gc.a, RawMemory, wait() (use mach time)
+5. [SOLVED]Magic Type Generator is broken (dont know since when)
+6. Not supporting Thread.interrupt() and InterruptedException
+7. System.out.print() only outputs limited number of chars (probably problem with internal length of String)
+   7.1 internal length of String is 10000 now, otherwise there might be problem. 
+8. RawConcurrency.threadSuspend/Resume() is quite not safe, since a thread might be blocked inside boehm gc and cause dead lock.  
+9. Nested class is supported, but nested class cannot have another nested class

@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="RJava_Prototype">
+    <property environment="env"/>
+    <property name="RJava_Prototype_CLib_Implementation.location" value="rjava_clib_impl"/>
+    <property name="ECLIPSE_HOME" value="../../../../../Applications/eclipse"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.6"/>
+    <property name="source" value="1.6"/>
+    <path id="RJava_Prototype.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="components/soot/soot-2.5.0.jar"/>
+        <pathelement location="components/commons-io-2.2.jar"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="compiler">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="rjava">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="test">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="mmtk">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="unittest/src">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="compiler"/>
+            <src path="rjava"/>
+            <src path="test"/>
+            <src path="mmtk"/>
+            <src path="unittest/src"/>
+            <classpath refid="RJava_Prototype.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects">
+        <ant antfile="build.xml" dir="${RJava_Prototype_CLib_Implementation.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${RJava_Prototype_CLib_Implementation.location}" inheritAll="false" target="build">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+    </target>
+    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
+    </target>
+    <target name="AddressTest (1)">
+        <java classname="org.rjava.test.magic.AddressTest" failonerror="true" fork="yes">
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="Animal">
+        <java classname="org.rjava.test.poly.Animal" failonerror="true" fork="yes">
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="Bench">
+        <java classname="org.rjava.test.martins_pl_bench.Bench" failonerror="true" fork="yes">
+            <arg line="-100"/>
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="MagicTypesForC">
+        <java classname="org.rjava.compiler.targets.c.runtime.MagicTypesForC" failonerror="true" fork="yes">
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="Quine">
+        <java classname="org.rjava.test.Quine" failonerror="true" fork="yes">
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaArrayUse">
+        <java classname="org.rjava.test.RJavaArrayUse" failonerror="true" fork="yes">
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaBlockScopeVariable">
+        <java classname="org.rjava.test.RJavaBlockScopeVariable" failonerror="true" fork="yes">
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaCompiler arrayuse">
+        <java classname="org.rjava.compiler.RJavaCompiler" failonerror="true" fork="yes">
+            <jvmarg line="-Xmx1024m"/>
+            <arg line="-dir test test/org/rjava/test/RJavaArrayUse.java"/>
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaCompiler block scope variable">
+        <java classname="org.rjava.compiler.RJavaCompiler" failonerror="true" fork="yes">
+            <arg line="-dir test test/org/rjava/test/RJavaBlockScopeVariable.java"/>
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaCompiler clib_impl">
+        <java classname="org.rjava.compiler.RJavaCompiler" failonerror="true" fork="yes">
+            <arg line="-dir rjava_clib_impl"/>
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaCompiler cmptest">
+        <java classname="org.rjava.compiler.RJavaCompiler" failonerror="true" fork="yes">
+            <jvmarg line="-ea"/>
+            <arg line="-dir test test/org/rjava/test/RJavaComparisonTest.java"/>
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaCompiler compile mmtk nogc">
+        <java classname="org.rjava.compiler.RJavaCompiler" failonerror="true" fork="yes">
+            <jvmarg line="-Xmx1024m"/>
+            <arg line="-dir mmtk -l mmtk_nogc.list"/>
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaCompiler compile mmtk singlefile">
+        <java classname="org.rjava.compiler.RJavaCompiler" failonerror="true" fork="yes">
+            <jvmarg line="-Xmx1024m -ea"/>
+            <arg line="-dir mmtk mmtk/org/mmtk/plan/ConcurrentPhase.java"/>
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaCompiler compile mmtk">
+        <java classname="org.rjava.compiler.RJavaCompiler" failonerror="true" fork="yes">
+            <jvmarg line="-Xmx1024m"/>
+            <arg line="-dir mmtk"/>
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaCompiler constantinterface">
+        <java classname="org.rjava.compiler.RJavaCompiler" failonerror="true" fork="yes">
+            <arg line="-dir test test/org/rjava/test/interfacetest/ConstantInterfaceTest.java test/org/rjava/test/interfacetest/ConstantInterface.java"/>
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaCompiler enumtest">
+        <java classname="org.rjava.compiler.RJavaCompiler" failonerror="true" fork="yes">
+            <jvmarg line="-Xmx1024m -ea"/>
+            <arg line="-dir test test/org/rjava/test/enumtest/Day.java test/org/rjava/test/enumtest/EnumTest.java"/>
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaCompiler factorial">
+        <java classname="org.rjava.compiler.RJavaCompiler" failonerror="true" fork="yes">
+            <arg line="-dir test test/org/rjava/test/RJavaInt.java"/>
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaCompiler helloworld">
+        <java classname="org.rjava.compiler.RJavaCompiler" failonerror="true" fork="yes">
+            <arg line="-dir test test/org/rjava/test/RJavaHelloWorld.java"/>
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaCompiler magictype address">
+        <java classname="org.rjava.compiler.RJavaCompiler" failonerror="true" fork="yes">
+            <jvmarg line="-Xmx1024m"/>
+            <arg line="-dir test test/org/rjava/test/magic/AddressTest.java"/>
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaCompiler martins_pl_bench rjava">
+        <java classname="org.rjava.compiler.RJavaCompiler" failonerror="true" fork="yes">
+            <jvmarg line="-Xmx1024m"/>
+            <arg line="-dir test test/org/rjava/test/martins_pl_bench_rjava/Bench.java test/org/rjava/test/martins_pl_bench_rjava/Packet.java test/org/rjava/test/martins_pl_bench_rjava/Task.java"/>
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaCompiler martins_pl_bench single file debug">
+        <java classname="org.rjava.compiler.RJavaCompiler" failonerror="true" fork="yes">
+            <jvmarg line="-Xmx1024m"/>
+            <arg line="-dir test test/org/rjava/test/martins_pl_bench/DevTask.java"/>
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaCompiler martins_pl_bench">
+        <java classname="org.rjava.compiler.RJavaCompiler" failonerror="true" fork="yes">
+            <jvmarg line="-Xmx1024m"/>
+            <arg line="-dir test test/org/rjava/test/martins_pl_bench/Bench.java test/org/rjava/test/martins_pl_bench/DevTask.java test/org/rjava/test/martins_pl_bench/HandlerTask.java test/org/rjava/test/martins_pl_bench/IdleTask.java test/org/rjava/test/martins_pl_bench/Packet.java test/org/rjava/test/martins_pl_bench/Task.java test/org/rjava/test/martins_pl_bench/Tasktab.java test/org/rjava/test/martins_pl_bench/WorkTask.java"/>
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaCompiler multiarray">
+        <java classname="org.rjava.compiler.RJavaCompiler" failonerror="true" fork="yes">
+            <arg line="-dir test test/org/rjava/test/RJavaMultiarray.java"/>
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaCompiler object">
+        <java classname="org.rjava.compiler.RJavaCompiler" failonerror="true" fork="yes">
+            <jvmarg line="-Xmx1024m"/>
+            <arg line="-dir test test/org/rjava/test/RJavaObjectTest.java"/>
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaCompiler poly_test with interface">
+        <java classname="org.rjava.compiler.RJavaCompiler" failonerror="true" fork="yes">
+            <jvmarg line="-Xmx1024m"/>
+            <arg line="-dir test test/org/rjava/test/poly/Animal.java test/org/rjava/test/poly/Cat.java test/org/rjava/test/poly/DoArithmetic.java test/org/rjava/test/poly/DomesticCat.java"/>
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaCompiler poly_test">
+        <java classname="org.rjava.compiler.RJavaCompiler" failonerror="true" fork="yes">
+            <jvmarg line="-Xmx1024m"/>
+            <arg line="-dir test test/org/rjava/test/poly/Animal.java test/org/rjava/test/poly/Cat.java"/>
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaCompiler unittest address">
+        <java classname="org.rjava.compiler.RJavaCompiler" failonerror="true" fork="yes">
+            <jvmarg line="-Xmx1024m"/>
+            <arg line="-dir unittest/src unittest/src/org/rjava/unittest/magic/TestAddress.java"/>
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaInt">
+        <java classname="org.rjava.test.RJavaInt" failonerror="true" fork="yes">
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaLangForC">
+        <java classname="org.rjava.compiler.targets.c.runtime.RJavaLangForC" failonerror="true" fork="yes">
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaMultiarray">
+        <java classname="org.rjava.test.RJavaMultiarray" failonerror="true" fork="yes">
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaObjectTest">
+        <java classname="org.rjava.test.RJavaObjectTest" failonerror="true" fork="yes">
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+    <target name="RJavaSymTab">
+        <java classname="RJavaSymTab" failonerror="true" fork="yes">
+            <classpath refid="RJava_Prototype.classpath"/>
+        </java>
+    </target>
+</project>

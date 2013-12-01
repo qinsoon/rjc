@@ -1,2 +1,16 @@
-.class
-.DS_Store
+syntax: regexp
+
+?\.class
+?\.DS_Store
+?\.gv
+output\\*
+c_test\\*
+mmtk/src\\*
+mmtk/common/\\*
+build\\*
+uvm\\*
+?\.aux
+?\.log
+?\.synctex.gz
+?\.toc
+?\.out

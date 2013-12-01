@@ -8,26 +8,50 @@ import java.util.Map;
 import org.rjava.compiler.RJavaCompiler;
 import org.rjava.compiler.semantics.SemanticMap;
 import org.rjava.compiler.semantics.SootEngine;
-import org.rjava.compiler.semantics.symtab.RImport;
 
 import soot.SootClass;
+import soot.Type;
 
-public class RType {
-    // full class name <-> soot classes
-    public static Map<String, SootClass> resolvedClasses = new HashMap<String, SootClass>();
-    // class name <-> full class name
-    public static Map<String, String> fullClassNames = new HashMap<String, String>();
-    
+public class RType {    
     private String type;
     private String className;
     private String packageName;
-    private boolean primitive;
-    private boolean array;
+    private boolean magicType = false;
+    private boolean primitive = false;
+    private boolean array = false;
+    private boolean voidType = false;
+    
+    private boolean intrinsicType = false;
 
-    public static final List<String> PRIMITIVE_TYPES = Arrays.asList("boolean",
-	    "char", "byte", "short", "int", "long", "float", "double", "void");
+    public static final List<String> PRIMITIVE_TYPES = Arrays.asList(
+            "boolean",
+            "char",
+            "byte",
+            "short",
+            "int",
+            "long",
+            "float",
+            "double");
+    public static final List<String> BOXED_PRIMITIVE_TYPES = Arrays.asList(
+            "java.lang.Boolean",
+            "java.lang.Character",
+            "java.lang.Byte",
+            "java.lang.Short",
+            "java.lang.Integer",
+            "java.lang.Long",
+            "java.lang.Float",
+            "java.lang.Double"
+            ); 
+    public static final String VOID_TYPE = "void";
 
     private RType() {
+    }
+    
+    public boolean equals(Object o) {
+        RType another = (RType) o;
+        if (voidType && another.voidType)
+            return true;
+        return className.equals(another.className) && primitive == another.primitive && array == another.array;
     }
 
     /**
@@ -37,12 +61,33 @@ public class RType {
      *            something like Ljava/lang/Integer;
      * @return corresponding RType
      */
-    public static RType initWithTypeName(RClass klass, String type) {
-	RType r = new RType();
-	r.type = type;
+    public static RType initWithTypeName(String type) {
+        String classNameTmp = getClassNameFromType(type);
+        if (SemanticMap.getAllTypes().get(classNameTmp) != null) {
+            return SemanticMap.getAllTypes().get(classNameTmp);
+        }
+        
+    	RType r = new RType();
+    	r.type = type;
+      	r.resolveAndNormalize();
+      	
+      	saveToSemanticMap(classNameTmp, r);
 
-	r.resolveAndNormalize(klass);
-	return r;
+    	return r;
+    }
+
+    /**
+     * save to semantic map. If it is an array type, find base type and save as well.
+     * @param classNameTmp
+     * @param r
+     */
+    private static void saveToSemanticMap(String className, RType r) {
+        SemanticMap.getAllTypes().put(className, r);
+        
+        if (r.isArray()) {
+            String baseClassName = r.getClassName();
+            RType.initWithClassName(baseClassName);
+        }
     }
 
     /**
@@ -52,101 +97,46 @@ public class RType {
      *            something like Integer or java.lang.Integer;
      * @return corresponding RType
      */
-    public static RType initWithClassName(RClass klass, String className) {
-	RType r = new RType();
-	r.className = className;
-
-	r.resolveAndNormalize(klass);
-	return r;
+    public static RType initWithClassName(String className) {
+        if (SemanticMap.getAllTypes().get(className) != null) {
+            return SemanticMap.getAllTypes().get(className);
+        }
+        
+    	RType r = new RType();
+    	r.className = className;    
+    	r.resolveAndNormalize();
+    	
+    	// store back to types map
+    	saveToSemanticMap(className, r);
+    	return r;
     }
-
-    private void resolveAndNormalize(RClass klass) {
-	className = getClassName();
-
-	// check if the type is array type
-	if (className.endsWith("[]")) {
-	    array = true;
-	    className = className.replaceAll("\\[\\]", "");
-	}
-
-	// check if the type is primitive
-	if (PRIMITIVE_TYPES.contains(className)) {
-	    primitive = true;
-	}
-	// if not, we need to resolve the type
-	else {
-	    primitive = false;
-	    String shortName = className;
-	    SootClass sootClass = resolveType(klass);
-	    resolvedClasses.put(className, sootClass);
-	    fullClassNames.put(shortName, className);
-	}
-    }
-
-    private SootClass resolveType(RClass klass) {
-	String fullName = fullClassNames.get(className);
-	if (fullName != null) {
-	    className = fullName;
-	}
-	SootClass s = resolvedClasses.get(className);
-	if (s != null){
-	    return s;
-	}
-	
-	// actual resolve
-	SootClass sootClass = null;
-
-	try {
-	    sootClass = SootEngine.resolveAndGetClass(className);
-	    return sootClass;
-	} catch (RuntimeException e) {
-	    System.out.println("Failed to find " + className);
-	    // such className is not actually full class name
-	    // check imports first
-	    for (RImport i : klass.getImports()) {
-		if (i.isWildCardImport()) {
-		    // join import(package) with class name
-		    className = i.getImportStatement().replaceAll("*",
-			    className);
-		    try {
-			sootClass = SootEngine.resolveAndGetClass(className);
-			return sootClass;
-		    } catch (RuntimeException e2) {
-			System.out.println("Failed to find " + className);
-			continue;
-		    }
-		} else {
-		    if (i.getImportStatement().endsWith(className)) {
-			className = i.getImportStatement();
-    		        try {
-    			    sootClass = SootEngine.resolveAndGetClass(className);
-    			    return sootClass;
-    		        } catch (RuntimeException e2) {
-    			    System.out.println("Failed to find " + className);
-    			    continue;
-    		        }
-		    }
-		}
-	    }
-
-	    // then check implicit import (i.e. java.lang)
-	    className = "java.lang." + className;
-	    try {
-		sootClass = SootEngine.resolveAndGetClass(className);
-		return sootClass;
-	    } catch (RuntimeException e2) {
-		System.out.println("Failed to find " + className);
-	    }
-	}
-
-	return null;
-    }
-
+    
     /**
-     * Java style type, such as Ljava/lang/Integer;
+     * init an RType from a soot type
      */
+    public static RType initWithSootType(Type type) {
+        return initWithClassName(type.toString());
+    }
+
+    private void resolveAndNormalize() {
+    	className = getClassName();
+    
+    	// check if the type is array type
+    	if (className.endsWith("[]")) {
+    	    array = true;
+    	    className = className.replaceAll("\\[\\]", "");
+    	}
+    
+    	if (className.equals(VOID_TYPE))
+    	    voidType = true;
+    	// check if the type is primitive
+    	else if (PRIMITIVE_TYPES.contains(className)) {
+    	    primitive = true;
+    	}
+    }
+
     public String toString() {
-	return className + (array ? "[]":"");
+        return className + (array ? "[]":"");
     }
 
     /**
@@ -155,18 +145,23 @@ public class RType {
      * @return class name
      */
     public String getClassName() {
-	if (className == null) {
-	    className = type;
-	    if (className.startsWith("["))
-		className = className.substring(1);
-	    if (className.startsWith("L"))
-		className = className.substring(1);
-	    if (className.endsWith(";"))
-		className = className.substring(0, className.length() - 1);
-	    className = className.replace('/', '.');
-	}
-
-	return className;
+    	if (className == null) {
+    	    className = getClassNameFromType(type);
+    	}
+    
+    	return className;
+    }
+    
+    private static String getClassNameFromType(String type) {
+        String ret = type;
+        if (ret.startsWith("["))
+            ret = ret.substring(1);
+        if (ret.startsWith("L"))
+            ret = ret.substring(1);
+        if (ret.endsWith(";"))
+            ret = ret.substring(0, ret.length() - 1);
+        ret = ret.replace('/', '.');
+        return ret;
     }
     
     /**
@@ -175,12 +170,12 @@ public class RType {
      * @return type
      */
     public String getType() {
-	if (type == null) {
-	    type = className;
-	    type = (array ? "[" : "") + "L" + type.replace('.', '/') + ";";
-	}
-	
-	return type;
+    	if (type == null) {
+    	    type = className;
+    	    type = (array ? "[" : "") + "L" + type.replace('.', '/') + ";";
+    	}
+    	
+    	return type;
     }
 
     /**
@@ -189,28 +184,83 @@ public class RType {
      * @return package name
      */
     public String getPackageName() {
-	if (packageName == null) {
-	    packageName = getClassName();
-	    packageName = packageName
-		    .substring(0, packageName.lastIndexOf('.'));
-	}
-
-	return packageName;
+    	if (packageName == null) {
+    	    packageName = getClassName();
+    	    packageName = packageName
+    		    .substring(0, packageName.lastIndexOf('.'));
+    	}
+    
+    	return packageName;
     }
 
     public boolean isPrimitive() {
-	return primitive;
+        return primitive;
     }
 
     public void setPrimitive(boolean primitive) {
-	this.primitive = primitive;
+        this.primitive = primitive;
     }
 
     public boolean isArray() {
-	return array;
+        return array;
     }
 
     public void setArray(boolean array) {
-	this.array = array;
+        this.array = array;
+    }
+
+    public boolean isVoidType() {
+        return voidType;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
+
+    public void setVoidType(boolean voidType) {
+        this.voidType = voidType;
+    }
+    
+    public boolean isReferenceType() {
+        return (!primitive && !voidType);
+    }
+
+    public boolean isIntrinsicType() {
+        return intrinsicType;
+    }
+    
+    public boolean isAppType() {
+        return !isPrimitive() && SemanticMap.isApplicationClass(getClassName());
+    }
+
+    public void setIntrinsicType(boolean intrinsicType) {
+        this.intrinsicType = intrinsicType;
+    }
+    
+    public boolean isBoxedPrimitiveType() {
+        return BOXED_PRIMITIVE_TYPES.contains(className);
+    }
+    
+    public static boolean boxedTypeMatchesPrimitiveType(RType boxed, RType primitive) {
+        int index1 = BOXED_PRIMITIVE_TYPES.indexOf(boxed);
+        int index2 = PRIMITIVE_TYPES.indexOf(primitive);
+        
+        return index1 != -1 && index1 == index2;
+    }
+
+    public boolean isMagicType() {
+        return magicType;
+    }
+
+    public void setMagicType(boolean magicType) {
+        this.magicType = magicType;
     }
 }
