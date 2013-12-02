@@ -1804,6 +1804,7 @@ A classical MMTk booting code is showed below:
 plan = new PlanSelect();
 
 // setting heap size
+// MAX_HEAP_SIZE should be equals to or less than AVAILABLE_END() - AVAILABLE_START()
 HeapGrowthManager.boot(INITIAL_HEAP_SIZE, MAX_HEAP_SIZE); 
 
 // setting options

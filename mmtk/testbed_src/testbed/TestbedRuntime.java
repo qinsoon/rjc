@@ -13,8 +13,6 @@ import testbed.runtime.TestbedObject;
 
 @RJavaCore
 public class TestbedRuntime {
-    public static Heap heap = new Heap();
-    
     public static Object globalRootsLock = new Object();
     public static int maxRootsAllowed;
     public static int rootsCount = 0;

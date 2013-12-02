@@ -893,8 +893,7 @@ public abstract class Plan implements Constants {
   protected boolean collectionRequired(boolean spaceFull, Space space) {      
     boolean stressForceGC = stressTestGCRequired();
     boolean heapFull = getPagesReserved() > getTotalPages();
-    Main.println("pages reserved = " + getPagesReserved());
-
+    
     return spaceFull || stressForceGC || heapFull;
   }
 

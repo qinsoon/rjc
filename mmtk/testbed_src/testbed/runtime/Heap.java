@@ -1,17 +1,23 @@
 package testbed.runtime;
 
+import org.mmtk.vm.VM;
 import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.Extent;
 
 import testbed.Constants;
+import testbed.Main;
 
 @RJavaCore
 public class Heap {
-    Address start = Constants.HEAP_START;
-    Address end = Constants.HEAP_END;
+    Address start = VM.AVAILABLE_START;
+    Address end = VM.AVAILABLE_END;
     
     public Extent getHeapSize() {
+        Main.print("Heap start=");
+        Main.println(start);
+        Main.print("Heap end=");
+        Main.println(end);
         return end.diff(start).toWord().toExtent();
     }
     

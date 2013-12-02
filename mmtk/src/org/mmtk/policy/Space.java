@@ -84,15 +84,11 @@ public abstract class Space implements Constants {
           while(Word.fromLong(1L << log).LE(mappable)){
               log++;
           }
-          Main.print("LOG_ADDRESS_SPACE=");
-          Main.println(log);
           LOG_ADDRESS_SPACE = log;
       }
       
       LOG_MAX_CHUNKS = LOG_ADDRESS_SPACE - LOG_BYTES_IN_CHUNK;
       MAX_CHUNKS = 1 << LOG_MAX_CHUNKS;
-      Main.print("MAX_CHUNKS=");
-      Main.println(MAX_CHUNKS);
   }
 
   private static final boolean FORCE_SLOW_MAP_LOOKUP = false;
@@ -438,11 +434,6 @@ public abstract class Space implements Constants {
    */
   @LogicallyUninterruptible
   public final Address acquire(int pages) {
-    if (Scheduler.gcCount > 0) {
-        System.out.print("Space.aquire():");
-        System.out.print(pages);
-        System.out.println("pages");
-    }
     boolean allowPoll = VM.activePlan.isMutator() && Plan.isInitialized();
 
     /* Check page budget */
@@ -479,10 +470,6 @@ public abstract class Space implements Constants {
    * @return The address of the new discontiguous space.
    */
   public Address growDiscontiguousSpace(int chunks) {
-    if (Scheduler.gcCount > 0) {
-        System.out.print("Space.growDiscontiguousSpace(), chunk=");
-        System.out.println(chunks);
-    }
     Address newHead = Map.allocateContiguousChunks(descriptor, this, chunks, headDiscontiguousRegion);
     if (newHead.isZero()) {
       return VM.ADDRESS_FAIL;

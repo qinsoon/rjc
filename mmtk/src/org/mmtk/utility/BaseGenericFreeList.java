@@ -107,53 +107,13 @@ import testbed.runtime.Scheduler;
    * contiguous units, or -1 if the request can't be satisfied
    */
   public final int alloc(int size) {
-    System.out.print("GenericFL.alloc() size=");
-    System.out.println(size);
-    myDebugPrintFL();
-      
     // Note: -1 is both the default return value *and* the start sentinel index
     int unit = head; // HEAD = -1
     int s = 0;
-//    while (((unit = getNext(unit)) != head) && ((s = getSize(unit)) < size));
-    while(true) {
-        Main.print("unit=");
-        Main.print(unit);
-        unit = getNext(unit);
-        Main.print(",new unit=");
-        Main.println(unit);
-        
-        if (unit == head)
-            break;
-        
-        Main.print("getSize(new unit)=");
-        s = getSize(unit);
-        Main.println(s);
-        if (s >= size)
-            break;
-    }
+    while (((unit = getNext(unit)) != head) && ((s = getSize(unit)) < size));
 
     return (unit == head) ? FAILURE : alloc(size, unit, s);
   }
-  
-  void myDebugPrintFL() {
-        Log.write("FL[");
-        int i = head;
-        while ((i = getNext(i)) != head) {
-          boolean f = getFree(i);
-          int s = getSize(i);
-          if (!f)
-            Log.write("->");
-          Log.write(i);
-          if (!f)
-            Log.write("<-");
-          Log.write("(");
-          Log.write(s);
-          Log.write(")");
-          Log.write(" ");
-          Log.flush();
-        }
-        Log.writeln("]FL");
-    }
 
   /**
    * Would an allocation of <code>size</code> units succeed?

@@ -172,8 +172,6 @@ import testbed.runtime.Scheduler;
    */
   @Inline
   public final Address alloc(int bytes, int align, int offset) {
-    if (Scheduler.gcCount > 0)
-        System.out.println("alloc() fastpath");
     Address start = alignAllocationNoFill(cursor, align, offset);
     Address end = start.plus(bytes);
     if (end.GT(internalLimit))
@@ -280,8 +278,6 @@ import testbed.runtime.Scheduler;
    */
   @Override
   protected final Address allocSlowOnce(int bytes, int align, int offset) {
-    if (Scheduler.gcCount > 0)
-        System.out.println("allocSlowOnce()");
     /* Check we have been bound to a space */
     if (space == null) {
       VM.assertions.fail("Allocation on unbound bump pointer.");

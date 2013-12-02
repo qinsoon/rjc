@@ -125,7 +125,6 @@ public class Map {
    */
   public static Address allocateContiguousChunks(int descriptor, Space space, int chunks, Address head) {
     lock.acquire();
-    Main.println("regionMap.allocPages()");
     int chunk = regionMap.alloc(chunks);
     if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(chunk != 0);
     if (chunk == -1) {
@@ -196,21 +195,15 @@ public class Map {
    * @param anyChunk Any chunk in the linked list of chunks to be freed
    */
   public static void freeAllChunks(Address anyChunk) {
-    System.out.print("freeAllChunks(), address=");
-    Main.println(anyChunk);
     lock.acquire();
     if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(anyChunk.EQ(Space.chunkAlign(anyChunk, true)));
     if (!anyChunk.isZero()) {
       int chunk = getChunkIndex(anyChunk);
-      System.out.print("Current chunk=");
-      System.out.println(chunk);
       while (nextLink[chunk] != 0) {
         freeContiguousChunks(nextLink[chunk]);
-        System.out.println("freeing " + nextLink[chunk]);
       }
       while (prevLink[chunk] != 0) {
         freeContiguousChunks(prevLink[chunk]);
-        System.out.println("freeing " + prevLink[chunk]);
       }
       freeContiguousChunks(chunk);
     }
@@ -259,36 +252,22 @@ public class Map {
    */
   @Interruptible
   public static void finalizeStaticSpaceMap() {
-    Main.println("finalizeStaticSpaceMap:");
     /* establish bounds of discontiguous space */
     Address startAddress = Space.getDiscontigStart();
     int firstChunk = getChunkIndex(startAddress);
-    Main.print("startAddress:");
-    Main.println(startAddress);
-    Main.print("firstChunk:");
-    Main.println(firstChunk);
     int lastChunk = getChunkIndex(Space.getDiscontigEnd());
-    Main.print("getDiscontigEnd():");
-    Main.println(Space.getDiscontigEnd());
-    Main.print("lastChunk:");
-    Main.println(lastChunk);
     int unavailStartChunk = lastChunk + 1;
     int trailingChunks = Space.MAX_CHUNKS - unavailStartChunk;
-    Main.print("trailingChunks:");
-    Main.println(trailingChunks);
     int pages = (1 + lastChunk - firstChunk) * Space.PAGES_IN_CHUNK;
     globalPageMap.resizeFreeList(pages, pages);
     for (int pr = 0; pr < sharedDiscontigFLCount; pr++)
       sharedFLMap[pr].resizeFreeList(startAddress);
 
     /* set up the region map free list */
-    Main.println("finalizeStaticSpaceMap(), regionMap.alloc()");
     int allocedChunk = regionMap.alloc(firstChunk);       // block out entire bottom of address range
     for (int chunkIndex = firstChunk; chunkIndex <= lastChunk; chunkIndex++) {
-        Main.println("finalizeStaticSpaceMap(), regionMap.alloc()");
         allocedChunk = regionMap.alloc(1);             // Tentatively allocate all usable chunks
     }
-    Main.println("finalizeStaticSpaceMap(), regionMap.alloc()");
     allocedChunk = regionMap.alloc(trailingChunks);  // block out entire top of address range
     if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(allocedChunk == unavailStartChunk);
 
@@ -299,7 +278,6 @@ public class Map {
       totalAvailableDiscontiguousChunks++;
       regionMap.free(chunkIndex);  // put this chunk on the free list
       globalPageMap.setUncoalescable(firstPage);
-      Main.println("finalizeStaticSpaceMap(), globalPageMap.alloc()");
       int allocedPages = globalPageMap.alloc(Space.PAGES_IN_CHUNK); // populate the global page map
       if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(allocedPages == firstPage);
       firstPage += Space.PAGES_IN_CHUNK;
@@ -378,41 +356,22 @@ public class Map {
    */
   @Inline
   private static int getChunkIndex(Address address) {
-//    Main.print("MMTK_ADDRESS_BASE=");
-//    Main.println(Mmapper.MMTK_ADDRESS_BASE);
-//    Main.print("Getting index for address(");
-//    Main.print(address);
-//    Main.print("), index=");
-    int ret;
     if (Space.BYTES_IN_ADDRESS == 8) {
       if (address.LT(Space.HEAP_START) || address.GE(Space.HEAP_END))
-        ret = 0;
+        return 0;
       else
-        ret = address.diff(MAP_BASE_ADDRESS).toWord().rshl(Space.LOG_BYTES_IN_CHUNK).toInt();
+        return address.diff(MAP_BASE_ADDRESS).toWord().rshl(Space.LOG_BYTES_IN_CHUNK).toInt();
     } else
-      ret = address.toWord().rshl(Space.LOG_BYTES_IN_CHUNK).toInt();
-//    Main.println(ret);
-//    Main.print("MAP_BASE_ADDRESS=");
-//    Main.println(MAP_BASE_ADDRESS);
-    return ret;
+      return address.toWord().rshl(Space.LOG_BYTES_IN_CHUNK).toInt();
   }
   @Inline
   private static Address addressForChunkIndex(int chunk) {
-//    Main.print("MMTK_ADDRESS_BASE=");
-//    Main.println(Mmapper.MMTK_ADDRESS_BASE);
-//    Main.print("Getting address for index=");
-//    Main.print(chunk);
-//    Main.print(", address=");
-    Address ret;
     if (Space.BYTES_IN_ADDRESS == 8) {
       if (chunk == 0)
-        ret =  Address.zero();
+        return Address.zero();
       else
-        ret =  MAP_BASE_ADDRESS.plus(Word.fromIntZeroExtend(chunk).lsh(Space.LOG_BYTES_IN_CHUNK).toExtent());
+        return MAP_BASE_ADDRESS.plus(Word.fromIntZeroExtend(chunk).lsh(Space.LOG_BYTES_IN_CHUNK).toExtent());
     } else
-      ret=  Word.fromIntZeroExtend(chunk).lsh(Space.LOG_BYTES_IN_CHUNK).toAddress();
-    
-//    Main.println(ret);
-    return ret;
+      return Word.fromIntZeroExtend(chunk).lsh(Space.LOG_BYTES_IN_CHUNK).toAddress();
   }
 }

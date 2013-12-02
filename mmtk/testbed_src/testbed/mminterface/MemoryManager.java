@@ -13,15 +13,19 @@ import testbed.Configuration;
 import testbed.Main;
 import testbed.TestbedRuntime;
 import testbed.mminterface.select.PlanSelect;
+import testbed.runtime.Heap;
 import testbed.runtime.Scheduler;
 import testbed.runtime.TestbedObject;
 
 @RJavaCore
 public class MemoryManager {
+    public static Heap heap;
+    
     public static void boot() {
         Main.print("-Set heap\n");
+        heap = new Heap();
         Mmapper.boot();
-        HeapGrowthManager.boot(TestbedRuntime.heap.getHeapSize(), TestbedRuntime.heap.getHeapSize());
+        HeapGrowthManager.boot(heap.getHeapSize(), heap.getHeapSize());
         
         Main.print("-Set options\n");
         Options.eagerMmapSpaces.setValue(true);
