@@ -54,6 +54,8 @@ public class TestbedObject {
     
     @Inline
     public int getFieldCount() {
+        if (this.fields == null)
+            return 0;
         return fields.length();
     }
 }

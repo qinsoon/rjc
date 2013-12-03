@@ -147,7 +147,6 @@ public final class FreeListPageResource extends PageResource implements Constant
     if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(metaDataPagesPerRegion == 0 || requiredPages <= PAGES_IN_CHUNK - metaDataPagesPerRegion);
     lock();
     boolean newChunk = false;
-    Main.println("FLPageResource.freelist.alloc()");
     int pageOffset = freeList.alloc(requiredPages);
     if (pageOffset == GenericFreeList.FAILURE && !contiguous) {
       pageOffset = allocateContiguousChunks(requiredPages);
@@ -280,12 +279,10 @@ public final class FreeListPageResource extends PageResource implements Constant
         liberated = freeList.free(p, true); // add chunk to our free list
         if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(liberated == Space.PAGES_IN_CHUNK + (p - regionStart));
         if (metaDataPagesPerRegion > 1) {
-          Main.println("FLPageResource.freelist.alloc()");
           freeList.alloc(metaDataPagesPerRegion, p); // carve out space for metadata
         }
         pagesCurrentlyOnFreeList += Space.PAGES_IN_CHUNK - metaDataPagesPerRegion;
       }
-      Main.println("FLPageResource.freelist.alloc()");
       rtn = freeList.alloc(pages); // re-do the request which triggered this call
     }
     return rtn;
@@ -309,7 +306,6 @@ public final class FreeListPageResource extends PageResource implements Constant
       freeList.setUncoalescable(chunkStart);
       if (metaDataPagesPerRegion > 0)
         freeList.free(chunkStart);  // first free any metadata pages
-      Main.println("FLPageResource.freelist.alloc()");
       int tmp = freeList.alloc(Space.PAGES_IN_CHUNK, chunkStart); // then alloc the entire chunk
       if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(tmp == chunkStart);
       chunkStart += Space.PAGES_IN_CHUNK;
@@ -333,7 +329,6 @@ public final class FreeListPageResource extends PageResource implements Constant
       while (cursor.GT(start)) {
         cursor = cursor.minus(EmbeddedMetaData.BYTES_IN_REGION);
         int unit = cursor.diff(start).toWord().rshl(LOG_BYTES_IN_PAGE).toInt();
-        Main.println("FLPageResource.freelist.alloc()");
         int tmp = freeList.alloc(metaDataPagesPerRegion, unit);
         pagesCurrentlyOnFreeList -= metaDataPagesPerRegion;
         if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(tmp == unit);

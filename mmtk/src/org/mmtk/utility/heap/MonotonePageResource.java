@@ -279,17 +279,19 @@ public final class MonotonePageResource extends PageResource {
         sentinel = VM.ADDRESS_EMPTY_VALUE;
         cursor = VM.ADDRESS_EMPTY_VALUE;
         space.releaseAllChunks();
-      } else if (!oldCursorOnFailure.isZero()) {
-        do {
-            Extent bytes = oldCursorOnFailure.diff(currentChunk).toWord().toExtent();
-            releasePages(currentChunk, bytes);
-        } while (moveToNextChunk());
-
-        currentChunk = VM.ADDRESS_EMPTY_VALUE;
-        sentinel = VM.ADDRESS_EMPTY_VALUE;
-        cursor = VM.ADDRESS_EMPTY_VALUE;
-        space.releaseAllChunks();
-      }
+      } 
+//      else if (!oldCursorOnFailure.isZero()) {
+//        do {
+//            Extent bytes = oldCursorOnFailure.diff(currentChunk).toWord().toExtent();
+//            releasePages(currentChunk, bytes);
+//        } while (moveToNextChunk());
+//
+//        currentChunk = VM.ADDRESS_EMPTY_VALUE;
+//        sentinel = VM.ADDRESS_EMPTY_VALUE;
+//        cursor = VM.ADDRESS_EMPTY_VALUE;
+//        oldCursorOnFailure = VM.ADDRESS_EMPTY_VALUE;
+//        space.releaseAllChunks();
+//      }
     }
   }
 

@@ -79,11 +79,11 @@ public class MMTkContext implements Runnable{
             Scheduler.statisticsAllocStart();
             // mutator's job
             
-            // allocSingleObject();
-            // allocExhaustDeadObjects();
-            // allocExhaustObjectsRandomRoot();
-            // allocExhaustObjectsRandomRootRandomField();
-            allocExtremePerformance();
+//            allocSingleObject();
+//            allocExhaustDeadObjects();
+//            allocExhaustObjectsRandomRoot();
+            allocExhaustObjectsRandomRootRandomField();
+//            allocExtremePerformance();
         }
     }
     

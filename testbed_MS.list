@@ -1,6 +1,7 @@
 mmtk/testbed_src/testbed/mminterface/select/CollectorSelect.java
 mmtk/testbed_src/testbed/mminterface/select/ConstraintsSelect.java
 mmtk/testbed_src/testbed/mminterface/select/PlanSelect.java
+mmtk/testbed_src/testbed/mminterface/select/MutatorSelect.java
 mmtk/src/org/mmtk/plan/marksweep/MS.java
 mmtk/src/org/mmtk/plan/marksweep/MSCollector.java
 mmtk/src/org/mmtk/plan/marksweep/MSConstraints.java

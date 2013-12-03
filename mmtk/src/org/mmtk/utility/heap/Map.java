@@ -109,6 +109,12 @@ public class Map {
         VM.assertions.fail("exiting");
       }
       descriptorMap[index] = descriptor;
+      Main.print("Chunk" + index);
+      Main.print("(from address:");
+      Main.print(start);
+      Main.print(",extent:");
+      Main.print(extent);
+      Main.println(") as " + space.getName());
       VM.barriers.objectArrayStoreNoGCBarrier(spaceMap, index, space);
       e = e.plus(Space.BYTES_IN_CHUNK);
     }
@@ -240,6 +246,11 @@ public class Map {
     nextLink[chunk] = prevLink[chunk] = 0;
     for (int offset = 0; offset < chunks; offset++) {
       descriptorMap[chunk + offset] = 0;
+      Main.print("Chunk");
+      Main.print(chunk+offset);
+      Main.print(" set from ");
+      Main.print(spaceMap[chunk+offset].getName());
+      Main.println(" to null");
       VM.barriers.objectArrayStoreNoGCBarrier(spaceMap, chunk + offset, null);
     }
     return chunks;
@@ -355,7 +366,7 @@ public class Map {
    * @return The chunk number that this address hashes into
    */
   @Inline
-  private static int getChunkIndex(Address address) {
+  public static int getChunkIndex(Address address) {
     if (Space.BYTES_IN_ADDRESS == 8) {
       if (address.LT(Space.HEAP_START) || address.GE(Space.HEAP_END))
         return 0;

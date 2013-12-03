@@ -381,6 +381,15 @@ public abstract class Plan implements Constants {
    * @return The expected (root excluded) reference count.
    */
   public int sanityExpectedRC(ObjectReference object, int sanityRootRC) {
+    Main.print("sanityExpectedRC(object=");
+    Main.print(object);
+    Main.print(", sanityRootRC=");
+    Main.print(sanityRootRC);
+    Main.print("), chunk=");
+    
+    int chunk = Map.getChunkIndex(VM.objectModel.refToAddress(object));
+    Main.println(chunk);
+    
     Space space = Space.getSpaceForObject(object);
     return space.isReachable(object) ? SanityChecker.ALIVE : SanityChecker.DEAD;
   }

@@ -56,6 +56,9 @@ public class MemoryManager {
         testbed.runtime.ObjectModel.initializeObject(ret.toObjectReference(), object);
         mutator.postAlloc(ret.toObjectReference(), ObjectReference.nullReference(), size, allocator);
         
+        if (ret.toLong() % 4 != 0)
+            Main.sysFail("return address:" + ret.toLong() + " is not aligned to 4");
+        
         return ret;
     }
 }

@@ -14,11 +14,7 @@ public class Heap {
     Address end = VM.AVAILABLE_END;
     
     public Extent getHeapSize() {
-        Main.print("Heap start=");
-        Main.println(start);
-        Main.print("Heap end=");
-        Main.println(end);
-        return end.diff(start).toWord().toExtent();
+        return Extent.fromIntSignExtend(0x25000000);
     }
     
     public Address getStart() {
