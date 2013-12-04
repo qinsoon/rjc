@@ -3,6 +3,7 @@ package testbed.mmtkext;
 import org.mmtk.plan.TraceLocal;
 import org.mmtk.plan.TransitiveClosure;
 import org.mmtk.vm.Scanning;
+import org.rjava.ext.RJavaExt;
 import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.unboxed.Address;
 import org.vmmagic.unboxed.ObjectReference;
@@ -46,12 +47,7 @@ public class ScanningExt extends Scanning {
     @Override
     public void computeGlobalRoots(TraceLocal trace) {
         for (int i = 0; i < TestbedRuntime.rootsCount; i++) {
-            // Address slot
-            // the following MMTk code will load ObjectReference from slot
-            // thus we cannot just pass the obj ref
-            Object dummy = new Object();
-            Address slot = ObjectReference.fromObject(dummy).toAddress();
-            slot.store(TestbedRuntime.globalRoots.get(i));
+            Address slot = RJavaExt.getArrayEleAddress(TestbedRuntime.globalRoots, i);
             trace.processRootEdge(slot, true);
         }
     }
