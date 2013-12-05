@@ -15,9 +15,7 @@ package org.mmtk.utility.heap;
 import org.mmtk.plan.Plan;
 import org.mmtk.utility.*;
 import org.mmtk.utility.options.Options;
-
 import org.mmtk.vm.VM;
-
 import org.rjava.restriction.rulesets.MMTk;
 import org.vmmagic.pragma.*;
 import org.vmmagic.unboxed.*;
@@ -280,6 +278,8 @@ import org.vmmagic.unboxed.*;
    * Check that function satisfies the invariants
    */
   private static void sanityCheck() {
+    System.out.println("function table:");
+    printMultiArray(function);
     // Check live ratio
     double[] liveRatio = function[0];
     if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(liveRatio[1] == 0);
@@ -303,5 +303,16 @@ import org.vmmagic.unboxed.*;
     for (int i = 1; i < function.length; i++) {
       if (VM.VERIFY_ASSERTIONS) VM.assertions._assert(function[i-1].length == function[i].length);
     }
+  }
+  
+  private static void printMultiArray(double[][] array) {
+      for (int i = 0; i < array.length; i++) {
+          for (int j = 0; j < array[0].length; j++) {
+              System.out.print(array[i][j]);
+              if (j != array[0].length)
+                  System.out.print(",");
+          }
+          System.out.println();
+      }
   }
 }

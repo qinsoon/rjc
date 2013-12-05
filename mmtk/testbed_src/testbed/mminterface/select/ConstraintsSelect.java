@@ -1,6 +1,6 @@
 package testbed.mminterface.select;
 
-import org.mmtk.plan.marksweep.MSConstraints;
+//import org.mmtk.plan.marksweep.MSConstraints;
 import org.mmtk.plan.semispace.SSConstraints;
 import org.rjava.restriction.rulesets.RJavaCore;
 

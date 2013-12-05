@@ -1,6 +1,6 @@
 package testbed.mminterface.select;
 
-import org.mmtk.plan.marksweep.MS;
+//import org.mmtk.plan.marksweep.MS;
 import org.mmtk.plan.semispace.SS;
 import org.rjava.restriction.rulesets.RJavaCore;
 import org.vmmagic.pragma.Inline;
@@ -17,7 +17,7 @@ public class PlanSelect extends SS {
     }
     
     public static String getName() {
-        return "org.mmtk.plan.marksweep.MS";
+        return "org.mmtk.plan.semispace.SS";
     }
     
     @Inline

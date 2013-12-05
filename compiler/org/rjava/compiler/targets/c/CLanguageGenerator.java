@@ -68,6 +68,8 @@ public class CLanguageGenerator extends CodeGenerator {
     public static final String THIS_LOCAL = "this";
     public static final String RETURN = "return";
     public static String MALLOC = "malloc";       // may use gcmalloc instead
+    public static final String MALLOC_ATOMIC = "GC_MALLOC_ATOMIC";                  // contains no pointers
+    public static final String MALLOC_UNCOLLECTABLE = "GC_MALLOC_UNCOLLECTABLE";    // wont demalloc this
     public static final String SIZE_OF = "sizeof";
 
     public static final String MAIN_METHOD_SIGNATURE = "int main (int argc, char** parameter0)";

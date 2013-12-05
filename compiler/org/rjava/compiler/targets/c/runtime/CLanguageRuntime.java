@@ -88,7 +88,7 @@ public class CLanguageRuntime {
     public static void lateCLInit() {
         if (memoryManagement == GC_MALLOC || memoryManagement == GC_MALLOC_PREBUILT) {
             RJAVA_RUNTIME_DEFINE_BEFORE_INCLUDE.put("GC_THREADS", "");
-            RJAVA_RUNTIME_DEFINE.put("malloc", "GC_malloc");
+            RJAVA_RUNTIME_DEFINE.put("malloc", "GC_MALLOC");
         }
         
         if (ATOMIC_OPS_PREBUILT) {
@@ -123,7 +123,7 @@ public class CLanguageRuntime {
             CLanguageGenerator.MALLOC = "malloc";
             break;
         case GC_MALLOC:
-            CLanguageGenerator.MALLOC = "GC_malloc";
+            CLanguageGenerator.MALLOC = "GC_MALLOC";
             EXTRA_INCLUDE.add(Code.includeNonStandardHeader("boehm-gc/include/gc.h"));
             MAKE_SUBTASK.put("boehm-gc.a", "boehm-gc.a:\n" +
                     "\tcd boehm-gc;autoreconf -vif;automake --add-missing;" + 
@@ -131,7 +131,7 @@ public class CLanguageRuntime {
                     "\tcp boehm-gc/.libs/libgc.a boehm-gc.a\n");
             break;
         case GC_MALLOC_PREBUILT:
-            CLanguageGenerator.MALLOC = "GC_malloc";
+            CLanguageGenerator.MALLOC = "GC_MALLOC";
             EXTRA_INCLUDE.add(Code.includeNonStandardHeader("boehm-gc/include/gc.h"));
             if (RJavaCompiler.hostOS == RJavaCompiler.HOST_MACOSX) {
                 if (RJavaCompiler.m32) {

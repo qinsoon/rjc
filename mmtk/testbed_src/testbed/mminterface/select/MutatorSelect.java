@@ -1,6 +1,6 @@
 package testbed.mminterface.select;
 
-import org.mmtk.plan.marksweep.MSMutator;
+//import org.mmtk.plan.marksweep.MSMutator;
 import org.mmtk.plan.semispace.SSMutator;
 import org.rjava.restriction.rulesets.RJavaCore;
 
