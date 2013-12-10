@@ -1008,7 +1008,22 @@ public class CLanguageGenerator extends CodeGenerator {
                 CLanguageRuntime.memoryManagement = CLanguageRuntime.GC_MALLOC_PREBUILT;
             else if (mm.equals("malloc"))
                 CLanguageRuntime.memoryManagement = CLanguageRuntime.DEFAULT_MALLOC;
+            else if (mm.equals("tcmalloc-prebuilt"))
+                CLanguageRuntime.memoryManagement = CLanguageRuntime.TC_MALLOC_PREBUILT;
             else throw new RJavaError("Unrecognized memory management: " + mm);
+        } else if (arg.contains("-target:boehm-env=")) {
+            String env = arg.replaceAll("-target:boehm-env=", "");
+            CLanguageRuntime.BOEHM_ENV.add(env);
+        } else {
+            throw new RJavaError("Unrecognizable target option: " + arg);
+        }
+    }
+    
+    @Override
+    public void validateCommandlineOptions() throws RJavaError {
+        if (!CLanguageRuntime.BOEHM_ENV.isEmpty() && 
+                CLanguageRuntime.memoryManagement != CLanguageRuntime.GC_MALLOC) {
+            throw new RJavaError("Boehm environment variables can't be applied when boehm is not chosen as RJava mm");
         }
     }
 
@@ -1016,6 +1031,7 @@ public class CLanguageGenerator extends CodeGenerator {
     public void init() {
         CLanguageRuntime.lateCLInit();
         CLanguageGenerator.lateCLInit();
+        RuntimeHelpers.lateCLInit();
         this.mainObj = RJavaCompiler.namedOutput;
         
     }

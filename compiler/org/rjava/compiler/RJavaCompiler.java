@@ -225,31 +225,9 @@ public class RJavaCompiler {
                 i++;
             }
             
-            // check if args are valid
-            if (baseDir.size() == 0)
-                throw new RuntimeException("Didn't name a base directory. Use -dir");
-            
-            for (int index = 0; index < baseDir.size(); index++) {
-                String base = baseDir.get(index);
-                if (!new File(base).isDirectory())
-                    throw new RuntimeException("Base directory " + base + " is not a correct directory name. ");
-                else {
-                    // set canonical name
-                    String canonical = new File(base).getCanonicalPath();
-                    baseDir.set(index, canonical);
-                }
-            }
-            
-            // add all files in the base directory
-            if (sources.size() == 0) {
-                List<String> temp = new ArrayList<String>();
-                for (String base : baseDir)
-                    CompilationTask.addFileToListRecursively(new File(base), temp);
-                sources.addAll(temp);
-                
-                if (sources.size() == 0)
-                    throw new RuntimeException("Didn't name source list. And base directory doesn't contain any source files");
-            }
+            // validate options
+            validateCommandlineOptions(baseDir, sources);            
+            codeGenerator.validateCommandlineOptions();
         } catch (Exception e) {
             e.printStackTrace();
             usage();
@@ -292,6 +270,35 @@ public class RJavaCompiler {
 	    total.end();
         Statistics.report();
         RJavaCompiler.println(total.report());
+    }
+
+    public static void validateCommandlineOptions(List<String> baseDir,
+            Set<String> sources) throws IOException {
+        // check if args are valid
+        if (baseDir.size() == 0)
+            throw new RuntimeException("Didn't name a base directory. Use -dir");
+        
+        for (int index = 0; index < baseDir.size(); index++) {
+            String base = baseDir.get(index);
+            if (!new File(base).isDirectory())
+                throw new RuntimeException("Base directory " + base + " is not a correct directory name. ");
+            else {
+                // set canonical name
+                String canonical = new File(base).getCanonicalPath();
+                baseDir.set(index, canonical);
+            }
+        }
+        
+        // add all files in the base directory
+        if (sources.size() == 0) {
+            List<String> temp = new ArrayList<String>();
+            for (String base : baseDir)
+                CompilationTask.addFileToListRecursively(new File(base), temp);
+            sources.addAll(temp);
+            
+            if (sources.size() == 0)
+                throw new RuntimeException("Didn't name source list. And base directory doesn't contain any source files");
+        }
     }
     
     private static RJavaCompiler singleton;

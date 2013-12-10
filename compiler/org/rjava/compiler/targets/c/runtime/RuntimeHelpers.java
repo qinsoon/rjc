@@ -122,6 +122,11 @@ public class RuntimeHelpers {
      */
     public static final HelperMethod NEW_ARRAY;
     /**
+     * used to implement newarray (whose elements are not pointer)
+     * inline void* rjava_new_array_atomic(int length, long ele_size);
+     */
+    public static final HelperMethod NEW_ARRAY_ATOMIC;
+    /**
      * used to implement array access (e.g. array[0])
      * inline void* rjava_access_array(void* array, int index);
      */
@@ -475,6 +480,25 @@ public class RuntimeHelpers {
         NEW_ARRAY.setSource(RJAVA_NEW_ARRAY_SOURCE);
         
         /**
+         * used to implement newarray (whose elements are not pointer)
+         * inline void* rjava_new_array_atomic(int length, long ele_size);
+         */
+        NEW_ARRAY_ATOMIC = new HelperMethod("rjava_new_array_atomic", "void*", new HelperVariable[]{
+                                                        new HelperVariable("int", "length"),
+                                                        new HelperVariable("long", "ele_size")
+        });
+        final String RJAVA_NEW_ARRAY_ATOMIC_SOURCE = 
+                "void* ret = " + CLanguageGenerator.MALLOC_ATOMIC + "(sizeof(int) + sizeof(long) + ele_size * length);" + NEWLINE +
+                "*((int*)ret) = length;" + NEWLINE + 
+                "*((long*)(ret + sizeof(int))) = ele_size;" + NEWLINE +
+                // zeroing the array
+                "int i = 0;" + NEWLINE + 
+                "for(; i < length; i++)" + NEWLINE +
+                "  *(char**)(rjava_access_array(ret, i)) = NULL;" + NEWLINE +
+                "return ret;" + NEWLINE;
+        NEW_ARRAY_ATOMIC.setSource(RJAVA_NEW_ARRAY_ATOMIC_SOURCE);
+        
+        /**
          * used to implement new multiarray
          * void* rjava_new_multiarray(int[] dimensions, int dimension_size, long ele_size);
          */
@@ -541,7 +565,9 @@ public class RuntimeHelpers {
         final String RJAVA_UNIMPLEMENTED_METHOD_SOURCE = 
                 invoke(ASSERT, new String[]{"false", "\"abstract method isn't implemented\""}) + SEMICOLON + NEWLINE;
         UNIMPLEMENTED_METHOD.setSource(RJAVA_UNIMPLEMENTED_METHOD_SOURCE);
-        
+    }
+    
+    public static void lateCLInit() {
         // the order matters
         CRT_HELPERS.add(ASSERT);
         CRT_HELPERS.add(ADD_INTERFACE_TO_CLASS);
@@ -550,6 +576,8 @@ public class RuntimeHelpers {
         CRT_HELPERS.add(INIT_HEADER);
         CRT_HELPERS.add(DEBUG_PRINT_HEADER);
         CRT_HELPERS.add(NEW_ARRAY);
+        if (CLanguageRuntime.memoryManagement == CLanguageRuntime.GC_MALLOC || CLanguageRuntime.memoryManagement == CLanguageRuntime.GC_MALLOC_PREBUILT)
+            CRT_HELPERS.add(NEW_ARRAY_ATOMIC);
         CRT_HELPERS.add(LENGTH_OF_ARRAY);
         CRT_HELPERS.add(ACCESS_ARRAY);
         CRT_HELPERS.add(ACCESS_ARRAY_NOBOUNDS_CHECK);

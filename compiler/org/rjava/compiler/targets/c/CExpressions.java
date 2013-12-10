@@ -498,10 +498,16 @@ public class CExpressions {
     }
 
     public String fromSootJNewArrayExpr(JNewArrayExpr rightOp) {
+        RType base = RType.initWithClassName(rightOp.getBaseType().toString());
         String length = rightOp.getSize().toString();
         String eleSize = "(long) sizeof("
-                + id.getWithPointerIfProper(RType.initWithClassName(rightOp
-                        .getBaseType().toString())) + ")";
+                + id.getWithPointerIfProper(base) + ")";
+        
+        if (CLanguageRuntime.memoryManagement == CLanguageRuntime.GC_MALLOC || CLanguageRuntime.memoryManagement == CLanguageRuntime.GC_MALLOC_PREBUILT) {
+            if (base.isPrimitive() && !base.isMagicType()) 
+                return RuntimeHelpers.invoke(RuntimeHelpers.NEW_ARRAY_ATOMIC, new String[] {length, eleSize});
+        }
+        
         return RuntimeHelpers.invoke(RuntimeHelpers.NEW_ARRAY, new String[] {
                 length, eleSize });
     }

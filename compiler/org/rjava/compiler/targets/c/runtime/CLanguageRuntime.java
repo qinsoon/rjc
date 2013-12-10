@@ -32,6 +32,7 @@ public class CLanguageRuntime {
     public static final int DEFAULT_MALLOC      = 0;
     public static final int GC_MALLOC           = 1;
     public static final int GC_MALLOC_PREBUILT  = 2;
+    public static final int TC_MALLOC_PREBUILT  = 3;
 
     public static int memoryManagement = GC_MALLOC_PREBUILT;
     
@@ -67,6 +68,8 @@ public class CLanguageRuntime {
     public static final ArrayList<String> EXTRA_INCLUDE = new ArrayList<String>();
     public static final HashMap<String, String> MAKE_SUBTASK = new HashMap<String, String>();
     
+    public static final ArrayList<String> BOEHM_ENV = new ArrayList<String>();
+    
     public static final String ATOMIC_LIB_OSX = "libatomic_ops_osx.a";
     public static final String ATOMIC_LIB_OSX_32 = "libatomic_ops_osx_32.a";
     public static final String ATOMIC_LIB_LINUX = "libatomic_ops_linux.a";
@@ -76,6 +79,8 @@ public class CLanguageRuntime {
     public static final String GC_OSX_32 = "boehm-gc_osx_32.a";
     public static final String GC_LINUX = "boehm-gc_linux.a";
     public static final String GC_LINUX_32 = "boehm-gc_linux_32.a";
+    
+    public static final String TC_MALLOC_OSX = "libtcmalloc_minimal.a";
     
     // for their run-time initialization, see RuntimeHelpers.RUNTIME_GLOBAL_INIT
     public static final ArrayList<String> RJAVA_RUNTIME_GLOBALS = new ArrayList<String>();
@@ -89,6 +94,8 @@ public class CLanguageRuntime {
         if (memoryManagement == GC_MALLOC || memoryManagement == GC_MALLOC_PREBUILT) {
             RJAVA_RUNTIME_DEFINE_BEFORE_INCLUDE.put("GC_THREADS", "");
             RJAVA_RUNTIME_DEFINE.put("malloc", "GC_MALLOC");
+        } else if (memoryManagement == TC_MALLOC_PREBUILT) {
+            RJAVA_RUNTIME_DEFINE.put("malloc", "tc_malloc");
         }
         
         if (ATOMIC_OPS_PREBUILT) {
@@ -125,9 +132,14 @@ public class CLanguageRuntime {
         case GC_MALLOC:
             CLanguageGenerator.MALLOC = "GC_MALLOC";
             EXTRA_INCLUDE.add(Code.includeNonStandardHeader("boehm-gc/include/gc.h"));
+            
+            String envDefines = " ";
+            for (String env : BOEHM_ENV)
+                envDefines += "-D" + env + " ";
+            
             MAKE_SUBTASK.put("boehm-gc.a", "boehm-gc.a:\n" +
                     "\tcd boehm-gc;autoreconf -vif;automake --add-missing;" + 
-                    (RJavaCompiler.m32 ? "CFLAGS=-m32 " : "") + "./configure --enable-threads=posix --enable-static;make\n" +
+                    (RJavaCompiler.m32 ? "CFLAGS=-m32 " : "") + "./configure --enable-threads=posix --enable-static" + envDefines + ";make\n" +
                     "\tcp boehm-gc/.libs/libgc.a boehm-gc.a\n");
             break;
         case GC_MALLOC_PREBUILT:
@@ -147,6 +159,15 @@ public class CLanguageRuntime {
                         "\tcp prebuilt/" + GC_LINUX + " " + GC_LINUX +"\n");
             }
             break;
+        case TC_MALLOC_PREBUILT:
+            CLanguageGenerator.MALLOC = "tc_malloc";
+            EXTRA_INCLUDE.add(Code.includeNonStandardHeader("tcmalloc.h"));
+            if (RJavaCompiler.hostOS == RJavaCompiler.HOST_MACOSX && !RJavaCompiler.m32) {
+//                MAKE_SUBTASK.put(TC_MALLOC_OSX, TC_MALLOC_OSX + ":\n" + 
+//                        "\tcp prebuilt/" + TC_MALLOC_OSX + " " + TC_MALLOC_OSX + "\n");
+            } else {
+                RJavaCompiler.fail("tc malloc prebuilt only works on OSX 64bits yet");
+            }
         }
     }
     
@@ -385,6 +406,11 @@ public class CLanguageRuntime {
         C_FLAGS += "-std=gnu99 ";
         // C_FLAGS += "-msse "; - used to use this with @RegisterField
         
+        if (memoryManagement != DEFAULT_MALLOC)
+            C_FLAGS += "-fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free ";
+        
+        if (memoryManagement == TC_MALLOC_PREBUILT)
+            C_FLAGS += "-ltcmalloc_minimal ";
         
         /*
          *  generate makefile

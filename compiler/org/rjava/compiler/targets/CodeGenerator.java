@@ -83,6 +83,7 @@ public abstract class CodeGenerator {
     }
     
     public abstract void processCommandlineOptions(String arg) throws RJavaError, RJavaWarning;
+    public abstract void validateCommandlineOptions() throws RJavaError;
     
     public abstract void init();
 }
