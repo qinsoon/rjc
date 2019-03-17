@@ -1,9 +1,0 @@
-#!/usr/bin/perl
-
-if ($#ARGV != 0) {
-  print "name a remote machine to rsync\n";
-} else {
-  my $cmd = "rsync -azvLe ssh --delete --exclude output/ --exclude c_test/ --exclude build/ . $ARGV[0]:~/rjava";
-  print "$cmd\n";
-  system($cmd);
-}
